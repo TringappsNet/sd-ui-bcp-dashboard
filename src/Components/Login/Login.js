@@ -6,14 +6,14 @@ import './Login.css'
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  // const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleSubmit = (event) => {
     event.preventDefault();
     // You can handle the submission logic here, such as sending a reset password email
     console.log('Submit email:', email);
     console.log('New password:', password);
-    console.log('Confirm password:', confirmPassword);
+    // console.log('Confirm password:', confirmPassword);
   };
 
   return (
