@@ -1,75 +1,122 @@
 import React, { useState } from 'react';
 import { Container, Form, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../styles/resetPassword.css'; 
+import '../styles/resetPassword.css';
 import { Link } from 'react-router-dom';
 import { TextField } from '@mui/material';
 
 function ResetPassword() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [userName, setUserName] = useState('');
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // You can handle the submission logic here, such as sending a reset password email
-    console.log('Submit email:', email);
-    console.log('New password:', password);
-    console.log('Confirm password:', confirmPassword);
+
+    if (newPassword !== confirmNewPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:3001/reset-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userName, oldPassword, newPassword }),
+      });
+
+      if (response.ok) {
+        setSuccess(true);
+          // Reset input fields and errors
+      setUserName('');
+      setOldPassword('');
+      setNewPassword('');
+      setConfirmNewPassword('');
+      setError(null);
+      } else {
+        const data = await response.json();
+        setError(data.message);
+      }
+    } catch (error) {
+      console.error('Error resetting password:', error.message);
+      setError('Error resetting password');
+    }
   };
 
   return (
-    <div className="form d-flex justify-content-center align-items-center vh-70 ">
-      <Container className="con mt-6 p-4 shadow bg-body rounded">
+    <div className="form d-flex justify-content-center align-items-center">
+      
+      <Container className=" mt-6 p-4 shadow bg-body rounded">
         <h6 className="text-center mb-5 mt-3 fw-bold">Reset Password</h6>
         <Form onSubmit={handleSubmit}>
-          <Form.Group controlId="formBasicEmail" className="mb-4">
-            <TextField 
-              className='label'
-              type="email"
-              label="Email address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+          {error && <div className="text-danger mb-3">{error}</div>}
+          {success && <div className="text-success mb-3">Password reset successfully!</div>}
+          <Form.Group controlId="formBasicUserName" className="mb-4">
+            <TextField
+              className="label"
+              type="text"
+              label="Username"
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
               fullWidth
               variant="outlined"
               size="small"
             />
           </Form.Group>
-          <Form.Group controlId="formBasicPassword" className="mb-4">
+          <Form.Group controlId="formBasicOldPassword" className="mb-4">
             <TextField
-              className='label'
+              className="label"
+              type="password"
+              label="Old password"
+              value={oldPassword}
+              onChange={(e) => setOldPassword(e.target.value)}
+              fullWidth
+              variant="outlined"
+              size="small"
+            />
+          </Form.Group>
+          <Form.Group controlId="formBasicNewPassword" className="mb-4">
+            <TextField
+              className="label"
               type="password"
               label="New password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
               fullWidth
               variant="outlined"
               size="small"
             />
           </Form.Group>
-          <Form.Group controlId="formBasicConfirmPassword" className="mb-4">
+          <Form.Group controlId="formBasicConfirmNewPassword" className="mb-4">
             <TextField
-              className='label'
+              className="label"
               type="password"
               label="Confirm new password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              value={confirmNewPassword}
+              onChange={(e) => setConfirmNewPassword(e.target.value)}
               fullWidth
               variant="outlined"
               size="small"
             />
           </Form.Group>
-          <div className="btn-container mt-5 ">
-          <Button type="submit" className="btn-success">
-            Reset Password
-          </Button>
-        </div>
-        </Form>
-      </Container>
-      <div className="text-center mt-3 ">
+          <div className="btn-container">
+            <Button type="submit" className="btn-success">
+              Reset Password
+            </Button>
+          </div>
+          <div className="text-center mt-3">
         <Link to="/login">Back to Login</Link>
       </div>
+        </Form>
+      </Container>
+     
     </div>
+    
   );
 }
 

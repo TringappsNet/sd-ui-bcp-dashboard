@@ -12,7 +12,6 @@ function ForgotPassword() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // You can handle the submission logic here, such as sending a reset password email
     console.log('Submit email:', email);
     navigate('/reset-password');
   };

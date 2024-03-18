@@ -1,56 +1,120 @@
 import React, { useState } from 'react';
-import { Container, Form, Button, Row, Col } from 'react-bootstrap';
+import { Container, Form, Button,Row,Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { TextField } from '@mui/material'
-import '../styles/Login.css'
+import { TextField } from '@mui/material';
+import '../styles/Login.css';
 
 function Login() {
-  const [email, setEmail] = useState('');
+  const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
+  const [usernameError, setUsernameError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [serverError, setServerError] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // You can handle the submission logic here, such as sending a reset password email
-    console.log('Submit email:', email);
-    console.log('New password:', password);
-    navigate('/dashboard');
+
+    // Validate username
+    if (!userName) {
+      setUsernameError('Username is required');
+      return;
+    }
+
+    // Validate password
+    if (!password) {
+      setPasswordError('Password is required');
+      return;
+    }
+    const requestBody = { userName, password };
+
+    try {
+      const response = await fetch('http://localhost:3001/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+      
+      if (response.ok) {
+        // const data = await response.json();
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('username', userName); 
+
+        console.log('User logged in successfully!');
+  
+
+        navigate('/dashboard');
+      } else {
+        const data = await response.json();
+        console.log('Login failed:', data.message);
+  
+        if (response.status === 400 && data.message === 'User Not Found!') {
+          setServerError('Username not found.');
+
+        } else if (response.status === 401 && data.message === 'Invalid Password!') {
+          setServerError('Invalid password!');
+        } 
+        else {
+          setServerError('An error occurred while logging in.');
+        }
+      }
+    } catch (error) {
+      console.error('Error logging in:', error);
+      setServerError('An error occurred while logging in.');
+    }
   };
 
   return (
-    <div className=" form d-flex justify-content-center align-items-center vh-100 ">
-
-    <Container className="con mt-6 p-4  shadow bg-body rounded">
-      <h6 className="text-center mb-4 mt-3 fw-bold ">Sign in</h6>
-      <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="formBasicEmail" className="mb-4 mt-4">
-          <TextField
-            className='label'
-            type="email"
-            label="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            fullWidth
-            variant="outlined"
-            size="small"
-          />
-        </Form.Group>
-        <Form.Group controlId="formBasicPassword" className="mb-2 mt-4">
-          <TextField
-            className='label'
-            type="password"
-            label="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            fullWidth
-            variant="outlined"
-            size="small"
-          />
-        </Form.Group>
-    
-        <Row className="mb-3  ">
+    <div className="form d-flex justify-content-center align-items-center ">
+      <Container className="con mt-2 p-4 shadow bg-body rounded">
+        <h6 className="text-center mb-4 mt-3 fw-bold">Sign in</h6>
+        {serverError && (
+      <div className="text-center mt-2"> 
+        <p className="text-danger">{serverError}</p>
+      </div>
+    )}
+        <Form onSubmit={handleSubmit}>
+          <Form.Group controlId="formBasicEmail" className="mb-4 mt-4">
+            <TextField
+              className='label'
+              type="text"
+              label="Username"
+              value={userName}
+              onChange={(e) => {
+                setUserName(e.target.value);
+                setUsernameError('');
+                setServerError('');
+              }}
+              fullWidth
+              variant="outlined"
+              size="small"
+              error={!!usernameError}
+              helperText={usernameError}
+            />
+          </Form.Group>
+          <Form.Group controlId="formBasicPassword" className="mb-2 mt-4">
+            <TextField
+              className='label'
+              type="password"
+              label="Password"
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                setPasswordError('');
+                setServerError('');
+              }}
+              fullWidth
+              variant="outlined"
+              size="small"
+              error={!!passwordError}
+              helperText={passwordError}
+            />
+          </Form.Group>
+          <Row className="mb-4  ">
           <Col>
             <Form.Text className="text-left">
               <Link to="/forgot-password">Forgot Password?</Link>
@@ -66,19 +130,18 @@ function Login() {
             />
           </Col>
         </Row>
-        <div className="btn-container mt-5 ">
-          <Button type="submit" className="btn-success">
-            Sign in
-          </Button>
-        </div>
-      </Form>
-
-    </Container>
-    <div className="text-center mt-3 ">
+          <div className="btn-container mt-5">
+            <Button type="submit" className="btn-success">
+              Sign in
+            </Button>
+          </div>
+        </Form>
+        <div className="text-center mt-5">
         New to BCP? <Link to="/register">Sign up</Link>
       </div>
+      </Container>
+      
     </div>
-
   );
 }
 

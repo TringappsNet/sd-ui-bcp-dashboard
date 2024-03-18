@@ -11,6 +11,10 @@
   font-family: 'Times New Roman', Times, serif;
   width: 400px;
   height: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 /* Responsive styles */
