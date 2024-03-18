@@ -3,13 +3,12 @@
 .form {
     display: flex;
     flex-direction: column;
-    font-family: 'Times New Roman', Times, serif;
   }
   
   .con {
     width: 300px;
     height: 400px;
-   
+    font-family: 'Times New Roman', Times, serif;
   }
   
   @media (max-width: 576px) {
