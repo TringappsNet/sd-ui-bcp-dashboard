@@ -14,18 +14,19 @@ function Login() {
   const [passwordError, setPasswordError] = useState('');
   const [serverError, setServerError] = useState('');
   const navigate = useNavigate();
-  // const PortURL = 'http://localhost:3001'; 
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     // Validate username
+
     if (!userName) {
       setUsernameError('Username is required');
       return;
     }
 
     // Validate password
+
     if (!password) {
       setPasswordError('Password is required');
       return;
@@ -42,9 +43,26 @@ function Login() {
       });
       
       if (response.ok) {
+        
+        // console.log("Response from server",response.json());
+        
+        const data1 = await response.json(); // Wait for JSON response
+        const { username, organization } = data1 ;
+        console.log(data1); 
+
+
+        
+        // console.log(username); 
+        // console.log(organization); 
+
         // const data = await response.json();
+
+
+
         localStorage.setItem('isLoggedIn', 'true');
-        localStorage.setItem('username', userName); 
+        localStorage.setItem('username', username); 
+        localStorage.setItem('username', password); 
+        localStorage.setItem('Organisation', organization); 
 
         console.log('User logged in successfully!');
   

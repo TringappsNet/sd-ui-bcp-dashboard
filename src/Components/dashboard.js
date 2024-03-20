@@ -8,12 +8,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faUser, faEdit, faSave, faTimes, faTrash, faUpload } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/dashboard.css';
-
+import { PortURL } from './Config';
 function Dashboard() {
   const [username, setUsername] = useState('');
   const [data, setData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [editedRow, setEditedRow] = useState(null);
+  const [organization, setOrganization] = useState('');
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,8 +24,10 @@ function Dashboard() {
       navigate('/login');
     } else {
       const storedUsername = localStorage.getItem('username');
+      const storedOrganization = localStorage.getItem('Organisation'); // Retrieve organization from local storage
       setUsername(storedUsername);
-    }
+      setOrganization(storedOrganization); // Set organization in state
+        }
   }, [navigate]);
 
   const onDrop = useCallback(acceptedFiles => {
@@ -102,20 +106,53 @@ function Dashboard() {
     const dateParts = header.match(/\b(\w{3} \d{2})\b/);
     return dateParts ? dateParts[0] : header;
   };
-const formatDateCell = (value, columnName) => {
-  if (typeof value === 'string' && columnName === 'Month/Year') {
-    const [month, year] = value.split('/');
-    const monthAbbreviation = month.substr(0, 3);
-    return `${monthAbbreviation}-${year}`;
-  } else if (value instanceof Date) {
-    const month = value.toLocaleDateString('en-US', { month: 'short' });
-    const year = value.getFullYear().toString().slice(-2);
-    return `${month}${year}`;
-  }
-  return value;
-};
 
+  const formatDateCell = (value, columnName) => {
+    if (typeof value === 'string' && columnName === 'Month/Year') {
+      const [month, year] = value.split('/');
+      const monthAbbreviation = month.substr(0, 3);
+      return `${monthAbbreviation}-${year}`;
+    } else if (value instanceof Date) {
+      const month = value.toLocaleDateString('en-US', { month: 'short' });
+      const year = value.getFullYear().toString().slice(-2);
+      return `${month}${year}`;
+    }
+    return value;
+  };
+  const handleSubmit = async () => {
+    try {
+      // Create an object containing both username and organization
+      const userData = {
+        username: username,
+        organization: organization
+      };
+      
+      // Log the userData for debugging
+      console.log("userData:", userData);
+      console.log("userData:", data);
 
+      // Send both userData and data to the server
+      const response = await fetch(`${PortURL}/bulk-upload`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ userData, data }) // Combine userData and data in the request body
+      });
+  
+      // Handle the response from the server
+      if (response.ok) {
+        const jsonResponse = await response.json();
+        console.log(jsonResponse);
+      } else {
+        console.error('Error:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+  
+  
   return (
     <div className="dashboard-container">
       <Navbar bg="light" expand="lg" className="w-100">
@@ -165,7 +202,7 @@ const formatDateCell = (value, columnName) => {
                   </div>
                 </Form>
                 <div className="ml-4">
-                  <Button className="mr-2">Submit</Button>
+                  <Button className="mr-2" onClick={handleSubmit}>Submit</Button>
                   <Button variant="danger"><FontAwesomeIcon icon={faTrash} /> Clear</Button>
                 </div>
               </div>
