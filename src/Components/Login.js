@@ -72,7 +72,7 @@ function Login() {
 
   return (
     <div className="form d-flex justify-content-center align-items-center ">
-      <Container className="con mt-5 p-4 shadow bg-body rounded">
+      <Container className="con mt-5 p-4 shadow  ">
         <h6 className="text-center mb-2 mt-1 display-6 ">Sign in</h6>
         <p>Navigate your Buisness with Ease!!!</p>
         {serverError && (

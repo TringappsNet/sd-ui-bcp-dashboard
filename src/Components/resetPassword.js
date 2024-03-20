@@ -52,8 +52,8 @@ function ResetPassword() {
   return (
     <div className="form d-flex justify-content-center align-items-center">
       
-      <Container className=" mt-6 p-4 shadow bg-body rounded">
-        <h6 className="text-center mb-5 mt-3 fw-bold">RESET PASSWORD</h6>
+      <Container className=" mt-6 p-4 shadow bg-body ">
+        <h6 className="text-center mb-4 mt-1 ">Reset Password</h6>
         <Form onSubmit={handleSubmit}>
           {error && <div className="text-danger mb-3">{error}</div>}
           {success && <div className="text-success mb-3">Password reset successfully!</div>}

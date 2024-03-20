@@ -92,7 +92,6 @@
 button {
   width: 150px;
   height: 40px; /* Set height for all buttons */
-  margin-left: 20px;
 }
 
 .dropdown-menu .dropdown-item:hover {
