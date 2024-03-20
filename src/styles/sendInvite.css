@@ -1,0 +1,10 @@
+.container-margin {
+    margin-top: 150px; /* Adjust the margin-top value as needed */
+  }
+  
+  @media (max-width: 768px) {
+    .container-margin {
+      margin-top: 20px; /* Adjust the margin-top value for smaller screens */
+    }
+  }
+  
