@@ -43,22 +43,11 @@ function Login() {
       });
       
       if (response.ok) {
+
         
-        // console.log("Response from server",response.json());
-        
-        const data1 = await response.json(); // Wait for JSON response
+        const data1 = await response.json(); 
         const { username, organization } = data1 ;
         console.log(data1); 
-
-
-        
-        // console.log(username); 
-        // console.log(organization); 
-
-        // const data = await response.json();
-
-
-
         localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('username', username); 
         localStorage.setItem('username', password); 
