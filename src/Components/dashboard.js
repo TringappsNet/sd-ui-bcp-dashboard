@@ -235,7 +235,7 @@ function Dashboard() {
                         <Button className="mr-2" onClick={handleSubmit}>Submit</Button>
                         <Button variant="danger"><FontAwesomeIcon icon={faTrash} /> Clear</Button>
                       </div>
-                    </div
+                    </div>
             </div>
           </div>
         </div>
