@@ -46,17 +46,22 @@ function Login() {
 
         
         const data1 = await response.json(); 
-        const { username, organization } = data1 ;
-        console.log(data1); 
+        console.log('Response data:', data1);
+        
+        const { username, organization } = data1;
+        console.log('Extracted username:', username);
+        console.log('Extracted organization:', organization);
+
         localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('username', username); 
         localStorage.setItem('username', password); 
         localStorage.setItem('Organisation', organization); 
 
         console.log('User logged in successfully!');
-  
 
         navigate('/dashboard');
+
+
       } else {
         const data = await response.json();
         console.log('Login failed:', data.message);
