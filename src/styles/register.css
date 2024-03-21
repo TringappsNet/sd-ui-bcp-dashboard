@@ -17,18 +17,19 @@
   display: flex;
   flex-direction: column;
   /* font-family: 'Times New Roman', Times, serif; */
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Roboto', sans-serif;
   
 }
 
 .container {
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Roboto', sans-serif;
   width: 400px;
   height: auto;
   position: absolute;
   top: 45%;
   left: 50%;
   transform: translate(-50%, -50%);
+  border-radius: 15px;
 }
 
 @media (max-width: 576px) {
@@ -40,13 +41,12 @@
 
 
 .signup{
+  font-size: 1.75rem; 
   font-size:larger;
-  font-weight: 600;
-  font-family: "Montserrat", sans-serif;
-  margin-bottom: 0px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
 
 }
 
 
 
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap')

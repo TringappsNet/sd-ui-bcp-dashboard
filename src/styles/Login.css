@@ -1,17 +1,20 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
 
 .form {
   display: flex;
   flex-direction: column;
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Roboto', sans-serif;
+}
+body{
+  background-color: rgb(243, 240, 240);
 
 }
 
 .con {
   width: 360px;
   height: 420px;
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Roboto', sans-serif;
+   border-radius: 15px;
 }
 
 @media (max-width: 576px) {
@@ -33,23 +36,19 @@
 
 
 .display-6 {
-  font-size: 1.75rem; 
+  font-size: 1.75rem;
   font-weight: 400;
-  font-family: "Plus Jakarta Sans", sans-serif;
-
+  font-family: 'Roboto', sans-serif;
 }
 
 .signup {
   padding-top: 25px;
-  font-size:medium;
-  font-family: "Montserrat", sans-serif;
-
-}
+  font-size: medium;
+  font-family: 'Roboto', sans-serif;}
 .signup a{
   text-decoration: none;
   color: green;
-  font-family: "Montserrat", sans-serif;
-
+  font-family: 'Roboto', sans-serif;
 }
 
 
@@ -71,7 +70,4 @@ p{
 
   
 }
-
-
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap')
 

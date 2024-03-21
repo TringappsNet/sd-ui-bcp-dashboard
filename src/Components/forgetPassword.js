@@ -19,9 +19,9 @@ function ForgotPassword() {
   return (
   <div className=" form d-flex justify-content-center align-items-center vh-100 ">
 
-    <Container className="mt-5 shadow p-3 mb-5 bg-body rounded container vh-70 " id='con'>
+    <Container className="mt-5 shadow p-3 mb-5 bg-body  container vh-70 " id='con'>
       
-      <h6 className="text-center mb-4 mt-4 fw-bold">FORGET PASSWORD</h6>
+      <h6 className="text-center mb-4 mt-2 forget">Forget Password</h6>
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="formBasicEmail">
           <TextField 
@@ -34,7 +34,7 @@ function ForgotPassword() {
             size="small"
           />
         </Form.Group>
-        <Row className="mb-8 mt-3  ">
+        <Row className="mb-8 mt-3">
           <Col>
             <Form.Text className="text-left">
               <Link to="/reset-password">Reset Password?</Link>
