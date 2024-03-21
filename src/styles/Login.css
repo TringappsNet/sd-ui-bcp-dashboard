@@ -13,6 +13,7 @@ body{
   height: 390px;
   font-family: 'Roboto', sans-serif;
    border-radius: 15px;
+
 }
 
 @media (max-width: 576px) {
@@ -69,7 +70,5 @@ p{
   
 }
 
-.btn-container {
-  width: 250px;
-}
+
 
