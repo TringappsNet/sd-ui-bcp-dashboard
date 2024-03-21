@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Navbar, NavbarBrand, Nav, NavbarToggle, NavbarCollapse, Button, Form, FormControl, Container, Row, Col, Dropdown } from 'react-bootstrap';
 import { useDropzone } from 'react-dropzone';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate }  from 'react-router-dom';
 import * as XLSX from 'xlsx';
 import { Grid, Table, TableHeaderRow } from '@devexpress/dx-react-grid-bootstrap4';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -17,7 +17,6 @@ function Dashboard() {
   const [editedRow, setEditedRow] = useState(null);
   const [organization, setOrganization] = useState('');
   const [showPreview, setShowPreview] = useState(false); // State to control preview visibility
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -84,25 +83,42 @@ function Dashboard() {
   
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
-    const filteredData = data.filter(row => {
-        return Object.values(row || {}).some(value =>
-          value && value.toString().toLowerCase().includes(searchQuery.toLowerCase())
-        );
-      });
+  const filteredData = data.filter(row => {
+    return Object.values(row || {}).some(value =>
+      value && value.toString().toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  });
   
-  const handleSearchChange = e => {
-    setSearchQuery(e.target.value);
-  };
+      const handleSearchChange = (event) => {
+        setSearchQuery(event.target.value);
+      };
 
   const handleEdit = (row) => {
     console.log("Editing row:", row);
     setEditedRow({ ...row });
   };
 
-  const handleSave = () => {
-    console.log("Saving edited row:", editedRow);
-    setData(data.map(row => (row.id === editedRow.id ? editedRow : row)));
-    setEditedRow(null);
+  const handleSave = async () => {
+    // Update the row in the database with the API endpoint
+    try {
+      const response = await fetch(`${PortURL}/update`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ editedRow }),
+      });
+  
+      if (response.ok) {
+        const updatedData = await response.json();
+        setData(prevData => [...prevData, ...updatedData]);
+        setEditedRow(null);
+      } else {
+        console.error('Error updating row in database:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error updating row in database:', error);
+    }
   };
 
   const handleCancel = () => {
@@ -251,10 +267,10 @@ function Dashboard() {
               {showPreview && data.length > 0 && (
                 <>
                   <div className="table-container">
-                    <Grid
-                      rows={data}
-                      columns={Object.keys(data[0] || {}).map(key => ({ name: key, title: formatDateHeading(key) }))}
-                    >
+                  <Grid
+                       rows={filteredData}
+                      columns={Object.keys(filteredData[0] || {}).map(key => ({ name: key, title: formatDateHeading(key) }))}
+                  >
                       <Table
                         rowComponent={({ row, ...restProps }) => (
                           <Table.Row
