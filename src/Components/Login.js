@@ -148,7 +148,7 @@ function Login() {
           </Col>
         </Row>
           <div className="btn-container mt-4 mb-5">
-            <Button type="submit" className="btn btn-success  rounded-pill .custom-button">
+            <Button type="submit" className="btn btn-success  rounded-pill ">
               Sign in
             </Button>
           </div>
