@@ -93,7 +93,7 @@ function Login() {
       </div>
     )}
         <Form onSubmit={handleSubmit}>
-          <Form.Group controlId="formBasicEmail" className="mb-4 mt-4 ">
+          <Form.Group controlId="formBasicEmail" className="mb-4 mt-4">
             <TextField
               className='label form-control border-primary'
               type="text"
@@ -113,7 +113,7 @@ function Login() {
             
             />
           </Form.Group>
-          <Form.Group controlId="formBasicPassword" className="mb-2 mt-4">
+          <Form.Group controlId="formBasicPassword" className="mb-2 mt-4 ">
             <TextField
               className='label form-control'
               type="password"
@@ -131,14 +131,14 @@ function Login() {
               helperText={passwordError}
             />
           </Form.Group>
-          <Row className="mb-4 mt-2 p-1 ">
+          <Row className="mb-2 mt-2 ">
           <Col>
             <Form.Text className="text-left">
               <Link to="/forgot-password">Forgot Password?</Link>
             </Form.Text>
           </Col>
         </Row>
-        <Row className="mb-4">
+        <Row className="mb-3">
           <Col>
             <Form.Check
               type="checkbox"
@@ -148,12 +148,12 @@ function Login() {
           </Col>
         </Row>
           <div className="btn-container mt-4 mb-5">
-            <Button type="submit" className="btn btn-success  rounded-pill">
+            <Button type="submit" className="btn btn-success  rounded-pill .custom-button">
               Sign in
             </Button>
           </div>
         </Form>
-        <div className="text-center mt-5 signup ">
+        <div className="text-center mt-4 signup ">
         New to BCP? <Link to="/register"> Sign up</Link>
       </div>
       </Container>
