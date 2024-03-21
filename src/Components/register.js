@@ -116,8 +116,8 @@ function Register() {
   };
 
   return (
-    <Container className="mt-5 shadow p-3 mb-5 bg-body rounded container vh-70">
-      <h6 className="text-center signup mb-5  ">SIGN UP</h6>
+    <Container className="mt-5 shadow p-3 mb-5 bg-body  container vh-70">
+        <h6 className="text-center mb-3 mt-2 display-6 ">Sign up</h6>
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="formFirstName" className="mb-3">
           <TextField
@@ -211,15 +211,7 @@ function Register() {
             size="small"
             error={!!passwordError}
             helperText={passwordError}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end" onClick={toggleNewPasswordVisibility}>
-                  <IconButton edge="end">
-                    {showNewPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
+            
           />
         </Form.Group>
         
@@ -237,15 +229,7 @@ function Register() {
             size="small"
             error={!!passwordError}
             helperText={passwordError}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end" onClick={toggleConfirmPasswordVisibility}>
-                  <IconButton edge="end">
-                    {showConfirmPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
+            
           />
         </Form.Group>
         

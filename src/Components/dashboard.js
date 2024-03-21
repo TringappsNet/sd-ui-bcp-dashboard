@@ -84,6 +84,12 @@ function Dashboard() {
   
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
+    const filteredData = data.filter(row => {
+        return Object.values(row || {}).some(value =>
+          value && value.toString().toLowerCase().includes(searchQuery.toLowerCase())
+        );
+      });
+  
   const handleSearchChange = e => {
     setSearchQuery(e.target.value);
   };
@@ -118,7 +124,11 @@ function Dashboard() {
     localStorage.removeItem('username');
     navigate('/login');
   };
-
+  
+ const handleInvite = () => {
+        navigate('/send-invite')
+      }
+ 
   const formatDateHeading = (header) => {
     const dateParts = header.match(/\b(\w{3} \d{2})\b/);
     return dateParts ? dateParts[0] : header;
@@ -146,6 +156,7 @@ function Dashboard() {
 
       console.log("userData:", userData);
       console.log("Uploaded data:", data);
+      
 
       const response = await fetch(`${PortURL}/bulk-upload`, {
         method: 'POST',
@@ -156,6 +167,9 @@ function Dashboard() {
       });
 
       if (response.ok) {
+        // Clear uploaded data after successful submission
+//             setData([]);
+        
         fetchData(); // Fetch updated data from the database
         const jsonResponse = await response.json();
         console.log(jsonResponse);
@@ -167,61 +181,61 @@ function Dashboard() {
     }
   };
 
-
-  return (
-    <div className="dashboard-container">
-      <Navbar bg="light" expand="lg" className="w-100">
-        <div className="brand-wrapper">
-          <NavbarBrand href="#home"> BCP Dashboard</NavbarBrand>
-        </div>
-        <NavbarToggle aria-controls="basic-navbar-nav" />
-        <NavbarCollapse id="basic-navbar-nav">
-          <Nav className="ml-auto">
-            <Dropdown>
-              <Dropdown.Toggle id="dropdown-basic">
-                <FontAwesomeIcon icon={faUser} /> {username}
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <Dropdown.Item>Profile</Dropdown.Item>
-                <Dropdown.Item>Settings</Dropdown.Item>
-                <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-          </Nav>
-        </NavbarCollapse>
-      </Navbar>
-      <Container fluid>
-        <div className="container-fluid full-height mt-5">
-          <div className="row">
-            <div className="col">
-              <div className="border shadow p-3 d-flex justify-content-between align-items-center">
-                <Form className="d-flex">
-                  <div className="search-wrapper mr-2">
-                    <div className="search-icon">
-                      <FontAwesomeIcon icon={faSearch} />
-                    </div>
-                    <FormControl
-                      type="text"
-                      placeholder="Search"
-                      style={{ flex: '1' }}
-                      value={
-                      searchQuery}
-                      onChange={handleSearchChange}
-                    />
-                  </div>
-                  <div {...getRootProps()} className="custom-file-upload">
-                    <input {...getInputProps()} accept=".xlsx, .xls" />
-                    {isDragActive ?
-                      <p>Drop the files here ...</p> :
-                      <Button className='btn btn-success btn-sm'><FontAwesomeIcon icon={faUpload} />Upload File</Button>
-                    }
-                  </div>
-                </Form>
-                <div className="ml-4">
-                  <Button className="mr-2" onClick={handleSubmit}>Submit</Button>
-                  <Button variant="danger"><FontAwesomeIcon icon={faTrash} /> Clear</Button>
-                </div>
+      
+      return (
+          <div className="dashboard-container">
+            <Navbar bg="light" expand="lg" className="w-100">
+              <div className="brand-wrapper">
+                <NavbarBrand href="#home"> BCP Dashboard</NavbarBrand>
               </div>
+              <NavbarToggle aria-controls="basic-navbar-nav" />
+              <NavbarCollapse id="basic-navbar-nav">
+                <Nav className="ml-auto">
+                  <Dropdown>
+                    <Dropdown.Toggle id="dropdown-basic">
+                      <FontAwesomeIcon icon={faUser} /> {username}
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      <Dropdown.Item>Profile</Dropdown.Item>
+                      <Dropdown.Item>Settings</Dropdown.Item>
+                      <Dropdown.Item onClick={handleInvite}>Send Invite</Dropdown.Item>
+                      <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </Nav>
+              </NavbarCollapse>
+            </Navbar>
+            <Container fluid>
+              <div className="container-fluid full-height mt-5">
+                <div className="row">
+                  <div className="col">
+                    <div className="border shadow p-3 d-flex justify-content-between align-items-center">
+                      <Form className="d-flex">
+                        <div className="search-wrapper mr-2">
+                          <div className="search-icon">
+                            <FontAwesomeIcon icon={faSearch} />
+                          </div>
+                          <FormControl
+                            type="text"
+                            placeholder="Search"
+                            style={{ flex: '1' }}
+                            value={searchQuery}
+                            onChange={handleSearchChange}
+                          />
+                        </div>
+                        <div {...getRootProps()} className="custom-file-upload">
+                          <input {...getInputProps()} accept=".xlsx, .xls" />
+                          {isDragActive ?
+                            <p>Drop the files here ...</p> :
+                            <Button className='btn btn-success btn-sm'><FontAwesomeIcon icon={faUpload} />Upload File</Button>
+                          }
+                        </div>
+                      </Form>
+                      <div className="ml-4">
+                        <Button className="mr-2" onClick={handleSubmit}>Submit</Button>
+                        <Button variant="danger"><FontAwesomeIcon icon={faTrash} /> Clear</Button>
+                      </div>
+                    </div
             </div>
           </div>
         </div>
