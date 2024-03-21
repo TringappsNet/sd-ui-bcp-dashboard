@@ -124,6 +124,10 @@
         navigate('/login');
       };
 
+      const handleInvite = () => {
+        navigate('/send-invite')
+      }
+
       const formatDateHeading = (header) => {
         const dateParts = header.match(/\b(\w{3} \d{2})\b/);
         return dateParts ? dateParts[0] : header;
@@ -192,6 +196,7 @@
                     <Dropdown.Menu>
                       <Dropdown.Item>Profile</Dropdown.Item>
                       <Dropdown.Item>Settings</Dropdown.Item>
+                      <Dropdown.Item onClick={handleInvite}>Send Invite</Dropdown.Item>
                       <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
