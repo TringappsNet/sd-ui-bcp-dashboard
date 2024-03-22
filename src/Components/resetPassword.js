@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Container, Form, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/resetPassword.css';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { TextField } from '@mui/material';
 import { PortURL } from './Config';
 
@@ -57,30 +57,6 @@ function ResetPassword() {
         <Form onSubmit={handleSubmit}>
           {error && <div className="text-danger mb-3">{error}</div>}
           {success && <div className="text-success mb-3">Password reset successfully!</div>}
-          <Form.Group controlId="formBasicUserName" className="mb-4">
-            <TextField
-              className="label"
-              type="text"
-              label="Username"
-              value={userName}
-              onChange={(e) => setUserName(e.target.value)}
-              fullWidth
-              variant="outlined"
-              size="small"
-            />
-          </Form.Group>
-          <Form.Group controlId="formBasicOldPassword" className="mb-4">
-            <TextField
-              className="label"
-              type="password"
-              label="Old password"
-              value={oldPassword}
-              onChange={(e) => setOldPassword(e.target.value)}
-              fullWidth
-              variant="outlined"
-              size="small"
-            />
-          </Form.Group>
           <Form.Group controlId="formBasicNewPassword" className="mb-4">
             <TextField
               className="label"
@@ -106,14 +82,10 @@ function ResetPassword() {
             />
           </Form.Group>
           <div className="btn-container">
-            <Button type="submit" className="btn btn-success  rounded-pill" >
-              Reset Password
-            </Button>
+          <Button type="submit" className="btn btn-success rounded-pill w-100">Reset Password</Button>
           </div>
-          
         </Form>
       </Container>
-     
     </div>
     
   );

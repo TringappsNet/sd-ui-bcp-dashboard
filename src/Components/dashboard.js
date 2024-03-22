@@ -127,9 +127,9 @@ function Dashboard() {
     navigate('/login');
   };
   
- const handleInvite = () => {
-        navigate('/send-invite')
-      }
+//  const handleInvite = () => {
+//         navigate('/send-invite')
+//       }
  
   const formatDateHeading = (header) => {
     const dateParts = header.match(/\b(\w{3} \d{2})\b/);
@@ -200,7 +200,7 @@ function Dashboard() {
                     <Dropdown.Menu>
                       <Dropdown.Item>Profile</Dropdown.Item>
                       <PopUpContainer><ResetPassword /></PopUpContainer>
-                      <Dropdown.Item onClick={handleInvite}>Send Invite</Dropdown.Item>
+                      {/* <Dropdown.Item onClick={handleInvite}>Send Invite</Dropdown.Item> */}
                       <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
