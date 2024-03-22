@@ -1,10 +1,15 @@
-.container-margin {
-    margin-top: 150px; /* Adjust the margin-top value as needed */
+.btn-success {
+    width: 100%; /* Initially occupy full width */
   }
   
-  @media (max-width: 768px) {
-    .container-margin {
-      margin-top: 20px; /* Adjust the margin-top value for smaller screens */
+  @media (min-width: 768px) {
+    .container {
+      max-width: 500px; /* Set maximum width for the container */
+    }
+  
+    .btn-success {
+      width: 80%; /* Set button width to a percentage of the container width */
+      max-width: 400px; /* Set maximum width for the button */
     }
   }
   

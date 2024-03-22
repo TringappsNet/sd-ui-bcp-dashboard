@@ -9,6 +9,8 @@
     import 'bootstrap/dist/css/bootstrap.min.css';
     import '../styles/dashboard.css';
     import { PortURL } from './Config';
+    import PopUpContainer from './popup';
+    import ResetPassword from './resetPassword';
 
     function Dashboard() {
       const [username, setUsername] = useState('');
@@ -16,7 +18,6 @@
       const [searchQuery, setSearchQuery] = useState('');
       const [editedRow, setEditedRow] = useState(null);
       const [organization, setOrganization] = useState('');
-
       const navigate = useNavigate();
 
       useEffect(() => {
@@ -124,10 +125,6 @@
         navigate('/login');
       };
 
-      const handleInvite = () => {
-        navigate('/send-invite')
-      }
-
       const formatDateHeading = (header) => {
         const dateParts = header.match(/\b(\w{3} \d{2})\b/);
         return dateParts ? dateParts[0] : header;
@@ -177,9 +174,7 @@
         } catch (error) {
           console.error('Error:', error);
         }
-      };
-      
-      
+      }; 
       return (
           <div className="dashboard-container">
             <Navbar bg="light" expand="lg" className="w-100">
@@ -195,8 +190,7 @@
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
                       <Dropdown.Item>Profile</Dropdown.Item>
-                      <Dropdown.Item>Settings</Dropdown.Item>
-                      <Dropdown.Item onClick={handleInvite}>Send Invite</Dropdown.Item>
+                      <PopUpContainer><ResetPassword /></PopUpContainer>
                       <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
