@@ -9,7 +9,7 @@
     import 'bootstrap/dist/css/bootstrap.min.css';
     import '../styles/dashboard.css';
     import { PortURL } from './Config';
-    import PopUpContainer from './popup';
+    import PopUpContainer from './popup.js';
     import ResetPassword from './resetPassword';
 
     function Dashboard() {
