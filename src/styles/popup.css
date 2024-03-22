@@ -1,0 +1,54 @@
+.popup-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Ensure it's above other content */
+  }
+  
+  .reset {
+    border: none;
+    background-color: white;
+    padding-right: 20px;
+  }
+  
+  .invite {
+    border: none;
+    background-color: white;
+    padding-right: 50px;
+  }
+  
+  .backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+    z-index: 9998; /* Behind the popup */
+  }
+  
+  .popup-inner {
+    position: relative;
+    padding: 20px;
+    border-radius: 5px;
+    z-index: 9999;
+    width: 80%; /* Set the width as desired */
+    max-width: 500px; /* Set the maximum width as desired */
+  }
+  
+  @media (max-width: 768px) {
+    .reset, .invite {
+      padding-right: 10px;
+    }
+  
+    .popup-inner {
+      width: 90%; /* Adjust the width for smaller screens */
+      max-width: none; /* Remove max-width for smaller screens */
+    }
+  }
+  

@@ -9,6 +9,8 @@ import { faSearch, faUser, faEdit, faSave, faTimes, faTrash, faUpload } from '@f
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/dashboard.css';
 import { PortURL } from './Config';
+import PopUpContainer from './popup';
+import ResetPassword from './resetPassword';
 
 function Dashboard() {
   const [username, setUsername] = useState('');
@@ -197,7 +199,7 @@ function Dashboard() {
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
                       <Dropdown.Item>Profile</Dropdown.Item>
-                      <Dropdown.Item>Settings</Dropdown.Item>
+                      <PopUpContainer><ResetPassword /></PopUpContainer>
                       <Dropdown.Item onClick={handleInvite}>Send Invite</Dropdown.Item>
                       <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
                     </Dropdown.Menu>
