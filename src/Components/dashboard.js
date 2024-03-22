@@ -135,6 +135,8 @@ function Dashboard() {
     setEditedRow(null);
   };
 
+  
+
   const handleInputChange = (e, key) => {
     const { value } = e.target;
     console.log("Changing value of", key, "to", value, "for edited row");
@@ -171,13 +173,7 @@ function Dashboard() {
   return value;
 };
 
-const addTenSecondsToDate = (dateString) => {
-  if (dateString.replace) {
-    const [year, month, day, hour, minute] = /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(.*)/.exec(dateString.replace('Z', ''));
-    return `${year}-${month}-${day}T${hour}:${parseFloat(minute) + 10}:00Z`;
-  }
-  return `${dateString}`;
-};
+
 
 const handleSubmit = async () => {
   try {
