@@ -33,53 +33,55 @@ function Dashboard() {
     }
   }, [navigate]);
 
-  const fetchData = async () => {
-    try {
-      const response = await fetch(`${PortURL}/data`);
-      if (response.ok) {
-        const excelData = await response.json();
-        setData(excelData);
-      } else {
-        console.error('Failed to fetch data:', response.statusText);
-      }
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
-  const onDrop = useCallback(acceptedFiles => {
-    // Clear existing data
-    setData([]);
-    
-    acceptedFiles.forEach(file => {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const data = e.target.result;
-        try {
-          const workbook = XLSX.read(data, { type: 'binary' });
-          const sheetName = workbook.SheetNames[0];
-          const sheet = workbook.Sheets[sheetName];
-          const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
-  
-          const trimmedData = jsonData.filter(row => row.some(cell => cell !== null && cell !== ''));
-  
-          const header = trimmedData.shift();
-          const newJsonData = trimmedData.map(row => {
-            const obj = {};
-            header.forEach((key, index) => {
-              obj[key] = row[index];
-            });
-            return obj;
-          });
-          console.log('New JSON Data:', newJsonData);
-          setData(prevData => [...prevData, ...newJsonData]);
-  
-        } catch (error) {
-          console.error('Error reading file:', error);
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${PortURL}/data`);
+        if (response.ok) {
+          const excelData = await response.json();
+          setData(excelData);
+        } else {
+          console.error('Failed to fetch data:', response.statusText);
         }
-      };
-      reader.readAsBinaryString(file);
-    });
-  }, []);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+
+    const onDrop = useCallback(acceptedFiles => {
+      setData([]);
+      
+      acceptedFiles.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const data = e.target.result;
+          try {
+            const workbook = XLSX.read(data, { type: 'buffer', cellDates: true });
+            const sheetName = workbook.SheetNames[0];
+            const sheet = workbook.Sheets[sheetName];
+            const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1, dateNF: "yyyy-mm-dd hh:mm:ss" });
+    
+            const trimmedData = jsonData.filter(row => row.some(cell => cell !== null && cell !== ''));
+    
+            const header = trimmedData.shift();
+            const newJsonData = trimmedData.map(row => {
+              const obj = {};
+              header.forEach((key, index) => {
+                obj[key] = row[index];
+              });
+              return obj;
+            });
+            console.log('New JSON Data:', newJsonData);
+            setData(prevData => [...prevData, ...newJsonData]);
+    
+          } catch (error) {
+            console.error('Error reading file:', error);
+          }
+        };
+        reader.readAsArrayBuffer(file);
+      });
+    }, []);
+  
   
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
@@ -99,20 +101,27 @@ function Dashboard() {
   };
 
   const handleSave = async () => {
-    // Update the row in the database with the API endpoint
+    // Make sure to merge the editedRow with the original data array
+    setData(prevData => [
+      ...prevData.map(row => (row.id === editedRow.id ? editedRow : row))
+    ]);
+  
+    // Send the updated row to the backend
     try {
       const response = await fetch(`${PortURL}/update`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ editedRow }),
+        body: JSON.stringify({ editedRow, data })
       });
   
       if (response.ok) {
         const updatedData = await response.json();
-        setData(prevData => [...prevData, ...updatedData]);
+        setData(updatedData);
         setEditedRow(null);
+        console.log("editedRow:", editedRow);
+        console.log("data:", data);
       } else {
         console.error('Error updating row in database:', response.statusText);
       }
@@ -151,52 +160,73 @@ function Dashboard() {
   };
 
   const formatDateCell = (value, columnName) => {
-    if (typeof value === 'string' && columnName === 'Month/Year') {
-      const [month, year] = value.split('/');
-      const monthAbbreviation = month.substr(0, 3);
-      return `${monthAbbreviation}-${year}`;
-    } else if (value instanceof Date) {
-      const month = value.toLocaleDateString('en-US', { month: 'short' });
-      const year = value.getFullYear().toString().slice(-2);
-      return `${month}${year}`;
-    }
-    return value;
-  };
+  if (typeof value === 'string' && columnName === 'Month/Year') {
+    const [year, month, day, hour, minute] = /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(.*)/.exec(value.replace('Z', ''));
+    return `${month}-${year} ${hour}:${minute}:${parseFloat(minute) + 10}`;
+  } else if (value instanceof Date) {
+    const month = value.toLocaleDateString('en-US', { month: 'short' });
+    const year = value.getFullYear().toString().slice(-2);
+    return `${month}-${year}`;
+  }
+  return value;
+};
 
-  const handleSubmit = async () => {
-    try {
-      const userData = {
-        username: username,
-        organization: organization
-      };
+const addTenSecondsToDate = (dateString) => {
+  if (dateString.replace) {
+    const [year, month, day, hour, minute] = /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(.*)/.exec(dateString.replace('Z', ''));
+    return `${year}-${month}-${day}T${hour}:${parseFloat(minute) + 10}:00Z`;
+  }
+  return `${dateString}`;
+};
 
-      console.log("userData:", userData);
-      console.log("Uploaded data:", data);
-      
+const handleSubmit = async () => {
+  try {
+    const userData = {
+      username: username,
+      organization: organization
+    };
 
-      const response = await fetch(`${PortURL}/bulk-upload`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ userData, data })
-      });
+    console.log("userData:", userData);
+    console.log("Uploaded data:", data);
 
-      if (response.ok) {
-        // Clear uploaded data after successful submission
-//             setData([]);
-        
-        fetchData(); // Fetch updated data from the database
-        const jsonResponse = await response.json();
-        console.log(jsonResponse);
-      } else {
-        console.error('Error:', response.statusText);
+    const updatedData = data.map((row) => {
+      if (row['Month/Year']) {
+        const dateString = row['Month/Year'].toString();
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const day = date.getDate().toString().padStart(2, '0');
+        const hours = date.getHours().toString().padStart(2, '0');
+        const minutes = date.getMinutes().toString().padStart(2, '0');
+        const seconds = '00';
+        const formattedDate = `${year}-${month}-${day}' '${hours}:${minutes}:${seconds}`;
+        row['Month/Year'] = formattedDate;
       }
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
+      return row;
+    });
+    
+    const response = await fetch(`${PortURL}/bulk-upload`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ userData, data: updatedData })
+    });
 
+    if (response.ok) {
+      // Clear uploaded data after successful submission
+      setData([]);
+
+      fetchData(); // Fetch updated data from the database
+      const jsonResponse = await response.json();
+      console.log(jsonResponse);
+    } else {
+console.error('Error:', response.statusText);
+    }
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
       
       return (
           <div className="dashboard-container">

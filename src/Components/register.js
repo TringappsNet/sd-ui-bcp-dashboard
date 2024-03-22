@@ -73,7 +73,7 @@ function Register() {
     };
   
     try {
-      const response = await fetch(`${PortURL}/auth/register`, {
+      const response = await fetch(`${PortURL}/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

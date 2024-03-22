@@ -34,7 +34,7 @@ function Login() {
     const requestBody = { userName, password };
 
     try {
-      const response = await fetch(`${PortURL}/auth/login`, {
+      const response = await fetch(`${PortURL}/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
