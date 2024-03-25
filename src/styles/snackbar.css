@@ -1,0 +1,24 @@
+.customSnackbar {
+    background-color: transparent !important;
+  }
+  
+  .customSnackbar .MuiSnackbarContent-root {
+    background-color: #D16E6E !important; /* Set content background color to red */
+    color: rgb(253, 253, 253) !important; /* Set text color to white */
+  }
+
+.MuiSnackbarContent-action {
+    justify-content: flex-start;
+  }
+  
+  .MuiSnackbarContent-action .MuiIconButton-root {
+    margin-right: auto;
+  }
+  
+  /* Adjust close button width */
+  .MuiSnackbarContent-action .MuiIconButton-root {
+    width: 32px;
+    color: red;
+  }
+  
+  

@@ -233,32 +233,32 @@ console.error('Error:', response.statusText);
       return (
           <div className="dashboard-container">
             <Navbar bg="light" expand="lg" className="w-100">
-              <div className="brand-wrapper">
-                <NavbarBrand href="#home"> BCP Dashboard</NavbarBrand>
-              </div>
-              <NavbarToggle aria-controls="basic-navbar-nav" />
-              <NavbarCollapse id="basic-navbar-nav">
-                <Nav className="ml-auto">
-                  <Dropdown>
-                    <Dropdown.Toggle id="dropdown-basic">
-                      <FontAwesomeIcon icon={faUser} /> {username}
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                      <Dropdown.Item>Profile</Dropdown.Item>
-                      <PopUpContainer><ResetPassword /></PopUpContainer>
-                      {/* <Dropdown.Item onClick={handleInvite}>Send Invite</Dropdown.Item> */}
-                      <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </Nav>
-              </NavbarCollapse>
-            </Navbar>
+                <div className="brand-wrapper">
+                  <NavbarBrand href="#home">
+                    <img src="/images/bcp2.png" alt="Logo" className="customLogo" />
+                  </NavbarBrand>
+                </div>
+                <NavbarToggle aria-controls="basic-navbar-nav" />
+                <NavbarCollapse id="basic-navbar-nav">
+                  <Nav className="ml-auto">
+                    <Dropdown>
+                      <Dropdown.Toggle id="dropdown-basic" as="div" className="customDropdown">
+                        <FontAwesomeIcon icon={faUser} /> {username}
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu>
+                        <PopUpContainer><ResetPassword /></PopUpContainer>
+                        <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  </Nav>
+                </NavbarCollapse>
+              </Navbar>
             <Container fluid>
               <div className="container-fluid full-height mt-5">
                 <div className="row">
                   <div className="col">
                     <div className="border shadow p-3 d-flex justify-content-between align-items-center">
-                      <Form className="d-flex">
+                      <Form className="d-flex ">
                         <div className="search-wrapper mr-2">
                           <div className="search-icon">
                             <FontAwesomeIcon icon={faSearch} />
@@ -271,7 +271,7 @@ console.error('Error:', response.statusText);
                             onChange={handleSearchChange}
                           />
                         </div>
-                        <div {...getRootProps()} className="custom-file-upload">
+                        <div {...getRootProps()} className="custom-file-upload ">
                           <input {...getInputProps()} accept=".xlsx, .xls" />
                           {isDragActive ?
                             <p>Drop the files here ...</p> :
@@ -280,8 +280,8 @@ console.error('Error:', response.statusText);
                         </div>
                       </Form>
                       <div className="ml-4">
-                        <Button className="mr-2" onClick={handleSubmit}>Submit</Button>
-                        <Button variant="danger"><FontAwesomeIcon icon={faTrash} /> Clear</Button>
+                        <Button className="mr-2 submit" onClick={handleSubmit}>Submit</Button>
+                        <Button variant="danger"> Clear <FontAwesomeIcon icon={faTrash} /></Button>
                       </div>
                     </div>
             </div>
