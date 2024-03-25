@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { TextField } from '@mui/material';
 import '../styles/Login.css';
 import { PortURL } from './Config';
+import SnackbarContainer from './Snackbar';
 
 function Login() {
   const [userName, setUserName] = useState('');
@@ -13,26 +14,30 @@ function Login() {
   const [usernameError, setUsernameError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [serverError, setServerError] = useState('');
+  const [snackbarOpen, setSnackbarOpen] = useState(false); 
+  const [snackbarMessage, setSnackbarMessage] = useState(''); // State to hold the Snackbar message
+  // State to control Snackbar visibility
+
   const navigate = useNavigate();
 
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+  
     // Validate username
-
     if (!userName) {
       setUsernameError('Username is required');
       return;
     }
-
+  
     // Validate password
-
     if (!password) {
       setPasswordError('Password is required');
       return;
     }
+  
     const requestBody = { userName, password };
-
+  
     try {
       const response = await fetch(`${PortURL}/auth/login`, {
         method: 'POST',
@@ -41,26 +46,24 @@ function Login() {
         },
         body: JSON.stringify(requestBody),
       });
-      
+  
       if (response.ok) {
-
         
-        const data1 = await response.json(); 
+        const data1 = await response.json();
         console.log('Response data:', data1);
-        
+  
         const { username, organization } = data1;
         console.log('Extracted username:', username);
         console.log('Extracted organization:', organization);
-
+  
         localStorage.setItem('isLoggedIn', 'true');
-        localStorage.setItem('username', username); 
-        localStorage.setItem('username', password); 
-        localStorage.setItem('Organisation', organization); 
-
+        localStorage.setItem('username', username);
+        localStorage.setItem('username', password);
+        localStorage.setItem('Organisation', organization);
+  
         console.log('User logged in successfully!');
-
+  
         navigate('/dashboard');
-
 
       } else {
         const data = await response.json();
@@ -68,18 +71,33 @@ function Login() {
   
         if (response.status === 400 && data.message === 'User Not Found!') {
           setServerError('Username not found.');
-
+          setSnackbarMessage('Username not found.');
+          setSnackbarOpen(true);
         } else if (response.status === 401 && data.message === 'Invalid Password!') {
           setServerError('Invalid password!');
-        } 
-        else {
+          setSnackbarMessage('Invalid password!');
+          setSnackbarOpen(true);
+        } else {
           setServerError('An error occurred while logging in.');
+          setSnackbarMessage('An error occurred while logging in.');
+          setSnackbarOpen(true);
         }
       }
     } catch (error) {
       console.error('Error logging in:', error);
       setServerError('An error occurred while logging in.');
+      setSnackbarMessage('An error occurred while logging in.');
+      setSnackbarOpen(true);
     }
+  };
+  
+
+  const handleCloseSnackbar = () => {
+    // Perform any necessary actions when the Snackbar is closed
+    // For example, resetting state
+    setSnackbarOpen(false);
+    setSnackbarMessage('');
+
   };
 
   return (
@@ -87,11 +105,7 @@ function Login() {
       <Container className="con mt-5 p-4 shadow  ">
         <h6 className="text-center mb-2 mt-1 display-6 ">Sign in</h6>
         <p>Navigate your Buisness with Ease!!!</p>
-        {serverError && (
-      <div className="text-center mt-2"> 
-        <p className="text-danger">{serverError}</p>
-      </div>
-    )}
+
         <Form onSubmit={handleSubmit}>
           <Form.Group controlId="formBasicEmail" className="mb-4 mt-4">
             <TextField
@@ -148,17 +162,23 @@ function Login() {
           </Col>
         </Row>
           <div className="btn-container mt-4 mb-5">
-            <Button type="submit" className="btn btn-success  rounded-pill ">
+            <Button type="submit" className="btn btn-success  rounded-pill">
               Sign in
             </Button>
           </div>
         </Form>
+        
+
         <div className="text-center mt-4 signup ">
         New to BCP? <Link to="/register"> Sign up</Link>
       </div>
       </Container>
-      
-    </div>
+      <SnackbarContainer
+        openSnackbar={snackbarOpen}
+        onCloseSnackbar={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        message={snackbarMessage} // Pass the error message to the SnackbarContainer
+      />    </div>
   );
 }
 
