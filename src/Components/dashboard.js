@@ -1,46 +1,22 @@
-import React, { useState, useCallback, useEffect } from "react";
-import {
-  Navbar,
-  NavbarBrand,
-  Nav,
-  NavbarToggle,
-  NavbarCollapse,
-  Button,
-  Form,
-  FormControl,
-  Container,
-  Row,
-  Col,
-  Dropdown,
-} from "react-bootstrap";
-import { useDropzone } from "react-dropzone";
-import { useNavigate } from "react-router-dom";
-import * as XLSX from "xlsx";
-import {
-  Grid,
-  Table,
-  TableHeaderRow,
-} from "@devexpress/dx-react-grid-bootstrap4";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faSearch,
-  faUser,
-  faEdit,
-  faSave,
-  faTimes,
-  faTrash,
-  faUpload,
-} from "@fortawesome/free-solid-svg-icons";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "../styles/dashboard.css";
-import { PortURL } from "./Config";
+
+
+
+import React, { useState, useCallback, useEffect } from 'react';
+import { Navbar, NavbarBrand, Nav, NavbarToggle, NavbarCollapse, Button, Form, FormControl, Container, Row, Col, Dropdown } from 'react-bootstrap';
+import { useDropzone } from 'react-dropzone';
+import { useNavigate }  from 'react-router-dom';
+import * as XLSX from 'xlsx';
+import { Grid, Table, TableHeaderRow } from '@devexpress/dx-react-grid-bootstrap4';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch, faUser, faEdit, faSave, faTimes, faTrash, faUpload } from '@fortawesome/free-solid-svg-icons';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../styles/dashboard.css';
+import { PortURL } from './Config';
+import PopUpContainer from './popup';
+import ResetPassword from './resetPassword';
 import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import PopUpContainer from './popup';
-import ResetPassword from './resetPassword';
-
-
 
 
 function Dashboard() {
@@ -173,10 +149,11 @@ function Dashboard() {
     navigate("/login");
   };
 
-  const handleInvite = () => {
-    navigate("/send-invite");
-  };
-
+  
+ const handleInvite = () => {
+        navigate('/send-invite')
+      }
+ 
   const formatDateHeading = (header) => {
     const dateParts = header.match(/\b(\w{3} \d{2})\b/);
     return dateParts ? dateParts[0] : header;
@@ -274,15 +251,17 @@ function Dashboard() {
     }
   };
 
-  return (
-    <div className="dashboard-container">
-      <Navbar bg="light" expand="lg" className="w-100">
-      <div className="brand-wrapper">
+
+      
+      return (
+          <div className="dashboard-container">
+            <Navbar bg="light" expand="lg" className="w-100">
+                <div className="brand-wrapper">
                   <NavbarBrand href="#home">
                     <img src="/images/bcp2.png" alt="Logo" className="customLogo" />
                   </NavbarBrand>
                 </div>
-        <NavbarToggle aria-controls="basic-navbar-nav" />
+      <NavbarToggle aria-controls="basic-navbar-nav" />
         <NavbarCollapse id="basic-navbar-nav">
           <Nav className="ml-auto">
             <Dropdown>
@@ -303,46 +282,37 @@ function Dashboard() {
           </Nav>
         </NavbarCollapse>
       </Navbar>
-      <Container fluid>
-        <div className="container-fluid full-height mt-5">
-          <div className="row">
-            <div className="col">
-              <div className="border shadow p-3 d-flex justify-content-between align-items-center">
-                <Form className="d-flex">
-                  <div className="search-wrapper mr-2">
-                    {/* <div className="search-icon">
-                      <FontAwesomeIcon icon={faSearch} />
-                    </div> */}
-
-                    <FormControl
-                      type="text"
-                      placeholder="Search"
-                      style={{ flex: "1" }}
-                      value={searchQuery}
-                      onChange={handleSearchChange}
-                    />
-                  </div>
-                  <div {...getRootProps()} className="custom-file-upload">
-                    <input {...getInputProps()} accept=".xlsx, .xls" />
-                    {isDragActive ? (
-                      <p>Drop the files here ...</p>
-                    ) : (
-                      <Button className="btn btn-success btn-sm mx-5">
-                        <FontAwesomeIcon className="upload" icon={faUpload} />
-                        Upload File
-                      </Button>
-                    )}
-                  </div>
-                </Form>
-                <div className="ml-4 mx-5">
-                  <Button className="ma-2 mx-5" onClick={handleSubmit}>
-                    Submit
-                  </Button>
-                  <Button className="ma-2" variant="danger">
-                    <FontAwesomeIcon icon={faTrash} /> Clear
-                  </Button>
-                </div>
-              </div>
+            <Container fluid>
+              <div className="container-fluid full-height mt-5">
+                <div className="row">
+                  <div className="col">
+                    <div className="border shadow p-3 d-flex justify-content-between align-items-center">
+                      <Form className="d-flex ">
+                        <div className="search-wrapper mr-2">
+                          <div className="search-icon">
+                            <FontAwesomeIcon icon={faSearch} />
+                          </div>
+                          <FormControl
+                            type="text"
+                            placeholder="Search"
+                            style={{ flex: '1' }}
+                            value={searchQuery}
+                            onChange={handleSearchChange}
+                          />
+                        </div>
+                        <div {...getRootProps()} className="custom-file-upload ">
+                          <input {...getInputProps()} accept=".xlsx, .xls" />
+                          {isDragActive ?
+                            <p>Drop the files here ...</p> :
+                            <Button className='btn btn-success btn-sm'><FontAwesomeIcon icon={faUpload} />Upload File</Button>
+                          }
+                        </div>
+                      </Form>
+                      <div className="ml-4">
+                        <Button className="mr-2 submit" onClick={handleSubmit}>Submit</Button>
+                        <Button variant="danger"> Clear <FontAwesomeIcon icon={faTrash} /></Button>
+                      </div>
+                    </div>
             </div>
           </div>
         </div>
