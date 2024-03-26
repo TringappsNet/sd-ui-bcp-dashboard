@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/forgetPassword.css'; 
 import { TextField } from '@mui/material';
-import Header from './Header';
+// import Header from './Header';
 
 function ForgotPassword() {
   const [email, setEmail] = useState('');
@@ -19,7 +19,6 @@ function ForgotPassword() {
 
   return (
     <div>
-      <Header/>
         <div className=" form d-flex justify-content-center align-items-center vh-100 ">
             <Container className="mt-5 shadow p-3 mb-5 bg-body  container vh-70 " id='con'>
               <h6 className="text-center mb-4 mt-2 forget">Forget Password</h6>
