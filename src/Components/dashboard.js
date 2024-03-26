@@ -37,6 +37,11 @@ import { PortURL } from "./Config";
 import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import PopUpContainer from './popup';
+import ResetPassword from './resetPassword';
+
+
+
 
 function Dashboard() {
   const [username, setUsername] = useState("");
@@ -272,9 +277,11 @@ function Dashboard() {
   return (
     <div className="dashboard-container">
       <Navbar bg="light" expand="lg" className="w-100">
-        <div className="brand-wrapper">
-          <NavbarBrand href="#home"> BCP Dashboard</NavbarBrand>
-        </div>
+      <div className="brand-wrapper">
+                  <NavbarBrand href="#home">
+                    <img src="/images/bcp2.png" alt="Logo" className="customLogo" />
+                  </NavbarBrand>
+                </div>
         <NavbarToggle aria-controls="basic-navbar-nav" />
         <NavbarCollapse id="basic-navbar-nav">
           <Nav className="ml-auto">
@@ -283,6 +290,8 @@ function Dashboard() {
                 <FontAwesomeIcon icon={faUser} /> {username}
               </Dropdown.Toggle>
               <Dropdown.Menu>
+              <PopUpContainer><ResetPassword /></PopUpContainer>
+
                 <Dropdown.Item>Profile</Dropdown.Item>
                 <Dropdown.Item>Settings</Dropdown.Item>
                 <Dropdown.Item onClick={handleInvite}>

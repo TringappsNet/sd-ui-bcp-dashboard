@@ -1,5 +1,3 @@
-
-
 .form {
   display: flex;
   flex-direction: column;
@@ -10,14 +8,12 @@ body{
 
 }
 
-.text-danger{
-  margin-bottom: 32rem;
-}
 .con {
-  width: 360px;
-  height: 420px;
+  width: 300px;
+  height: 390px;
   font-family: 'Roboto', sans-serif;
    border-radius: 15px;
+
 }
 
 @media (max-width: 576px) {
@@ -46,27 +42,29 @@ body{
 
 .signup {
   padding-top: 25px;
-  font-size: medium;
-  font-family: 'Roboto', sans-serif;}
+  font-weight: lighter;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+}
 .signup a{
   text-decoration: none;
-  color: green;
+  color: #299689;
   font-family: 'Roboto', sans-serif;
 }
 
 
-.signin{
-
-   width: 350px;
+.btn-success{
+   background-color: #299689;
+   width: 250px;
 }
-
 p{
   text-align: center;
   font-size:smaller;
   color: gray;
 }
-.btn-container{
-  padding-top: 3px;
+
+.error {
+  border-color: red !important;
 }
 
 .text-right{
@@ -74,4 +72,6 @@ p{
 
   
 }
+
+
 

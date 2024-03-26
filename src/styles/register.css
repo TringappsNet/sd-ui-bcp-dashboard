@@ -13,15 +13,10 @@
 
 }
 
-.submit{
-  min-width: 350px;
-}
-
-
-
 .form {
   display: flex;
   flex-direction: column;
+  /* font-family: 'Times New Roman', Times, serif; */
   font-family: 'Roboto', sans-serif;
   
 }
@@ -37,8 +32,12 @@
   border-radius: 15px;
 }
 
-
-
+@media (max-width: 576px) {
+  .container {
+    width: 90%;
+    margin: auto;
+  }
+}
 
 
 .signup{
@@ -51,26 +50,3 @@
 
 
 
-
-
-@media (max-width: 576px) {
-  .container {
-    width: 70%;
-    margin: auto;
-  }
-  .submit{
-    min-width: 250px;
-  }
-}
-
-@media (max-width: 370px) {
-  .submit {
-    min-width: 100px; /* Adjusted width for screens up to 576px */
-  }
-}
-
-@media (max-width: 150px) {
-  .submit {
-    min-width: 40px; /* Adjusted width for screens up to 576px */
-  }
-}
