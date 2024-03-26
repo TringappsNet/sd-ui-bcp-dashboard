@@ -18,14 +18,13 @@ function Login() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Validate username
+    console.log("datas",userName);
 
     if (!userName) {
       setUsernameError('Username is required');
       return;
     }
 
-    // Validate password
 
     if (!password) {
       setPasswordError('Password is required');
@@ -34,7 +33,7 @@ function Login() {
     const requestBody = { userName, password };
 
     try {
-      const response = await fetch(`${PortURL}/auth/login`, {
+      const response = await fetch(`${PortURL}/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -83,15 +82,19 @@ function Login() {
   };
 
   return (
+
+
     <div className="form d-flex justify-content-center align-items-center ">
-      <Container className="con mt-5 p-4 shadow  ">
-        <h6 className="text-center mb-2 mt-1 display-6 ">Sign in</h6>
-        <p>Navigate your Buisness with Ease!!!</p>
-        {serverError && (
+         {serverError && (
       <div className="text-center mt-2"> 
         <p className="text-danger">{serverError}</p>
       </div>
     )}
+      <Container className="con mt-5 p-4 shadow  ">
+        
+        <h6 className="text-center mb-2 mt-1 display-6 ">Sign in</h6>
+        <p>Navigate your Buisness with Ease!!!</p>
+     
         <Form onSubmit={handleSubmit}>
           <Form.Group controlId="formBasicEmail" className="mb-4 mt-4 ">
             <TextField
@@ -148,7 +151,7 @@ function Login() {
           </Col>
         </Row>
           <div className="btn-container mt-4 mb-5">
-            <Button type="submit" className="btn btn-success  rounded-pill">
+            <Button type="submit" className="btn btn-secondary signin  rounded-pill">
               Sign in
             </Button>
           </div>

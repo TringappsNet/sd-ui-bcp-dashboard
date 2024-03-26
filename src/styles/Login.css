@@ -10,6 +10,9 @@ body{
 
 }
 
+.text-danger{
+  margin-bottom: 32rem;
+}
 .con {
   width: 360px;
   height: 420px;
@@ -52,10 +55,11 @@ body{
 }
 
 
-.btn-success{
+.signin{
 
-   width: 250px;
+   width: 350px;
 }
+
 p{
   text-align: center;
   font-size:smaller;

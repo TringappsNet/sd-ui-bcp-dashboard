@@ -1,12 +1,18 @@
 .ml-auto {
   margin-right: 10px;
 }
+#dropdown-basic{
+  background: none;
+  border: white;
+  color: black;
 
+  
+}
 .navbar {
   position: sticky;
   top: 0;
-  z-index: 1000; /* Ensure it stays above other content */
-  background-color: #ffffff; /* Add a background color */
+  z-index: 1000;
+  background-color: #ffffff;
   border-bottom: 1px solid #dee2e6;
 }
 
@@ -17,12 +23,6 @@
 .dropdown-basic {
   background-color: none;
 }
-
-/* .dropdown-toggle {
-  background-color: transparent !important;
-  border: none;
-  color: black;
-} */
 
 .dropdown-toggle,
 .dropdown-menu {
@@ -37,12 +37,10 @@
 .form-inline {
   display: flex;
   gap: 10px;
-  /* Add a gap between the search bar and the upload button */
 }
 
 .brand-wrapper {
   padding: 0 15px;
-  /* Adjust the padding as needed */
 }
 
 .search-wrapper {
@@ -52,14 +50,10 @@
 
 .search-icon {
   margin-right: 10px;
-  /* Adjust the margin as needed */
 }
-
-/* dashboard.css */
 
 .table-container {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  /* Gmail-like box shadow */
 }
 
 .table-container table {
@@ -81,6 +75,57 @@
   background-color: #f0f0f0;
 }
 
+
+
+
+@media (max-width: 420.98px) {
+  .navbar-nav {
+    flex-direction: column;
+  }
+
+  .d-flex{
+    max-width: 300px;
+    padding-right: 40px;
+  }
+  .btn-success{
+    min-width: 100px;
+
+    margin-top: 15px;
+  } 
+
+.mx-5{
+  max-width: 270px;
+}
+  .nav-link {
+    padding-right: 0.5rem !important;
+    padding-left: 0.5rem !important;
+  }
+
+  /* button {
+    width: 100%; 
+  } */
+
+  .dropdown-menu .dropdown-item:hover {
+    color: inherit; 
+    background-color: transparent;
+  }
+}
+.success-message {
+  text-align: center;
+  color: blue;
+  animation: fadeOut 5s ease-in-out forwards;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+
 @media (max-width: 767.98px) {
   .navbar-nav {
     flex-direction: column;
@@ -90,15 +135,182 @@
     padding-right: 0.5rem !important;
     padding-left: 0.5rem !important;
   }
+
+  button {
+    width: 100%; 
+  }
+
+  .dropdown-menu .dropdown-item:hover {
+    color: inherit; 
+    background-color: transparent;
+  }
+}
+.success-message {
+  text-align: center;
+  color: blue;
+  animation: fadeOut 5s ease-in-out forwards;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 
 
-button {
-  width: 150px;
-  height: 40px; /* Set height for all buttons */
+
+
+
+@media (max-width: 860.98px) {
+  .search-icon {
+    width:10px;
+  }
+
+  .btn-success {
+    width: 100%; 
+    margin-bottom: 15px; 
+  }
+
+  /* This is the button-success code changed as mx-5 */
+    .btn-success{
+    min-width: 350px;
+
+    margin-top: 15px;
+  } 
+
+  .border.shadow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .border.shadow > .d-flex {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .border.shadow > .d-flex .ml-4,
+  .border.shadow > .d-flex .mx-5 {
+    margin-right: 0;
+    margin-bottom: 15px;
+  
+  }
+
+
+  .ml-4 {
+    display: flex;
+    flex-direction: column; 
+    width: 400px;
+    margin-left: 0rem!important;
+
+  }
+
+
+.ma-2{
+width: 300px;
+}
+  button {
+    width: 100%; 
+  }
+
+  .search-wrapper {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-wrapper .search-icon {
+    margin-bottom: 5px;
+  }
+
+  .search-wrapper  {
+    width: 79%; 
+    margin-bottom: 15px;
+    margin-left: 48px;
+    margin-top: 10px;
+  }
+
+  .dropdown-basic .dropdown-menu {
+    position: absolute;
+    right: 0;
+    left: auto;
+  }
+
+ 
+  
 }
 
-.dropdown-menu .dropdown-item:hover {
-  color: inherit; 
-  background-color: transparent; /* Remove background color change */
+
+
+@media (max-width: 1030.11px) {
+
+  .ml-4{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+  } 
+  button{
+    width: 100px;
+  }
+.btn-success {
+    width: 130px;
+    margin-top: 11px;
+    height: 40px;
+}
+
+.search-wrapper {
+  flex-direction: row; 
+  margin-top: 10px;
+  /* align-items: stretch; */
+}
+
+.search-wrapper .search-icon {
+  margin-bottom: 5px;
+   
+}
+
+.search-wrapper .form-control {
+  margin-bottom: 15px; 
+}
+
+  
+}
+
+
+@media (max-width: 1000px) {
+  .navbar-collapse {
+    position: relative; /* Ensure correct positioning of the dropdown toggle */
+  }
+
+  .dropdown-menu {
+    position: static; /* Ensure dropdown menu is not positioned as absolute */
+  }
+
+  .dropdown-toggle {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 0.5rem 1rem; /* Adjust padding as needed */
+    clear: both;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .dropdown-toggle::after {
+    display: inline-block;
+    margin-left: 0.255em;
+    vertical-align: 0.255em;
+    content: "";
+    border-top: 0.3em solid;
+    border-right: 0.3em solid transparent;
+    border-bottom: 0;
+    border-left: 0.3em solid transparent;
+  }
+
+  .dropdown-item {
+    width: auto; /* Ensure dropdown items have auto width */
+  }
 }
