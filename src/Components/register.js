@@ -3,10 +3,11 @@ import { Container, Form, Button} from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/register.css';
-import { TextField, InputAdornment, IconButton } from '@mui/material';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { TextField, InputAdornment } from '@mui/material';
+// import VisibilityIcon from '@mui/icons-material/Visibility';
+// import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { PortURL } from './Config';
+import Header from './Header';
 
 
 function Register() {
@@ -26,13 +27,13 @@ function Register() {
   
   const navigate = useNavigate();
 
-  const toggleNewPasswordVisibility = () => {
-    setShowNewPassword(!showNewPassword);
-  };
+  // const toggleNewPasswordVisibility = () => {
+  //   setShowNewPassword(!showNewPassword);
+  // };
 
-  const toggleConfirmPasswordVisibility = () => {
-    setShowConfirmPassword(!showConfirmPassword);
-  };
+  // const toggleConfirmPasswordVisibility = () => {
+  //   setShowConfirmPassword(!showConfirmPassword);
+  // };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -116,7 +117,9 @@ function Register() {
   };
 
   return (
-    <Container className="mt-5 shadow p-3 mb-5 bg-body  container vh-70">
+   <div>
+    <Header/>
+     <Container className="mt-5 shadow p-3 mb-5 bg-body container vh-70">
         <h6 className="text-center mb-3 mt-2 display-6 ">Sign up</h6>
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="formFirstName" className="mb-3">
@@ -240,6 +243,7 @@ function Register() {
         </div>
       </Form>
     </Container>
+   </div>
   );
 }
 

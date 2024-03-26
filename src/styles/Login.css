@@ -48,13 +48,13 @@ body{
 }
 .signup a{
   text-decoration: none;
-  color: green;
+  color: #299689;
   font-family: 'Roboto', sans-serif;
 }
 
 
 .btn-success{
-
+   background-color: #299689;
    width: 250px;
 }
 p{
@@ -63,6 +63,9 @@ p{
   color: gray;
 }
 
+.error {
+  border-color: red !important;
+}
 
 .text-right{
   font-weight: 500;
