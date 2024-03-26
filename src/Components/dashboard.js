@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Navbar, NavbarBrand, Nav, NavbarToggle, NavbarCollapse, Button, Form, FormControl, Container, Row, Col, Dropdown } from 'react-bootstrap';
 import { useDropzone } from 'react-dropzone';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate }  from 'react-router-dom';
 import * as XLSX from 'xlsx';
 import { Grid, Table, TableHeaderRow } from '@devexpress/dx-react-grid-bootstrap4';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -24,7 +24,6 @@ function Dashboard() {
   const [selectedRows, setSelectedRows] = useState([]); 
   const [snackbarOpen, setSnackbarOpen] = useState(false); // State to control Snackbar visibility
   const [retriveData, setRetriveData] = useState([]);
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -96,15 +95,21 @@ function Dashboard() {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
-  const filteredData = retriveData.filter(row => {
+
+
+  
+
+  const filteredData = data.filter(row => {
     return Object.values(row || {}).some(value =>
       value && value.toString().toLowerCase().includes(searchQuery.toLowerCase())
     );
   });
 
-  const handleSearchChange = e => {
-    setSearchQuery(e.target.value);
-  };
+  
+  
+      const handleSearchChange = (event) => {
+        setSearchQuery(event.target.value);
+      };
 
 // Update handleEdit to store the ID of the row being edited
 const handleEdit = (rowId) => {
@@ -121,10 +126,41 @@ const handleEdit = (rowId) => {
 
 
 
+  // const handleSave = async () => {
+  //   setData(prevData => [
+  //     ...prevData.map(row => (row.id === editedRow.id ? editedRow : row))
+  //   ]);
+  
+  //   // Send the updated row to the backend
+  //   try {
+  //     const response = await fetch(`${PortURL}/update`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json'
+  //       },
+  //       body: JSON.stringify({ editedRow, data })
+  //     });
+  
+  //     if (response.ok) {
+  //       const updatedData = await response.json();
+  //       setData(updatedData);
+  //       setEditedRow(null);
+  //       console.log("editedRow:", editedRow);
+  //       console.log("data:", data);
+  //     } else {
+  //       console.error('Error updating row in database:', response.statusText);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error updating row in database:', error);
+  //   }
+  // };
+
   const handleCancel = () => {
     console.log("Canceling edit for row:", editedRowData);
     setEditedRowData(null);
   };
+
+  
 
   const handleInputChange = (e, key) => {
     const { value } = e.target;
@@ -151,17 +187,16 @@ const handleEdit = (rowId) => {
   };
 
   const formatDateCell = (value, columnName) => {
-    if (typeof value === 'string' && columnName === 'Month/Year') {
-      const [month, year] = value.split('/');
-      const monthAbbreviation = month.substr(0, 3);
-      return `${monthAbbreviation}-${year}`;
-    } else if (value instanceof Date) {
-      const month = value.toLocaleDateString('en-US', { month: 'short' });
-      const year = value.getFullYear().toString().slice(-2);
-      return `${month}${year}`;
-    }
-    return value;
-  };
+  if (typeof value === 'string' && columnName === 'Month/Year') {
+    const [year, month, day, hour, minute] = /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(.*)/.exec(value.replace('Z', ''));
+    return `${month}-${year} ${hour}:${minute}:${parseFloat(minute) + 10}`;
+  } else if (value instanceof Date) {
+    const month = value.toLocaleDateString('en-US', { month: 'short' });
+    const year = value.getFullYear().toString().slice(-2);
+    return `${month}-${year}`;
+  }
+  return value;
+};
 
   const handleSubmit = async () => {
     try {
@@ -268,6 +303,7 @@ console.log("updated data : ",editedRowData);
           </Nav>
         </NavbarCollapse>
       </Navbar>
+
       <Container fluid>
         <div className="container-fluid full-height mt-5">
           <div className="row">
@@ -306,7 +342,8 @@ console.log("updated data : ",editedRowData);
             </div>
           </div>
         </div>
-      </Container>
+
+</Container>
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',
@@ -377,19 +414,23 @@ console.log("updated data : ",editedRowData);
                             <Button variant="warning" onClick={() => handleEdit(row)}>Edit</Button>
                             <Button variant="danger" onClick={() => handleDelete(row.id)}>Delete</Button>
                           </>
-                        )}
-                      </Table.Cell>
-                    </Table.Row>
-                  )}
-                />
-                <TableHeaderRow />
-              </Grid>
-            </div>
-          </>
-        )}
-      </div>
-    </Col>
-  </Row>
+                           )}
+                           </Table.Cell>
+                         </Table.Row>
+                       )}
+                     />
+                     
+                     
+                                           <TableHeaderRow />
+                                         </Grid>
+                                       </div>
+                                     </>
+                                   )}
+                                 </div>
+                               </Col>
+                             </Row>
+                     
+    
 </Container>
 
     </div>
