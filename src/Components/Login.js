@@ -3,28 +3,35 @@ import { Container, Form, Button, Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { TextField } from '@mui/material';
 import '../styles/Login.css';
 import { PortURL } from './Config';
 import Header from './Header';
-import CustomSnackbar from './Snackbar'; 
+import CustomSnackbar from './Snackbar';
+import { TextField, InputAdornment } from '@mui/material';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'; 
 
 function Login() {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [usernameError, setUsernameError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [serverError, setServerError] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const navigate = useNavigate();
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     // Validate username
     if (!userName) {
-      setUsernameError('Username is required');
+      setUsernameError('Eamil is required');
       return;
     }
 
@@ -58,7 +65,7 @@ function Login() {
         const data = await response.json();
         if (response.status === 400 && data.message === 'User Not Found!') {
           //setServerError('Username not found.');
-          setSnackbarMessage('Username not found.');
+          setSnackbarMessage('Eamil not found.');
           setSnackbarOpen(true);
         } else if (response.status === 401 && data.message === 'Invalid Password!') {
           setSnackbarMessage('Invalid password!');
@@ -98,8 +105,8 @@ function Login() {
           <Form.Group controlId="formBasicEmail" className="mb-4 mt-4">
           <TextField
             className={`label form-control ${usernameError ? 'error' : ''}`}
-            type="text"
-            label="Username"
+            type="email"
+            label="Email"
             value={userName}
             onChange={(e) => {
               setUserName(e.target.value);
@@ -115,7 +122,7 @@ function Login() {
           <Form.Group controlId="formBasicPassword" className="mb-2 mt-4 ">
           <TextField
             className={`label form-control ${passwordError ? 'error' : ''}`}
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             label="Password"
             value={password}
             onChange={(e) => {
@@ -127,6 +134,17 @@ function Login() {
             variant="outlined"
             size="small"
             error={!!passwordError}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  {showPassword ? (
+                    <VisibilityIcon onClick={togglePasswordVisibility} />
+                  ) : (
+                    <VisibilityOffIcon onClick={togglePasswordVisibility} />
+                  )}
+                </InputAdornment>
+              ),
+            }}
           />
           </Form.Group>
           <Row className="mb-2 mt-2 ">

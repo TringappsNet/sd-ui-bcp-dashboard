@@ -13,7 +13,7 @@ body{
   height: 390px;
   font-family: 'Roboto', sans-serif;
    border-radius: 15px;
-
+   background-color: rgb(255, 255, 255);
 }
 
 @media (max-width: 576px) {
