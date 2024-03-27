@@ -3,7 +3,9 @@ import { Container, Form, Button,Row,Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { TextField } from '@mui/material';
+import { TextField, InputAdornment } from '@mui/material';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import '../styles/Login.css';
 import { PortURL } from './Config';
 import SnackbarContainer from './Snackbar';
@@ -13,6 +15,7 @@ function Login() {
   const [password, setPassword] = useState('');
   const [usernameError, setUsernameError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [serverError, setServerError] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false); 
   const [snackbarMessage, setSnackbarMessage] = useState(''); // State to hold the Snackbar message
@@ -20,7 +23,15 @@ function Login() {
 
   const navigate = useNavigate();
 
+<<<<<<< Updated upstream
   
+=======
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+
+>>>>>>> Stashed changes
   const handleSubmit = async (event) => {
     event.preventDefault();
   
@@ -128,6 +139,7 @@ function Login() {
             />
           </Form.Group>
           <Form.Group controlId="formBasicPassword" className="mb-2 mt-4 ">
+<<<<<<< Updated upstream
             <TextField
               className='label form-control'
               type="password"
@@ -144,6 +156,34 @@ function Login() {
               error={!!passwordError}
               helperText={passwordError}
             />
+=======
+          <TextField
+            className={`label form-control ${passwordError ? 'error' : ''}`}
+            type={showPassword ? 'text' : 'password'}
+            label="Password"
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setPasswordError('');
+              setServerError('');
+            }}
+            fullWidth
+            variant="outlined"
+            size="small"
+            error={!!passwordError}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  {showPassword ? (
+                    <VisibilityIcon onClick={togglePasswordVisibility} />
+                  ) : (
+                    <VisibilityOffIcon onClick={togglePasswordVisibility} />
+                  )}
+                </InputAdornment>
+              ),
+            }}
+          />
+>>>>>>> Stashed changes
           </Form.Group>
           <Row className="mb-2 mt-2 ">
           <Col>

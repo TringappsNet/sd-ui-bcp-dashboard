@@ -23,13 +23,14 @@
 
 .container {
   font-family: 'Roboto', sans-serif;
-  width: 400px;
+  width: 90%;
+  max-width: 400px; /* Set maximum width */
   height: auto;
-  position: absolute;
-  top: 45%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  margin: auto; /* Center the container horizontally */
   border-radius: 15px;
+  padding: 20px;
+  background-color: #f8f9fa; /* Set background color */
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Add box shadow */
 }
 
 @media (max-width: 576px) {
