@@ -19,6 +19,8 @@ function ForgotPassword() {
 
   return (
     <div>
+            
+
       <Header/>
         <div className=" form d-flex justify-content-center align-items-center vh-100 ">
             <Container className="mt-5 shadow p-3 mb-5 bg-body  container vh-70 " id='con'>

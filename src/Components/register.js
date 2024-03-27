@@ -237,7 +237,7 @@ function Register() {
         </Form.Group>
         
         <div className="btn-container mt-5 mb-4">
-          <Button type="submit" className="btn btn-success  rounded-pill">
+          <Button type="submit" className="btn btn-success submit rounded-pill">
             Submit
           </Button>
         </div>
