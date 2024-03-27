@@ -12,9 +12,9 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'; 
 
 function Login() {
-  const [userName, setUserName] = useState('');
+  const [email, setemail] = useState('');
   const [password, setPassword] = useState('');
-  const [usernameError, setUsernameError] = useState('');
+  const [emailError, setemailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [serverError, setServerError] = useState('');
@@ -29,9 +29,9 @@ function Login() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Validate username
-    if (!userName) {
-      setUsernameError('Eamil is required');
+    // Validate email
+    if (!email) {
+      setemailError('Eamil is required');
       return;
     }
 
@@ -40,7 +40,7 @@ function Login() {
       setPasswordError('Password is required');
       return;
     }
-    const requestBody = { userName, password };
+    const requestBody = { email, password };
 
     try {
       const response = await fetch(`${PortURL}/login`, {
@@ -53,10 +53,10 @@ function Login() {
 
       if (response.ok) {
         const data1 = await response.json();
-        const { username, organization } = data1;
+        const { email, organization } = data1;
 
         localStorage.setItem('isLoggedIn', 'true');
-        localStorage.setItem('username', username);
+        localStorage.setItem('email', email);
         localStorage.setItem('password', password);
         localStorage.setItem('Organisation', organization);
 
@@ -64,7 +64,7 @@ function Login() {
       } else {
         const data = await response.json();
         if (response.status === 400 && data.message === 'User Not Found!') {
-          //setServerError('Username not found.');
+          //setServerError('email not found.');
           setSnackbarMessage('Eamil not found.');
           setSnackbarOpen(true);
         } else if (response.status === 401 && data.message === 'Invalid Password!') {
@@ -104,19 +104,19 @@ function Login() {
         <Form onSubmit={handleSubmit}>
           <Form.Group controlId="formBasicEmail" className="mb-4 mt-4">
           <TextField
-            className={`label form-control ${usernameError ? 'error' : ''}`}
+            className={`label form-control ${emailError ? 'error' : ''}`}
             type="email"
             label="Email"
-            value={userName}
+            value={email}
             onChange={(e) => {
-              setUserName(e.target.value);
-              setUsernameError('');
+              setemail(e.target.value);
+              setemailError('');
               setServerError('');
             }}
             fullWidth
             variant="outlined"
             size="small"
-            error={!!usernameError}
+            error={!!emailError}
           />
           </Form.Group>
           <Form.Group controlId="formBasicPassword" className="mb-2 mt-4 ">
