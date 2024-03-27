@@ -71,7 +71,7 @@ function Login() {
       }
     } catch (error) {
       console.error('Error logging in:', error);
-      setServerError('An error occurred while logging in.');
+      //setServerError('An error occurred while logging in.');
       setSnackbarMessage('An error occurred while logging in.');
       setSnackbarOpen(true);
     }
@@ -158,7 +158,7 @@ function Login() {
       <CustomSnackbar
         open={snackbarOpen}
         message={snackbarMessage}
-        //anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         onClose={handleCloseSnackbar}
       />
     </div>
