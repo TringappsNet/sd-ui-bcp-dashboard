@@ -1,311 +1,511 @@
-.ml-auto {
-  margin-right: 10px;
-}
 
-.navbar {
-  position: sticky;
-  top: 0;
-  z-index: 1000; /* Ensure it stays above other content */
-  background-color: #ffffff; /* Add a background color */
-  border-bottom: 1px solid #dee2e6;
-}
-
-.brand-wrapper > a {
-  color: rgb(7, 106, 7);
-}
-
-.dropdown-basic {
-  background-color: none;
-}
-
-/* .dropdown-toggle {
-  background-color: transparent !important;
-  border: none;
-  color: black;
-} */
-
-.dropdown-toggle,
-.dropdown-menu {
-  min-width: 150px;
-}
-
-.navbar-nav {
-  width: 100%;
-  justify-content: flex-end;
-}
-
-.form-inline {
-  display: flex;
-  gap: 10px;
-  /* Add a gap between the search bar and the upload button */
-}
-
-.brand-wrapper {
-  padding: 0 15px;
-  /* Adjust the padding as needed */
-}
-
-.search-wrapper {
-  display: flex;
-  align-items: center;
-}
-
-.search-icon {
-  margin-right: 10px;
-  /* Adjust the margin as needed */
-}
-
-/* dashboard.css */
-
-.table-container {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  /* Gmail-like box shadow */
-}
-
-.table-container table {
-  border: 1px solid #dee2e6;
-  border-radius: 5px;
-}
-
-.table-container th,
-.table-container td {
-  border: 1px solid #dee2e6;
-  padding: 8px;
-}
-
-.table-container th {
-  background-color: #efeded;
-}
-
-.table-container tbody tr:hover {
-  background-color: #f0f0f0;
-}
-
-@media (max-width: 767.98px) {
-  .navbar-nav {
-    flex-direction: column;
-  }
-
-  .nav-link {
-    padding-right: 0.5rem !important;
-    padding-left: 0.5rem !important;
-  }
-}
-
-.customLogo {
+.navbar-toggler {
+  margin-right: 25px;
   width: 50px;
-  height: auto; 
-  max-height: 50px;
-} 
-
-button {
-  width: 150px;
-  height: 40px; /* Set height for all buttons */
- 
-}
-
-.dropdown-menu .dropdown-item:hover {
-  color: inherit; 
-  background-color: transparent; /* Remove background color change */
-}
-
-.custom-file-upload{
-   margin-left: 10px;
-}
-
-.submit{
-  margin-right: 10px;
-}
-
-
-/* Add responsive styles here */
-.excel-grid-container {
-  width: 100%;
-  overflow-x: auto;
-  overflow-y: auto; /* Add vertical scrolling */
-  /* padding: 10px; */
 
 }
 
-.table {
-  min-width: 600px; /* Set a minimum width for the table to prevent collapsing */
-  width: max-content; /* Ensure the table does not exceed its container */
-  border-collapse: collapse;
-}
-.table th,
-.table td {
-  padding: 10px;
-  text-align: left;
-  white-space: nowrap;
-}
 
-.table th {
-  background-color: #f2f2f2;
-  border-bottom: 2px solid #ddd;
-  text-transform:uppercase
+.border {
+  background-color: white;
+  border-radius: 6px;
 
 }
-.table-striped tbody tr:nth-of-type(odd) {
-  background-color: #f9f9f9;
-}
 
-.btn {
-  padding: 8px 16px;
-  font-size: 14px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.btn-primary {
-  background-color: #007bff;
-  border-color: #007bff;
-  color: #fff;
-}
-
-.btn-secondary {
-  background-color: #28a745;
-  border-color: #28a745;
-  color: #fff;
-}
-
-.btn-danger {
-  background-color: #dc3545;
-  border-color: #dc3545;
-  color: #fff;
-}
-
-.btn-sm {
-  padding: 6px 12px;
-  font-size: 12px;
-}
-
-
-
-/* Action buttons container */
-.action-buttons {
-  display: flex;
-  justify-content: center;
-}
-
-/* Responsive styles */
-@media (max-width: 816px) {
-  .excel-grid-container {
-    padding: 5px;
-  }
-  
-  .table {
-    min-width: auto;
-  }
-  
-  .btn {
-    padding: 6px 12px;
-    font-size: 12px;
-  }
-
-
-  .d-flex {
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
+      .ml-auto {
+        margin-right: 10px;
       }
-   .search-input {
-  width: 250px;
-    }
 
-    .upload{
-      width: 260px;
-      margin-top: 15px;
-      margin-right: 3px;
+      .navbar-nav {
+        flex-direction: row !important;
+        align-items: center;
+      }
 
-    }
-    button{
-      
-      width: 130px;
-    }
+      .nav-link {
+        padding-right: 0.5rem !important;
+        padding-left: 0.5rem !important;
+      }
 
+      .dropdown-toggle {
+        margin-right: 10px;
+      }
 
-.uploadHead{
-  padding-right: 220px;
-}
+      .dropdown-menu {
+        margin-top: 5px;
+      }
 
-.search-input {
-  max-width: 290px;
-  margin-left: 10px;
-}
+      .navbar {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
 
-.submit{
-  width: 130px;
-}
-.clear{
-  width: 130px;
-}
+        background-color: #ffffff;
+
+        border-bottom: 1px solid #dee2e6;
+
+      }
+
+      .brand-wrapper>a {
+        color: rgb(7, 106, 7);
+      }
+
+      .dropdown-basic {
+        background-color: none;
+      }
+
+      .dropdown-toggle,
+      .dropdown-menu {
+        min-width: 150px;
+      }
+
+      .navbar-nav {
+        width: 100%;
+        justify-content: flex-end;
+      }
+
+      .form-inline {
+        display: flex;
+        gap: 10px;
+
+      }
+
+      .brand-wrapper {
+        padding: 0 15px;
+
+      }
+
+      .search-wrapper {
+        display: flex;
+        align-items: center;
+      }
+
+      .search-icon {
+        margin-right: 10px;
+      }
+
+      .table-container {
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1), 0px 1px 3px rgba(0, 0, 0, 0.08);
+        border-radius: 8px;
+
+      }
+
+      .table-container table {
+        border: 1px solid #dee2e6;
+        border-radius: 5px;
+      }
+
+      .table-container th,
+      .table-container td {
+        border: 1px solid #dee2e6;
+        padding: 8px;
+      }
+
+      .table-container th {
+        background-color: #efeded;
+      }
+
+      .table-container tbody tr:hover {
+        background-color: #f0f0f0;
+      }
+
+      .customLogo {
+        width: 50px;
+        height: auto;
+        max-height: 50px;
+      }
+
+      button {
+        width: 150px;
+        height: 40px;
+
+      }
+
+      .dropdown-menu .dropdown-item:hover {
+        color: inherit;
+        background-color: transparent;
+
+      }
+
+      .custom-file-upload {
+        margin-left: 10px;
+      }
+
+      .submit {
+        margin-right: 10px;
+      }
+
+      .excel-grid-container {
+        width: 100%;
+        overflow-x: auto;
+        overflow-y: auto;
+
+      }
+
+      .table {
+        min-width: 600px;
+
+        width: max-content;
+
+        border-collapse: collapse;
+      }
+
+      .table th,
+      .table td {
+        padding: 10px;
+        text-align: left;
+        white-space: nowrap;
+      }
+
+      .table th {
+        background-color: #f2f2f2;
+        border-bottom: 2px solid #ddd;
+        text-transform: uppercase
+      }
+
+      .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #f9f9f9;
+      }
+
+      .btn {
+        padding: 8px 16px;
+        font-size: 14px;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        color: #fff;
+      }
+
+      .btn-secondary {
+        background-color: #28a745;
+        border-color: #28a745;
+        color: #fff;
+      }
+
+      .btn-secondary:hover {
+        background-color: #28a745;
+        border-color: #28a745;
+        color: #fff;
+      }
+
+      .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+        color: #fff;
+      }
+
+      .btn-sm {
+        padding: 6px 12px;
+        font-size: 12px;
+      }
+
+      .action-buttons {
+
+        display: flex;
+        justify-content: center;
+      }
 
     
 
-   
+      @media (max-width: 816px) {
+        .excel-grid-container {
+          padding: 5px;
+        }
+
+        .table {
+          min-width: auto;
+        }
+
+        .btn {
+          padding: 6px 12px;
+          font-size: 12px;
+        }
+
+        .d-flex {
+          display: flex;
+          flex-direction: column;
+          padding: 10px;
+        }
+
+        .search-input {
+          width: 250px;
+        }
+
+        .upload {
+          width: 260px;
+          margin-top: 15px;
+          margin-right: 3px;
+
+        }
+
+        .uploadHead {
+          padding-right: 220px;
+        }
+
+        .search-input {
+          max-width: 290px;
+          margin-left: 10px;
+        }
+
+        .submit {
+          width: 125px;
+        }
+
+        .clear {
+          width: 125px;
+        }
+
+        .ml-4 {
+          margin-left: 6px;
+        }
+
+      }
+
+
+
+      @media (max-width: 767px) {
+       
+        
+    
+        .logout{
+          padding-left: 20px;
+          padding-bottom: 10px;
+        }
+        button{
+          width: 120px;
+        }
+        .dropdown-item{
+          margin-left: 10px;
+        }
+      }
+
+
+      @media (max-width: 360px) {
+
+        .d-flex {
+          display: flex;
+          flex-direction: column;
+          padding: 10px;
+        }
+
+        .search-input {
+          width: 250px;
+        }
+
+        .upload {
+          width: 200px;
+          margin-top: 15px;
+          margin-right: 3px;
+
+        }
+
+        .search-input {
+          max-width: 200px;
+          margin-left: 10px;
+        }
+
+        .submit {
+          width: 95px;
+        }
+
+        .clear {
+          width: 95px;
+        }
+
+        .ml-4 {
+          margin-left: 6px;
+        }
+
+      }
+
+      @media (max-width: 280px) {
+
+        .d-flex {
+          display: flex;
+          flex-direction: column;
+          padding: 10px;
+        }
+
+        .search-input {
+          width: 100px;
+        }
+
+        .upload {
+          width: 128px;
+          margin-top: 15px;
+          margin-right: 3px;
+
+        }
+
+        .search-input {
+          max-width: 250px;
+          margin-left: 10px;
+        }
+
+        .submit {
+          width: 60px;
+        }
+
+        .clear {
+          width: 60px;
+        }
+
+        .ml-4 {
+          margin-left: 6px;
+        }
+
+        .clearicon {
+          display: none;
+        }
+      }
+
+      .selection-cell {
+        width: 30px;
+        position: sticky;
+
+        left: 0;
+
+        z-index: 1;
+
+        background-color: #fff;
+
+      }
+
+      .action-cell {
+        max-width: 100px;
+        position: sticky;
+        right: 0;
+
+        z-index: 1;
+
+        background-color: #fff;
+
+      }
+
+      .Render-Row {
+        margin: 10px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1), 0px 1px 3px rgba(0, 0, 0, 0.08);
+
+      }
+
+      .Render-Col {
+        background-color: #ffffff;
+        padding: 40px;
+        border-radius: 6px;
+      }
+
+      .table-responsive {
+        border-radius: 1px;
+      }
+
+      .table th,
+      .table td {
+        padding: 8px;
+        text-align: left;
+        white-space: nowrap;
+
+      }
+
+      .table th {
+        background-color: #f2f2f2;
+        border-bottom: 2px solid #ddd;
+      }
+
+      .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #f9f9f9;
+      }
+
+      .hidden-border {
+        border: none;
+        outline: none;
+
+      }
+
+      .table tbody tr:hover td {
+        background-color: #f0f0f0;
+
+        cursor: pointer;
+
+      }
+
+      .selectAll {
+        padding-left: 8px;
+      }
+
+      .brand-wrapper>a {
+        color: rgb(7, 106, 7);
+      }
+
+
+      @media (max-width: 1000px) {
+         
+        .smallscreen {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          border-radius: 5px;
+          background-color: white;
+          box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1), 0px 1px 3px rgba(0, 0, 0, 0.08);
+          width: 160px;
+        
+        }
+        
+        .user {
+          color: blue;
+          margin-top: 10px;
+          text-transform: capitalize;
+        min-width: 90px;
+        }
+        
+        .invite{
+          background: none;
+        
+          padding-left:20px;
+          padding-bottom: 10px;
+        
+        }
+        .reset {
+          padding-left: 20px;
+          background: none;
+          min-width: 150px;
+        
+        }
+        .logout{
+          padding-left: 20px;
+          padding-bottom: 10px;
+        }
+              }
+        
+             
 
 
 
 
 
-}
 
 
 
-/* Set a fixed width for the selection cell */
-.selection-cell {
-  width: 50px;
-  position: sticky; /* Ensure the checkboxes remain visible while scrolling */
-  left: 0; /* Stick to the left side */
-  z-index: 1; /* Ensure checkboxes are above other content */
-  background-color: #fff; /* Ensure the background color does not cover the table */
-}
+              .Edit ,.Delete, .Save, .Cancel{
+                background: none;
+                border: none;
+                color: black;
+              }
 
-/* Set a fixed width for the action cell */
-.action-cell {
-  width: 150px;
-  position: sticky; /* Ensure the action buttons remain visible while scrolling */
-  right: 0; /* Stick to the right side */
-  z-index: 1; /* Ensure action buttons are above other content */
-  background-color: #fff; /* Ensure the background color does not cover the table */
-}
-
-/* Customize table appearance */
-.table th,
-.table td {
-  padding: 8px;
-  text-align: left;
-  white-space: nowrap; /* Prevent text wrapping */
-}
-
-.table th {
-  background-color: #f2f2f2;
-  border-bottom: 2px solid #ddd;
-}
-
-.table-striped tbody tr:nth-of-type(odd) {
-  background-color: #f9f9f9;
-}
+              
+              .Edit:hover ,.Delete:hover, .Save:hover, .Cancel:hover{
+                background: none;
+                border: none;
+                color: black;
+              }
 
 
-.hidden-border {
-  border: none;
-  outline: none;
-  /* Add any other styles to hide the border */
-}
-/* Add hover effect inside the data cells */
-.table tbody tr:hover td {
-  background-color: #f0f0f0; /* Change background color on hover */
-  cursor: pointer; /* Change cursor to pointer on hover */
-}
-
-.selectAll{
-  padding-left: 8px;
-}
-
-/* Navbar */
-.brand-wrapper > a {
-  color: rgb(7, 106, 7);
-}
+      @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap')
 
 
+
+
+  

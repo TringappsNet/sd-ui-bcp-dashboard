@@ -34,6 +34,8 @@ import ResetPassword from "./resetPassword";
 import CustomSnackbar from "./Snackbar";
 import { PortURL } from "./Config";
 
+
+
 function Dashboard() {
   const [username, setUsername] = useState("");
   const [data, setData] = useState([]);
@@ -48,9 +50,12 @@ function Dashboard() {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [retriveData, setRetriveData] = useState([]);
   const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [isMobile, setIsMobile] = useState(false);
+  const [navbarCollapsed, setNavbarCollapsed] = useState(false); // Track Navbar collapse state
 
   const navigate = useNavigate();
 
+  
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("isLoggedIn");
     if (!isLoggedIn) {
@@ -64,6 +69,19 @@ function Dashboard() {
       setShowPreview(true);
     }
   }, [navigate]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth >= 1000);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     if (uploadSuccess) {
@@ -143,26 +161,21 @@ function Dashboard() {
     setEditedRowData(filteredData[rowId]);
   };
 
-
   const handleCancel = () => {
     console.log("Canceling edit for row:", editedRowId);
     setEditedRowId(null);
   };
 
-const handleInputChange = (e, key) => {
-  const { value } = e.target;
-  console.log("Key:", key);
-  console.log("Value:", value);
-  // Update the edited row data with the new value
-  setEditedRowData((prevData) => ({
-    ...prevData,
-    [String(key)]: String(value || "") // Convert both key and value to strings and provide a fallback value of an empty string if value is null or undefined
-  }));
-};
-
-  
-  
-  
+  const handleInputChange = (e, key) => {
+    const { value } = e.target;
+    console.log("Key:", key);
+    console.log("Value:", value);
+    // Update the edited row data with the new value
+    setEditedRowData((prevData) => ({
+      ...prevData,
+      [String(key)]: String(value || ""), // Convert both key and value to strings and provide a fallback value of an empty string if value is null or undefined
+    }));
+  };
 
   const handleLogout = () => {
     localStorage.removeItem("isLoggedIn");
@@ -252,18 +265,21 @@ const handleInputChange = (e, key) => {
     }
   };
 
-
   const handleSave = async () => {
     try {
       console.log("Edit saved data", editedRowData);
-      
-       
+
       // Format the MonthYear date to "YYYY-MM-DD"
       const monthYearDate = new Date(editedRowData.MonthYear);
-      const formattedMonthYear = `${monthYearDate.getFullYear()}-${(monthYearDate.getMonth() + 1)
+      const formattedMonthYear = `${monthYearDate.getFullYear()}-${(
+        monthYearDate.getMonth() + 1
+      )
         .toString()
-        .padStart(2, "0")}-${monthYearDate.getDate().toString().padStart(2, "0")}`;
-  
+        .padStart(2, "0")}-${monthYearDate
+        .getDate()
+        .toString()
+        .padStart(2, "0")}`;
+
       // Create the payload with the updated MonthYear format
       const payload = {
         editedRow: {
@@ -271,7 +287,7 @@ const handleInputChange = (e, key) => {
           MonthYear: formattedMonthYear,
         },
       };
-  
+
       // Send the updated data to the server
       const response = await fetch(`${PortURL}/update`, {
         method: "POST", // Change the method to POST since you're sending data
@@ -280,7 +296,7 @@ const handleInputChange = (e, key) => {
         },
         body: JSON.stringify(payload), // Send only the edited row data
       });
-  
+
       if (response.ok) {
         console.log("Row updated successfully:", editedRowData);
         // Optionally, you can refresh the data from the server
@@ -299,14 +315,13 @@ const handleInputChange = (e, key) => {
       setSnackbarMessage("Error updating row");
     }
   };
-  
 
   const handleDelete = async (rowId) => {
     try {
       console.log("Row ID:", rowId);
-    
+
       console.log("Filtered Data:", filteredData);
-      
+
       const identifierToDelete = String(filteredData[rowId]?.ID); // Convert identifierToDelete to string
       console.log("Identifier to Delete:", identifierToDelete);
 
@@ -334,7 +349,6 @@ const handleInputChange = (e, key) => {
       setSnackbarMessage("Error deleting row");
     }
   };
-  
 
   const handleCloseSnackbar = () => {
     setSnackbarOpen(false);
@@ -351,39 +365,58 @@ const handleInputChange = (e, key) => {
         </div>
         <NavbarToggle aria-controls="basic-navbar-nav" />
         <NavbarCollapse id="basic-navbar-nav">
-          <Nav className="ml-auto">
-            <Dropdown>
-              <Dropdown.Toggle
-                id="dropdown-basic"
-                as="div"
-                className="customDropdown"
-              >
+          <Nav className="ml-auto align-items-center">
+            {/* Render username inside dropdown menu if isMobile is true */}
+            {isMobile ? (
+              <Dropdown className="d-flex">
+                <Dropdown.Toggle
+                  id="dropdown-basic"
+                  as="div"
+                  className="customDropdown"
+                >
+                  <FontAwesomeIcon className="username" icon={faUser} /> {username}
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <PopUpContainer>
+                    <ResetPassword  />
+                  </PopUpContainer>
+                  <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            ) : (
+              // Render the PopUpContainer directly if not mobile
+              
+             
+              <React.Fragment >
+                <div className="smallscreen">
+
+              <div className="ml-auto align-items-center user ">
                 <FontAwesomeIcon icon={faUser} /> {username}
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <PopUpContainer>
-                  <ResetPassword />
-                </PopUpContainer>
-                <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
+              </div>
+              <PopUpContainer className="popUp" >
+                <ResetPassword className="popUp" />
+              </PopUpContainer> 
+              <Dropdown.Item onClick={handleLogout} className="logout">Logout</Dropdown.Item>
+              </div>
+
+            </React.Fragment>
+            )}
           </Nav>
         </NavbarCollapse>
       </Navbar>
+
       <Container fluid>
         <div className="container-fluid full-height mt-5">
           <div className="row">
             <div className="col">
-              <div className="border shadow p-3 d-flex justify-content-between align-items-center">
-               
-               
+              <div className="border shadow p-3 d-flex justify-content-between align-items-center ">
                 <Form className="d-flex ">
                   <div className="search-wrapper mr-2">
                     {/* <div className="search-icon">
                       <FontAwesomeIcon icon={faSearch} />
                     </div> */}
                     <FormControl
-                    className="search-input"
+                      className="search-input"
                       type="text"
                       placeholder="Search"
                       style={{ flex: "1" }}
@@ -391,26 +424,30 @@ const handleInputChange = (e, key) => {
                       onChange={handleSearchChange}
                     />
                   </div>
-                  
+
                   <div {...getRootProps()} className="custom-file-upload ">
-                    <input {...getInputProps()}  accept=".xlsx, .xls" />
+                    <input {...getInputProps()} accept=".xlsx, .xls" />
                     {isDragActive ? (
                       <p>Drop the files here ...</p>
                     ) : (
                       <Button className="btn btn-secondary btn-sm upload">
-                        <FontAwesomeIcon icon={faUpload}  />
+                        <FontAwesomeIcon icon={faUpload} />
                         Upload File
                       </Button>
                     )}
                   </div>
                 </Form>
                 <div className="ml-4 ">
-                  <Button className="mr-2 btn btn-secondary submit" onClick={handleSubmit}>
+                  <Button
+                    className="mr-2 btn btn-secondary submit"
+                    onClick={handleSubmit}
+                  >
                     Submit
                   </Button>
                   <Button className="clear" variant="danger">
                     {" "}
-                    Clear <FontAwesomeIcon icon={faTrash} />
+                    Clear{" "}
+                    <FontAwesomeIcon className="clearicon" icon={faTrash} />
                   </Button>
                 </div>
               </div>
@@ -424,9 +461,9 @@ const handleInputChange = (e, key) => {
         message={snackbarMessage}
         onClose={handleCloseSnackbar}
       />
-      <Container fluid>
-        <Row>
-          <Col>
+      <Container fluid >
+        <Row className="row Render-Row">
+          <Col className="col Render-Col">
             <div className="table-responsive render">
               <Table striped bordered hover>
                 <thead>
@@ -445,7 +482,7 @@ const handleInputChange = (e, key) => {
                   </tr>
                 </thead>
                 <tbody>
-                                  {filteredData.map((row, index) => (
+                  {filteredData.map((row, index) => (
                     <tr key={index}>
                       <td className="selection-cell">
                         <input
@@ -455,54 +492,53 @@ const handleInputChange = (e, key) => {
                         />
                       </td>
                       {Object.keys(row).map((key) => (
-  <td key={key}>
-    {editedRowId === index ? (
-      <input
-        type="text"
-        value={editedRowData[key] || ""}
-        onChange={(e) => handleInputChange(e, key)}
-      />
-    ) : (
-      formatDateCell(row[key], key)
-    )}
-  </td>
-))}
-<td className="action-cell">
-  {editedRowId === index ? (
-    <div className="action-buttons">
-      <button
-        className="btn btn-primary btn-sm"
-        onClick={() => handleSave()}
-      >
-        <FontAwesomeIcon icon={faSave} />
-      </button>
-      <button
-        className="btn btn-secondary btn-sm"
-        onClick={() => handleCancel()}
-      >
-        <FontAwesomeIcon icon={faTimes} />
-      </button>
-    </div>
-  ) : (
-    <div className="action-buttons">
-      <button
-        className="btn btn-primary btn-sm"
-        onClick={() => handleEdit(index)}
-      >
-        <FontAwesomeIcon icon={faEdit} />
-      </button>
-      <button
-        className="btn btn-danger btn-sm"
-        onClick={() => handleDelete(index)}
-      >
-        <FontAwesomeIcon icon={faTrash} />
-      </button>
-    </div>
-  )}
-</td>
+                        <td key={key}>
+                          {editedRowId === index ? (
+                            <input
+                              type="text"
+                              value={editedRowData[key] || ""}
+                              onChange={(e) => handleInputChange(e, key)}
+                            />
+                          ) : (
+                            formatDateCell(row[key], key)
+                          )}
+                        </td>
+                      ))}
+                      <td className="action-cell">
+                        {editedRowId === index ? (
+                          <div className="action-buttons">
+                            <button
+                              className="btn  btn-sm Save"
+                              onClick={() => handleSave()}
+                            >
+                              <FontAwesomeIcon icon={faSave} />
+                            </button>
+                            <button
+                              className="btn btn-sm Cancel"
+                              onClick={() => handleCancel()}
+                            >
+                              <FontAwesomeIcon icon={faTimes} />
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="action-buttons">
+                            <button
+                              className="btn  btn-sm Edit"
+                              onClick={() => handleEdit(index)}
+                            >
+                              <FontAwesomeIcon icon={faEdit} />
+                            </button>
+                            <button
+                              className="btn btn-sm Delete"
+                              onClick={() => handleDelete(index)}
+                            >
+                              <FontAwesomeIcon icon={faTrash} />
+                            </button>
+                          </div>
+                        )}
+                      </td>
                     </tr>
                   ))}
-                    
                 </tbody>
               </Table>
             </div>
