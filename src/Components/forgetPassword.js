@@ -7,36 +7,43 @@ import { TextField } from '@mui/material';
 import Header from './Header';
 import axios from 'axios';
 import { PortURL } from './Config';
-import CustomSnackbar from './Snackbar'; // Import CustomSnackbar component
-
+import CustomSnackbar from './Snackbar'; 
+import LoadingSpinner from './LoadingSpinner'; 
 function ForgotPassword() {
   const [email, setEmail] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarType, setSnackbarType] = useState('error');
   const [snackVariant, setVariant] = useState('error');
-
+  const [loading, setLoading] = useState(false); 
 
   const handleSubmit = async (event) => {
-  event.preventDefault();
-  try {
-    
-    const response = await axios.post(`${PortURL}/forgot-password`, { email });
-    if (response.status === 200) {
-      setSnackbarMessage(response.data.message);
-      setSnackbarType('success');
-      setVariant('success')
-    } else {
-      setSnackbarMessage('Error sending reset link email');
+    event.preventDefault();
+    setLoading(true); 
+    try {
+      const response = await axios.post(`${PortURL}/forgot-password`, { email });
+      if (response.status === 200) {
+        setSnackbarMessage(response.data.message);
+        setSnackbarType('success');
+        setVariant('success');
+      } else if (response.status === 404) {
+        setSnackbarMessage(response.data.message);
+        setSnackbarType('error');
+        setVariant('error');
+      } else {
+        setSnackbarMessage('Error sending reset link email');
+        setSnackbarType('error');
+        setVariant('error');
+      }
+    } catch (error) {
+      setSnackbarMessage('Please Enter Valid Email');
       setSnackbarType('error');
+      setVariant('error');
     }
-  } catch (error) {
-    setSnackbarMessage('Please Enter Valid Email');
-    setSnackbarType('error');
-  }
-  setSnackbarOpen(true);
-};
-
+    setLoading(false); // Set loading to false after response is received
+    setSnackbarOpen(true);
+  };
+  
   const handleCloseSnackbar = () => {
     setSnackbarOpen(false);
   };
@@ -80,6 +87,7 @@ function ForgotPassword() {
         type={snackbarType}
         variant={snackVariant}
       />
+      {loading && <LoadingSpinner />} {/* Conditionally render loading spinner */}
     </div>
   );
 }
