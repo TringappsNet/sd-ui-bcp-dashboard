@@ -5,6 +5,8 @@ import '../styles/resetPassword.css';
 // import { Link } from 'react-router-dom';
 import { TextField } from '@mui/material';
 import { PortURL } from './Config';
+import LoadingSpinner from './LoadingSpinner'; 
+
 
 function ResetPassword() {
   const [userName, setUserName] = useState('');
@@ -13,9 +15,11 @@ function ResetPassword() {
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false); 
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true); 
   
     const urlParams = new URLSearchParams(window.location.search);
     const resetToken = urlParams.get('token');
@@ -55,6 +59,7 @@ function ResetPassword() {
       console.error('Error resetting password:', error.message);
       setError('Error resetting password');
     }
+    setLoading(false); 
   };
   
 
@@ -95,6 +100,7 @@ function ResetPassword() {
           </div>
         </Form>
       </Container>
+      {loading && <LoadingSpinner />} 
     </div>
     
   );

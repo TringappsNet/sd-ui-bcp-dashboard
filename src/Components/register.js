@@ -8,6 +8,8 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { PortURL } from './Config';
 import Header from './Header';
+import LoadingSpinner from './LoadingSpinner'; 
+
 
 function Register() {
   const [firstName, setFirstName] = useState('');
@@ -20,6 +22,7 @@ function Register() {
   const [firstNameError, setFirstNameError] = useState('');
   const [lastNameError, setLastNameError] = useState('');
   const [phoneNumberError, setPhoneNumberError] = useState('');
+  const [loading, setLoading] = useState(false); 
   const [passwordError, setPasswordError] = useState('');
   const navigate = useNavigate();
 
@@ -33,6 +36,7 @@ function Register() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true); 
   
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
@@ -105,6 +109,7 @@ function Register() {
     } catch (error) {
       console.error('Error registering user:', error.message);
     }
+    setLoading(false); 
   };
   
   return (
@@ -235,6 +240,7 @@ function Register() {
           </div>
         </Form>
       </Container>
+      {loading && <LoadingSpinner />} 
     </div>
   );
 }

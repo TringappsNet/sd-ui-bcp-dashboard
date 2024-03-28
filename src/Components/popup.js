@@ -3,6 +3,7 @@ import ResetNewPassword from './resetNewPassword';
 import SendInvite from './sendInvite';
 import '../styles/popup.css'; 
 
+
 const PopUpContainer = () => {
   const [showResetPopup, setShowResetPopup] = useState(false);
   const [showInvitePopup, setShowInvitePopup] = useState(false);
