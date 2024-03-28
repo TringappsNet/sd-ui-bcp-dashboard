@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Form, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/resetPassword.css';
@@ -12,6 +12,17 @@ function ResetNewPassword({ onClose }) {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
 
+  useEffect(() => {
+    let timer;
+    if (success) {
+      timer = setTimeout(() => {
+        onClose(); // Close the popup after 5 seconds
+      }, 1000);
+    }
+
+    return () => clearTimeout(timer); // Clean up the timer on unmount or when success changes
+  }, [success, onClose]);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -21,14 +32,14 @@ function ResetNewPassword({ onClose }) {
     }
 
     try {
-      const email = localStorage.getItem('email'); // Retrieve email from localStorage
+      const email = localStorage.getItem('email');
 
       const response = await fetch(`${PortURL}/reset-new`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, oldPassword, newPassword }), // Include email here
+        body: JSON.stringify({ email, oldPassword, newPassword }),
       });
 
       if (response.ok) {
@@ -37,7 +48,6 @@ function ResetNewPassword({ onClose }) {
         setNewPassword('');
         setConfirmNewPassword('');
         setError(null);
-        onClose(); // Close the popup component
       } else {
         const data = await response.json();
         setError(data.message);
@@ -54,7 +64,7 @@ function ResetNewPassword({ onClose }) {
         <h6 className="text-center mb-5 mt-3 fw-bold">RESET PASSWORD</h6>
         <Form onSubmit={handleSubmit}>
           {error && <div className="text-danger mb-3">{error}</div>}
-          {/* {success && <div className="text-success mb-3">Password reset successfully!</div>} */}
+          {success && <div className="text-success mb-3">Password reset successfully!</div>}
           <Form.Group controlId="formBasicOldPassword" className="mb-4">
             <TextField
               className="label"
@@ -92,7 +102,7 @@ function ResetNewPassword({ onClose }) {
             />
           </Form.Group>
           <div className="btn-container">
-            <Button type="submit" className="btn btn-success rounded-pill">
+            <Button type="submit" className="btn btn-success  rounded-pill">
               Reset Password
             </Button>
           </div>
