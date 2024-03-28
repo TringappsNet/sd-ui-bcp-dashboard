@@ -9,11 +9,14 @@ import Header from './Header';
 import CustomSnackbar from './Snackbar';
 import { TextField, InputAdornment } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'; 
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import LoadingSpinner from './LoadingSpinner'; 
+
 
 function Login() {
   const [email, setEmail] = useState(''); // Corrected typo
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false); 
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -28,6 +31,7 @@ function Login() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true); 
     
     // Validate email
     if (!email) {
@@ -81,6 +85,7 @@ function Login() {
       setSnackbarMessage('An error occurred while logging in.');
       setSnackbarOpen(true);
     }
+    setLoading(false); 
   };
 
   const handleCloseSnackbar = () => {
@@ -177,6 +182,7 @@ function Login() {
         onClose={handleCloseSnackbar}
       />
     </div>
+    {loading && <LoadingSpinner />} 
    </div>
   );
 }

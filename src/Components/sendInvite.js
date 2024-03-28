@@ -3,6 +3,8 @@ import { Container, Button, Form } from 'react-bootstrap';
 import { TextField, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import '../styles/sendInvite.css';
 import { PortURL } from './Config';
+import LoadingSpinner from './LoadingSpinner'; 
+
 
 const SendInvite = ({ onClose }) => {
   const [formData, setFormData] = useState({
@@ -10,7 +12,7 @@ const SendInvite = ({ onClose }) => {
     role: '',
     organization: ''
   });
-
+  const [loading, setLoading] = useState(false); 
   const [emailError, setEmailError] = useState('');
 
   const handleChange = (event) => {
@@ -26,6 +28,7 @@ const SendInvite = ({ onClose }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true); 
     if (!formData.email.trim()) {
       setEmailError('Email is required');
       return;
@@ -45,6 +48,7 @@ const SendInvite = ({ onClose }) => {
     } catch (error) {
       console.error('Error sending invitation:', error);
     }
+    setLoading(false); 
   };
 
   return (
@@ -106,6 +110,7 @@ const SendInvite = ({ onClose }) => {
           <Button type="submit" className="btn btn-success rounded-pill w-100">Submit</Button>
         </Form>
       </Container>
+      {loading && <LoadingSpinner />}
     </div>
   );
 };

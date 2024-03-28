@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/resetPassword.css';
 import { TextField } from '@mui/material';
 import { PortURL } from './Config';
+import LoadingSpinner from './LoadingSpinner'; 
 
 function ResetNewPassword() {
   const [oldPassword, setOldPassword] = useState('');
@@ -11,9 +12,11 @@ function ResetNewPassword() {
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false); 
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true); 
 
     if (newPassword !== confirmNewPassword) {
       setError('Passwords do not match');
@@ -45,6 +48,7 @@ function ResetNewPassword() {
       console.error('Error resetting password:', error.message);
       setError('Error resetting password');
     }
+    setLoading(false); 
   };
 
   return (
@@ -97,6 +101,7 @@ function ResetNewPassword() {
           </div>
         </Form>
       </Container>
+      {loading && <LoadingSpinner />} 
     </div>
   );
 }

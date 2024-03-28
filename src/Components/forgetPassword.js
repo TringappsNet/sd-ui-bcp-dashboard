@@ -9,6 +9,7 @@ import axios from 'axios';
 import { PortURL } from './Config';
 import CustomSnackbar from './Snackbar'; 
 import LoadingSpinner from './LoadingSpinner'; 
+
 function ForgotPassword() {
   const [email, setEmail] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -40,7 +41,7 @@ function ForgotPassword() {
       setSnackbarType('error');
       setVariant('error');
     }
-    setLoading(false); // Set loading to false after response is received
+    setLoading(false); 
     setSnackbarOpen(true);
   };
   
@@ -87,7 +88,7 @@ function ForgotPassword() {
         type={snackbarType}
         variant={snackVariant}
       />
-      {loading && <LoadingSpinner />} {/* Conditionally render loading spinner */}
+      {loading && <LoadingSpinner />} 
     </div>
   );
 }
