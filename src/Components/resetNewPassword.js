@@ -5,7 +5,7 @@ import '../styles/resetPassword.css';
 import { TextField } from '@mui/material';
 import { PortURL } from './Config';
 
-function ResetNewPassword() {
+function ResetNewPassword({ onClose }) {
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
@@ -37,6 +37,7 @@ function ResetNewPassword() {
         setNewPassword('');
         setConfirmNewPassword('');
         setError(null);
+        onClose(); // Close the popup component
       } else {
         const data = await response.json();
         setError(data.message);
@@ -53,7 +54,7 @@ function ResetNewPassword() {
         <h6 className="text-center mb-5 mt-3 fw-bold">RESET PASSWORD</h6>
         <Form onSubmit={handleSubmit}>
           {error && <div className="text-danger mb-3">{error}</div>}
-          {success && <div className="text-success mb-3">Password reset successfully!</div>}
+          {/* {success && <div className="text-success mb-3">Password reset successfully!</div>} */}
           <Form.Group controlId="formBasicOldPassword" className="mb-4">
             <TextField
               className="label"
@@ -91,7 +92,7 @@ function ResetNewPassword() {
             />
           </Form.Group>
           <div className="btn-container">
-            <Button type="submit" className="btn btn-success  rounded-pill">
+            <Button type="submit" className="btn btn-success rounded-pill">
               Reset Password
             </Button>
           </div>
