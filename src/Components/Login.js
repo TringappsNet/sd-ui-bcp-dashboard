@@ -35,7 +35,6 @@ function Login() {
     
     // Validate email
     if (!email) {
-      setemailError('Email is required');
       setSnackbarMessage('Email is required');
       setSnackbarOpen(true);
 
@@ -53,9 +52,7 @@ function Login() {
     }
 
      // Validate email format
-  if (!email.includes('@')) {
-    setemailError('Invalid email format');
-    setSnackbarMessage('Please enter a valid email');
+  if (!email.includes('@')) {    setSnackbarMessage('Please enter a valid email');
     setSnackbarOpen(true);
     return;
   }
