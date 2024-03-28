@@ -309,3 +309,304 @@ button {
 }
 
 
+
+
+      @media (max-width: 816px) {
+        .excel-grid-container {
+          padding: 5px;
+        }
+
+        .table {
+          min-width: auto;
+        }
+
+        .btn {
+          padding: 6px 12px;
+          font-size: 12px;
+        }
+
+        .d-flex {
+          display: flex;
+          flex-direction: column;
+          padding: 10px;
+        }
+
+        .search-input {
+          width: 250px;
+        }
+
+        .upload {
+          width: 260px;
+          margin-top: 15px;
+          margin-right: 3px;
+
+        }
+
+        .uploadHead {
+          padding-right: 220px;
+        }
+
+        .search-input {
+          max-width: 290px;
+          margin-left: 10px;
+        }
+
+        .submit {
+          width: 125px;
+        }
+
+        .clear {
+          width: 125px;
+        }
+
+        .ml-4 {
+          margin-left: 6px;
+        }
+
+      }
+
+
+
+      @media (max-width: 767px) {
+       
+        
+    
+        .logout{
+          padding-left: 20px;
+          padding-bottom: 10px;
+        }
+        button{
+          width: 120px;
+        }
+        .dropdown-item{
+          margin-left: 10px;
+        }
+      }
+
+
+      @media (max-width: 360px) {
+
+        .d-flex {
+          display: flex;
+          flex-direction: column;
+          padding: 10px;
+        }
+
+        .search-input {
+          width: 250px;
+        }
+
+        .upload {
+          width: 200px;
+          margin-top: 15px;
+          margin-right: 3px;
+
+        }
+
+        .search-input {
+          max-width: 200px;
+          margin-left: 10px;
+        }
+
+        .submit {
+          width: 95px;
+        }
+
+        .clear {
+          width: 95px;
+        }
+
+        .ml-4 {
+          margin-left: 6px;
+        }
+
+      }
+
+      @media (max-width: 280px) {
+
+        .d-flex {
+          display: flex;
+          flex-direction: column;
+          padding: 10px;
+        }
+
+        .search-input {
+          width: 100px;
+        }
+
+        .upload {
+          width: 128px;
+          margin-top: 15px;
+          margin-right: 3px;
+
+        }
+
+        .search-input {
+          max-width: 250px;
+          margin-left: 10px;
+        }
+
+        .submit {
+          width: 60px;
+        }
+
+        .clear {
+          width: 60px;
+        }
+
+        .ml-4 {
+          margin-left: 6px;
+        }
+
+        .clearicon {
+          display: none;
+        }
+      }
+
+      .selection-cell {
+        width: 30px;
+        position: sticky;
+
+        left: 0;
+
+        z-index: 1;
+
+        background-color: #fff;
+
+      }
+
+      .action-cell {
+        max-width: 100px;
+        position: sticky;
+        right: 0;
+
+        z-index: 1;
+
+        background-color: #fff;
+
+      }
+
+      .Render-Row {
+        margin: 10px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1), 0px 1px 3px rgba(0, 0, 0, 0.08);
+
+      }
+
+      .Render-Col {
+        background-color: #ffffff;
+        padding: 40px;
+        border-radius: 6px;
+      }
+
+      .table-responsive {
+        border-radius: 1px;
+      }
+
+      .table th,
+      .table td {
+        padding: 8px;
+        text-align: left;
+        white-space: nowrap;
+
+      }
+
+      .table th {
+        background-color: #f2f2f2;
+        border-bottom: 2px solid #ddd;
+      }
+
+      .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #f9f9f9;
+      }
+
+      .hidden-border {
+        border: none;
+        outline: none;
+
+      }
+
+      .table tbody tr:hover td {
+        background-color: #f0f0f0;
+
+        cursor: pointer;
+
+      }
+
+      .selectAll {
+        padding-left: 8px;
+      }
+
+      .brand-wrapper>a {
+        color: rgb(7, 106, 7);
+      }
+
+
+      @media (max-width: 1000px) {
+         
+        .smallscreen {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          border-radius: 5px;
+          background-color: white;
+          box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1), 0px 1px 3px rgba(0, 0, 0, 0.08);
+          width: 160px;
+        
+        }
+        
+        .user {
+          color: blue;
+          margin-top: 10px;
+          text-transform: capitalize;
+        min-width: 90px;
+        }
+        
+        .invite{
+          background: none;
+        
+          padding-left:20px;
+          padding-bottom: 10px;
+        
+        }
+        .reset {
+          padding-left: 20px;
+          background: none;
+          min-width: 150px;
+        
+        }
+        .logout{
+          padding-left: 20px;
+          padding-bottom: 10px;
+        }
+              }
+        
+             
+
+
+
+
+
+
+
+
+              .Edit ,.Delete, .Save, .Cancel{
+                background: none;
+                border: none;
+                color: black;
+              }
+
+              
+              .Edit:hover ,.Delete:hover, .Save:hover, .Cancel:hover{
+                background: none;
+                border: none;
+                color: black;
+              }
+
+
+      @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap')
+
+
+
+
+  

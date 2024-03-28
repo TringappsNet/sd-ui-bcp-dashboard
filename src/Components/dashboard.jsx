@@ -14,6 +14,7 @@ import {
   Col,
   Dropdown,
 } from "react-bootstrap";
+
 import { useDropzone } from "react-dropzone";
 import { useNavigate } from "react-router-dom";
 import * as XLSX from "xlsx";
@@ -29,13 +30,14 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/dashboard.css";
-import PopUpContainer from "./popup";
-import ResetPassword from "./resetPassword";
+
 import CustomSnackbar from "./Snackbar";
 import { PortURL } from "./Config";
+import NavbarSection from "./NavbarSection";
 
 function Dashboard() {
   const [username, setUsername] = useState("");
+  
   const [data, setData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [editedRowId, setEditedRowId] = useState(null); // Track edited row ID
@@ -64,6 +66,7 @@ function Dashboard() {
       setShowPreview(true);
     }
   }, [navigate]);
+
 
   useEffect(() => {
     if (uploadSuccess) {
@@ -164,11 +167,7 @@ const handleInputChange = (e, key) => {
   
   
 
-  const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("username");
-    navigate("/login");
-  };
+
 
   const handleInvite = () => {
     navigate("/send-invite");
@@ -311,7 +310,7 @@ const handleInputChange = (e, key) => {
       console.log("Identifier to Delete:", identifierToDelete);
 
       const response = await fetch(`${PortURL}/delete`, {
-        method: "DELETE",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
@@ -343,33 +342,8 @@ const handleInputChange = (e, key) => {
 
   return (
     <div className="dashboard-container">
-      <Navbar bg="light" expand="lg" className="w-100">
-        <div className="brand-wrapper">
-          <NavbarBrand href="#home">
-            <img src="/images/bcp2.png" alt="Logo" className="customLogo" />
-          </NavbarBrand>
-        </div>
-        <NavbarToggle aria-controls="basic-navbar-nav" />
-        <NavbarCollapse id="basic-navbar-nav">
-          <Nav className="ml-auto">
-            <Dropdown>
-              <Dropdown.Toggle
-                id="dropdown-basic"
-                as="div"
-                className="customDropdown"
-              >
-                <FontAwesomeIcon icon={faUser} /> {username}
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <PopUpContainer>
-                  <ResetPassword />
-                </PopUpContainer>
-                <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-          </Nav>
-        </NavbarCollapse>
-      </Navbar>
+
+      <NavbarSection/>
       <Container fluid>
         <div className="container-fluid full-height mt-5">
           <div className="row">
