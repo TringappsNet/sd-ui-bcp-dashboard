@@ -20,6 +20,7 @@ export default function CustomSnackbar({ message, variant, onClose, open }) {
   }
 
   return (
+ 
     <Stack spacing={2} sx={{ maxWidth: 600 }}>
       <Snackbar
         className='mt-4'

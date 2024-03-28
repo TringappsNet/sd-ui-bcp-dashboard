@@ -54,6 +54,9 @@ function Dashboard() {
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [isMobile, setIsMobile] = useState(false);
   const [navbarCollapsed, setNavbarCollapsed] = useState(false); // Track Navbar collapse state
+  const [snackbarColor, setSnackbarColor] = useState("success"); 
+  const [uploadedFileName, setUploadedFileName] = useState("");
+
 
   const navigate = useNavigate();
 
@@ -63,7 +66,7 @@ function Dashboard() {
     if (!isLoggedIn) {
       navigate("/login");
     } else {
-      const storedUsername = localStorage.getItem("username");
+      const storedUsername = localStorage.getItem("UserName");
       const storedOrganization = localStorage.getItem("Organisation");
       setUsername(storedUsername);
       setOrganization(storedOrganization);
@@ -133,6 +136,8 @@ function Dashboard() {
             return obj;
           });
           setData((prevData) => [...prevData, ...newJsonData]);
+          setUploadedFileName(file.name);
+
         } catch (error) {
           console.error("Error reading file:", error);
         }
@@ -308,28 +313,34 @@ function Dashboard() {
         fetchData();
         setSnackbarOpen(true);
         setSnackbarMessage("Row updated successfully");
+        setSnackbarColor("success"); 
+
         setEditedRowId(null); // Reset edited row id after saving
       } else {
         console.error("Error updating row:", response.statusText);
         setSnackbarOpen(true);
         setSnackbarMessage("Error updating row");
+        setSnackbarColor("error"); // Set snackbar color to red
+
       }
     } catch (error) {
       console.error("Error updating row:", error);
       setSnackbarOpen(true);
       setSnackbarMessage("Error updating row");
+      setSnackbarColor("error"); // Set snackbar color to red
+
     }
   };
 
   const handleDelete = async (rowId) => {
     try {
       console.log("Row ID:", rowId);
-
+  
       console.log("Filtered Data:", filteredData);
-
+  
       const identifierToDelete = String(filteredData[rowId]?.ID); // Convert identifierToDelete to string
       console.log("Identifier to Delete:", identifierToDelete);
-
+  
       const response = await fetch(`${PortURL}/delete`, {
         method: "POST",
         headers: {
@@ -339,8 +350,8 @@ function Dashboard() {
       });
       if (response.ok) {
         // If the deletion is successful, update the data state to reflect the changes
-        const updatedData = retriveData.filter((row) => row.id !== rowId);
-        setRetriveData(updatedData);
+        const updatedData = filteredData.filter((row, index) => index !== rowId);
+        setRetriveData(updatedData); // Update filteredData state with the updatedData
         setSnackbarOpen(true);
         setSnackbarMessage("Row deleted successfully");
       } else {
@@ -354,6 +365,7 @@ function Dashboard() {
       setSnackbarMessage("Error deleting row");
     }
   };
+  
 
   const handleCloseSnackbar = () => {
     setSnackbarOpen(false);
@@ -373,14 +385,20 @@ function Dashboard() {
           <Nav className="ml-auto align-items-center">
             {/* Render username inside dropdown menu if isMobile is true */}
             {isMobile ? (
-              <Dropdown className="d-flex">
+              <Dropdown className="d-flex username">
+                 
+           
                 <Dropdown.Toggle
                   id="dropdown-basic"
                   as="div"
                   className="customDropdown"
                 >
-                  <FontAwesomeIcon className="username" icon={faUser} /> USERNAME
+                  <div className="username-container">USERNAME
+                 <FontAwesomeIcon className="username" icon={faUser} />
+  </div>
                 </Dropdown.Toggle>
+
+                
                 <Dropdown.Menu>
                   <PopUpContainer>
                     <ResetNewPassword  />
@@ -392,28 +410,35 @@ function Dashboard() {
               // Render the PopUpContainer directly if not mobile
               
              
-              <React.Fragment >
-                <div className="smallscreen">
+                <React.Fragment >
+                  <div className="smallscreen">
 
-              <div className="ml-auto align-items-center user ">
-                <FontAwesomeIcon icon={faUser} /> {username}
-              </div>
-              <PopUpContainer className="popUp" >
-                <ResetNewPassword className="popUp" />
-              </PopUpContainer> 
-              <Dropdown.Item onClick={handleLogout} className="logout">Logout</Dropdown.Item>
-              </div>
+                <div className="ml-auto align-items-center user ">
+                  <FontAwesomeIcon icon={faUser} /> {username}
+                </div>
+                <PopUpContainer className="popUp" >
+                  <ResetPassword className="popUp" />
+                </PopUpContainer> 
+                <Dropdown.Item onClick={handleLogout} className="logout">Logout</Dropdown.Item>
+                </div>
 
-            </React.Fragment>
+
+              </React.Fragment>
             )}
           </Nav>
         </NavbarCollapse>
       </Navbar>
 
+      <CustomSnackbar
+        open={snackbarOpen}
+        message={snackbarMessage}
+        onClose={handleCloseSnackbar}
+        color={snackbarColor}      />
+        
       <Container fluid>
-        <div className="container-fluid full-height mt-5">
+        <div className="container-fluid full-height mt-4">
           <div className="row">
-            <div className="col">
+            <div className="col ">
               <div className="border shadow p-3 d-flex justify-content-between align-items-center ">
                 <Form className="d-flex ">
                   <div className="search-wrapper mr-2">
@@ -435,10 +460,26 @@ function Dashboard() {
                     {isDragActive ? (
                       <p>Drop the files here ...</p>
                     ) : (
-                      <Button className="btn btn-secondary btn-sm upload">
-                        <FontAwesomeIcon icon={faUpload} />
-                        Upload File
-                      </Button>
+                      <React.Fragment>
+                      
+                      <div className="filename">
+                        {uploadedFileName && <p>File: {uploadedFileName}</p>}
+                      </div>
+                      <div {...getRootProps()} className="custom-file-upload">
+                        <input {...getInputProps()} accept=".xlsx, .xls" />
+                        {isDragActive ? (
+                          <p>Drop the files here ...</p>
+                        ) : (
+                          <Button className="btn btn-secondary btn-sm upload">
+                            <FontAwesomeIcon icon={faUpload} />
+                            Upload File
+                          </Button>
+                        )}
+                      </div>
+                      
+                    </React.Fragment>
+                    
+                      
                     )}
                   </div>
                 </Form>
@@ -449,11 +490,11 @@ function Dashboard() {
                   >
                     Submit
                   </Button>
-                  <Button className="clear" variant="danger">
+                  {/* <Button className="clear" variant="danger">
                     {" "}
                     Clear{" "}
                     <FontAwesomeIcon className="clearicon" icon={faTrash} />
-                  </Button>
+                  </Button> */}
                 </div>
               </div>
             </div>
@@ -461,12 +502,13 @@ function Dashboard() {
         </div>
       </Container>
       <br />
-      <CustomSnackbar
-        open={snackbarOpen}
-        message={snackbarMessage}
-        onClose={handleCloseSnackbar}
-      />
-      <Container fluid >
+
+
+     
+
+
+
+      <Container fluid className="mt-2" >
         <Row className="row Render-Row">
           <Col className="col Render-Col">
             <div className="table-responsive render">

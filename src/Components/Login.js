@@ -35,15 +35,30 @@ function Login() {
     
     // Validate email
     if (!email) {
-      setEmailError('Email is required');
+      setemailError('Email is required');
+      setSnackbarMessage('Email is required');
+      setSnackbarOpen(true);
+
+
       return;
     }
 
     // Validate password
     if (!password) {
       setPasswordError('Password is required');
+      setSnackbarMessage('Password is required');
+      setSnackbarOpen(true);
+
       return;
     }
+
+     // Validate email format
+  if (!email.includes('@')) {
+    setemailError('Invalid email format');
+    setSnackbarMessage('Please enter a valid email');
+    setSnackbarOpen(true);
+    return;
+  }
     const requestBody = { email, password };
 
     try {
@@ -57,14 +72,17 @@ function Login() {
 
       if (response.ok) {
         const data1 = await response.json();
+        const { UserName, email, Organization } = data1;
         console.log(data1)
-        const { email, organization } = data1;
+  
 
         // Store email in local storage
         localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('UserName', UserName);
+
         localStorage.setItem('email', email);
         localStorage.setItem('password', password);
-        localStorage.setItem('Organisation', organization);
+        localStorage.setItem('Organisation', Organization);
 
         navigate('/dashboard');
       } else {

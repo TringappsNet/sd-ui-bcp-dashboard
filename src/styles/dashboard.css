@@ -1,8 +1,17 @@
+/* body {
+  overflow: hidden;
+} */
+
 
 .navbar-toggler {
   margin-right: 25px;
   width: 50px;
 
+}
+.table-responsive.render {
+  max-height: min-content;
+  overflow-y: auto;
+  height: 470px;
 }
 
 
@@ -31,8 +40,10 @@
       }
 
       .dropdown-menu {
-        margin-top: 5px;
-      }
+        max-width: 160px;
+        margin-left: 82px;
+        margin-top: 20px;
+    }
 
       .navbar {
         position: sticky;
@@ -53,7 +64,7 @@
         background-color: none;
       }
 
-      .dropdown-toggle,
+    
       .dropdown-menu {
         min-width: 150px;
       }
@@ -77,8 +88,9 @@
       .search-wrapper {
         display: flex;
         align-items: center;
-      }
-
+        width: 550px;
+        /* margin-right: 330px; */
+    }
       .search-icon {
         margin-right: 10px;
       }
@@ -109,8 +121,8 @@
       }
 
       .customLogo {
-        width: 50px;
-        height: auto;
+        width: 75px;
+        height: 60px;
         max-height: 50px;
       }
 
@@ -127,8 +139,18 @@
       }
 
       .custom-file-upload {
-        margin-left: 10px;
-      }
+        display: flex;
+        flex-direction: row;
+        max-width: 200px;
+        margin-left: 30px;
+    }
+    .filename>p{
+      width: 300px;
+      align-items: center;
+      margin-top: 12px;
+      /* background-color: #28a745; */
+      
+    }
 
       .submit {
         margin-right: 10px;
@@ -246,7 +268,7 @@
         }
 
         .search-input {
-          max-width: 290px;
+          max-width: 400px;
           margin-left: 10px;
         }
 
@@ -366,7 +388,7 @@
         width: 30px;
         position: sticky;
 
-        left: 0;
+        left: -1px;
 
         z-index: 1;
 
@@ -377,7 +399,7 @@
       .action-cell {
         max-width: 100px;
         position: sticky;
-        right: 0;
+        right: -1px;
 
         z-index: 1;
 
@@ -393,9 +415,9 @@
 
       .Render-Col {
         background-color: #ffffff;
-        padding: 40px;
+        padding: 20px;
         border-radius: 6px;
-      }
+    }
 
       .table-responsive {
         border-radius: 1px;
@@ -502,7 +524,53 @@
                 color: black;
               }
 
+.username-container, 
+.customDropdown{
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+              .username{
+             margin-right: 10px;
+            margin-left: 10px;
+              }
 
+              .dropdown {
+                padding-left: 100px;
+                display: flex;
+                flex-direction: row-reverse;
+            }
+
+         
+
+
+            @media (max-width: 1260px) {
+            .ml-4{
+              display: flex;
+              flex-direction: column;
+
+            }
+            .submit{
+              margin-bottom: 10px;
+              margin-right: 40px;
+            }
+            
+            }
+
+        
+            .table th, .table td {
+              padding: 3px;
+              text-align: center;
+              height: 13px;
+              font-size: small;
+              padding-top: 2px;
+          }
+          tbody, td, tfoot, th, thead, tr {
+            border-color: inherit;
+            border-style: none;
+            border-width: 0;
+        }
+            
       @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap')
 
 
