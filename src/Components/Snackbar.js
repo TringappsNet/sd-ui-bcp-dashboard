@@ -20,6 +20,8 @@ export default function CustomSnackbar({ message, onClose, open }) {
       open={open}
       onClose={handleClose}
       message={message}
+      color={"success"}
+      
       action={
         <React.Fragment>
           <IconButton
@@ -33,7 +35,7 @@ export default function CustomSnackbar({ message, onClose, open }) {
         </React.Fragment>
       }
       classes={{
-        root: 'customSnackbar', // Apply customSnackbar class
+        root: 'customSnackbar', 
       }}
     />
   );
