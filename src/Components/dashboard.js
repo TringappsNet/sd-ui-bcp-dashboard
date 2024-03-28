@@ -326,7 +326,7 @@ function Dashboard() {
       console.log("Identifier to Delete:", identifierToDelete);
 
       const response = await fetch(`${PortURL}/delete`, {
-        method: "DELETE",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
@@ -374,7 +374,7 @@ function Dashboard() {
                   as="div"
                   className="customDropdown"
                 >
-                  <FontAwesomeIcon className="username" icon={faUser} /> {username}
+                  <FontAwesomeIcon className="username" icon={faUser} /> USERNAME
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   <PopUpContainer>
