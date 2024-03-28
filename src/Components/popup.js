@@ -22,6 +22,10 @@ const PopUpContainer = () => {
     setShowInvitePopup(false);
   };
 
+  const handleResetSuccess = () => {
+    setShowResetPopup(false); // Close reset password popup
+  };
+
   return (
     <div>
       <button onClick={handleResetPopupToggle} className='reset'> Reset Password</button>
@@ -30,7 +34,7 @@ const PopUpContainer = () => {
         <div className="popup-container">
           <div className="backdrop" onClick={handleClosePopups}></div>
           <div className="popup-inner" onClick={(e) => e.stopPropagation()}>
-            {showResetPopup && <ResetNewPassword />}
+            {showResetPopup && <ResetNewPassword onClose={handleResetSuccess} />}
             {showInvitePopup && <SendInvite />}
           </div>
         </div>
