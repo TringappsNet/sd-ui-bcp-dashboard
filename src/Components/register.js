@@ -33,7 +33,10 @@ function Register() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+  
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+  
     // Validation logic for each field
     if (!firstName) {
       setFirstNameError('First name is required');
@@ -56,15 +59,15 @@ function Register() {
       setPasswordError('Passwords do not match');
       return;
     }
-
-    // If all validations pass, proceed with form submission
+  
     const requestBody = {
+      token: token, 
       firstName: firstName,
       lastName: lastName,
-      password: newPassword,
       phoneNo: phoneNumber,
+      password: newPassword
     };
-
+  
     try {
       const response = await fetch(`${PortURL}/register`, {
         method: 'POST',
@@ -73,7 +76,7 @@ function Register() {
         },
         body: JSON.stringify(requestBody),
       });
-
+  
       if (response.ok) {
         console.log('User registered successfully!');
         navigate('/login');
@@ -103,7 +106,7 @@ function Register() {
       console.error('Error registering user:', error.message);
     }
   };
-
+  
   return (
     <div>
       <Header/>
