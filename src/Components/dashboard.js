@@ -30,7 +30,7 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/dashboard.css";
 import PopUpContainer from "./popup";
-import ResetPassword from "./resetPassword";
+import ResetNewPassword from "./resetNewPassword";
 import CustomSnackbar from "./Snackbar";
 import { PortURL } from "./Config";
 
@@ -378,7 +378,7 @@ function Dashboard() {
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   <PopUpContainer>
-                    <ResetPassword  />
+                    <ResetNewPassword  />
                   </PopUpContainer>
                   <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
                 </Dropdown.Menu>
@@ -394,7 +394,7 @@ function Dashboard() {
                 <FontAwesomeIcon icon={faUser} /> {username}
               </div>
               <PopUpContainer className="popUp" >
-                <ResetPassword className="popUp" />
+                <ResetNewPassword className="popUp" />
               </PopUpContainer> 
               <Dropdown.Item onClick={handleLogout} className="logout">Logout</Dropdown.Item>
               </div>
