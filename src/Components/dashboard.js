@@ -34,7 +34,7 @@ import ResetNewPassword from "./resetNewPassword";
 import CustomSnackbar from "./Snackbar";
 import { PortURL } from "./Config";
 import LoadingSpinner from './LoadingSpinner'; 
-
+import ResetPassword from "./resetPassword";
 
 
 
