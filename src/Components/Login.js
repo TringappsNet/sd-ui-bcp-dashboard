@@ -12,9 +12,9 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'; 
 
 function Login() {
-  const [email, setemail] = useState('');
+  const [email, setEmail] = useState(''); // Corrected typo
   const [password, setPassword] = useState('');
-  const [emailError, setemailError] = useState('');
+  const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [serverError, setServerError] = useState('');
@@ -28,10 +28,10 @@ function Login() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+    
     // Validate email
     if (!email) {
-      setemailError('Eamil is required');
+      setEmailError('Email is required');
       return;
     }
 
@@ -53,8 +53,10 @@ function Login() {
 
       if (response.ok) {
         const data1 = await response.json();
+        console.log(data1)
         const { email, organization } = data1;
 
+        // Store email in local storage
         localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('email', email);
         localStorage.setItem('password', password);
@@ -64,21 +66,18 @@ function Login() {
       } else {
         const data = await response.json();
         if (response.status === 400 && data.message === 'User Not Found!') {
-          //setServerError('email not found.');
-          setSnackbarMessage('Eamil not found.');
+          setSnackbarMessage('Email not found.');
           setSnackbarOpen(true);
         } else if (response.status === 401 && data.message === 'Invalid Password!') {
           setSnackbarMessage('Invalid password!');
           setSnackbarOpen(true);
         } else {
-          //setServerError('An error occurred while logging in.');
           setSnackbarMessage('An error occurred while logging in.');
           setSnackbarOpen(true);
         }
       }
     } catch (error) {
       console.error('Error logging in:', error);
-      //setServerError('An error occurred while logging in.');
       setSnackbarMessage('An error occurred while logging in.');
       setSnackbarOpen(true);
     }
@@ -109,8 +108,8 @@ function Login() {
             label="Email"
             value={email}
             onChange={(e) => {
-              setemail(e.target.value);
-              setemailError('');
+              setEmail(e.target.value); // Corrected typo
+              setEmailError('');
               setServerError('');
             }}
             fullWidth

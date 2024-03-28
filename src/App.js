@@ -10,22 +10,19 @@ import React, { useEffect } from 'react';
 
 function App() {
   useEffect(() => {
-    document.title = 'BCP Dashboard'; 
+    document.title = 'BCP'; // Set the title to 'Dashboard'
   }, []);
   return (
     
     <Router>
     <Routes>
-      <Route index element={<Login/>} /> 
+      <Route index element={<Login/>} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/login" element={<Login/>} />
-      <Route path="/register" element={<Register/>} /> 
+      <Route path="/register" element={<Register/>} />
       <Route path="/dashboard" element={<Dashboard/>} />
-    <Route path="/send-invite" element={<SendInvite />} />
-    
-      <Route path="/login" element={<Login/>} /> 
-
+      <Route path="/send-invite" element={<SendInvite />} />
     </Routes>
   </Router>
   );

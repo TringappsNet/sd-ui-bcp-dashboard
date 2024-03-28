@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ResetPassword from './resetPassword';
+import ResetNewPassword from './resetNewPassword';
 import SendInvite from './sendInvite';
 import '../styles/popup.css'; 
 
@@ -30,7 +30,7 @@ const PopUpContainer = () => {
         <div className="popup-container">
           <div className="backdrop" onClick={handleClosePopups}></div>
           <div className="popup-inner" onClick={(e) => e.stopPropagation()}>
-            {showResetPopup && <ResetPassword />}
+            {showResetPopup && <ResetNewPassword />}
             {showInvitePopup && <SendInvite />}
           </div>
         </div>
