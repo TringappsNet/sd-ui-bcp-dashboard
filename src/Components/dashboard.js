@@ -30,9 +30,11 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/dashboard.css";
 import PopUpContainer from "./popup";
-import ResetPassword from "./resetPassword";
+import ResetNewPassword from "./resetNewPassword";
 import CustomSnackbar from "./Snackbar";
 import { PortURL } from "./Config";
+import LoadingSpinner from './LoadingSpinner'; 
+
 
 
 
@@ -42,7 +44,7 @@ function Dashboard() {
   const [searchQuery, setSearchQuery] = useState("");
   const [editedRowId, setEditedRowId] = useState(null); // Track edited row ID
   const [editedRowData, setEditedRowData] = useState({}); // Track edited row data
-
+  const [loading, setLoading] = useState(false); 
   const [organization, setOrganization] = useState("");
   const [showPreview, setShowPreview] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
@@ -211,6 +213,8 @@ function Dashboard() {
   };
 
   const handleSubmit = async () => {
+    setLoading(true); 
+
     try {
       const userData = {
         username: username,
@@ -251,6 +255,7 @@ function Dashboard() {
     } catch (error) {
       console.error("Error:", error);
     }
+    setLoading(false); 
   };
 
   const handleCheckboxChange = (rowId) => {
@@ -396,7 +401,7 @@ function Dashboard() {
                 
                 <Dropdown.Menu>
                   <PopUpContainer>
-                    <ResetPassword  />
+                    <ResetNewPassword  />
                   </PopUpContainer>
                   <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
                 </Dropdown.Menu>
@@ -416,6 +421,7 @@ function Dashboard() {
                 </PopUpContainer> 
                 <Dropdown.Item onClick={handleLogout} className="logout">Logout</Dropdown.Item>
                 </div>
+
 
               </React.Fragment>
             )}
@@ -586,6 +592,7 @@ function Dashboard() {
           </Col>
         </Row>
       </Container>
+      {loading && <LoadingSpinner />} 
     </div>
   );
 }

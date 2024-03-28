@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import ResetPassword from './resetPassword';
+import ResetNewPassword from './resetNewPassword';
 import SendInvite from './sendInvite';
 import '../styles/popup.css'; 
+
 
 const PopUpContainer = () => {
   const [showResetPopup, setShowResetPopup] = useState(false);
@@ -22,6 +23,10 @@ const PopUpContainer = () => {
     setShowInvitePopup(false);
   };
 
+  const handleResetSuccess = () => {
+    setShowResetPopup(false); // Close reset password popup
+  };
+
   return (
     <div>
       <button onClick={handleResetPopupToggle} className='reset'> Reset Password</button>
@@ -30,7 +35,7 @@ const PopUpContainer = () => {
         <div className="popup-container">
           <div className="backdrop" onClick={handleClosePopups}></div>
           <div className="popup-inner" onClick={(e) => e.stopPropagation()}>
-            {showResetPopup && <ResetPassword />}
+            {showResetPopup && <ResetNewPassword onClose={handleResetSuccess} />}
             {showInvitePopup && <SendInvite />}
           </div>
         </div>

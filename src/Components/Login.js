@@ -9,12 +9,15 @@ import Header from './Header';
 import CustomSnackbar from './Snackbar';
 import { TextField, InputAdornment } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'; 
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import LoadingSpinner from './LoadingSpinner'; 
+
 
 function Login() {
-  const [email, setemail] = useState('');
+  const [email, setEmail] = useState(''); // Corrected typo
   const [password, setPassword] = useState('');
-  const [emailError, setemailError] = useState('');
+  const [loading, setLoading] = useState(false); 
+  const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [serverError, setServerError] = useState('');
@@ -28,12 +31,14 @@ function Login() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+    setLoading(true); 
+    
     // Validate email
     if (!email) {
       setemailError('Email is required');
       setSnackbarMessage('Email is required');
       setSnackbarOpen(true);
+
 
       return;
     }
@@ -68,7 +73,10 @@ function Login() {
       if (response.ok) {
         const data1 = await response.json();
         const { UserName, email, Organization } = data1;
+        console.log(data1)
+  
 
+        // Store email in local storage
         localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('UserName', UserName);
 
@@ -80,24 +88,22 @@ function Login() {
       } else {
         const data = await response.json();
         if (response.status === 400 && data.message === 'User Not Found!') {
-          //setServerError('email not found.');
-          setSnackbarMessage('Eamil not found.');
+          setSnackbarMessage('Email not found.');
           setSnackbarOpen(true);
         } else if (response.status === 401 && data.message === 'Invalid Password!') {
           setSnackbarMessage('Invalid password!');
           setSnackbarOpen(true);
         } else {
-          //setServerError('An error occurred while logging in.');
           setSnackbarMessage('An error occurred while logging in.');
           setSnackbarOpen(true);
         }
       }
     } catch (error) {
       console.error('Error logging in:', error);
-      //setServerError('An error occurred while logging in.');
       setSnackbarMessage('An error occurred while logging in.');
       setSnackbarOpen(true);
     }
+    setLoading(false); 
   };
 
   const handleCloseSnackbar = () => {
@@ -125,8 +131,8 @@ function Login() {
             label="Email"
             value={email}
             onChange={(e) => {
-              setemail(e.target.value);
-              setemailError('');
+              setEmail(e.target.value); // Corrected typo
+              setEmailError('');
               setServerError('');
             }}
             fullWidth
@@ -194,6 +200,7 @@ function Login() {
         onClose={handleCloseSnackbar}
       />
     </div>
+    {loading && <LoadingSpinner />} 
    </div>
   );
 }
