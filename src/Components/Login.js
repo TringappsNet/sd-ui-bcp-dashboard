@@ -169,9 +169,7 @@ function Login() {
             </Button>
           </div>
         </Form>
-        <div className="text-center mt-4 signup ">
-          New to B.C.P? <Link to="/register"> Sign up</Link>
-        </div>
+        
       </Container>
       <CustomSnackbar
         open={snackbarOpen}
