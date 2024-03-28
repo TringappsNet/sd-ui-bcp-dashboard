@@ -16,29 +16,37 @@ function ResetPassword() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+  
+    const urlParams = new URLSearchParams(window.location.search);
+    const resetToken = urlParams.get('token');
+    
     if (newPassword !== confirmNewPassword) {
       setError('Passwords do not match');
       return;
     }
-
+  
+    const requestBody = {
+      resetToken: resetToken,
+      newPassword: newPassword
+    };
+  
     try {
       const response = await fetch(`${PortURL}/reset-password`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ userName, oldPassword, newPassword }),
+        body: JSON.stringify(requestBody),
       });
-
+  
       if (response.ok) {
         setSuccess(true);
-          // Reset input fields and errors
-      setUserName('');
-      setOldPassword('');
-      setNewPassword('');
-      setConfirmNewPassword('');
-      setError(null);
+        // Reset input fields and errors
+        setUserName('');
+        setOldPassword('');
+        setNewPassword('');
+        setConfirmNewPassword('');
+        setError(null);
       } else {
         const data = await response.json();
         setError(data.message);
@@ -48,6 +56,7 @@ function ResetPassword() {
       setError('Error resetting password');
     }
   };
+  
 
   return (
     <div className="form d-flex justify-content-center align-items-center">
