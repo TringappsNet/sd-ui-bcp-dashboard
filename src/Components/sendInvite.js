@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import { Container, Button, Form } from 'react-bootstrap';
-import { TextField, Select, MenuItem, FormControl, InputLabel } from '@mui/material'; 
+import { TextField, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import '../styles/sendInvite.css';
+import { PortURL } from './Config';
 
-const SendInvite = ({ onClose, onSubmit }) => {
+const SendInvite = ({ onClose }) => {
   const [formData, setFormData] = useState({
     email: '',
     role: '',
-    organization: '',
-    age: ''
+    organization: ''
   });
 
-  const [emailError, setEmailError] = useState(''); 
+  const [emailError, setEmailError] = useState('');
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -24,14 +24,27 @@ const SendInvite = ({ onClose, onSubmit }) => {
     }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (!formData.email.trim()) {
       setEmailError('Email is required');
       return;
     }
 
-    onSubmit(formData.email, formData.role, formData.organization);
+    try {
+      const response = await fetch(`${PortURL}/send-invite`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+      const data = await response.json();
+      console.log(data);
+      onClose();
+    } catch (error) {
+      console.error('Error sending invitation:', error);
+    }
   };
 
   return (
