@@ -69,20 +69,19 @@ function Login() {
 
       if (response.ok) {
         const data1 = await response.json();
-        const { UserName, email, Organization } = data1;
-        console.log(data1)
-  
-
-        // Store email in local storage
+        const { UserName, email, Organization, sessionId } = data1;
+      
+        // Store session ID in local storage
+        localStorage.setItem('sessionId', sessionId);
         localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('UserName', UserName);
-
         localStorage.setItem('email', email);
         localStorage.setItem('password', password);
         localStorage.setItem('Organisation', Organization);
-
+      
         navigate('/dashboard');
-      } else {
+      }
+       else {
         const data = await response.json();
         if (response.status === 400 && data.message === 'User Not Found!') {
           setSnackbarMessage('Email not found.');
