@@ -16,11 +16,18 @@ export default function CustomSnackbar({ message, variant, onClose, open }) {
 
   let backgroundColor = '#D16E6E'; 
   if (variant === 'success') {
-    backgroundColor = '#82c971'; 
+    backgroundColor = '#82c971'; // Green color for success variant
   }
 
+  // Close the Snackbar after 5 seconds
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      handleClose();
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [open]);
+
   return (
- 
     <Stack spacing={2} sx={{ maxWidth: 600 }}>
       <Snackbar
         className='mt-4'

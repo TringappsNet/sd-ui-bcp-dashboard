@@ -35,6 +35,7 @@ import CustomSnackbar from "./Snackbar";
 import { PortURL } from "./Config";
 import LoadingSpinner from './LoadingSpinner'; 
 import ResetPassword from "./resetPassword";
+import ConfirmationModal from "./ConfirmationModal";
 
 
 
@@ -56,6 +57,7 @@ function Dashboard() {
   const [navbarCollapsed, setNavbarCollapsed] = useState(false); // Track Navbar collapse state
   const [snackbarColor, setSnackbarColor] = useState("success"); 
   const [uploadedFileName, setUploadedFileName] = useState("");
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
 
   const navigate = useNavigate();
@@ -137,7 +139,6 @@ function Dashboard() {
           });
           setData((prevData) => [...prevData, ...newJsonData]);
           setUploadedFileName(file.name);
-
         } catch (error) {
           console.error("Error reading file:", error);
         }
@@ -185,12 +186,24 @@ function Dashboard() {
   };
 
   const handleLogout = () => {
-      localStorage.removeItem('sessionId');
-        localStorage.removeItem('isLoggedIn');
-        localStorage.removeItem('UserName');
-        localStorage.removeItem('email');
-        localStorage.removeItem('Organisation');
+    // Show the confirmation modal
+    setShowConfirmation(true);
+  };
+
+  
+  const handleConfirmLogout = () => {
+    // Perform logout logic
+    localStorage.removeItem("sessionId");
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("UserName");
+    localStorage.removeItem("email");
+    localStorage.removeItem("Organisation");
     navigate("/login");
+  };
+
+  const handleCloseConfirmation = () => {
+    // Hide the confirmation modal
+    setShowConfirmation(false);
   };
 
   const handleInvite = () => {
@@ -201,19 +214,23 @@ function Dashboard() {
     const dateParts = header.match(/\b(\w{3} \d{2})\b/);
     return dateParts ? dateParts[0] : header;
   };
-
   const formatDateCell = (value, columnName) => {
-    if (typeof value === "string" && columnName === "Month/Year") {
-      const [month, year] = value.split("/");
-      const monthAbbreviation = month.substr(0, 3);
-      return `${monthAbbreviation}-${year}`;
-    } else if (value instanceof Date) {
-      const month = value.toLocaleDateString("en-US", { month: "short" });
-      const year = value.getFullYear().toString().slice(-2);
-      return `${month}${year}`;
-    }
-    return value;
-  };
+
+  if (typeof value === "string" && columnName === "Month/Year") {
+    // Assuming the input format is "Mon Jan 31 2022"
+    const [monthAbbreviation, _, year] = value.split(" ");
+    return `${monthAbbreviation}${year.slice(-2)}`;
+  } else if (value instanceof Date) {
+    const month = value.toLocaleDateString("en-US", { month: "short" });
+    const year = value.getFullYear().toString().slice(-2);
+    console.log(month);
+
+    return `${month}${year}`;
+  }
+  
+  return value;
+};
+
 
   const handleSubmit = async () => {
     setLoading(true); 
@@ -240,6 +257,8 @@ function Dashboard() {
         }
         return row;
       });
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
       const response = await fetch(`${PortURL}/bulk-upload`, {
         method: "POST",
         headers: {
@@ -252,6 +271,11 @@ function Dashboard() {
         fetchData();
         const jsonResponse = await response.json();
         console.log(jsonResponse);
+
+        setUploadSuccess(true); 
+        setUploadedFileName("");
+        setSnackbarMessage("Data uploaded successfully");
+      setSnackbarColor("success");
       } else {
         console.error("Error:", response.statusText);
       }
@@ -377,16 +401,21 @@ function Dashboard() {
 
   return (
     <div className="dashboard-container">
+        <CustomSnackbar
+        open={snackbarOpen}
+        message={snackbarMessage}
+        onClose={handleCloseSnackbar}
+        color={snackbarColor}      />
+
       <Navbar bg="light" expand="lg" className="w-100">
         <div className="brand-wrapper">
-          <NavbarBrand href="#home">
-            <img src="/images/bcp2.png" alt="Logo" className="customLogo" />
-          </NavbarBrand>
+        <NavbarBrand href="#home" className="customNavbarBrand"></NavbarBrand>
+
         </div>
         <NavbarToggle aria-controls="basic-navbar-nav" />
         <NavbarCollapse id="basic-navbar-nav">
           <Nav className="ml-auto align-items-center">
-            {/* Render username inside dropdown menu if isMobile is true */}
+          
             {isMobile ? (
               <Dropdown className="d-flex username">
                  
@@ -419,8 +448,8 @@ function Dashboard() {
                 <div className="ml-auto align-items-center user ">
                   <FontAwesomeIcon icon={faUser} /> {username}
                 </div>
-                <PopUpContainer className="popUp" >
-                  <ResetPassword className="popUp" />
+                <PopUpContainer  >
+                  <ResetPassword />
                 </PopUpContainer> 
                 <Dropdown.Item onClick={handleLogout} className="logout">Logout</Dropdown.Item>
                 </div>
@@ -432,84 +461,70 @@ function Dashboard() {
         </NavbarCollapse>
       </Navbar>
 
-      <CustomSnackbar
-        open={snackbarOpen}
-        message={snackbarMessage}
-        onClose={handleCloseSnackbar}
-        color={snackbarColor}      />
-        
-      <Container fluid>
-        <div className="container-fluid full-height mt-4">
-          <div className="row">
-            <div className="col ">
-              <div className="border shadow p-3 d-flex justify-content-between align-items-center ">
-                <Form className="d-flex ">
-                  <div className="search-wrapper mr-2">
-                    {/* <div className="search-icon">
-                      <FontAwesomeIcon icon={faSearch} />
-                    </div> */}
-                    <FormControl
-                      className="search-input"
-                      type="text"
-                      placeholder="Search"
-                      style={{ flex: "1" }}
-                      value={searchQuery}
-                      onChange={handleSearchChange}
-                    />
-                  </div>
+      <ConfirmationModal
+        show={showConfirmation}
+        onHide={handleCloseConfirmation}
+        onConfirm={handleConfirmLogout}
+        message="Are you sure you want to log out?"
+      />
 
-                  <div {...getRootProps()} className="custom-file-upload ">
-                    <input {...getInputProps()} accept=".xlsx, .xls" />
-                    {isDragActive ? (
-                      <p>Drop the files here ...</p>
-                    ) : (
-                      <React.Fragment>
-                      
-                      <div className="filename">
-                        {uploadedFileName && <p>File: {uploadedFileName}</p>}
-                      </div>
-                      <div {...getRootProps()} className="custom-file-upload">
-                        <input {...getInputProps()} accept=".xlsx, .xls" />
-                        {isDragActive ? (
-                          <p>Drop the files here ...</p>
-                        ) : (
-                          <Button className="btn btn-secondary btn-sm upload">
-                            <FontAwesomeIcon icon={faUpload} />
-                            Upload File
-                          </Button>
-                        )}
-                      </div>
-                      
-                    </React.Fragment>
-                    
-                      
-                    )}
-                  </div>
-                </Form>
-                <div className="ml-4 ">
-                  <Button
-                    className="mr-2 btn btn-secondary submit"
-                    onClick={handleSubmit}
-                  >
-                    Submit
-                  </Button>
-                  {/* <Button className="clear" variant="danger">
-                    {" "}
-                    Clear{" "}
-                    <FontAwesomeIcon className="clearicon" icon={faTrash} />
-                  </Button> */}
-                </div>
-              </div>
-            </div>
-          </div>
+    
+
+<Container fluid className="container-fluid mt-4">
+
+  <Form className="border shadow p-3 d-flex flex-column flex-lg-row">
+    <div className="search-wrapper col-lg-6 mb-3 mb-lg-0">
+      <FormControl
+        className="search-input"
+        type="text"
+        placeholder="Search"
+        style={{ flex: "1" }}
+        value={searchQuery}
+        onChange={handleSearchChange}
+      />
+    </div>
+    <div className="spacer"></div>
+  
+    <div className="filename mr-3 col-lg-2 mb-3 ">
+      {uploadedFileName ? (
+        <div className="d-flex align-items-center">
+          <p className="mb-0">{`File: ${uploadedFileName}`}</p>
+          <FontAwesomeIcon
+            icon={faTimes} // Cancel icon
+            className="ml-2 cancel-icon"
+            onClick={() => setUploadedFileName("")} // onClick handler to clear uploadedFileName
+          />
         </div>
-      </Container>
-      <br />
+      ) : (
+        <p className="mb-0">No file uploaded</p>
+      )}
+    </div>
+    <div className="spacer"></div>
 
+    <div className="custom-file-upload d-flex">
+      
+      <div {...getRootProps()} className="Upload ">
+        <input {...getInputProps()} accept=".xlsx, .xls" />
+        {isDragActive ? (
+          <p>Drop the files here ...</p>
+        ) : (
+          <Button className="btn btn-secondary btn-sm  Upload">
+            <FontAwesomeIcon  className="clearicon" icon={faUpload} />
+            Upload 
+          </Button>
+        )}
+      </div>
+      <div className="spacer"></div>
 
-     
-
-
+      <Button className="btn  btn-secondary submit" onClick={handleSubmit}>
+        Submit
+      </Button>
+    </div>
+  </Form>
+</Container>
+{loading && (
+  <div className="loading-spinner"></div>
+)}
 
       <Container fluid className="mt-2" >
         <Row className="row Render-Row">
