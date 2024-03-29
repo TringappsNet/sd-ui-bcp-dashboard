@@ -5,7 +5,7 @@ import '../styles/header.css';
 function Header() {
   return (
     <header className="header">
-      <Link to="/Login">
+      <Link to="/dashboard">
         <img src="/images/bcp.png" alt="Logo" className="logo" />
       </Link>
     </header>

@@ -7,14 +7,19 @@ import SendInvite from './Components/sendInvite';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './Components/Login';
 import React, { useEffect } from 'react';
+import { Helmet } from 'react-helmet';
 
 function App() {
   useEffect(() => {
-    document.title = 'BCP'; // Set the title to 'Dashboard'
+    document.title = 'BCP'; 
   }, []);
   return (
     
     <Router>
+       <Helmet>
+      <title>BCP | Your Company Name</title> 
+      <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    </Helmet>
     <Routes>
       <Route index element={<Login/>} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
