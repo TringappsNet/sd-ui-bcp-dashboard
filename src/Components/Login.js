@@ -76,7 +76,6 @@ function Login() {
         localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('UserName', UserName);
         localStorage.setItem('email', email);
-        localStorage.setItem('password', password);
         localStorage.setItem('Organisation', Organization);
       
         navigate('/dashboard');
