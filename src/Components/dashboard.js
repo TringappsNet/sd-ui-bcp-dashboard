@@ -185,8 +185,11 @@ function Dashboard() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("username");
+      localStorage.removeItem('sessionId');
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('UserName');
+        localStorage.removeItem('email');
+        localStorage.removeItem('Organisation');
     navigate("/login");
   };
 
@@ -393,7 +396,7 @@ function Dashboard() {
                   as="div"
                   className="customDropdown"
                 >
-                  <div className="username-container">USERNAME
+                  <div className="username-container">{username}
                  <FontAwesomeIcon className="username" icon={faUser} />
   </div>
                 </Dropdown.Toggle>
