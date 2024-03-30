@@ -89,24 +89,24 @@ const SendInvite = ({ onClose }) => {
               </Select>
             </FormControl>
           </Form.Group>
-          <Form.Group controlId="formBasicOrganization" className="mb-3">
-            <FormControl fullWidth>
-              <InputLabel id="organization-select">Organization</InputLabel>
-              <Select
-                labelId="organization-select"
-                name="organization"
-                label="Organization"
-                value={formData.organization}
-                onChange={handleChange}
-                fullWidth
-                size="small"
-              >
-                <MenuItem value="organization1">Organization 1</MenuItem>
-                <MenuItem value="organization2">Organization 2</MenuItem>
-                <MenuItem value="organization3">Organization 3</MenuItem>
-              </Select>
-            </FormControl>
-          </Form.Group>
+            <Form.Group controlId="formBasicOrganization" className="mb-3">
+              <FormControl fullWidth>
+                <InputLabel id="organization-select">Organization</InputLabel>
+                <Select
+                  labelId="organization-select"
+                  name="organization"
+                  label="Organization"
+                  value={formData.organization}
+                  onChange={handleChange}
+                  fullWidth
+                  size="small"
+                >
+                  <MenuItem value="organization1">Organization 1</MenuItem>
+                  <MenuItem value="organization2">Organization 2</MenuItem>
+                  <MenuItem value="organization3">Organization 3</MenuItem>
+                </Select>
+              </FormControl>
+            </Form.Group>
           <Button type="submit" className="btn btn-success rounded-pill w-100">Submit</Button>
         </Form>
       </Container>

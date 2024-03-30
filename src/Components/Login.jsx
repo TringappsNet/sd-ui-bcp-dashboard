@@ -112,14 +112,15 @@ function Login() {
     <div className="form d-flex justify-content-center align-items-center ">
       <Container className="con mt-5 p-4 shadow  ">
         <h6 className="text-center mb-2 mt-1 display-6 ">Sign in</h6>
-        <p>Navigate your Business with Ease!!!</p>
+        {/* <p>Navigate your Business with Ease!!!</p> */}
+        
         {serverError && (
           <div className="text-center mt-2">
             <p className="text-danger">{serverError}</p>
           </div>
         )}
         <Form onSubmit={handleSubmit}>
-          <Form.Group controlId="formBasicEmail" className="mb-4 mt-4">
+          <Form.Group controlId="formBasicEmail" className="mb-3 mt-5">
           <TextField
             className={`label form-control ${emailError ? 'error' : ''}`}
             type="email"
@@ -136,7 +137,7 @@ function Login() {
             error={!!emailError}
           />
           </Form.Group>
-          <Form.Group controlId="formBasicPassword" className="mb-2 mt-4 ">
+          <Form.Group controlId="formBasicPassword" className="mb-2 mt-2 ">
           <TextField
             className={`label form-control ${passwordError ? 'error' : ''}`}
             type={showPassword ? 'text' : 'password'}
@@ -164,14 +165,14 @@ function Login() {
             }}
           />
           </Form.Group>
-          <Row className="mb-2 mt-2 ">
+          <Row className="mb-2 mt-1 ">
             <Col>
               <Form.Text className="text-left">
                 <Link to="/forgot-password">Forgot Password?</Link>
               </Form.Text>
             </Col>
           </Row>
-          <Row className="mb-3">
+          {/* <Row className="mb-3">
             <Col>
               <Form.Check
                 type="checkbox"
@@ -179,8 +180,8 @@ function Login() {
                 className="text-right"
               />
             </Col>
-          </Row>
-          <div className="btn-container mt-4 mb-5">
+          </Row> */}
+          <div className="btn-container mt-5 mb-5">
             <Button type="submit" className="btn btn-success  rounded-pill ">
               Sign in
             </Button>
