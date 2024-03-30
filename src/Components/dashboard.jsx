@@ -278,9 +278,15 @@ function Dashboard() {
       setSnackbarColor("success");
       } else {
         console.error("Error:", response.statusText);
+        setSnackbarOpen(true);
+        setSnackbarMessage("Data upload failed");
+        setSnackbarColor("error");
       }
     } catch (error) {
       console.error("Error:", error);
+      setSnackbarOpen(true);
+      setSnackbarMessage("Data upload failed");
+      setSnackbarColor("error");
     }
     setLoading(false); 
   };
