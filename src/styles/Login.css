@@ -18,8 +18,7 @@ body{
 
 @media (max-width: 576px) {
   .con {
-    width: 50%;
-    height: 390px;
+    width: 90%;
     margin: auto;
   }
 }
@@ -57,7 +56,7 @@ body{
 .btn-success{
    background-color: #299689;
    width: 250px;
-   border:#299689 ;
+   border: #299689;
 }
 p{
   text-align: center;
