@@ -1,579 +1,608 @@
-/* body {
-  overflow: hidden;
-} */
-
-
-.navbar-toggler {
-  margin-right: 25px;
-  width: 50px;
-
-}
-.table-responsive.render {
-  max-height: min-content;
-  overflow-y: auto;
-  height: 470px;
+  /* body {
+    overflow: hidden;
+  } */
+  .mt-2 {
+    margin-top: 1.5rem !important;
 }
 
+  .navbar-toggler {
+    margin-right: 25px;
+    width: 50px;
 
-.border {
-  background-color: white;
-  border-radius: 6px;
+  }
 
-}
+  .table-responsive.render {
+    max-height: min-content;
+    overflow-y: auto;
+    height: 500px;
+  }
 
-      .ml-auto {
-        margin-right: 10px;
-      }
-
-      .navbar-nav {
-        flex-direction: row !important;
-        align-items: center;
-      }
-
-      .nav-link {
-        padding-right: 0.5rem !important;
-        padding-left: 0.5rem !important;
-      }
 
-      .dropdown-toggle {
-        margin-right: 10px;
-      }
+  .border {
+    background-color: white;
+    border-radius: 6px;
 
-      .dropdown-menu {
-        max-width: 160px;
-        margin-left: 82px;
-        margin-top: 20px;
-    }
-
-      .navbar {
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-
-        background-color: #ffffff;
-
-        border-bottom: 1px solid #dee2e6;
-
-      }
-
-      .brand-wrapper>a {
-        color: rgb(7, 106, 7);
-      }
-
-      .dropdown-basic {
-        background-color: none;
-      }
-
-    
-      .dropdown-menu {
-        min-width: 150px;
-      }
-
-      .navbar-nav {
-        width: 100%;
-        justify-content: flex-end;
-      }
-
-      .form-inline {
-        display: flex;
-        gap: 10px;
-
-      }
-
-      .brand-wrapper {
-        padding: 0 15px;
-
-      }
-
-      .search-wrapper {
-        display: flex;
-        align-items: center;
-        width: 550px;
-        /* margin-right: 330px; */
-    }
-      .search-icon {
-        margin-right: 10px;
-      }
-
-      .table-container {
-        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1), 0px 1px 3px rgba(0, 0, 0, 0.08);
-        border-radius: 8px;
-
-      }
-
-      .table-container table {
-        border: 1px solid #dee2e6;
-        border-radius: 5px;
-      }
-
-      .table-container th,
-      .table-container td {
-        border: 1px solid #dee2e6;
-        padding: 8px;
-      }
-
-      .table-container th {
-        background-color: #efeded;
-      }
-
-      .table-container tbody tr:hover {
-        background-color: #f0f0f0;
-      }
-
-      .customLogo {
-        width: 75px;
-        height: 60px;
-        max-height: 50px;
-      }
-
-      button {
-        width: 150px;
-        height: 40px;
-
-      }
-
-      .dropdown-menu .dropdown-item:hover {
-        color: inherit;
-        background-color: transparent;
-
-      }
-
-      .custom-file-upload {
-        display: flex;
-        flex-direction: row;
-        max-width: 200px;
-        margin-left: 30px;
-    }
-    .filename>p{
-      width: 300px;
-      align-items: center;
-      margin-top: 12px;
-      /* background-color: #28a745; */
-      
-    }
-
-      .submit {
-        margin-right: 10px;
-      }
-
-      .excel-grid-container {
-        width: 100%;
-        overflow-x: auto;
-        overflow-y: auto;
-
-      }
-
-      .table {
-        min-width: 600px;
-
-        width: max-content;
-
-        border-collapse: collapse;
-      }
-
-      .table th,
-      .table td {
-        padding: 10px;
-        text-align: left;
-        white-space: nowrap;
-      }
-
-      .table th {
-        background-color: #f2f2f2;
-        border-bottom: 2px solid #ddd;
-        text-transform: uppercase
-      }
-
-      .table-striped tbody tr:nth-of-type(odd) {
-        background-color: #f9f9f9;
-      }
-
-      .btn {
-        padding: 8px 16px;
-        font-size: 14px;
-        border-radius: 4px;
-        cursor: pointer;
-      }
-
-      .btn-primary {
-        background-color: #007bff;
-        border-color: #007bff;
-        color: #fff;
-      }
-
-      .btn-secondary {
-        background-color: #28a745;
-        border-color: #28a745;
-        color: #fff;
-      }
-
-      .btn-secondary:hover {
-        background-color: #28a745;
-        border-color: #28a745;
-        color: #fff;
-      }
-
-      .btn-danger {
-        background-color: #dc3545;
-        border-color: #dc3545;
-        color: #fff;
-      }
-
-      .btn-sm {
-        padding: 6px 12px;
-        font-size: 12px;
-      }
-
-      .action-buttons {
-
-        display: flex;
-        justify-content: center;
-      }
-
-    
-
-      @media (max-width: 816px) {
-        .excel-grid-container {
-          padding: 5px;
-        }
-
-        .table {
-          min-width: auto;
-        }
-
-        .btn {
-          padding: 6px 12px;
-          font-size: 12px;
-        }
-
-        .d-flex {
-          display: flex;
-          flex-direction: column;
-          padding: 10px;
-        }
-
-        .search-input {
-          width: 250px;
-        }
-
-        .upload {
-          width: 260px;
-          margin-top: 15px;
-          margin-right: 3px;
-
-        }
-
-        .uploadHead {
-          padding-right: 220px;
-        }
-
-        .search-input {
-          max-width: 400px;
-          margin-left: 10px;
-        }
-
-        .submit {
-          width: 125px;
-        }
-
-        .clear {
-          width: 125px;
-        }
-
-        .ml-4 {
-          margin-left: 6px;
-        }
-
-      }
-
-
-
-      @media (max-width: 767px) {
-       
-        
-    
-        .logout{
-          padding-left: 20px;
-          padding-bottom: 10px;
-        }
-        button{
-          width: 120px;
-        }
-        .dropdown-item{
-          margin-left: 10px;
-        }
-      }
-
-
-      @media (max-width: 360px) {
-
-        .d-flex {
-          display: flex;
-          flex-direction: column;
-          padding: 10px;
-        }
-
-        .search-input {
-          width: 250px;
-        }
-
-        .upload {
-          width: 200px;
-          margin-top: 15px;
-          margin-right: 3px;
-
-        }
-
-        .search-input {
-          max-width: 200px;
-          margin-left: 10px;
-        }
-
-        .submit {
-          width: 95px;
-        }
-
-        .clear {
-          width: 95px;
-        }
-
-        .ml-4 {
-          margin-left: 6px;
-        }
-
-      }
-
-      @media (max-width: 280px) {
-
-        .d-flex {
-          display: flex;
-          flex-direction: column;
-          padding: 10px;
-        }
-
-        .search-input {
-          width: 100px;
-        }
+  }
 
-        .upload {
-          width: 128px;
-          margin-top: 15px;
-          margin-right: 3px;
-
-        }
+  .ml-auto {
+    margin-right: 10px;
+  }
 
-        .search-input {
-          max-width: 250px;
-          margin-left: 10px;
-        }
+  .navbar-nav {
+    flex-direction: row !important;
+    align-items: center;
+  }
 
-        .submit {
-          width: 60px;
-        }
-
-        .clear {
-          width: 60px;
-        }
-
-        .ml-4 {
-          margin-left: 6px;
-        }
-
-        .clearicon {
-          display: none;
-        }
-      }
-
-      .selection-cell {
-        width: 30px;
-        position: sticky;
-
-        left: -1px;
-
-        z-index: 1;
-
-        background-color: #fff;
-
-      }
-
-      .action-cell {
-        max-width: 100px;
-        position: sticky;
-        right: -1px;
-
-        z-index: 1;
-
-        background-color: #fff;
-
-      }
-
-      .Render-Row {
-        margin: 10px;
-        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1), 0px 1px 3px rgba(0, 0, 0, 0.08);
-
-      }
-
-      .Render-Col {
-        background-color: #ffffff;
-        padding: 20px;
-        border-radius: 6px;
-    }
-
-      .table-responsive {
-        border-radius: 1px;
-      }
-
-      .table th,
-      .table td {
-        padding: 8px;
-        text-align: left;
-        white-space: nowrap;
-
-      }
-
-      .table th {
-        background-color: #f2f2f2;
-        border-bottom: 2px solid #ddd;
-      }
-
-      .table-striped tbody tr:nth-of-type(odd) {
-        background-color: #f9f9f9;
-      }
-
-      .hidden-border {
-        border: none;
-        outline: none;
-
-      }
-
-      .table tbody tr:hover td {
-        background-color: #f0f0f0;
-
-        cursor: pointer;
-
-      }
-
-      .selectAll {
-        padding-left: 8px;
-      }
-
-      .brand-wrapper>a {
-        color: rgb(7, 106, 7);
-      }
-
-
-      @media (max-width: 1000px) {
-         
-        .smallscreen {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          border-radius: 5px;
-          background-color: white;
-          box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1), 0px 1px 3px rgba(0, 0, 0, 0.08);
-          width: 160px;
-        
-        }
-        
-        .user {
-          color: blue;
-          margin-top: 10px;
-          text-transform: capitalize;
-        min-width: 90px;
-        }
-        
-        .invite{
-          background: none;
-        
-          padding-left:20px;
-          padding-bottom: 10px;
-        
-        }
-        .reset {
-          padding-left: 20px;
-          background: none;
-          min-width: 150px;
-        
-        }
-        .logout{
-          padding-left: 20px;
-          padding-bottom: 10px;
-        }
-              }
-        
-             
-
-
-
-
-
-
-
-
-              .Edit ,.Delete, .Save, .Cancel{
-                background: none;
-                border: none;
-                color: black;
-              }
-
-              
-              .Edit:hover ,.Delete:hover, .Save:hover, .Cancel:hover{
-                background: none;
-                border: none;
-                color: black;
-              }
-
-.username-container, 
-.customDropdown{
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-}
-              .username{
-             margin-right: 10px;
-            margin-left: 10px;
-              }
-
-              .dropdown {
-                padding-left: 100px;
-                display: flex;
-                flex-direction: row-reverse;
-            }
-
-         
-
-
-            @media (max-width: 1260px) {
-            .ml-4{
-              display: flex;
-              flex-direction: column;
-
-            }
-            .submit{
-              margin-bottom: 10px;
-              margin-right: 40px;
-            }
-            
-            }
-
-        
-            .table th, .table td {
-              padding: 3px;
-              text-align: center;
-              height: 13px;
-              font-size: small;
-              padding-top: 2px;
-          }
-          tbody, td, tfoot, th, thead, tr {
-            border-color: inherit;
-            border-style: none;
-            border-width: 0;
-        }
-            
-      @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap')
+  .nav-link {
+    padding-right: 0.5rem !important;
+    padding-left: 0.5rem !important;
+  }
 
+  .dropdown-toggle {
+    margin-right: 10px;
+  }
 
+  .dropdown-menu {
+    max-width: 160px;
+    margin-left: 82px;
+    margin-top: 20px;
+  }
+
+  .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    background-color: #ffffff;
+
+    border-bottom: 1px solid #dee2e6;
+
+  }
+
+  .brand-wrapper>a {
+    color: rgb(7, 106, 7);
+  }
+
+  .dropdown-basic {
+    background-color: none;
+  }
+
+
+  .dropdown-menu {
+    min-width: 150px;
+  }
+
+  .navbar-nav {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .form-inline {
+    display: flex;
+    gap: 10px;
+
+  }
+
+
+
+  .search-icon {
+    margin-right: 10px;
+  }
+
+  .table-container {
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1), 0px 1px 3px rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
+
+  }
+
+  .table-container table {
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+  }
+
+  .table-container th,
+  .table-container td {
+    border: 1px solid #dee2e6;
+    padding: 8px;
+  }
+
+  .table-container th {
+    background-color: #efeded;
+  }
+
+  .table-container tbody tr:hover {
+    background-color: #f0f0f0;
+  }
+
+  .customLogo {
+    width: 75px;
+    height: 60px;
+    max-height: 50px;
+  }
+
+  button {
+    width: 150px;
+    height: 40px;
+
+  }
+
+  .dropdown-menu .dropdown-item:hover {
+    color: inherit;
+    background-color: transparent;
+
+  }
+
+
+  /* --------------------Uploadsection---------------      */
 
 
   
+
+.filename{
+  padding-left: 10px;
+  margin-top: 10px;
+  /* background-color: #28a745; */
+}
+.spacer {
+  width: 30px; /* Adjust the width as needed */
+}
+
+
+
+  .excel-grid-container {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: auto;
+
+  }
+
+  
+
+  .btn {
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+  }
+
+  .btn-secondary {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: #fff;
+  }
+
+  .btn-secondary:hover {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: #fff;
+  }
+
+  .btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: #fff;
+  }
+
+  .btn-sm {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .action-buttons {
+
+    display: flex;
+    justify-content: center;
+  }
+
+
+
+
+
+
+  @media (max-width: 767px) {
+
+
+   
+ .invite{
+margin-left: 0px;
+ }
+ .reset{
+  margin-left: 15px;
+ }
+  
+    .dropdown-item {
+      margin-left: 10px;
+    }
+  }
+
+  @media (max-width: 380px) {
+ 
+ .Upload,.submit{
+   width: 100px;
+ }
+  }
+
+
+  @media (max-width: 280px) {
+
+    .Upload,.submit{
+      width: 70px;
+    }
+
+
+    .ml-4 {
+      margin-left: 6px;
+    }
+
+    .clearicon {
+      display: none;
+    }
+  }
+
+  .selection-cell {
+    width: 30px;
+    position: sticky;
+
+    left: -1px;
+
+    z-index: 1;
+
+    background-color: #fff;
+  }
+
+  .action-cell {
+    max-width: 100px;
+    position: sticky;
+    right: -1px;
+
+    z-index: 1;
+
+    background-color: #fff;
+
+  }
+
+  .Render-Row {
+    margin: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1), 0px 1px 3px rgba(0, 0, 0, 0.08);
+    height: 500px;
+  }
+
+  .Render-Col {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 6px;
+  }
+
+  .table-responsive {
+    border-radius: 1px;
+  }
+
+  .table th,
+  .table td {
+    padding: 8px;
+    text-align: center;
+    white-space: nowrap;
+
+  }
+
+  .table th {
+    background-color: #f2f2f2;
+    border-bottom: 2px solid #ddd;
+  }
+
+  .table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f9f9f9;
+  }
+
+  .hidden-border {
+    border: none;
+    outline: none;
+
+  }
+
+  .table tbody tr:hover td {
+    background-color: #f0f0f0;
+
+    cursor: pointer;
+
+  }
+
+  .selectAll {
+    padding-left: 8px;
+  }
+
+  .brand-wrapper>a {
+    color: rgb(7, 106, 7);
+  }
+
+
+  @media (max-width: 1000px) {
+
+    .table-responsive.render {
+      max-height: min-content;
+      overflow-y: auto;
+      height: 400px;
+    }
+  
+  .Render-Row{
+    height: 440px;
+    margin-bottom: 10px;
+  }
+    .smallscreen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: 5px;
+      background-color: white;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1), 0px 1px 3px rgba(0, 0, 0, 0.08);
+      width: 230px;
+
+    }
+
+    .user {
+      color: blue;
+      margin-top: 10px;
+      text-transform: capitalize;
+      min-width: 90px;
+    }
+
+    .invite {
+      background: none;
+
+      padding-left: 21px;
+      padding-bottom: 10px;
+
+    }
+    .invite {
+      border: none;
+      background-color: white;
+      /* padding-right: 50px; */
+  }
+
+    .reset {
+      padding-left: 20px;
+      background: none;
+      min-width: 150px;
+
+    }
+
+      
+       .reset{
+        margin-left: 15px;
+       }
+        
+          .dropdown-item {
+            margin-left: 10px;
+          }
+
+    .logout {
+      padding-left: 35px;
+      padding-bottom: 10px;
+  }
+    .custom-file-upload{
+ display: flex;
+ flex-direction: row;
+ justify-content: space-between;
+    }
+    .filename>p {
+      text-align: start;
+  }
+  }
+
+
+  .Edit,
+  .Delete,
+  .Save,
+  .Cancel {
+    background: none;
+    border: none;
+    color: black;
+  }
+
+
+  .Edit:hover,
+  .Delete:hover,
+  .Save:hover,
+  .Cancel:hover {
+    background: none;
+    border: none;
+    color: black;
+  }
+
+  .username-container{
+    color: #007bff;
+  }
+  .username-container,
+  .customDropdown {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+
+  }
+
+  .username {
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+
+  .dropdown {
+    padding-left: 100px;
+    display: flex;
+    flex-direction: row-reverse;
+  }
+
+
+ 
+
+
+  
+  .brand-wrapper {
+    width: 100px;
+    height: 40px; 
+    background-image: url('../../public/images/bcp2.png'); 
+    background-size: 50% auto; 
+    background-repeat: no-repeat; 
+    margin-left: 20px;
+    /* padding-bottom: 20px; */
+    
+  }
+  
+
+  .dropdown-menu[data-bs-popper] {
+    top: 159%;
+    left: 90px;
+    margin-top: var(--bs-dropdown-spacer);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-spinner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent white background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.cancel-icon{
+  padding-left: 10px;
+  margin-top:3px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* -------------scrollbar Design -------------------- */
+
+/* CSS for customizing scrollbar */
+::-webkit-scrollbar {
+  width:6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888; 
+  border-radius: 6px; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+
+.table th{
+  padding: 9px;
+  text-align: center;
+  height: 13px;
+  font-size: small;
+  padding-top: 9px;
+  padding-left: 20px;
+
+
+}
+
+
+
+.table td
+   {
+    padding: 0px;
+    text-align: center;
+    /* height: 13px; */
+    font-size: small;
+    padding-left: 20px;
+    padding-top: 5px;
+  }
+
+.table {
+  min-width: 600px;
+
+  width: max-content;
+
+  border-collapse: collapse;
+}
+
+
+
+.table th {
+  background-color: #f2f2f2;
+  border-bottom: 2px solid #ddd;
+  text-transform: uppercase;
+  text-align:center
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: #f9f9f9;
+}
+
+
+
+
+  tbody,
+  td,
+  tfoot,
+  th,
+  thead,
+  tr {
+    border-color: inherit;
+    border-style: none;
+    border-width: 0;
+  }
+
+thead{
+  margin-left: 20px;
+}
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap')</style>
