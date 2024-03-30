@@ -5,8 +5,8 @@ import '../styles/header.css';
 function Header() {
   return (
     <header className="header">
-      <Link to="/dashboard">
-        <img src="/images/bcp.png" alt="Logo" className="logo" />
+      <Link to="/dashboard" className="logo-container">
+        <div className="logo"></div>
       </Link>
     </header>
   );

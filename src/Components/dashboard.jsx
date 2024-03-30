@@ -12,10 +12,10 @@
     Container,
     Row,
     Col,
-    Dropdown,
-  } from "react-bootstrap";
+    Dropdown  } from "react-bootstrap";
   import { useDropzone } from "react-dropzone";
-  import { useNavigate } from "react-router-dom";
+  import { useNavigate , Link
+  } from "react-router-dom";
   import * as XLSX from "xlsx";
   import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
   import {
@@ -420,10 +420,9 @@
           color={snackbarColor}      />
 
         <Navbar bg="light" expand="lg" className="w-100">
-          <div className="brand-wrapper">
-          <NavbarBrand href="#home" className="customNavbarBrand"></NavbarBrand>
-
-          </div>
+        <a href="https://www.google.com" className="brand-wrapper">
+        <Link to="/dashboard" className="customNavbarBrand"></Link>
+      </a>
           <NavbarToggle aria-controls="basic-navbar-nav" />
           <NavbarCollapse id="basic-navbar-nav">
             <Nav className="ml-auto align-items-center">
@@ -628,3 +627,4 @@
   }
 
   export default Dashboard;
+  

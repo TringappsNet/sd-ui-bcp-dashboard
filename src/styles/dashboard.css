@@ -557,16 +557,14 @@ margin-left: 0px;
 
 
 
-.table td
-   {
-    padding: 0px;
-    text-align: center;
-    /* height: 13px; */
-    font-size: small;
-    padding-left: 20px;
-    padding-top: 5px;
-  }
-
+.table td {
+  padding: 0px;
+  text-align: center;
+  height: 4px;
+  font-size: small;
+  padding-left: 10px;
+  padding-top: 0px;
+}
 .table {
   min-width: 600px;
 
@@ -608,4 +606,15 @@ thead{
 
 
 
+button, input, optgroup, select, textarea {
+  margin: -5px;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  /* border: none; */
+}
+/* .table-striped>tbody>tr:nth-of-type(odd)>* {
+  --bs-table-color-type: var(--bs-table-striped-color);
+  --bs-table-bg-type: var(--bs-table-striped-bg);
+} */
   @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap')</style>
