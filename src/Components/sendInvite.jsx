@@ -1,19 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Button, Form } from 'react-bootstrap';
 import { TextField, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import '../styles/sendInvite.css';
 import { PortURL } from './Config';
 import LoadingSpinner from './LoadingSpinner'; 
 
-
 const SendInvite = ({ onClose }) => {
-  const [formData, setFormData] = useState({
+  const initialFormData = {
     email: '',
     role: '',
     organization: ''
-  });
+  };
+
+  const [formData, setFormData] = useState(initialFormData);
   const [loading, setLoading] = useState(false); 
   const [emailError, setEmailError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+
+  useEffect(() => {
+    if (successMessage) {
+      const timer = setTimeout(() => {
+        setSuccessMessage('');
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [successMessage]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -31,6 +43,7 @@ const SendInvite = ({ onClose }) => {
     setLoading(true); 
     if (!formData.email.trim()) {
       setEmailError('Email is required');
+      setLoading(false); // Set loading to false here
       return;
     }
 
@@ -44,6 +57,8 @@ const SendInvite = ({ onClose }) => {
       });
       const data = await response.json();
       console.log(data);
+      setSuccessMessage('Invitation sent successfully');
+      setFormData(initialFormData); // Reset form data to initial empty values
       onClose();
     } catch (error) {
       console.error('Error sending invitation:', error);
@@ -55,6 +70,9 @@ const SendInvite = ({ onClose }) => {
     <div className="form d-flex justify-content-center align-items-center">
       <Container className="mt-6 p-4 shadow bg-body">
         <h6 className="text-center mb-4 mt-1 ">Send Invite</h6>
+        {successMessage && (
+          <div className="text-success mb-3">{successMessage}</div>
+        )}
         <Form onSubmit={handleSubmit}>
           <Form.Group controlId="formBasicEmail" className="mb-3">
             <TextField
@@ -89,24 +107,24 @@ const SendInvite = ({ onClose }) => {
               </Select>
             </FormControl>
           </Form.Group>
-            <Form.Group controlId="formBasicOrganization" className="mb-3">
-              <FormControl fullWidth>
-                <InputLabel id="organization-select">Organization</InputLabel>
-                <Select
-                  labelId="organization-select"
-                  name="organization"
-                  label="Organization"
-                  value={formData.organization}
-                  onChange={handleChange}
-                  fullWidth
-                  size="small"
-                >
-                  <MenuItem value="organization1">Organization 1</MenuItem>
-                  <MenuItem value="organization2">Organization 2</MenuItem>
-                  <MenuItem value="organization3">Organization 3</MenuItem>
-                </Select>
-              </FormControl>
-            </Form.Group>
+          <Form.Group controlId="formBasicOrganization" className="mb-3">
+            <FormControl fullWidth>
+              <InputLabel id="organization-select">Organization</InputLabel>
+              <Select
+                labelId="organization-select"
+                name="organization"
+                label="Organization"
+                value={formData.organization}
+                onChange={handleChange}
+                fullWidth
+                size="small"
+              >
+                <MenuItem value="organization1">Organization 1</MenuItem>
+                <MenuItem value="organization2">Organization 2</MenuItem>
+                <MenuItem value="organization3">Organization 3</MenuItem>
+              </Select>
+            </FormControl>
+          </Form.Group>
           <Button type="submit" className="btn btn-success rounded-pill w-100">Submit</Button>
         </Form>
       </Container>
