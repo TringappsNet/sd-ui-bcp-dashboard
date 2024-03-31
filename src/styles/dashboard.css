@@ -43,12 +43,14 @@
   }
 
   .dropdown-menu {
-    max-width: 160px;
+    min-width: 200px;
     margin-left: 82px;
     margin-top: 20px;
-    padding: 11px
+    padding: 11px;
   }
-
+.smallscreen{
+  margin-right: 50px;
+}
   .navbar {
     position: sticky;
     top: 0;
@@ -461,11 +463,10 @@
   
 
   .dropdown-menu[data-bs-popper] {
-    top: 159%;
-    left: 90px;
+    top: 160%;
+    left: -38px;
     margin-top: var(--bs-dropdown-spacer);
 }
-
 
 
 
@@ -615,6 +616,7 @@ display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 50px;
+
 }
 button, input, optgroup, select, textarea {
   margin: -5px;
