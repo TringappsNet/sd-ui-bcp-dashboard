@@ -43,11 +43,14 @@
   }
 
   .dropdown-menu {
-    max-width: 160px;
+    min-width: 200px;
     margin-left: 82px;
     margin-top: 20px;
+    padding: 11px;
   }
-
+.smallscreen{
+  margin-right: 50px;
+}
   .navbar {
     position: sticky;
     top: 0;
@@ -67,10 +70,10 @@
     background-color: none;
   }
 
-
+/* 
   .dropdown-menu {
     min-width: 150px;
-  }
+  } */
 
   .navbar-nav {
     width: 100%;
@@ -126,12 +129,15 @@
 
   }
 
-  .dropdown-menu .dropdown-item:hover {
+  /* .dropdown-menu .dropdown-item:hover {
     color: inherit;
     background-color: transparent;
 
-  }
-
+  } */
+/* 
+  .dropdown-item{
+    padding-left: 10px;
+  } */
 
   /* --------------------Uploadsection---------------      */
 
@@ -205,21 +211,6 @@
 
 
 
-  @media (max-width: 767px) {
-
-
-   
- .invite{
-margin-left: 0px;
- }
- .reset{
-  margin-left: 15px;
- }
-  
-    .dropdown-item {
-      margin-left: 10px;
-    }
-  }
 
   @media (max-width: 380px) {
  
@@ -321,6 +312,29 @@ margin-left: 0px;
     color: rgb(7, 106, 7);
   }
 
+  /* @media (max-width: 768px){
+  .reset, .invite {
+      padding-right: 7px;
+  }
+  .invite {
+      border: none;
+      background-color: white;
+      padding-right: 50px;
+  }
+} */
+ 
+  /* @media (max-width: 768px){
+  .invite {
+      border: none;
+      background-color: white;
+      padding-right: 50px;
+  }
+} */
+  /* @media (max-width: 768px){
+  .reset, .invite {
+      padding-right: -4px;
+  }
+} */
 
   @media (max-width: 1000px) {
 
@@ -343,6 +357,8 @@ margin-left: 0px;
       background-color: white;
       box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1), 0px 1px 3px rgba(0, 0, 0, 0.08);
       width: 230px;
+      margin-top: 10px;
+      margin-right: 10px;
 
     }
 
@@ -350,41 +366,32 @@ margin-left: 0px;
       color: blue;
       margin-top: 10px;
       text-transform: capitalize;
-      min-width: 90px;
-    }
-
-    .invite {
-      background: none;
-
-      padding-left: 21px;
-      padding-bottom: 10px;
-
-    }
-    .invite {
-      border: none;
-      background-color: white;
-      /* padding-right: 50px; */
-  }
-
-    .reset {
+      min-width: 240px;
+      /* border: 1px solid black; */
+      padding: 14px;
+      margin: 5px;
       padding-left: 20px;
-      background: none;
-      min-width: 150px;
-
     }
-
-      
+   
+   
        .reset{
-        margin-left: 15px;
+        margin-left: 16px;
        }
-        
+        .invite{
+          margin-left: 0px;
+        }
           .dropdown-item {
             margin-left: 10px;
           }
+        
+        
 
     .logout {
-      padding-left: 35px;
+      padding-left: 30px;
       padding-bottom: 10px;
+
+      padding-top: 2px;
+
   }
     .custom-file-upload{
  display: flex;
@@ -456,11 +463,10 @@ margin-left: 0px;
   
 
   .dropdown-menu[data-bs-popper] {
-    top: 159%;
-    left: 90px;
+    top: 160%;
+    left: -38px;
     margin-top: var(--bs-dropdown-spacer);
 }
-
 
 
 
@@ -605,7 +611,13 @@ thead{
 }
 
 
+.no-data-message{
+display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
 
+}
 button, input, optgroup, select, textarea {
   margin: -5px;
   font-family: inherit;
