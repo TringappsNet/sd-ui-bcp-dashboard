@@ -99,7 +99,9 @@
 
     const fetchData = async () => {
       try {
-        const response = await fetch(`${PortURL}/data`);
+        const storedUsername = localStorage.getItem("UserName");
+        const storedOrganization = localStorage.getItem("Organisation");
+        const response = await fetch(`${PortURL}/data?username=${storedUsername}&organization=${storedOrganization}`);
         if (response.ok) {
           const excelData = await response.json();
           setRetriveData(excelData);
@@ -111,7 +113,7 @@
         console.error("Error fetching data:", error);
       }
     };
-
+    
     const onDrop = useCallback((acceptedFiles) => {
       setData([]);
       acceptedFiles.forEach((file) => {
@@ -536,7 +538,11 @@
   {loading && (
     <div className="loading-spinner"></div>
   )}
+      {loading && <LoadingSpinner />}
 
+{filteredData.length === 0 ? (
+        <div className="no-data-message">No data available</div>
+      ) :
         <Container fluid className="mt-2" >
           <Row className="row Render-Row">
             <Col className="col Render-Col">
@@ -621,6 +627,7 @@
             </Col>
           </Row>
         </Container>
+  }
         {loading && <LoadingSpinner />} 
       </div>
     );
