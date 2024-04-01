@@ -1,31 +1,26 @@
 import React, { useState } from 'react';
 import { Container, Form, Button } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import '../styles/resetPassword.css';
-// import { Link } from 'react-router-dom';
 import { TextField } from '@mui/material';
 import { PortURL } from './Config';
-import LoadingSpinner from './LoadingSpinner'; 
-
+import LoadingSpinner from './LoadingSpinner';
 
 function ResetPassword() {
-  const [userName, setUserName] = useState('');
-  const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setLoading(true); 
+    setLoading(true);
   
     const urlParams = new URLSearchParams(window.location.search);
     const resetToken = urlParams.get('token');
-    
+  
     if (newPassword !== confirmNewPassword) {
       setError('Passwords do not match');
+      setLoading(false);
       return;
     }
   
@@ -45,27 +40,22 @@ function ResetPassword() {
   
       if (response.ok) {
         setSuccess(true);
-        // Reset input fields and errors
-        setUserName('');
-        setOldPassword('');
-        setNewPassword('');
-        setConfirmNewPassword('');
         setError(null);
       } else {
         const data = await response.json();
         setError(data.message);
+        setSuccess(false);
       }
     } catch (error) {
       console.error('Error resetting password:', error.message);
       setError('Error resetting password');
     }
-    setLoading(false); 
+    setLoading(false);
   };
   
 
   return (
     <div className="form d-flex justify-content-center align-items-center">
-      
       <Container className=" mt-6 p-4 shadow bg-body ">
         <h6 className="text-center mb-4 mt-1 ">Reset Password</h6>
         <Form onSubmit={handleSubmit}>
@@ -96,13 +86,12 @@ function ResetPassword() {
             />
           </Form.Group>
           <div className="btn-container">
-          <Button type="submit" className="btn btn-success rounded-pill w-100">Reset Password</Button>
+            <Button type="submit" className="btn btn-success rounded-pill w-100">Reset Password</Button>
           </div>
         </Form>
       </Container>
-      {loading && <LoadingSpinner />} 
+      {loading && <LoadingSpinner />}
     </div>
-    
   );
 }
 
