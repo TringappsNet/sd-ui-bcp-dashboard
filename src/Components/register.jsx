@@ -8,8 +8,8 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { PortURL } from './Config';
 import Header from './Header';
+import CustomSnackbar from './Snackbar'; // Import Snackbar component
 import LoadingSpinner from './LoadingSpinner'; 
-
 
 function Register() {
   const [firstName, setFirstName] = useState('');
@@ -22,8 +22,10 @@ function Register() {
   const [firstNameError, setFirstNameError] = useState('');
   const [lastNameError, setLastNameError] = useState('');
   const [phoneNumberError, setPhoneNumberError] = useState('');
-  const [loading, setLoading] = useState(false); 
   const [passwordError, setPasswordError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
   const navigate = useNavigate();
 
   const toggleNewPasswordVisibility = () => {
@@ -32,6 +34,11 @@ function Register() {
 
   const toggleConfirmPasswordVisibility = () => {
     setShowConfirmPassword(!showConfirmPassword);
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
+    setSnackbarMessage('');
   };
 
   const handleSubmit = async (event) => {
@@ -44,23 +51,28 @@ function Register() {
     // Validation logic for each field
     if (!firstName) {
       setFirstNameError('First name is required');
+      setLoading(false);
       return;
     }
     if (!lastName) {
       setLastNameError('Last name is required');
+      setLoading(false);
       return;
     }
     if (!phoneNumber) {
       setPhoneNumberError('Mobile number is required');
+      setLoading(false);
       return;
     }
     if (!newPassword) {
       setPasswordError('Password is required');
+      setLoading(false);
       return;
     }
     
     if (newPassword !== confirmPassword) {
       setPasswordError('Passwords do not match');
+      setLoading(false);
       return;
     }
   
@@ -105,9 +117,13 @@ function Register() {
             console.error('Unexpected server error:', data.message);
           }
         }
+        setSnackbarMessage(data.error || 'An error occurred while registering.');
+        setSnackbarOpen(true);
       }
     } catch (error) {
       console.error('Error registering user:', error.message);
+      setSnackbarMessage('An error occurred while registering.');
+      setSnackbarOpen(true);
     }
     setLoading(false); 
   };
@@ -240,11 +256,15 @@ function Register() {
           </div>
         </Form>
       </Container>
+      <CustomSnackbar
+        open={snackbarOpen}
+        message={snackbarMessage}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        onClose={handleCloseSnackbar}
+      />
       {loading && <LoadingSpinner />} 
     </div>
   );
 }
 
 export default Register;
-
-             
