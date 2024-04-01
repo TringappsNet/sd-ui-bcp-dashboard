@@ -220,85 +220,102 @@
       return `${month.toUpperCase()} ${year}`;
     };
     
-    // Modify the function used to render the date cell
-    const formatDateCell = (value, key) => {
-      // Check if the key is "MonthYear"
-      if (key === "MonthYear") {
-        // Format the date using the formatMonthYear function
-        return formatMonthYear(value);
-      }
-      // Return the value as is for other keys
-      return value;
+// Modify the function used to render the date cell
+const formatDateCell = (value, key) => {
+  // Check if the key is "MonthYear"
+  if (key === "MonthYear") {
+    // Format the date using the formatMonthYear function
+    return formatMonthYear(value);
+  }
+  // Return the value as is for other keys
+  return value;
+};
+
+
+
+
+const handleSubmit = async () => {
+  // Check if the data array is empty
+  if (data.length === 0) {
+    setSnackbarOpen(true);
+    setSnackbarMessage("File is empty");
+    setSnackbarColor("error");
+    return; // Exit the function early if the data array is empty
+  }
+
+  setLoading(true); // Set loading state to true
+
+  try {
+    // Get session ID and organization from local storage
+    const sessionId = localStorage.getItem('sessionId');
+    const email = localStorage.getItem('email');
+
+    // Create userData object with username and organization
+    const userData = {
+      username: username,
+      organization: organization,
     };
 
-
-
-
-
-    const handleSubmit = async () => {
-      if (data.length === 0) {
-        setSnackbarOpen(true);
-        setSnackbarMessage("File is empty");
-        setSnackbarColor("error");
-        return; // Exit the function early if the data array is empty
+    // Map through the data array to format dates if needed
+    const updatedData = data.map((row) => {
+      if (row["Month/Year"]) {
+        const dateString = row["Month/Year"].toString();
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, "0");
+        const day = date.getDate().toString().padStart(2, "0");
+        const hours = date.getHours().toString().padStart(2, "0");
+        const minutes = date.getMinutes().toString().padStart(2, "0");
+        const seconds = "00";
+        const formattedDate = `${year}-${month}-${day}' '${hours}:${minutes}:${seconds}`;
+        row["Month/Year"] = formattedDate;
       }
-      setLoading(true); 
+      return row;
+    });
 
-      try {
-        const userData = {
-          username: username,
-          organization: organization,
-        };
-        console.log("userData:", userData);
-        console.log("Uploaded data:", data);
-        const updatedData = data.map((row) => {
-          if (row["Month/Year"]) {
-            const dateString = row["Month/Year"].toString();
-            const date = new Date(dateString);
-            const year = date.getFullYear();
-            const month = (date.getMonth() + 1).toString().padStart(2, "0");
-            const day = date.getDate().toString().padStart(2, "0");
-            const hours = date.getHours().toString().padStart(2, "0");
-            const minutes = date.getMinutes().toString().padStart(2, "0");
-            const seconds = "00";
-            const formattedDate = `${year}-${month}-${day}' '${hours}:${minutes}:${seconds}`;
-            row["Month/Year"] = formattedDate;
-          }
-          return row;
-        });
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+    // Delay execution for 2 seconds (for demonstration purposes)
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
-        const response = await fetch(`${PortURL}/bulk-upload`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ userData, data: updatedData }),
-        });
-        if (response.ok) {
-          setData([]);
-          fetchData();
-          const jsonResponse = await response.json();
-          console.log(jsonResponse);
+    // Send POST request to the server
+    const response = await fetch(`${PortURL}/bulk-upload`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Session-ID": sessionId, 
+        "Email": email, 
+      },
+      body: JSON.stringify({ userData, data: updatedData }),
+    });
 
-          setUploadSuccess(true); 
-          setUploadedFileName("");
-          setSnackbarMessage("Data uploaded successfully");
-        setSnackbarColor("success");
-        } else {
-          console.error("Error:", response.statusText);
-          setSnackbarOpen(true);
-          setSnackbarMessage("Data upload failed");
-          setSnackbarColor("error");
-        }
-      } catch (error) {
-        console.error("Error:", error);
-        setSnackbarOpen(true);
-        setSnackbarMessage("Data upload failed");
-        setSnackbarColor("error");
-      }
-      setLoading(false); 
-    };
+    if (response.ok) {
+      // Reset state and display success message
+      setData([]);
+      fetchData();
+      const jsonResponse = await response.json();
+      console.log(jsonResponse);
+
+      setUploadSuccess(true); 
+      setUploadedFileName("");
+      setSnackbarMessage("Data uploaded successfully");
+      setSnackbarColor("success");
+    } else {
+      // Display error message
+      console.error("Error:", response.statusText);
+      setSnackbarOpen(true);
+      setSnackbarMessage("Data upload failed");
+      setSnackbarColor("error");
+    }
+  } catch (error) {
+    // Display error message
+    console.error("Error:", error);
+    setSnackbarOpen(true);
+    setSnackbarMessage("Data upload failed");
+    setSnackbarColor("error");
+  }
+
+  setLoading(false); // Set loading state to false
+};
+
 
     const handleCheckboxChange = (rowId) => {
       if (rowId === null) {
@@ -320,7 +337,8 @@
     const handleSave = async () => {
       try {
         console.log("Edit saved data", editedRowData);
-
+        const sessionId = localStorage.getItem('sessionId');
+        const email = localStorage.getItem('email');
         // Format the MonthYear date to "YYYY-MM-DD"
         const monthYearDate = new Date(editedRowData.MonthYear);
         const formattedMonthYear = `${monthYearDate.getFullYear()}-${(
@@ -341,10 +359,14 @@
         };
 
         // Send the updated data to the server
+
         const response = await fetch(`${PortURL}/update`, {
           method: "POST", // Change the method to POST since you're sending data
           headers: {
             "Content-Type": "application/json",
+            
+            "Session-ID": sessionId, 
+            "Email": email, 
           },
           body: JSON.stringify(payload), // Send only the edited row data
         });
@@ -377,19 +399,25 @@
     const handleDelete = async (rowId) => {
       try {
         console.log("Row ID:", rowId);
-    
+        const sessionId = localStorage.getItem('sessionId');
+        const email = localStorage.getItem('email');
+        
         console.log("Filtered Data:", filteredData);
     
-        const identifierToDelete = String(filteredData[rowId]?.ID); // Convert identifierToDelete to string
+        const identifierToDelete = String(filteredData[rowId]?.ID);
         console.log("Identifier to Delete:", identifierToDelete);
     
         const response = await fetch(`${PortURL}/delete`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Session-ID": sessionId, 
+            "Email": email, 
           },
-          body: JSON.stringify({ ids: [identifierToDelete] }), // Both key and value are string
+          body: JSON.stringify({ ids: [identifierToDelete] }),
         });
+
+        
         if (response.ok) {
           // If the deletion is successful, update the data state to reflect the changes
           const updatedData = filteredData.filter((row, index) => index !== rowId);
@@ -441,7 +469,7 @@
                   >
                     <div className="username-container">{username}
                   <FontAwesomeIcon className="username" icon={faUser} />
-                </div>
+    </div>
                   </Dropdown.Toggle>
 
                   

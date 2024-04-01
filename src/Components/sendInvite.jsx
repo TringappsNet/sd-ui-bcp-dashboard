@@ -61,10 +61,17 @@ const SendInvite = ({ onClose }) => {
     }
   
     try {
+
+       // Retrieve session ID and email from local storage
+    const sessionId = localStorage.getItem('sessionId');
+    const email = localStorage.getItem('email');
+
       const response = await fetch(`${PortURL}/send-invite`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Session-ID': sessionId, 
+        'Email': email 
         },
         body: JSON.stringify(formData)
       });
