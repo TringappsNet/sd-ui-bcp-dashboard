@@ -234,71 +234,88 @@ const formatDateCell = (value, key) => {
 
 
 
+const handleSubmit = async () => {
+  // Check if the data array is empty
+  if (data.length === 0) {
+    setSnackbarOpen(true);
+    setSnackbarMessage("File is empty");
+    setSnackbarColor("error");
+    return; // Exit the function early if the data array is empty
+  }
 
-    const handleSubmit = async () => {
-      if (data.length === 0) {
-        setSnackbarOpen(true);
-        setSnackbarMessage("File is empty");
-        setSnackbarColor("error");
-        return; // Exit the function early if the data array is empty
-      }
-      setLoading(true); 
+  setLoading(true); // Set loading state to true
 
-      try {
-        const userData = {
-          username: username,
-          organization: organization,
-        };
-        console.log("userData:", userData);
-        console.log("Uploaded data:", data);
-        const updatedData = data.map((row) => {
-          if (row["Month/Year"]) {
-            const dateString = row["Month/Year"].toString();
-            const date = new Date(dateString);
-            const year = date.getFullYear();
-            const month = (date.getMonth() + 1).toString().padStart(2, "0");
-            const day = date.getDate().toString().padStart(2, "0");
-            const hours = date.getHours().toString().padStart(2, "0");
-            const minutes = date.getMinutes().toString().padStart(2, "0");
-            const seconds = "00";
-            const formattedDate = `${year}-${month}-${day}' '${hours}:${minutes}:${seconds}`;
-            row["Month/Year"] = formattedDate;
-          }
-          return row;
-        });
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+  try {
+    // Get session ID and organization from local storage
+    const sessionId = localStorage.getItem('sessionId');
+    const email = localStorage.getItem('email');
 
-        const response = await fetch(`${PortURL}/bulk-upload`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ userData, data: updatedData }),
-        });
-        if (response.ok) {
-          setData([]);
-          fetchData();
-          const jsonResponse = await response.json();
-          console.log(jsonResponse);
-
-          setUploadSuccess(true); 
-          setUploadedFileName("");
-          setSnackbarMessage("Data uploaded successfully");
-        setSnackbarColor("success");
-        } else {
-          console.error("Error:", response.statusText);
-          setSnackbarOpen(true);
-          setSnackbarMessage("Data upload failed");
-          setSnackbarColor("error");
-        }
-      } catch (error) {
-        console.error("Error:", error);
-        setSnackbarOpen(true);
-        setSnackbarMessage("Data upload failed");
-        setSnackbarColor("error");
-      }
-      setLoading(false); 
+    // Create userData object with username and organization
+    const userData = {
+      username: username,
+      organization: organization,
     };
+
+    // Map through the data array to format dates if needed
+    const updatedData = data.map((row) => {
+      if (row["Month/Year"]) {
+        const dateString = row["Month/Year"].toString();
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, "0");
+        const day = date.getDate().toString().padStart(2, "0");
+        const hours = date.getHours().toString().padStart(2, "0");
+        const minutes = date.getMinutes().toString().padStart(2, "0");
+        const seconds = "00";
+        const formattedDate = `${year}-${month}-${day}' '${hours}:${minutes}:${seconds}`;
+        row["Month/Year"] = formattedDate;
+      }
+      return row;
+    });
+
+    // Delay execution for 2 seconds (for demonstration purposes)
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    // Send POST request to the server
+    const response = await fetch(`${PortURL}/bulk-upload`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Session-ID": sessionId, 
+        "Email": email, 
+      },
+      body: JSON.stringify({ userData, data: updatedData }),
+    });
+
+    if (response.ok) {
+      // Reset state and display success message
+      setData([]);
+      fetchData();
+      const jsonResponse = await response.json();
+      console.log(jsonResponse);
+
+      setUploadSuccess(true); 
+      setUploadedFileName("");
+      setSnackbarMessage("Data uploaded successfully");
+      setSnackbarColor("success");
+    } else {
+      // Display error message
+      console.error("Error:", response.statusText);
+      setSnackbarOpen(true);
+      setSnackbarMessage("Data upload failed");
+      setSnackbarColor("error");
+    }
+  } catch (error) {
+    // Display error message
+    console.error("Error:", error);
+    setSnackbarOpen(true);
+    setSnackbarMessage("Data upload failed");
+    setSnackbarColor("error");
+  }
+
+  setLoading(false); // Set loading state to false
+};
+
 
     const handleCheckboxChange = (rowId) => {
       if (rowId === null) {
@@ -320,7 +337,8 @@ const formatDateCell = (value, key) => {
     const handleSave = async () => {
       try {
         console.log("Edit saved data", editedRowData);
-
+        const sessionId = localStorage.getItem('sessionId');
+        const email = localStorage.getItem('email');
         // Format the MonthYear date to "YYYY-MM-DD"
         const monthYearDate = new Date(editedRowData.MonthYear);
         const formattedMonthYear = `${monthYearDate.getFullYear()}-${(
@@ -341,10 +359,14 @@ const formatDateCell = (value, key) => {
         };
 
         // Send the updated data to the server
+
         const response = await fetch(`${PortURL}/update`, {
           method: "POST", // Change the method to POST since you're sending data
           headers: {
             "Content-Type": "application/json",
+            
+            "Session-ID": sessionId, 
+            "Email": email, 
           },
           body: JSON.stringify(payload), // Send only the edited row data
         });
@@ -377,19 +399,25 @@ const formatDateCell = (value, key) => {
     const handleDelete = async (rowId) => {
       try {
         console.log("Row ID:", rowId);
-    
+        const sessionId = localStorage.getItem('sessionId');
+        const email = localStorage.getItem('email');
+        
         console.log("Filtered Data:", filteredData);
     
-        const identifierToDelete = String(filteredData[rowId]?.ID); // Convert identifierToDelete to string
+        const identifierToDelete = String(filteredData[rowId]?.ID);
         console.log("Identifier to Delete:", identifierToDelete);
     
         const response = await fetch(`${PortURL}/delete`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Session-ID": sessionId, 
+            "Email": email, 
           },
-          body: JSON.stringify({ ids: [identifierToDelete] }), // Both key and value are string
+          body: JSON.stringify({ ids: [identifierToDelete] }),
         });
+
+        
         if (response.ok) {
           // If the deletion is successful, update the data state to reflect the changes
           const updatedData = filteredData.filter((row, index) => index !== rowId);
@@ -545,91 +573,92 @@ const formatDateCell = (value, key) => {
         <div className="no-data-message">No data available</div>
       ) :
       <Container fluid className="mt-2">
-      <Row className="row Render-Row">
-        <Col className="col Render-Col">
-          <div className="table-responsive render">
-            <Table striped bordered hover>
-              <thead>
-                <tr>
-                  <th className="selection-cell">
-                    <input
-                      type="checkbox"
-                      checked={selectedRowIds.length === filteredData.length}
-                      onChange={() => handleCheckboxChange(null)}
-                    />
-                  </th>
-                  {Object.keys(filteredData[0] || {}).map((key) => (
-                    <th key={key}>
-                      {key === 'MonthYear' ? formatMonthYear(key) : key}
-                    </th>
-                  ))}
-                  <th className="action-cell">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredData.map((row, index) => (
-                  <tr key={index}>
-                    <td className="selection-cell">
+  <Row className="row Render-Row">
+    <Col className="col Render-Col">
+      <div className="table-responsive render">
+        <Table striped bordered hover>
+          <thead className="sticky-header">
+            <tr>
+              <th className="selection-cell">
+                <input
+                  type="checkbox"
+                  checked={selectedRowIds.length === filteredData.length}
+                  onChange={() => handleCheckboxChange(null)}
+                />
+              </th>
+              {Object.keys(filteredData[0] || {}).map((key) => (
+                <th key={key}>
+                  {key === 'MonthYear' ? 'Date' : key}
+                </th>
+              ))}
+              <th className="action-cell">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredData.map((row, index) => (
+              <tr key={index}>
+                <td className="selection-cell">
+                  <input
+                    type="checkbox"
+                    checked={selectedRowIds.includes(index)}
+                    onChange={() => handleCheckboxChange(index)}
+                  />
+                </td>
+                {Object.keys(row).map((key) => (
+                  <td key={key}>
+                    {editedRowId === index ? (
                       <input
-                        type="checkbox"
-                        checked={selectedRowIds.includes(index)}
-                        onChange={() => handleCheckboxChange(index)}
+                        type="text"
+                        value={editedRowData[key] || ""}
+                        onChange={(e) => handleInputChange(e, key)}
                       />
-                    </td>
-                    {Object.keys(row).map((key) => (
-                      <td key={key}>
-                        {editedRowId === index ? (
-                          <input
-                            type="text"
-                            value={editedRowData[key] || ""}
-                            onChange={(e) => handleInputChange(e, key)}
-                          />
-                        ) : (
-                          formatDateCell(row[key], key)
-                        )}
-                      </td>
-                    ))}
-                    <td className="action-cell">
-                      {editedRowId === index ? (
-                        <div className="action-buttons">
-                          <button
-                            className="btn  btn-sm Save"
-                            onClick={() => handleSave()}
-                          >
-                            <FontAwesomeIcon icon={faSave} />
-                          </button>
-                          <button
-                            className="btn btn-sm Cancel"
-                            onClick={() => handleCancel()}
-                          >
-                            <FontAwesomeIcon icon={faTimes} />
-                          </button>
-                        </div>
-                      ) : (
-                        <div className="action-buttons">
-                          <button
-                            className="btn  btn-sm Edit"
-                            onClick={() => handleEdit(index)}
-                          >
-                            <FontAwesomeIcon icon={faEdit} />
-                          </button>
-                          <button
-                            className="btn btn-sm Delete"
-                            onClick={() => handleDelete(index)}
-                          >
-                            <FontAwesomeIcon icon={faTrash} />
-                          </button>
-                        </div>
-                      )}
-                    </td>
-                  </tr>
+                    ) : (
+                      formatDateCell(row[key], key)
+                    )}
+                  </td>
                 ))}
-              </tbody>
-            </Table>
-          </div>
-        </Col>
-      </Row>
-    </Container>
+                <td className="action-cell">
+                  {editedRowId === index ? (
+                    <div className="action-buttons">
+                      <button
+                        className="btn  btn-sm Save"
+                        onClick={() => handleSave()}
+                      >
+                        <FontAwesomeIcon icon={faSave} />
+                      </button>
+                      <button
+                        className="btn btn-sm Cancel"
+                        onClick={() => handleCancel()}
+                      >
+                        <FontAwesomeIcon icon={faTimes} />
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="action-buttons">
+                      <button
+                        className="btn  btn-sm Edit"
+                        onClick={() => handleEdit(index)}
+                      >
+                        <FontAwesomeIcon icon={faEdit} />
+                      </button>
+                      <button
+                        className="btn btn-sm Delete"
+                        onClick={() => handleDelete(index)}
+                      >
+                        <FontAwesomeIcon icon={faTrash} />
+                      </button>
+                    </div>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </div>
+    </Col>
+  </Row>
+</Container>
+
     
   }
         {loading && <LoadingSpinner />} 

@@ -3,7 +3,6 @@ import ResetNewPassword from './resetNewPassword';
 import SendInvite from './sendInvite';
 import '../styles/popup.css'; 
 
-
 const PopUpContainer = () => {
   const [showResetPopup, setShowResetPopup] = useState(false);
   const [showInvitePopup, setShowInvitePopup] = useState(false);
@@ -34,10 +33,9 @@ const PopUpContainer = () => {
       
       {(showResetPopup || showInvitePopup) && (
         <div className="popup-container">
-
-          <div className="backdrop" onClick={handleClosePopups}></div>
           <span className="cancel-symbol" onClick={handleClosePopups}>✖</span>
 
+          <div className="backdrop" onClick={handleClosePopups}></div>
           <div className="popup-inner" onClick={(e) => e.stopPropagation()}>
 
             {showResetPopup && <ResetNewPassword onClose={handleResetSuccess} />}

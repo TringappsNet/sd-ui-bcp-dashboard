@@ -61,17 +61,24 @@ const SendInvite = ({ onClose }) => {
     }
   
     try {
+
+       // Retrieve session ID and email from local storage
+    const sessionId = localStorage.getItem('sessionId');
+    const email = localStorage.getItem('email');
+
       const response = await fetch(`${PortURL}/send-invite`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Session-ID': sessionId, 
+        'Email': email 
         },
         body: JSON.stringify(formData)
       });
       const data = await response.json();
       console.log(data);
       setSuccessMessage('Invitation sent successfully');
-      setFormData(initialFormData); // Reset form data to initial empty values
+      setFormData(initialFormData); 
       onClose();
     } catch (error) {
       console.error('Error sending invitation:', error);
@@ -105,38 +112,32 @@ const SendInvite = ({ onClose }) => {
             />
           </Form.Group>
           <Form.Group controlId="formBasicRole" className="mb-3">
-            <FormControl fullWidth>
-              <InputLabel id="role-select">Role</InputLabel>
-              <Select
-                labelId="role-select"
-                name="role"
-                label="Role"
-                value={formData.role}
-                onChange={handleChange}
-                fullWidth
-                size="small"
-              >
-                <MenuItem value="admin">Admin</MenuItem>
-                <MenuItem value="manager">Manager</MenuItem>
-                <MenuItem value="employee">Employee</MenuItem>
-              </Select>
-            </FormControl>
+            <FormControl fullWidth size="small">
+            <InputLabel id="role-select">Role</InputLabel>
+            <Select
+              labelId="role-select"
+              value={formData.role}
+              label="Role"
+              onChange={handleChange}
+            >
+              <MenuItem value="admin">Admin</MenuItem>
+              <MenuItem value="manager">Manager</MenuItem>
+              <MenuItem value="employee">Employee</MenuItem>
+            </Select>
+          </FormControl>
           </Form.Group>
           <Form.Group controlId="formBasicOrganization" className="mb-3">
-            <FormControl fullWidth>
+            <FormControl fullWidth size="small">
               <InputLabel id="organization-select">Organization</InputLabel>
               <Select
                 labelId="organization-select"
                 name="organization"
                 label="Organization"
                 value={formData.organization}
-                onChange={handleChange}
-                fullWidth
-                size="small"
-              >
-                <MenuItem value="organization1">Organization 1</MenuItem>
-                <MenuItem value="organization2">Organization 2</MenuItem>
-                <MenuItem value="organization3">Organization 3</MenuItem>
+                onChange={handleChange}>              
+                <MenuItem value="organization1">Tringapps</MenuItem>
+                <MenuItem value="organization2">Techi-Track</MenuItem>
+                <MenuItem value="organization3">Jean-Martin</MenuItem>
               </Select>
             </FormControl>
           </Form.Group>

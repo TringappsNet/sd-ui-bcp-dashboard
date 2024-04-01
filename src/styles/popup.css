@@ -1,5 +1,5 @@
 .popup-container {
-    position: fixed;
+  position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -52,7 +52,11 @@
     }
   }
 
-  .cancel-symbol{
+  .cancel-symbol {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
+    cursor: pointer;
     color: brown;
   }
-  
