@@ -444,7 +444,7 @@
   }
 
   .dropdown {
-    padding-left: 100px;
+    padding-left: 200px;
     display: flex;
     flex-direction: row-reverse;
   }
