@@ -61,7 +61,7 @@ function ForgotPassword() {
             <Form.Group controlId="formBasicEmail">
               <TextField
                 className='label'
-                type="email"
+                type="text"
                 label="Email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -72,7 +72,7 @@ function ForgotPassword() {
 
             <div className="btn-container mt-4 mb-3">
               <Button type="submit" className="btn btn-success  rounded-pill">
-                Request Resent Link
+               Request Reset Link
               </Button>
             </div>
             <div className="text-center mt ">

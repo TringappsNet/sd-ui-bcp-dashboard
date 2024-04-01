@@ -31,33 +31,31 @@ function Login() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setLoading(true); 
-    
-    // Validate email
+    setLoading(true);
+  
     if (!email) {
       setSnackbarMessage('Email is required');
       setSnackbarOpen(true);
-
-
+      setLoading(false);
       return;
     }
-
-    // Validate password
+  
     if (!password) {
-      setPasswordError('Password is required');
       setSnackbarMessage('Password is required');
       setSnackbarOpen(true);
-
+      setLoading(false);
       return;
     }
-
-     // Validate email format
-  if (!email.includes('@')) {    setSnackbarMessage('Please enter a valid email');
-    setSnackbarOpen(true);
-    return;
-  }
+  
+    if (!email.includes('@')) {
+      setSnackbarMessage('Please enter a valid email');
+      setSnackbarOpen(true);
+      setLoading(false);
+      return;
+    }
+  
     const requestBody = { email, password };
-
+  
     try {
       const response = await fetch(`${PortURL}/login`, {
         method: 'POST',
@@ -66,41 +64,33 @@ function Login() {
         },
         body: JSON.stringify(requestBody),
       });
-
+  
       if (response.ok) {
         const data1 = await response.json();
-        const { UserName, email, Organization, sessionId } = data1;
-      
-        // Store session ID in local storage
-        localStorage.setItem('sessionId', sessionId);
+  
+        localStorage.setItem('sessionId', data1.sessionId);
         localStorage.setItem('isLoggedIn', 'true');
-        localStorage.setItem('UserName', UserName);
-        localStorage.setItem('email', email);
-        localStorage.setItem('Organisation', Organization);
-      
+        localStorage.setItem('UserName', data1.UserName);
+        localStorage.setItem('email', data1.email);
+        localStorage.setItem('Organisation', data1.Organization);
+  
         navigate('/dashboard');
-      }
-       else {
+      } else {
         const data = await response.json();
-        if (response.status === 400 && data.message === 'User Not Found!') {
-          setSnackbarMessage('Email not found.');
-          setSnackbarOpen(true);
-        } else if (response.status === 401 && data.message === 'Invalid Password!') {
-          setSnackbarMessage('Invalid password!');
-          setSnackbarOpen(true);
-        } else {
-          setSnackbarMessage('An error occurred while logging in.');
-          setSnackbarOpen(true);
-        }
+  
+        setSnackbarMessage(data.error || 'An error occurred while logging in.');
+        setSnackbarOpen(true);
       }
     } catch (error) {
       console.error('Error logging in:', error);
       setSnackbarMessage('An error occurred while logging in.');
       setSnackbarOpen(true);
     }
-    setLoading(false); 
+  
+    setLoading(false);
   };
-
+  
+  
   const handleCloseSnackbar = () => {
     setSnackbarOpen(false);
     setSnackbarMessage('');
@@ -123,7 +113,7 @@ function Login() {
           <Form.Group controlId="formBasicEmail" className="mb-3 mt-5">
           <TextField
             className={`label form-control ${emailError ? 'error' : ''}`}
-            type="email"
+            type="text"
             label="Email"
             value={email}
             onChange={(e) => {
