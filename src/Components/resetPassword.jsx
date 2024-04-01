@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Container, Form, Button } from 'react-bootstrap';
 import { TextField } from '@mui/material';
 import { PortURL } from './Config';
@@ -10,7 +10,16 @@ function ResetPassword() {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [emailId, setEmailId] = useState('');
+  const [sessionId, setSessionId] = useState('');
 
+  useEffect(() => {
+    // Retrieve email ID and session ID from local storage
+    const email = localStorage.getItem('email');
+    const session = localStorage.getItem('sessionId');
+    setEmailId(email);
+    setSessionId(session);
+  }, []);
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
@@ -28,13 +37,17 @@ function ResetPassword() {
       resetToken: resetToken,
       newPassword: newPassword
     };
+
+    const headers = {
+      'Content-Type': 'application/json',
+      'Email-ID': emailId,
+      'Session-ID': sessionId
+    };
   
     try {
       const response = await fetch(`${PortURL}/reset-password`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: headers,
         body: JSON.stringify(requestBody),
       });
   
