@@ -208,10 +208,7 @@
       setShowConfirmation(false);
     };
 
-    const handleInvite = () => {
-      navigate("/send-invite");
-    };
-
+   
 
 
     const formatMonthYear = (dateString) => {
