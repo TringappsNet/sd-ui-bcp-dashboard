@@ -212,26 +212,30 @@
       navigate("/send-invite");
     };
 
-    const formatDateHeading = (header) => {
-      const dateParts = header.match(/\b(\w{3} \d{2})\b/);
-      return dateParts ? dateParts[0] : header;
+
+
+    const formatMonthYear = (dateString) => {
+      const date = new Date(dateString);
+      // Add 10 seconds to the date
+      date.setSeconds(date.getSeconds() + 100);
+      const month = date.toLocaleString('default', { month: 'short' });
+      const year = date.getFullYear().toString().substr(-2);
+      return `${month.toUpperCase()} ${year}`;
     };
-    const formatDateCell = (value, columnName) => {
-
-    if (typeof value === "string" && columnName === "Month/Year") {
-      // Assuming the input format is "Mon Jan 31 2022"
-      const [monthAbbreviation, _, year] = value.split(" ");
-      return `${monthAbbreviation}${year.slice(-2)}`;
-    } else if (value instanceof Date) {
-      const month = value.toLocaleDateString("en-US", { month: "short" });
-      const year = value.getFullYear().toString().slice(-2);
-      console.log(month);
-
-      return `${month}${year}`;
-    }
     
-    return value;
-  };
+// Modify the function used to render the date cell
+const formatDateCell = (value, key) => {
+  // Check if the key is "MonthYear"
+  if (key === "MonthYear") {
+    // Format the date using the formatMonthYear function
+    return formatMonthYear(value);
+  }
+  // Return the value as is for other keys
+  return value;
+};
+
+
+
 
 
     const handleSubmit = async () => {
@@ -543,90 +547,93 @@
 {filteredData.length === 0 ? (
         <div className="no-data-message">No data available</div>
       ) :
-        <Container fluid className="mt-2" >
-          <Row className="row Render-Row">
-            <Col className="col Render-Col">
-              <div className="table-responsive render">
-                <Table striped bordered hover>
-                  <thead>
-                    <tr>
-                      <th className="selection-cell">
-                        <input
-                          type="checkbox"
-                          checked={selectedRowIds.length === filteredData.length}
-                          onChange={() => handleCheckboxChange(null)}
-                        />
-                      </th>
-                      {Object.keys(filteredData[0] || {}).map((key) => (
-                        <th key={key}>{formatDateHeading(key)}</th>
-                      ))}
-                      <th className="action-cell">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filteredData.map((row, index) => (
-                      <tr key={index}>
-                        <td className="selection-cell">
+      <Container fluid className="mt-2">
+      <Row className="row Render-Row">
+        <Col className="col Render-Col">
+          <div className="table-responsive render">
+            <Table striped bordered hover>
+              <thead>
+                <tr>
+                  <th className="selection-cell">
+                    <input
+                      type="checkbox"
+                      checked={selectedRowIds.length === filteredData.length}
+                      onChange={() => handleCheckboxChange(null)}
+                    />
+                  </th>
+                  {Object.keys(filteredData[0] || {}).map((key) => (
+                    <th key={key}>
+                      {key === 'MonthYear' ? formatMonthYear(key) : key}
+                    </th>
+                  ))}
+                  <th className="action-cell">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredData.map((row, index) => (
+                  <tr key={index}>
+                    <td className="selection-cell">
+                      <input
+                        type="checkbox"
+                        checked={selectedRowIds.includes(index)}
+                        onChange={() => handleCheckboxChange(index)}
+                      />
+                    </td>
+                    {Object.keys(row).map((key) => (
+                      <td key={key}>
+                        {editedRowId === index ? (
                           <input
-                            type="checkbox"
-                            checked={selectedRowIds.includes(index)}
-                            onChange={() => handleCheckboxChange(index)}
+                            type="text"
+                            value={editedRowData[key] || ""}
+                            onChange={(e) => handleInputChange(e, key)}
                           />
-                        </td>
-                        {Object.keys(row).map((key) => (
-                          <td key={key}>
-                            {editedRowId === index ? (
-                              <input
-                                type="text"
-                                value={editedRowData[key] || ""}
-                                onChange={(e) => handleInputChange(e, key)}
-                              />
-                            ) : (
-                              formatDateCell(row[key], key)
-                            )}
-                          </td>
-                        ))}
-                        <td className="action-cell">
-                          {editedRowId === index ? (
-                            <div className="action-buttons">
-                              <button
-                                className="btn  btn-sm Save"
-                                onClick={() => handleSave()}
-                              >
-                                <FontAwesomeIcon icon={faSave} />
-                              </button>
-                              <button
-                                className="btn btn-sm Cancel"
-                                onClick={() => handleCancel()}
-                              >
-                                <FontAwesomeIcon icon={faTimes} />
-                              </button>
-                            </div>
-                          ) : (
-                            <div className="action-buttons">
-                              <button
-                                className="btn  btn-sm Edit"
-                                onClick={() => handleEdit(index)}
-                              >
-                                <FontAwesomeIcon icon={faEdit} />
-                              </button>
-                              <button
-                                className="btn btn-sm Delete"
-                                onClick={() => handleDelete(index)}
-                              >
-                                <FontAwesomeIcon icon={faTrash} />
-                              </button>
-                            </div>
-                          )}
-                        </td>
-                      </tr>
+                        ) : (
+                          formatDateCell(row[key], key)
+                        )}
+                      </td>
                     ))}
-                  </tbody>
-                </Table>
-              </div>
-            </Col>
-          </Row>
-        </Container>
+                    <td className="action-cell">
+                      {editedRowId === index ? (
+                        <div className="action-buttons">
+                          <button
+                            className="btn  btn-sm Save"
+                            onClick={() => handleSave()}
+                          >
+                            <FontAwesomeIcon icon={faSave} />
+                          </button>
+                          <button
+                            className="btn btn-sm Cancel"
+                            onClick={() => handleCancel()}
+                          >
+                            <FontAwesomeIcon icon={faTimes} />
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="action-buttons">
+                          <button
+                            className="btn  btn-sm Edit"
+                            onClick={() => handleEdit(index)}
+                          >
+                            <FontAwesomeIcon icon={faEdit} />
+                          </button>
+                          <button
+                            className="btn btn-sm Delete"
+                            onClick={() => handleDelete(index)}
+                          >
+                            <FontAwesomeIcon icon={faTrash} />
+                          </button>
+                        </div>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </div>
+        </Col>
+      </Row>
+    </Container>
+    
   }
         {loading && <LoadingSpinner />} 
       </div>

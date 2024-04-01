@@ -47,6 +47,9 @@
     margin-left: 82px;
     margin-top: 20px;
     padding: 11px;
+    --bs-dropdown-link-active-color: #000000; 
+     --bs-dropdown-link-active-bg: #fffefe;
+     --bs-dropdown-link-hover-bg: #fffefe;
   }
 .smallscreen{
   margin-right: 50px;
@@ -135,13 +138,13 @@
 
   } */
 /* 
-  .dropdown-item{
-    padding-left: 10px;
-  } */
+ 
 
   /* --------------------Uploadsection---------------      */
 
-
+  .dropdown-item{
+    padding-left: 10px;
+  } 
   
 
 .filename{
@@ -393,6 +396,7 @@
       padding-top: 2px;
 
   }
+
     .custom-file-upload{
  display: flex;
  flex-direction: row;
@@ -464,8 +468,8 @@
 
   .dropdown-menu[data-bs-popper] {
     top: 160%;
-    left: -38px;
-    margin-top: var(--bs-dropdown-spacer);
+    left: 48px;
+    /* margin-top: var(--bs-dropdown-spacer); */
 }
 
 
