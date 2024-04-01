@@ -58,7 +58,7 @@ const SendInvite = ({ onClose }) => {
       const data = await response.json();
       console.log(data);
       setSuccessMessage('Invitation sent successfully');
-      setFormData(initialFormData); // Reset form data to initial empty values
+      setFormData(initialFormData); 
       onClose();
     } catch (error) {
       console.error('Error sending invitation:', error);
@@ -106,6 +106,26 @@ const SendInvite = ({ onClose }) => {
                 <MenuItem value="employee">Employee</MenuItem>
               </Select>
             </FormControl>
+
+            {/* <FormControl sx={{ m: 1, minWidth: 120 }}>
+        <InputLabel id="role-select">Role</InputLabel>
+        <Select
+          labelId="demo-simple-select-helper-label"
+          id="demo-simple-select-helper"
+          value={formData.role}
+          label="Role"
+          onChange={handleChange}
+        >
+          <MenuItem value="">
+            <em>None</em>
+          </MenuItem>
+          <MenuItem value={10}>Ten</MenuItem>
+          <MenuItem value={20}>Twenty</MenuItem>
+          <MenuItem value={30}>Thirty</MenuItem>
+        </Select>
+        <FormHelperText>With label + helper text</FormHelperText>
+      </FormControl> */}
+            
           </Form.Group>
           <Form.Group controlId="formBasicOrganization" className="mb-3">
             <FormControl fullWidth>
@@ -119,9 +139,9 @@ const SendInvite = ({ onClose }) => {
                 fullWidth
                 size="small"
               >
-                <MenuItem value="organization1">Organization 1</MenuItem>
-                <MenuItem value="organization2">Organization 2</MenuItem>
-                <MenuItem value="organization3">Organization 3</MenuItem>
+                <MenuItem value="organization1">Tringapps</MenuItem>
+                <MenuItem value="organization2">Techi-Track</MenuItem>
+                <MenuItem value="organization3">Jean-Martin</MenuItem>
               </Select>
             </FormControl>
           </Form.Group>
