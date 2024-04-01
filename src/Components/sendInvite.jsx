@@ -90,55 +90,29 @@ const SendInvite = ({ onClose }) => {
             />
           </Form.Group>
           <Form.Group controlId="formBasicRole" className="mb-3">
-            <FormControl fullWidth>
-              <InputLabel id="role-select">Role</InputLabel>
-              <Select
-                labelId="role-select"
-                name="role"
-                label="Role"
-                value={formData.role}
-                onChange={handleChange}
-                fullWidth
-                size="small"
-              >
-                <MenuItem value="admin">Admin</MenuItem>
-                <MenuItem value="manager">Manager</MenuItem>
-                <MenuItem value="employee">Employee</MenuItem>
-              </Select>
-            </FormControl>
-
-            {/* <FormControl sx={{ m: 1, minWidth: 120 }}>
-        <InputLabel id="role-select">Role</InputLabel>
-        <Select
-          labelId="demo-simple-select-helper-label"
-          id="demo-simple-select-helper"
-          value={formData.role}
-          label="Role"
-          onChange={handleChange}
-        >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
-        </Select>
-        <FormHelperText>With label + helper text</FormHelperText>
-      </FormControl> */}
-            
+            <FormControl fullWidth size="small">
+            <InputLabel id="role-select">Role</InputLabel>
+            <Select
+              labelId="role-select"
+              value={formData.role}
+              label="Role"
+              onChange={handleChange}
+            >
+              <MenuItem value="admin">Admin</MenuItem>
+              <MenuItem value="manager">Manager</MenuItem>
+              <MenuItem value="employee">Employee</MenuItem>
+            </Select>
+          </FormControl>
           </Form.Group>
           <Form.Group controlId="formBasicOrganization" className="mb-3">
-            <FormControl fullWidth>
+            <FormControl fullWidth size="small">
               <InputLabel id="organization-select">Organization</InputLabel>
               <Select
                 labelId="organization-select"
                 name="organization"
                 label="Organization"
                 value={formData.organization}
-                onChange={handleChange}
-                fullWidth
-                size="small"
-              >
+                onChange={handleChange}>              
                 <MenuItem value="organization1">Tringapps</MenuItem>
                 <MenuItem value="organization2">Techi-Track</MenuItem>
                 <MenuItem value="organization3">Jean-Martin</MenuItem>

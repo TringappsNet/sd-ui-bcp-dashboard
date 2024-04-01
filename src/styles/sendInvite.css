@@ -1,14 +1,6 @@
 .btn-success {
   width: 100%; /* Initially occupy full width */
 }
-#role-select,#organization-select{
-  padding-bottom: 15px;
-  /* background-color: aquamarine; */
-  margin: -3%;
-  margin-left: -4px;
-  padding: 2%;
-  
-}
 
 
 
