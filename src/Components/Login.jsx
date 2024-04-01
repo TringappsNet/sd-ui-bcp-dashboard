@@ -36,19 +36,21 @@ function Login() {
     if (!email) {
       setSnackbarMessage('Email is required');
       setSnackbarOpen(true);
+      setLoading(false);
       return;
     }
   
     if (!password) {
-      setPasswordError('Password is required');
       setSnackbarMessage('Password is required');
       setSnackbarOpen(true);
+      setLoading(false);
       return;
     }
   
     if (!email.includes('@')) {
       setSnackbarMessage('Please enter a valid email');
       setSnackbarOpen(true);
+      setLoading(false);
       return;
     }
   
@@ -76,14 +78,7 @@ function Login() {
       } else {
         const data = await response.json();
   
-        if (response.status === 400) {
-          setSnackbarMessage(data.message);
-        } else if (response.status === 401) {
-          setSnackbarMessage('Invalid password!');
-        } else {
-          setSnackbarMessage('An error occurred while logging in.');
-        }
-  
+        setSnackbarMessage(data.error || 'An error occurred while logging in.');
         setSnackbarOpen(true);
       }
     } catch (error) {
@@ -94,7 +89,7 @@ function Login() {
   
     setLoading(false);
   };
-
+  
   
   const handleCloseSnackbar = () => {
     setSnackbarOpen(false);
@@ -118,7 +113,7 @@ function Login() {
           <Form.Group controlId="formBasicEmail" className="mb-3 mt-5">
           <TextField
             className={`label form-control ${emailError ? 'error' : ''}`}
-            type="email"
+            type="text"
             label="Email"
             value={email}
             onChange={(e) => {
