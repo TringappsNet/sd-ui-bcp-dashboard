@@ -31,10 +31,15 @@ const PopUpContainer = () => {
     <div>
       <button onClick={handleResetPopupToggle} className='reset'> Reset Password</button>
       <button onClick={handleInvitePopupToggle} className='invite'> Send Invite</button>
+      
       {(showResetPopup || showInvitePopup) && (
         <div className="popup-container">
+
           <div className="backdrop" onClick={handleClosePopups}></div>
+          <span className="cancel-symbol" onClick={handleClosePopups}>✖</span>
+
           <div className="popup-inner" onClick={(e) => e.stopPropagation()}>
+
             {showResetPopup && <ResetNewPassword onClose={handleResetSuccess} />}
             {showInvitePopup && <SendInvite />}
           </div>
