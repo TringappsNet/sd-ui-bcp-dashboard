@@ -58,7 +58,7 @@ const SendInvite = ({ onClose }) => {
       const data = await response.json();
       console.log(data);
       setSuccessMessage('Invitation sent successfully');
-      setFormData(initialFormData); 
+      setFormData(initialFormData); // Reset form data to initial empty values
       onClose();
     } catch (error) {
       console.error('Error sending invitation:', error);
@@ -91,18 +91,20 @@ const SendInvite = ({ onClose }) => {
           </Form.Group>
           <Form.Group controlId="formBasicRole" className="mb-3">
             <FormControl fullWidth size="small">
-            <InputLabel id="role-select">Role</InputLabel>
-            <Select
-              labelId="role-select"
-              value={formData.role}
-              label="Role"
-              onChange={handleChange}
-            >
-              <MenuItem value="admin">Admin</MenuItem>
-              <MenuItem value="manager">Manager</MenuItem>
-              <MenuItem value="employee">Employee</MenuItem>
-            </Select>
-          </FormControl>
+              <InputLabel id="role-select">Role</InputLabel>
+              <Select
+                labelId="role-select"
+                name="role"
+                label="Role"
+                value={formData.role}
+                onChange={handleChange}
+                
+              >
+                <MenuItem value="admin">Admin</MenuItem>
+                <MenuItem value="manager">Manager</MenuItem>
+                <MenuItem value="employee">Employee</MenuItem>
+              </Select>
+            </FormControl>
           </Form.Group>
           <Form.Group controlId="formBasicOrganization" className="mb-3">
             <FormControl fullWidth size="small">
@@ -112,10 +114,11 @@ const SendInvite = ({ onClose }) => {
                 name="organization"
                 label="Organization"
                 value={formData.organization}
-                onChange={handleChange}>              
-                <MenuItem value="organization1">Tringapps</MenuItem>
-                <MenuItem value="organization2">Techi-Track</MenuItem>
-                <MenuItem value="organization3">Jean-Martin</MenuItem>
+                onChange={handleChange}
+              >
+                <MenuItem value="organization1">Organization 1</MenuItem>
+                <MenuItem value="organization2">Organization 2</MenuItem>
+                <MenuItem value="organization3">Organization 3</MenuItem>
               </Select>
             </FormControl>
           </Form.Group>
