@@ -34,7 +34,7 @@
   
   .popup-inner {
     position: relative;
-    padding: 20px;
+    padding: 0px;
     border-radius: 5px;
     z-index: 9999;
     width: 80%; /* Set the width as desired */
@@ -50,5 +50,9 @@
       width: 90%; /* Adjust the width for smaller screens */
       max-width: none; /* Remove max-width for smaller screens */
     }
+  }
+
+  .cancel-symbol{
+    color: brown;
   }
   

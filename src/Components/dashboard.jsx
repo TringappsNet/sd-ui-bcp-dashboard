@@ -422,7 +422,7 @@
           color={snackbarColor}      />
 
         <Navbar bg="light" expand="lg" className="w-100">
-        <a href="https://www.google.com" className="brand-wrapper">
+        <a href="/login" className="brand-wrapper">
         <Link to="/dashboard" className="customNavbarBrand"></Link>
       </a>
           <NavbarToggle aria-controls="basic-navbar-nav" />
