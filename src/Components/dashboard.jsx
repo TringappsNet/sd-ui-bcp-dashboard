@@ -220,16 +220,16 @@
       return `${month.toUpperCase()} ${year}`;
     };
     
-// Modify the function used to render the date cell
-const formatDateCell = (value, key) => {
-  // Check if the key is "MonthYear"
-  if (key === "MonthYear") {
-    // Format the date using the formatMonthYear function
-    return formatMonthYear(value);
-  }
-  // Return the value as is for other keys
-  return value;
-};
+    // Modify the function used to render the date cell
+    const formatDateCell = (value, key) => {
+      // Check if the key is "MonthYear"
+      if (key === "MonthYear") {
+        // Format the date using the formatMonthYear function
+        return formatMonthYear(value);
+      }
+      // Return the value as is for other keys
+      return value;
+    };
 
 
 
@@ -441,7 +441,7 @@ const formatDateCell = (value, key) => {
                   >
                     <div className="username-container">{username}
                   <FontAwesomeIcon className="username" icon={faUser} />
-    </div>
+                </div>
                   </Dropdown.Toggle>
 
                   
