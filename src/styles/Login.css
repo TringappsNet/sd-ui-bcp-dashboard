@@ -79,5 +79,9 @@ p{
   
 }
 
+.MuiSvgIcon-root:hover {
+  cursor: pointer;
+}
+
 
 

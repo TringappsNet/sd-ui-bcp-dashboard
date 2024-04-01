@@ -41,12 +41,25 @@ const SendInvite = ({ onClose }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true); 
+  
     if (!formData.email.trim()) {
       setEmailError('Email is required');
-      setLoading(false); // Set loading to false here
+      setLoading(false);
       return;
     }
-
+  
+    if (!formData.role.trim()) {
+      setEmailError('Role is required');
+      setLoading(false);
+      return;
+    }
+  
+    if (!formData.organization.trim()) {
+      setEmailError('Organization is required');
+      setLoading(false);
+      return;
+    }
+  
     try {
       const response = await fetch(`${PortURL}/send-invite`, {
         method: 'POST',
@@ -63,9 +76,11 @@ const SendInvite = ({ onClose }) => {
     } catch (error) {
       console.error('Error sending invitation:', error);
     }
-    setLoading(false); 
+  
+    setLoading(false);
   };
-
+  
+  
   return (
     <div className="form d-flex justify-content-center align-items-center">
       <Container className="mt-6 p-4 shadow bg-body">
@@ -77,7 +92,7 @@ const SendInvite = ({ onClose }) => {
           <Form.Group controlId="formBasicEmail" className="mb-3">
             <TextField
               className="label"
-              type="email"
+              type="text"
               label="Email"
               name="email"
               value={formData.email}
