@@ -1,6 +1,28 @@
   /* body {
     overflow: hidden;
   } */
+
+  .sticky-header th {
+    position: sticky;
+    top: 0;
+    background-color: #ffffff;
+    z-index: 1; 
+  }
+  .sticky-header th.selection-cell,
+.sticky-header th.action-cell {
+  position: sticky;
+  /* background-color: #6c6969; */
+  z-index: 2; 
+}
+
+.sticky-header th.selection-cell {
+  left: 0;
+}
+
+.sticky-header th.action-cell {
+  right: 0;
+}
+
   .mt-2 {
     margin-top: 1.5rem !important;
 }
