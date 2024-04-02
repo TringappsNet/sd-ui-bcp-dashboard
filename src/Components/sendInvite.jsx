@@ -138,9 +138,9 @@ const SendInvite = ({ onClose }) => {
                 value={formData.organization}
                 onChange={handleChange}
               >
-                <MenuItem value="organization1">Organization 1</MenuItem>
-                <MenuItem value="organization2">Organization 2</MenuItem>
-                <MenuItem value="organization3">Organization 3</MenuItem>
+                <MenuItem value="Tringapps">Tringapps</MenuItem>
+                <MenuItem value="Techi-Track">Techi-Track</MenuItem>
+                <MenuItem value="Jean-Martin">Jean-Martin</MenuItem>
               </Select>
             </FormControl>
           </Form.Group>
