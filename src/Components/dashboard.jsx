@@ -1,4 +1,6 @@
   import React, { useState, useCallback, useEffect } from "react";
+  import {Link } from "react-router-dom";
+
   import { Table } from "react-bootstrap";
   import {
     Navbar,
@@ -14,8 +16,7 @@
     Col,
     Dropdown  } from "react-bootstrap";
   import { useDropzone } from "react-dropzone";
-  import { useNavigate , Link
-  } from "react-router-dom";
+  import { useNavigate} from "react-router-dom";
   import * as XLSX from "xlsx";
   import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
   import {
@@ -58,10 +59,12 @@
     const [snackbarColor, setSnackbarColor] = useState("success"); 
     const [uploadedFileName, setUploadedFileName] = useState("");
     const [showConfirmation, setShowConfirmation] = useState(false);
-
-
+    const [sessionExpired, setSessionExpired] = useState(false); // Track session expiration
+    const [remainingTime, setRemainingTime] = useState(200); // 60 seconds for one minute
+    const [logoutModalOpen, setLogoutModalOpen] = useState(false);
+    
     const navigate = useNavigate();
-
+   
     
     useEffect(() => {
       const isLoggedIn = localStorage.getItem("isLoggedIn");
@@ -76,6 +79,33 @@
         setShowPreview(true);
       }
     }, [navigate]);
+
+    useEffect(() => {
+      // Set up a timer to decrement remainingTime every second
+      const timer = setInterval(() => {
+        setRemainingTime((prevTime) => {
+          if (prevTime <= 0) {
+            // Session expired, trigger logout
+            clearInterval(timer);
+            handleLogout();
+            return 0;
+          }
+          return prevTime - 1;
+        });
+      }, 1000);
+  
+      // Clean up timer on component unmount
+      return () => clearInterval(timer);
+    }, []);
+  
+    useEffect(() => {
+      if (remainingTime === 0) {
+        // Session expired, redirect to login page
+        handleLogout(); // Or any other logout logic you have
+        navigate("/login");
+      }
+    }, [remainingTime]);
+  
 
     useEffect(() => {
       const handleResize = () => {
@@ -189,9 +219,27 @@
 
     const handleLogout = () => {
       // Show the confirmation modal
+      // For example, clear localStorage, reset state, etc.
+        localStorage.removeItem("sessionId");
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("UserName");
+        localStorage.removeItem("email");
+        localStorage.removeItem("Organisation");
       setShowConfirmation(true);
     };
 
+    const handleLogoutModalClose = () => {
+      setLogoutModalOpen(false);
+    };
+  
+    const handleLogoutModalConfirm = () => {
+      handleLogout();
+      setLogoutModalOpen(false);
+    };
+  
+    const openLogoutModal = () => {
+      setLogoutModalOpen(true);
+    };
     
     const handleConfirmLogout = () => {
       // Perform logout logic
@@ -454,6 +502,13 @@ const handleSubmit = async () => {
         <a href="/login" className="brand-wrapper">
         <Link to="/dashboard" className="customNavbarBrand"></Link>
       </a>
+      <div className="remaining-time">
+      {sessionExpired ? (
+        <p>Session expired</p>
+      ) : (
+        <p>Session expires in: {remainingTime}</p>
+      )}
+    </div>
           <NavbarToggle aria-controls="basic-navbar-nav" />
           <NavbarCollapse id="basic-navbar-nav">
             <Nav className="ml-auto align-items-center">
@@ -502,7 +557,6 @@ const handleSubmit = async () => {
             </Nav>
           </NavbarCollapse>
         </Navbar>
-
         <ConfirmationModal
           show={showConfirmation}
           onHide={handleCloseConfirmation}
