@@ -229,6 +229,7 @@
         localStorage.removeItem("UserName");
         localStorage.removeItem("email");
         localStorage.removeItem("Organisation");
+        localStorage.removeItem("createdAt");
       setShowConfirmation(true);
     };
 
