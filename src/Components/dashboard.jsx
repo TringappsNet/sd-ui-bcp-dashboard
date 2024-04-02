@@ -305,12 +305,15 @@ const handleSubmit = async () => {
     const sessionId = localStorage.getItem('sessionId');
     const email = localStorage.getItem('email');
     const organization = localStorage.getItem('Organization');
+    const Role_ID = localStorage.getItem('Role_ID');
+
 
     // Create userData object with username and organization
     const userData = {
       username: username,
       organization: organization,
-      email:email
+      email: email,
+      roleID: Role_ID
     };
 
     // Map through the data array to format dates if needed
