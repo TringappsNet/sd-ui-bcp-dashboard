@@ -25,6 +25,8 @@ function Login() {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const navigate = useNavigate();
 
+
+  
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -71,7 +73,9 @@ function Login() {
         localStorage.setItem('UserName', data1.UserName);
         localStorage.setItem('email', data1.email);
         localStorage.setItem('Organisation', data1.Organization);
-        
+
+        localStorage.setItem('createdAt', data1.createdAt);
+
   
         navigate('/dashboard');
       } else {
