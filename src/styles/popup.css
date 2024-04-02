@@ -60,3 +60,19 @@
     cursor: pointer;
     color: brown;
   }
+button{
+  border: none;
+  background-color: white;
+}
+.organization{
+  text-align: start;
+  margin-left: 5px;
+}
+.admin{
+  text-align: start;
+  margin-left: 5px;
+}
+
+
+
+
