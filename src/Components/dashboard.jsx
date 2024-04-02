@@ -36,7 +36,8 @@
   import LoadingSpinner from './LoadingSpinner'; 
   import ResetPassword from "./resetPassword";
   import ConfirmationModal from "./ConfirmationModal";
-
+import NavbarComponent from "./Navbar";
+import ExcelGrid from './ExcelGrid';
 
 
   function Dashboard() {
@@ -449,60 +450,12 @@ const handleSubmit = async () => {
           message={snackbarMessage}
           onClose={handleCloseSnackbar}
           color={snackbarColor}      />
-
-        <Navbar bg="light" expand="lg" className="w-100">
-        <a href="/login" className="brand-wrapper">
-        <Link to="/dashboard" className="customNavbarBrand"></Link>
-      </a>
-          <NavbarToggle aria-controls="basic-navbar-nav" />
-          <NavbarCollapse id="basic-navbar-nav">
-            <Nav className="ml-auto align-items-center">
-            
-              {isMobile ? (
-                <Dropdown className="d-flex username">
-                  
-            
-                  <Dropdown.Toggle
-                    id="dropdown-basic"
-                    as="div"
-                    className="customDropdown"
-                  >
-                    <div className="username-container">{username}
-                  <FontAwesomeIcon className="username" icon={faUser} />
-    </div>
-                  </Dropdown.Toggle>
-
-                  
-                  <Dropdown.Menu>
-                    <PopUpContainer>
-                      <ResetNewPassword  />
-                    </PopUpContainer>
-                    <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-              ) : (
-              
-                
-              
-                  <React.Fragment >
-                    <div className="smallscreen">
-
-                  <div className="ml-auto align-items-center user ">
-                    <FontAwesomeIcon icon={faUser} /> {username}
-                  </div>
-                  <PopUpContainer  >
-                    <ResetPassword />
-                  </PopUpContainer> 
-                  <Dropdown.Item onClick={handleLogout} className="logout">Logout</Dropdown.Item>
-                  </div>
-
-
-                </React.Fragment>
-              )}
-            </Nav>
-          </NavbarCollapse>
-        </Navbar>
-
+ <NavbarComponent
+        username={username}
+        handleLogout={handleLogout}
+        isMobile={isMobile}
+      />
+        
         <ConfirmationModal
           show={showConfirmation}
           onHide={handleCloseConfirmation}
@@ -569,98 +522,20 @@ const handleSubmit = async () => {
   )}
       {loading && <LoadingSpinner />}
 
-{filteredData.length === 0 ? (
-        <div className="no-data-message">No data available</div>
-      ) :
-      <Container fluid className="mt-2">
-  <Row className="row Render-Row">
-    <Col className="col Render-Col">
-      <div className="table-responsive render">
-        <Table striped bordered hover>
-          <thead className="sticky-header">
-            <tr>
-              <th className="selection-cell">
-                <input
-                  type="checkbox"
-                  checked={selectedRowIds.length === filteredData.length}
-                  onChange={() => handleCheckboxChange(null)}
-                />
-              </th>
-              {Object.keys(filteredData[0] || {}).map((key) => (
-                <th key={key}>
-                  {key === 'MonthYear' ? 'Date' : key}
-                </th>
-              ))}
-              <th className="action-cell">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredData.map((row, index) => (
-              <tr key={index}>
-                <td className="selection-cell">
-                  <input
-                    type="checkbox"
-                    checked={selectedRowIds.includes(index)}
-                    onChange={() => handleCheckboxChange(index)}
-                  />
-                </td>
-                {Object.keys(row).map((key) => (
-                  <td key={key}>
-                    {editedRowId === index ? (
-                      <input
-                        type="text"
-                        value={editedRowData[key] || ""}
-                        onChange={(e) => handleInputChange(e, key)}
-                      />
-                    ) : (
-                      formatDateCell(row[key], key)
-                    )}
-                  </td>
-                ))}
-                <td className="action-cell">
-                  {editedRowId === index ? (
-                    <div className="action-buttons">
-                      <button
-                        className="btn  btn-sm Save"
-                        onClick={() => handleSave()}
-                      >
-                        <FontAwesomeIcon icon={faSave} />
-                      </button>
-                      <button
-                        className="btn btn-sm Cancel"
-                        onClick={() => handleCancel()}
-                      >
-                        <FontAwesomeIcon icon={faTimes} />
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="action-buttons">
-                      <button
-                        className="btn  btn-sm Edit"
-                        onClick={() => handleEdit(index)}
-                      >
-                        <FontAwesomeIcon icon={faEdit} />
-                      </button>
-                      <button
-                        className="btn btn-sm Delete"
-                        onClick={() => handleDelete(index)}
-                      >
-                        <FontAwesomeIcon icon={faTrash} />
-                      </button>
-                    </div>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      </div>
-    </Col>
-  </Row>
-</Container>
 
-    
-  }
+   <ExcelGrid
+        filteredData={filteredData}
+        selectedRowIds={selectedRowIds}
+        editedRowId={editedRowId}
+        editedRowData={editedRowData}
+        handleCheckboxChange={handleCheckboxChange}
+        handleEdit={handleEdit}
+        handleCancel={handleCancel}
+        handleInputChange={handleInputChange}
+        handleSave={handleSave}
+        handleDelete={handleDelete}
+        formatDateCell={formatDateCell}
+      />
         {loading && <LoadingSpinner />} 
       </div>
     );
