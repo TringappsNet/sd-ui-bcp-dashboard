@@ -77,7 +77,7 @@
         const storedEmail = localStorage.getItem("email");
         setUsername(storedUsername);
         setOrganization(storedOrganization);
-        setUsername(storedEmail);
+        setEmail(storedEmail);
 
         fetchData();
         setShowPreview(true);
