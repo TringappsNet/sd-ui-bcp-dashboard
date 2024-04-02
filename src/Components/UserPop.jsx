@@ -1,247 +1,205 @@
-import React, { useState,useEffect } from 'react';
-import { Table, TableBody, TableCell, TableHead, TableRow, TextField, IconButton, Button } from '@material-ui/core';
-// import '../styles/UserPop.css';
-import ExcelGrid from './ExcelGrid';
+import React, { useState, useEffect } from 'react';
+import { Container, Row, Col } from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faSave, faTrash,faBan } from '@fortawesome/free-solid-svg-icons';
 import { PortURL } from "./Config";
-import { useNavigate , Link
-} from "react-router-dom";
+import '../styles/UserPop.css';
 
-const UserPop = ({ handleClose }) => {
-  const [username, setUsername] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [organization, setOrganization] = useState("");
-  const [showPreview, setShowPreview] = useState(false);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [retriveData, setRetriveData] = useState([]);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
-  const [snackbarColor, setSnackbarColor] = useState("success"); 
-
-  const navigate = useNavigate();
-  const fetchData = async () => {
-    try {
-      const storedUsername = localStorage.getItem("UserName");
-      const storedOrganization = localStorage.getItem("Organisation");
-      const response = await fetch(`${PortURL}/data?username=${storedUsername}&organization=${storedOrganization}`);
-      if (response.ok) {
-        const excelData = await response.json();
-        setRetriveData(excelData);
-        console.log(excelData);
-      } else {
-        console.error("Failed to fetch data:", response.statusText);
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
+const UserPop = () => {
+  const [excelData, setExcelData] = useState([]);
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [editedRowId, setEditedRowId] = useState(null);
+  const [editedRole, setEditedRole] = useState(null); 
+  const [roles, setRoles] = useState([]);
 
   useEffect(() => {
-    const isLoggedIn = localStorage.getItem("isLoggedIn");
-    if (!isLoggedIn) {
-      navigate("/login");
-    } else {
-      const storedUsername = localStorage.getItem("UserName");
-      const storedOrganization = localStorage.getItem("Organisation");
-      setUsername(storedUsername);
-      setOrganization(storedOrganization);
-      fetchData();
-      setShowPreview(true);
+    fetchData();
+    fetchRoles();
+
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch(`${PortURL}/users`);
+      if (response.ok) {
+        const data = await response.json();
+        setExcelData(data);
+      } else {
+        console.error('Failed to fetch Excel data:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error fetching Excel data:', error);
     }
-  }, [navigate]);
-  const filteredData = retriveData.filter((row) => {
-    return Object.values(row || {}).some(
-      (value) =>
-        value &&
-        value.toString().toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  });
+  };
+
+  const fetchRoles = async () => {
+    try {
+      const response = await fetch(`${PortURL}/Get-Role`);
+      if (response.ok) {
+        const data = await response.json();
+        setRoles(data);
+      } else {
+        console.error('Failed to fetch roles:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error fetching roles:', error);
+    }
+  };
+
+  const handleCheckboxChange = (index) => {
+    if (selectedRows.includes(index)) {
+      setSelectedRows(selectedRows.filter(row => row !== index));
+    } else {
+      setSelectedRows([...selectedRows, index]);
+    }
+  };
+  const handleEdit = async (index) => {
+    try {
+      console.log('Editing row:', index);
+      // Fetch roles data
+      const response = await fetch(`${PortURL}/Get-Role`);
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Fetched roles data:', data);
+        setRoles(data);
+      } else {
+        console.error('Failed to fetch roles:', response.statusText);
+      }
   
-  const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
-  };
-
-  const handleEdit = (rowId) => {
-    console.log("Editing row with ID:", rowId);
-    // Set the edited row ID
-    setEditedRowId(rowId);
-    // Set the edited row data
-    setEditedRowData(filteredData[rowId]);
-  };
-
-  const handleCancel = () => {
-    console.log("Canceling edit for row:", editedRowId);
-    setEditedRowId(null);
-  };
-
-  const handleInputChange = (e, key) => {
-    const { value } = e.target;
-    console.log("Key:", key);
-    console.log("Value:", value);
-    // Update the edited row data with the new value
-    setEditedRowData((prevData) => ({
-      ...prevData,
-      [String(key)]: String(value || ""), // Convert both key and value to strings and provide a fallback value of an empty string if value is null or undefined
-    }));
-  };
-
-  const handleCheckboxChange = (rowId) => {
-    if (rowId === null) {
-      // Toggle selection for all rows
-      const allRowIds = filteredData.map((_, index) => index);
-      setSelectedRowIds(
-        selectedRowIds.length === allRowIds.length ? [] : allRowIds
-      );
-    } else {
-      // Toggle selection for a specific row
-      setSelectedRowIds(
-        selectedRowIds.includes(rowId)
-          ? selectedRowIds.filter((id) => id !== rowId)
-          : [...selectedRowIds, rowId]
-      );
+      // Set edited row ID
+      setEditedRowId(index);
+  
+      // Set edited role
+      const selectedRole = excelData[index].Role.trim() ? excelData[index].Role : null;
+      console.log('Selected Role:', selectedRole);
+      setEditedRole(selectedRole);
+    } catch (error) {
+      console.error('Error editing row:', error);
     }
   };
-
+  
+  
+  const handleRoleChange = (event) => {
+    const selectedRole = event.target.value;
+    console.log('Selected Role:', selectedRole);
+    setEditedRole(selectedRole);
+  };  
+  
   const handleSave = async () => {
     try {
-      console.log("Edit saved data", editedRowData);
-      const sessionId = localStorage.getItem('sessionId');
-      const email = localStorage.getItem('email');
-      // Format the MonthYear date to "YYYY-MM-DD"
-      const monthYearDate = new Date(editedRowData.MonthYear);
-      const formattedMonthYear = `${monthYearDate.getFullYear()}-${(
-        monthYearDate.getMonth() + 1
-      )
-        .toString()
-        .padStart(2, "0")}-${monthYearDate
-        .getDate()
-        .toString()
-        .padStart(2, "0")}`;
-
-      // Create the payload with the updated MonthYear format
-      const payload = {
-        editedRow: {
-          ...editedRowData,
-          MonthYear: formattedMonthYear,
-        },
-      };
-
-      // Send the updated data to the server
-
-      const response = await fetch(`${PortURL}/update`, {
-        method: "POST", // Change the method to POST since you're sending data
+      const updatedData = [...excelData];
+      updatedData[editedRowId].Role = editedRole;
+  
+      // Perform API call to save updated data
+      const response = await fetch(`${PortURL}/UpdateUsers/${updatedData[editedRowId].id}`, {
+        method: 'PUT',
+        body: JSON.stringify({ Role: editedRole }),
         headers: {
-          "Content-Type": "application/json",
-          
-          "Session-ID": sessionId, 
-          "Email": email, 
-        },
-        body: JSON.stringify(payload), // Send only the edited row data
+          'Content-Type': 'application/json'
+        }
       });
-
+  
       if (response.ok) {
-        console.log("Row updated successfully:", editedRowData);
-        // Optionally, you can refresh the data from the server
-        fetchData();
-        setSnackbarOpen(true);
-        setSnackbarMessage("Row updated successfully");
-        setSnackbarColor("success"); 
-
-        setEditedRowId(null); // Reset edited row id after saving
+        console.log('Role updated successfully');
       } else {
-        console.error("Error updating row:", response.statusText);
-        setSnackbarOpen(true);
-        setSnackbarMessage("Error updating row");
-        setSnackbarColor("error"); // Set snackbar color to red
-
+        console.error('Failed to update role:', response.statusText);
       }
+  
+      setExcelData(updatedData);
+      setEditedRowId(null);
     } catch (error) {
-      console.error("Error updating row:", error);
-      setSnackbarOpen(true);
-      setSnackbarMessage("Error updating row");
-      setSnackbarColor("error"); // Set snackbar color to red
-
+      console.error('Error saving data:', error);
     }
   };
-
-  const handleDelete = async (rowId) => {
+  const handleDeactivate = async () => {
     try {
-      console.log("Row ID:", rowId);
-      const sessionId = localStorage.getItem('sessionId');
-      const email = localStorage.getItem('email');
-      
-      console.log("Filtered Data:", filteredData);
-  
-      const identifierToDelete = String(filteredData[rowId]?.ID);
-      console.log("Identifier to Delete:", identifierToDelete);
-  
-      const response = await fetch(`${PortURL}/delete`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Session-ID": sessionId, 
-          "Email": email, 
-        },
-        body: JSON.stringify({ ids: [identifierToDelete] }),
-      });
-
-      
-      if (response.ok) {
-        // If the deletion is successful, update the data state to reflect the changes
-        const updatedData = filteredData.filter((row, index) => index !== rowId);
-        setRetriveData(updatedData); // Update filteredData state with the updatedData
-        setSnackbarOpen(true);
-        setSnackbarMessage("Row deleted successfully");
-      } else {
-        console.error("Error deleting row:", response.statusText);
-        setSnackbarOpen(true);
-        setSnackbarMessage("Error deleting row");
-      }
+      // Logic to deactivate selected users
+      console.log('Deactivate selected users:', selectedRows);
+      // Perform API call to deactivate selected users
     } catch (error) {
-      console.error("Error deleting row:", error);
-      setSnackbarOpen(true);
-      setSnackbarMessage("Error deleting row");
+      console.error('Error deactivating users:', error);
     }
   };
-  
-  const formatMonthYear = (dateString) => {
-    const date = new Date(dateString);
-    // Add 10 seconds to the date
-    date.setSeconds(date.getSeconds() + 100);
-    const month = date.toLocaleString('default', { month: 'short' });
-    const year = date.getFullYear().toString().substr(-2);
-    return `${month.toUpperCase()} ${year}`;
-  };
-  const formatDateCell = (value, key) => {
-    // Check if the key is "MonthYear"
-    if (key === "MonthYear") {
-      // Format the date using the formatMonthYear function
-      return formatMonthYear(value);
-    }
-    // Return the value as is for other keys
-    return value;
-  };
-  const [editedRowId, setEditedRowId] = useState(null); // Track edited row ID
-  const [editedRowData, setEditedRowData] = useState({}); // Track edited row data
-  const [selectedRowIds, setSelectedRowIds] = useState([]); // Track selected row IDs
 
   return (
-    <div className="fullscreen-popup">
-      <div className="popup-content">
-      <ExcelGrid
-        filteredData={filteredData}
-        selectedRowIds={selectedRowIds}
-        editedRowId={editedRowId}
-        editedRowData={editedRowData}
-        handleCheckboxChange={handleCheckboxChange}
-        handleEdit={handleEdit}
-        handleCancel={handleCancel}
-        handleInputChange={handleInputChange}
-        handleSave={handleSave}
-        handleDelete={handleDelete}
-        formatDateCell={formatDateCell}
-      />
-      </div>
-    </div>
+    <Container fluid className="User-2">
+      <Row className="row Render-rr">
+        <h7 className="h7">USERS</h7>
+        <button className="btn btn-sm Deactivate" onClick={handleDeactivate}>
+            <FontAwesomeIcon icon={faBan} /> 
+          </button>
+        <Col className="col Render-cc">
+          <div className="table-responsive render">
+            <Table striped bordered hover>
+              <thead className='checkbox-container' >
+                <tr>
+                  <th className='checkbox-container'>Checkbox</th>
+                  {Object.keys(excelData[0] || {}).map((key) => (
+                    <th  key={key}>{key}</th>
+                  ))}
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {excelData.map((row, index) => (
+                  <tr key={index}>
+                    <td className='checkbox-container ' >
+                      <input
+                     
+                        type="checkbox"
+                        checked={selectedRows.includes(index)}
+                        onChange={() => handleCheckboxChange(index)}
+                      />
+                    </td>
+                    {Object.keys(row).map((key, i) => (
+                      <td key={i}>
+                        {editedRowId === index && key === 'Role' ? (
+                        <select value={editedRole || ''} onChange={handleRoleChange} style={{ color: 'black' }}>
+                        {roles.length > 0 && roles.map(role => (
+                          <option key={role.role_ID} value={role.role}>{role.role}</option>
+                        ))}
+                      </select>
+                        ) : (
+                          row[key]
+                        )}
+                      </td>
+                    ))}
+                    <td className='action-button'>
+                              {editedRowId === index ? (
+                                <div  >
+                                  <button className="btn btn-sm Save" onClick={handleSave}>
+                                    <FontAwesomeIcon icon={faSave} />
+                                  </button>
+                                </div>
+                              ) : (
+                                <div >
+                                  <button className="btn btn-sm Edit" onClick={() => handleEdit(index)}>
+                                    <FontAwesomeIcon icon={faEdit} />
+                                  </button>
+                                
+                                </div>
+                              )}
+                            </td>
+
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </div>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 
 export default UserPop;
+
+
+
+
+
+
+
+
+

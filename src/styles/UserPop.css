@@ -1,4 +1,4 @@
-.fullscreen-popup {
+.User-2 {
     position: fixed;
     top: 0;
     left: 0;
@@ -10,30 +10,63 @@
     align-items: center;
   }
   
-  .popup-content {
-    width: 80%;
+  .Render-rr {
+    width: 70%;
     height: 80%;
     background-color: #fff; /* White background */
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Drop shadow effect */
+    padding-top: 20px;
+  }
+
+  .Render-cc{
+    padding-top: 40px;
+    padding-left: 80px;
+  }
+
+  .h7{
+    font-family: "Montserrat", sans-serif;
   }
   
-  .popup-content h3 {
-    margin-top: 0;
+  .table-container {
+    overflow-x: auto;
   }
   
-  .popup-content button {
-    margin-top: 20px;
-    padding: 8px 16px;
-    background-color: #007bff; /* Blue button */
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+  .sticky-header th,
+  .sticky-column {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: #fff; 
   }
   
-  .popup-content button:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+  .sticky-column {
+    left: 0;
   }
   
+  .text-right {
+    text-align: right;
+  }
+  
+  .Deactivate{
+    width: 50px;
+    border: 1px solid grey;
+  margin-left: 400px;
+  }
+
+
+  .action-button {
+    position: sticky;
+    right: 0;
+    background-color: #fff;
+    z-index: 1;
+  }
+  
+  .checkbox-container {
+    position: sticky;
+    left: 0;
+    background-color: #fff;
+    z-index: 1;
+  }
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap')
