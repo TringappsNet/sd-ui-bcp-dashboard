@@ -75,26 +75,26 @@ function Login() {
         localStorage.setItem('Organization', data1.Organization);
         localStorage.setItem('createdAt', data1.createdAt);
 
-  
-        navigate('/dashboard');
-      } else {
-        const data = await response.json();
-  
-        if (response.status === 400) {
-          setSnackbarMessage(data.message);
-        } else if (response.status === 401) {
-          setSnackbarMessage('Invalid password!');
-        } else {
-          setSnackbarMessage('An error occurred while logging in.');
-        }
-  
-        setSnackbarOpen(true);
-      }
-    } catch (error) {
-      console.error('Error logging in:', error);
+    navigate('/dashboard');
+  } else {
+    const data = await response.json();
+
+    if (response.status === 400) {
+      setSnackbarMessage(data.message);
+    } else if (response.status === 401) {
+      setSnackbarMessage(data.message); // Display session-related error message
+    } else {
       setSnackbarMessage('An error occurred while logging in.');
-      setSnackbarOpen(true);
     }
+
+    setSnackbarOpen(true);
+  }
+} catch (error) {
+  console.error('Error logging in:', error);
+  setSnackbarMessage('An error occurred while logging in.');
+  setSnackbarOpen(true);
+}
+
   
     setLoading(false);
   };
@@ -195,7 +195,7 @@ function Login() {
         onClose={handleCloseSnackbar}
       />
     </div>
-    {loading && <LoadingSpinner />} 
+    {/* {loading && <LoadingSpinner />}  */}
    </div>
   );
 }
