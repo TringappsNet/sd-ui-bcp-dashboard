@@ -48,6 +48,7 @@
     const [editedRowData, setEditedRowData] = useState({}); // Track edited row data
     const [loading, setLoading] = useState(false); 
     const [organization, setOrganization] = useState("");
+    const [email, setEmail] = useState("");
     const [showPreview, setShowPreview] = useState(false);
     const [uploadSuccess, setUploadSuccess] = useState(false);
     const [selectedRowIds, setSelectedRowIds] = useState([]); // Track selected row IDs
@@ -73,8 +74,11 @@
       } else {
         const storedUsername = localStorage.getItem("UserName");
         const storedOrganization = localStorage.getItem("Organisation");
+        const storedEmail = localStorage.getItem("email");
         setUsername(storedUsername);
         setOrganization(storedOrganization);
+        setUsername(storedEmail);
+
         fetchData();
         setShowPreview(true);
       }
@@ -303,6 +307,7 @@ const handleSubmit = async () => {
     const userData = {
       username: username,
       organization: organization,
+      email:email
     };
 
     // Map through the data array to format dates if needed
