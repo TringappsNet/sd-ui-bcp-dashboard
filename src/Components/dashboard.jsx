@@ -303,6 +303,7 @@ const handleSubmit = async () => {
     // Get session ID and organization from local storage
     const sessionId = localStorage.getItem('sessionId');
     const email = localStorage.getItem('email');
+    const organization = localStorage.getItem('Organization');
 
     // Create userData object with username and organization
     const userData = {
