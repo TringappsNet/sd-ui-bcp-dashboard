@@ -56,25 +56,24 @@ function Login() {
   
     const requestBody = { email, password };
   
-   // Inside your fetch request handling
-try {
-  const response = await fetch(`${PortURL}/login`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(requestBody),
-  });
-
-  if (response.ok) {
-    const data1 = await response.json();
-
-    localStorage.setItem('sessionId', data1.sessionId);
-    localStorage.setItem('isLoggedIn', 'true');
-    localStorage.setItem('UserName', data1.UserName);
-    localStorage.setItem('email', data1.email);
-    localStorage.setItem('Organisation', data1.Organization);
-    localStorage.setItem('createdAt', data1.createdAt);
+    try {
+      const response = await fetch(`${PortURL}/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+  
+      if (response.ok) {
+        const data1 = await response.json();
+  
+        localStorage.setItem('sessionId', data1.sessionId);
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('UserName', data1.UserName);
+        localStorage.setItem('email', data1.email);
+        localStorage.setItem('Organization', data1.Organization);
+        localStorage.setItem('createdAt', data1.createdAt);
 
     navigate('/dashboard');
   } else {

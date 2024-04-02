@@ -228,7 +228,7 @@
         localStorage.removeItem("isLoggedIn");
         localStorage.removeItem("UserName");
         localStorage.removeItem("email");
-        localStorage.removeItem("Organisation");
+        localStorage.removeItem("Organization");
         localStorage.removeItem("createdAt");
       setShowConfirmation(true);
     };
