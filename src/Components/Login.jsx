@@ -74,6 +74,8 @@ function Login() {
         localStorage.setItem('email', data1.email);
         localStorage.setItem('Organization', data1.Organization);
         localStorage.setItem('createdAt', data1.createdAt);
+        localStorage.setItem('Role_ID', data1.Role_ID);
+
 
     navigate('/dashboard');
   } else {
