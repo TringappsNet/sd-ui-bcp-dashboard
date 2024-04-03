@@ -571,20 +571,30 @@ const handleSubmit = async () => {
 </Form>
 </Container>
 
+<div>
+  {filteredData.length === 0 ? (
+    <div className="no-results">
+      {/* <img src="/images.png" alt="No results found" className="background-image" /> */}
+      <p>No results found</p>
+    </div>
+  ) : (
+    <ExcelGrid
+      filteredData={filteredData}
+      selectedRowIds={selectedRowIds}
+      editedRowId={editedRowId}
+      editedRowData={editedRowData}
+      handleCheckboxChange={handleCheckboxChange}
+      handleEdit={handleEdit}
+      handleCancel={handleCancel}
+      handleInputChange={handleInputChange}
+      handleSave={handleSave}
+      handleDelete={handleDelete}
+      formatDateCell={formatDateCell}
+    />
+  )}
+</div>
 
-<ExcelGrid
-    filteredData={filteredData}
-    selectedRowIds={selectedRowIds}
-    editedRowId={editedRowId}
-    editedRowData={editedRowData}
-    handleCheckboxChange={handleCheckboxChange}
-    handleEdit={handleEdit}
-    handleCancel={handleCancel}
-    handleInputChange={handleInputChange}
-    handleSave={handleSave}
-    handleDelete={handleDelete}
-    formatDateCell={formatDateCell}
-  />
+
     {loading && <LoadingSpinner />} 
   </div>
 );

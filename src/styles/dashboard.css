@@ -24,10 +24,16 @@
 }
 
   .mt-2 {
-    margin-top: 1.5rem !important;
+    margin-top: 0.5rem !important;
+}
+
+
+.mt-4 {
+  margin-top: 0.5rem !important;
 }
 
   .navbar-toggler {
+    margin: 0px;
     margin-right: 25px;
     width: 50px;
 
@@ -636,6 +642,23 @@ thead{
   margin-left: 20px;
 }
 
+.no-results {
+  justify-content: center;
+  text-align: center; 
+  margin-top: 150px;
+  font-size: 22px; 
+  color: #333;
+  /* background-image: url('/public/folder.png');
+  background-size: cover; 
+  background-position: center; */
+}
+
+.background-image {
+  max-width: 20%;
+  height:20%;
+}
+
+
 
 .no-data-message{
 display: flex;
@@ -656,3 +679,7 @@ button, input, optgroup, select, textarea {
   --bs-table-bg-type: var(--bs-table-striped-bg);
 } */
   @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap')
+
+  /* styles.css */
+
+
