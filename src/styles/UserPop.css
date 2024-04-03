@@ -29,9 +29,7 @@
   font-family: "Montserrat", sans-serif;
 }
 
-.table-container {
-  overflow-x: auto;
-}
+
 
 .sticky-header th,
 .sticky-column {
@@ -50,37 +48,37 @@
 }
 
 .Deactivate{
-  width: 10px;
+  width: 50px;
+  padding-right: 70px;
+  margin-right: 20px;
 }
 .action-button {
   position: sticky;
   right: 0;
-  background-color: #fff;
   z-index: 1;
-  max-width: 70px;
+  margin-right: 0px;
+  width: 40px;
 }
 
-.checkbox-container {
-  position: sticky;
-  left: 0;
-  background-color: #fff;
-  z-index: 1;
-  max-width: 70px;
-}
 
-.deactivated {
-  background-color: #f8d7da; /* Light red background */
-  color: #721c24; /* Dark red text color */
-}
 
-.table-responsive.render {
+
+
+.table-response.render1 {
   max-height: min-content;
   overflow-y: auto;
-  height: 500px;
-  /* margin-right: 60px; */
-}
-.fade-out {
-  transition: opacity 1s ease; /* Add transition effect for opacity */
-  opacity: 0; /* Set opacity to 0 to create the fade out effect */
+  margin-right: 60px;
 }
 
+.fade-out {
+  opacity: 3;
+  
+  transition: opacity 1s ease-in-out; 
+}
+
+
+
+.col {
+  flex: 1 0;
+  margin-bottom: 305px;
+}
