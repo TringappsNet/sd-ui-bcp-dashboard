@@ -22,12 +22,11 @@ function SendInvite({ onClose }){
     if (successMessage) {
       const timer = setTimeout(() => {
         setSuccessMessage('');
-        onClose(); 
       }, 5000);
 
       return () => clearTimeout(timer);
     }
-  }, [successMessage, onClose]);
+  }, [successMessage]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -76,12 +75,15 @@ function SendInvite({ onClose }){
         },
         body: JSON.stringify(formData)
       });
-      
-      if (response.ok) {
+        if (response.ok) {
         const data = await response.json();
         console.log(data);
         setSuccessMessage('Invitation sent successfully');
         setFormData(initialFormData); 
+        setTimeout(() => {
+          onClose();
+        }, 5000);
+        
       } else {
         const data = await response.json();
       }      
@@ -92,6 +94,8 @@ function SendInvite({ onClose }){
   
     setLoading(false);
   };
+  
+  
   
   return (
     <div className="form d-flex justify-content-center align-items-center">

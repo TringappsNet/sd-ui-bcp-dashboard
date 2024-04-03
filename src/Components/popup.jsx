@@ -49,7 +49,11 @@ const PopUpContainer = () => {
   };
 
   const handleResetSuccess = () => {
-    setShowResetPopup(false); // Close reset password popup
+    setShowResetPopup(false);
+  };
+
+  const handleInviteSuccess = () => {
+    setShowInvitePopup(false); 
   };
 
   return (
@@ -66,7 +70,7 @@ const PopUpContainer = () => {
           <div className="backdrop" onClick={handleClosePopups}></div>
           <div className="popup-inner" onClick={(e) => e.stopPropagation()}>
             {showResetPopup && <ResetNewPassword onClose={handleResetSuccess} />}
-            {showInvitePopup && <SendInvite onClose={handleResetSuccess} />}
+            {showInvitePopup && <SendInvite onClose={handleInviteSuccess} />}
             {showOrganizationPopup && <OrganizationPopup handleClose={handleClosePopups} />}
             {showAdminPopup && <UserPop handleClose={handleClosePopups} />}
           </div>
