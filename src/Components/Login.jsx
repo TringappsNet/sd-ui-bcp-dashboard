@@ -79,15 +79,15 @@ function Login() {
 
     navigate('/dashboard');
   } else {
-    const data = await response.json();
+      const data = await response.json();
 
-    if (response.status === 400) {
-      setSnackbarMessage(data.message);
-    } else if (response.status === 401) {
-      setSnackbarMessage(data.message); // Display session-related error message
-    } else {
-      setSnackbarMessage('An error occurred while logging in.');
-    }
+      if (response.status === 400) {
+        setSnackbarMessage(data.message);
+      } else if (response.status === 401) {
+        setSnackbarMessage(data.message); // Display session-related error message
+      } else {
+        setSnackbarMessage('An error occurred while logging in.');
+      }
 
     setSnackbarOpen(true);
   }
