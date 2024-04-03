@@ -73,7 +73,7 @@
         navigate("/login");
       } else {
         const storedUsername = localStorage.getItem("UserName");
-        const storedOrganization = localStorage.getItem("Organisation");
+        const storedOrganization = localStorage.getItem("Organization");
         const storedEmail = localStorage.getItem("email");
         setUsername(storedUsername);
         setOrganization(storedOrganization);
@@ -253,8 +253,10 @@
       localStorage.removeItem("isLoggedIn");
       localStorage.removeItem("UserName");
       localStorage.removeItem("email");
-      localStorage.removeItem("Organisation");
-      localStorage.removeItem("createdAt")
+      localStorage.removeItem("Organization");
+      localStorage.removeItem("createdAt");
+      localStorage.removeItem("Role_ID")
+
       navigate("/login");
     };
 
@@ -304,12 +306,16 @@ const handleSubmit = async () => {
     // Get session ID and organization from local storage
     const sessionId = localStorage.getItem('sessionId');
     const email = localStorage.getItem('email');
+    const organization = localStorage.getItem('Organization');
+    const Role_ID = localStorage.getItem('Role_ID');
 
     // Create userData object with username and organization
     const userData = {
       username: username,
       organization: organization,
-      email:email
+      email:email,
+      roleID: Role_ID
+
     };
 
     // Map through the data array to format dates if needed
