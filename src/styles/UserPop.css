@@ -77,7 +77,7 @@
   max-height: min-content;
   overflow-y: auto;
   height: 500px;
-  margin-right: 60px;
+  /* margin-right: 60px; */
 }
 .fade-out {
   transition: opacity 1s ease; /* Add transition effect for opacity */
