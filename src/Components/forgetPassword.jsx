@@ -15,7 +15,6 @@ function ForgotPassword() {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarType, setSnackbarType] = useState('error');
-  const [snackVariant, setVariant] = useState('error');
   const [loading, setLoading] = useState(false); 
 
   const handleSubmit = async (event) => {
@@ -26,20 +25,16 @@ function ForgotPassword() {
       if (response.status === 200) {
         setSnackbarMessage(response.data.message);
         setSnackbarType('success');
-        setVariant('success');
       } else if (response.status === 404) {
         setSnackbarMessage(response.data.message);
         setSnackbarType('error');
-        setVariant('error');
       } else {
         setSnackbarMessage('Error sending reset link email');
         setSnackbarType('error');
-        setVariant('error');
       }
     } catch (error) {
-      setSnackbarMessage('Please Enter Valid Email');
+      setSnackbarMessage(error.response.data.message || 'Error sending reset link email');
       setSnackbarType('error');
-      setVariant('error');
     }
     setLoading(false); 
     setSnackbarOpen(true);
@@ -86,7 +81,6 @@ function ForgotPassword() {
         open={snackbarOpen}
         onClose={handleCloseSnackbar}
         type={snackbarType}
-        variant={snackVariant}
       />
       {loading && <LoadingSpinner />} 
     </div>
