@@ -5,7 +5,8 @@ import '../styles/sendInvite.css';
 import { PortURL } from './Config';
 import LoadingSpinner from './LoadingSpinner'; 
 
-const SendInvite = ({ onClose }) => {
+function SendInvite({ onClose }){
+
   const initialFormData = {
     email: '',
     role: '',
@@ -21,11 +22,12 @@ const SendInvite = ({ onClose }) => {
     if (successMessage) {
       const timer = setTimeout(() => {
         setSuccessMessage('');
-      }, 3000);
+        onClose(); 
+      }, 5000);
 
       return () => clearTimeout(timer);
     }
-  }, [successMessage]);
+  }, [successMessage, onClose]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -61,32 +63,35 @@ const SendInvite = ({ onClose }) => {
     }
   
     try {
-
-       // Retrieve session ID and email from local storage
-    const sessionId = localStorage.getItem('sessionId');
-    const email = localStorage.getItem('email');
-
+      // Retrieve session ID and email from local storage
+      const sessionId = localStorage.getItem('sessionId');
+      const email = localStorage.getItem('email');
+  
       const response = await fetch(`${PortURL}/send-invite`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Session-ID': sessionId, 
-        'Email': email 
+          'Email': email 
         },
         body: JSON.stringify(formData)
       });
-      const data = await response.json();
-      console.log(data);
-      setSuccessMessage('Invitation sent successfully');
-      setFormData(initialFormData); // Reset form data to initial empty values
-      onClose();
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        setSuccessMessage('Invitation sent successfully');
+        setFormData(initialFormData); 
+      } else {
+        const data = await response.json();
+      }      
+      
     } catch (error) {
       console.error('Error sending invitation:', error);
     }
   
     setLoading(false);
   };
-  
   
   return (
     <div className="form d-flex justify-content-center align-items-center">

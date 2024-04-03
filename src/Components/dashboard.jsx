@@ -121,6 +121,7 @@
 
     const fetchData = async () => {
       try {
+        setLoading(true); 
         const storedUsername = localStorage.getItem("UserName");
         const storedOrganization = localStorage.getItem("Organization");
         const response = await fetch(`${PortURL}/data?username=${storedUsername}&organization=${storedOrganization}`);
@@ -134,6 +135,8 @@
       } catch (error) {
         console.error("Error fetching data:", error);
       }
+      setLoading(false); 
+
     };
     
     
@@ -288,7 +291,7 @@ const handleSubmit = async () => {
     return; // Exit the function early if the data array is empty
   }
 
-  setLoading(true); // Set loading state to true
+  setLoading(true); 
 
   try {
     // Get session ID and organization from local storage
@@ -363,7 +366,7 @@ const handleSubmit = async () => {
     setSnackbarColor("error");
   }
 
-  setLoading(false); // Set loading state to false
+  setLoading(false);
 };
 
 
@@ -567,10 +570,6 @@ const handleSubmit = async () => {
   </div>
 </Form>
 </Container>
-{loading && (
-<div className="loading-spinner"></div>
-)}
-  {loading && <LoadingSpinner />}
 
 
 <ExcelGrid

@@ -10,6 +10,7 @@ const PopUpContainer = () => {
   const [showInvitePopup, setShowInvitePopup] = useState(false);
   const [showOrganizationPopup, setShowOrganizationPopup] = useState(false);
   const [showAdminPopup, setShowAdminPopup] = useState(false);
+  const [timerID, setTimerID] = useState(null);
 
   const handleResetPopupToggle = () => {
     setShowResetPopup(!showResetPopup);
@@ -44,6 +45,7 @@ const PopUpContainer = () => {
     setShowInvitePopup(false);
     setShowOrganizationPopup(false);
     setShowAdminPopup(false);
+    
   };
 
   const handleResetSuccess = () => {
