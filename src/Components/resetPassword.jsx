@@ -14,12 +14,13 @@ function ResetPassword() {
   const [sessionId, setSessionId] = useState('');
 
   useEffect(() => {
-    // Retrieve email ID and session ID from local storage
     const email = localStorage.getItem('email');
     const session = localStorage.getItem('sessionId');
     setEmailId(email);
     setSessionId(session);
   }, []);
+   
+   
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);

@@ -51,7 +51,8 @@
     const [sessionExpired, setSessionExpired] = useState(false); // Track session expiration
     const [remainingTime, setRemainingTime] = useState(500); // 60 seconds for one minute
     const [logoutModalOpen, setLogoutModalOpen] = useState(false);
-    
+    const [snackbarVariant, setSnackbarVariant] = useState('success');
+
     const navigate = useNavigate();
    
     
@@ -115,6 +116,7 @@
     useEffect(() => {
       if (uploadSuccess) {
         setSnackbarOpen(true);
+
         setTimeout(() => setUploadSuccess(false), 5000);
       }
     }, [uploadSuccess]);
@@ -287,7 +289,7 @@ const handleSubmit = async () => {
   if (data.length === 0) {
     setSnackbarOpen(true);
     setSnackbarMessage("File is empty");
-    setSnackbarColor("error");
+    setSnackbarVariant("error");
     return; // Exit the function early if the data array is empty
   }
 
@@ -297,7 +299,7 @@ const handleSubmit = async () => {
     // Get session ID and organization from local storage
     const sessionId = localStorage.getItem('sessionId');
     const email = localStorage.getItem('email');
-    const organization = localStorage.getItem('Organization');
+    const organization = localStorage.getItem('Organisation');
     const Role_ID = localStorage.getItem('Role_ID');
 
     // Create userData object with username and organization
@@ -350,20 +352,20 @@ const handleSubmit = async () => {
       setUploadSuccess(true); 
       setUploadedFileName("");
       setSnackbarMessage("Data uploaded successfully");
-      setSnackbarColor("success");
+      setSnackbarVariant("success");
     } else {
       // Display error message
       console.error("Error:", response.statusText);
       setSnackbarOpen(true);
       setSnackbarMessage("Data upload failed");
-      setSnackbarColor("error");
+      setSnackbarVariant("error");
     }
   } catch (error) {
     // Display error message
     console.error("Error:", error);
     setSnackbarOpen(true);
     setSnackbarMessage("Data upload failed");
-    setSnackbarColor("error");
+    setSnackbarVariant("error");
   }
 
   setLoading(false);
@@ -431,21 +433,21 @@ const handleSubmit = async () => {
           fetchData();
           setSnackbarOpen(true);
           setSnackbarMessage("Row updated successfully");
-          setSnackbarColor("success"); 
+          setSnackbarVariant("success"); 
 
           setEditedRowId(null); // Reset edited row id after saving
         } else {
           console.error("Error updating row:", response.statusText);
           setSnackbarOpen(true);
           setSnackbarMessage("Error updating row");
-          setSnackbarColor("error"); // Set snackbar color to red
+          setSnackbarVariant("error"); // Set snackbar color to red
 
         }
       } catch (error) {
         console.error("Error updating row:", error);
         setSnackbarOpen(true);
         setSnackbarMessage("Error updating row");
-        setSnackbarColor("error"); // Set snackbar color to red
+        setSnackbarVariant("error"); // Set snackbar color to red
 
       }
     };
@@ -478,15 +480,20 @@ const handleSubmit = async () => {
           setRetriveData(updatedData); // Update filteredData state with the updatedData
           setSnackbarOpen(true);
           setSnackbarMessage("Row deleted successfully");
+          setSnackbarVariant('success');
         } else {
           console.error("Error deleting row:", response.statusText);
           setSnackbarOpen(true);
           setSnackbarMessage("Error deleting row");
+          setSnackbarVariant('error');
+
         }
       } catch (error) {
         console.error("Error deleting row:", error);
         setSnackbarOpen(true);
         setSnackbarMessage("Error deleting row");
+        setSnackbarVariant('error');
+
       }
     };
     
@@ -498,11 +505,16 @@ const handleSubmit = async () => {
 
     return (
       <div className="dashboard-container">
-      <CustomSnackbar
-      open={snackbarOpen}
-      message={snackbarMessage}
-      onClose={handleCloseSnackbar}
-      color={snackbarColor}      />
+        <CustomSnackbar
+        message={snackbarMessage}
+        variant={snackbarVariant}
+        onClose={handleCloseSnackbar}
+        open={snackbarOpen}
+  
+        // color={snackColor}
+
+
+      />
 <NavbarComponent
     username={username}
     handleLogout={handleLogout}

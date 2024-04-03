@@ -26,6 +26,8 @@ function Register() {
   const [loading, setLoading] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarVariant, setSnackbarVariant] = useState('success');
+
   const navigate = useNavigate();
 
   const toggleNewPasswordVisibility = () => {
@@ -39,6 +41,7 @@ function Register() {
   const handleCloseSnackbar = () => {
     setSnackbarOpen(false);
     setSnackbarMessage('');
+
   };
 
   const handleSubmit = async (event) => {
@@ -119,11 +122,14 @@ function Register() {
         }
         setSnackbarMessage(data.error || 'An error occurred while registering.');
         setSnackbarOpen(true);
+        setSnackbarVariant('error');
       }
     } catch (error) {
       console.error('Error registering user:', error.message);
       setSnackbarMessage('An error occurred while registering.');
       setSnackbarOpen(true);
+      setSnackbarVariant('error');
+
     }
     setLoading(false); 
   };

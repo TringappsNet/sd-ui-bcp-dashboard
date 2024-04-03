@@ -5,6 +5,7 @@ import '../styles/resetPassword.css';
 import { TextField } from '@mui/material';
 import { PortURL } from './Config';
 import LoadingSpinner from './LoadingSpinner'; 
+import CustomSnackbar from './Snackbar'; 
 
 function ResetNewPassword({ onClose }) {
   const [oldPassword, setOldPassword] = useState('');
@@ -13,8 +14,16 @@ function ResetNewPassword({ onClose }) {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarVariant, setSnackbarVariant] = useState('success');
 
   
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
+    setSnackbarMessage('');
+
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -23,6 +32,10 @@ function ResetNewPassword({ onClose }) {
     if (newPassword !== confirmNewPassword) {
       setError('Passwords do not match');
       setLoading(false);
+      setSnackbarVariant('error');
+      setSnackbarMessage('Passwords do not match');
+      setSnackbarOpen(true);
+
       return;
     }
   
@@ -49,10 +62,14 @@ function ResetNewPassword({ onClose }) {
       } else {
         const data = await response.json();
         setError(data.message);
+        
       }
     } catch (error) {
       console.error('Error resetting password:', error.message);
       setError('Error resetting password');
+      setSnackbarVariant('error');
+      setSnackbarMessage('Error resetting password');
+      setSnackbarOpen(true);
     }
     setLoading(false); 
   };
@@ -108,6 +125,12 @@ function ResetNewPassword({ onClose }) {
           </div>
         </Form>
       </Container>
+      <CustomSnackbar
+        open={snackbarOpen}
+        message={snackbarMessage}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        onClose={handleCloseSnackbar}
+      />
       {loading && <LoadingSpinner />} 
     </div>
   );
