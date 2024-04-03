@@ -37,8 +37,7 @@
   import LoadingSpinner from './LoadingSpinner'; 
   import ResetPassword from "./resetPassword";
   import ConfirmationModal from "./ConfirmationModal";
-import NavbarComponent from "./Navbar";
-import ExcelGrid from './ExcelGrid';
+
 
 
   function Dashboard() {
@@ -305,16 +304,12 @@ const handleSubmit = async () => {
     // Get session ID and organization from local storage
     const sessionId = localStorage.getItem('sessionId');
     const email = localStorage.getItem('email');
-    const organization = localStorage.getItem('Organization');
-    const Role_ID = localStorage.getItem('Role_ID');
-
 
     // Create userData object with username and organization
     const userData = {
       username: username,
       organization: organization,
-      email: email,
-      roleID: Role_ID
+      email:email
     };
 
     // Map through the data array to format dates if needed
@@ -510,13 +505,67 @@ const handleSubmit = async () => {
           message={snackbarMessage}
           onClose={handleCloseSnackbar}
           color={snackbarColor}      />
- <NavbarComponent
-        username={username}
-        handleLogout={handleLogout}
-        isMobile={isMobile}
-      />
-        
-  <ConfirmationModal
+
+        <Navbar bg="light" expand="lg" className="w-100">
+        <a href="/login" className="brand-wrapper">
+        <Link to="/dashboard" className="customNavbarBrand"></Link>
+      </a>
+      <div className="remaining-time">
+      {sessionExpired ? (
+        <p>Session expired</p>
+      ) : (
+        <p>Session expires in: {remainingTime}</p>
+      )}
+    </div>
+          <NavbarToggle aria-controls="basic-navbar-nav" />
+          <NavbarCollapse id="basic-navbar-nav">
+            <Nav className="ml-auto align-items-center">
+            
+              {isMobile ? (
+                <Dropdown className="d-flex username">
+                  
+            
+                  <Dropdown.Toggle
+                    id="dropdown-basic"
+                    as="div"
+                    className="customDropdown"
+                  >
+                    <div className="username-container">{username}
+                  <FontAwesomeIcon className="username" icon={faUser} />
+    </div>
+                  </Dropdown.Toggle>
+
+                  
+                  <Dropdown.Menu>
+                    <PopUpContainer>
+                      <ResetNewPassword  />
+                    </PopUpContainer>
+                    <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              ) : (
+              
+                
+              
+                  <React.Fragment >
+                    <div className="smallscreen">
+
+                  <div className="ml-auto align-items-center user ">
+                    <FontAwesomeIcon icon={faUser} /> {username}
+                  </div>
+                  <PopUpContainer  >
+                    <ResetPassword />
+                  </PopUpContainer> 
+                  <Dropdown.Item onClick={handleLogout} className="logout">Logout</Dropdown.Item>
+                  </div>
+
+
+                </React.Fragment>
+              )}
+            </Nav>
+          </NavbarCollapse>
+        </Navbar>
+        <ConfirmationModal
           show={showConfirmation}
           onHide={handleCloseConfirmation}
           onConfirm={handleConfirmLogout}
@@ -674,24 +723,13 @@ const handleSubmit = async () => {
   </Row>
 </Container>
 
-
-   <ExcelGrid
-        filteredData={filteredData}
-        selectedRowIds={selectedRowIds}
-        editedRowId={editedRowId}
-        editedRowData={editedRowData}
-        handleCheckboxChange={handleCheckboxChange}
-        handleEdit={handleEdit}
-        handleCancel={handleCancel}
-        handleInputChange={handleInputChange}
-        handleSave={handleSave}
-        handleDelete={handleDelete}
-        formatDateCell={formatDateCell}
-      />
+    
+  }
         {loading && <LoadingSpinner />} 
       </div>
     );
   }
+
 
   export default Dashboard;
   
