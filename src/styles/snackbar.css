@@ -47,3 +47,9 @@
     color: inherit; /* Inherit color from parent */
   }
   
+    .customSnackbar .MuiSnackbarContent-root {
+    /* background-color: #1a7f12 ;  */
+    /* color: rgb(253, 253, 253) ;  */
+    width:1000px;
+    
+  }
