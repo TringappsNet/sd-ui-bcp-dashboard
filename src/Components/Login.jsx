@@ -81,14 +81,7 @@ function Login() {
   } else {
     const data = await response.json();
 
-    if (response.status === 400) {
-      setSnackbarMessage(data.message);
-    } else if (response.status === 401) {
-      setSnackbarMessage(data.message); // Display session-related error message
-    } else {
-      setSnackbarMessage('An error occurred while logging in.');
-    }
-
+    setSnackbarMessage(data.error || 'An error occurred while logging in.');
     setSnackbarOpen(true);
   }
 } catch (error) {
@@ -97,9 +90,8 @@ function Login() {
   setSnackbarOpen(true);
 }
 
-  
-    setLoading(false);
-  };
+setLoading(false);
+};
 
   
   const handleCloseSnackbar = () => {
@@ -124,7 +116,7 @@ function Login() {
           <Form.Group controlId="formBasicEmail" className="mb-3 mt-5">
           <TextField
             className={`label form-control ${emailError ? 'error' : ''}`}
-            type="email"
+            type="text"
             label="Email"
             value={email}
             onChange={(e) => {

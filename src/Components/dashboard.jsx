@@ -37,8 +37,7 @@
   import LoadingSpinner from './LoadingSpinner'; 
   import ResetPassword from "./resetPassword";
   import ConfirmationModal from "./ConfirmationModal";
-import NavbarComponent from "./Navbar";
-import ExcelGrid from './ExcelGrid';
+
 
 
   function Dashboard() {
@@ -74,7 +73,7 @@ import ExcelGrid from './ExcelGrid';
         navigate("/login");
       } else {
         const storedUsername = localStorage.getItem("UserName");
-        const storedOrganization = localStorage.getItem("Organisation");
+        const storedOrganization = localStorage.getItem("Organization");
         const storedEmail = localStorage.getItem("email");
         setUsername(storedUsername);
         setOrganization(storedOrganization);
@@ -135,12 +134,12 @@ import ExcelGrid from './ExcelGrid';
     const fetchData = async () => {
       try {
         const storedUsername = localStorage.getItem("UserName");
-        const storedOrganization = localStorage.getItem("Organisation");
+        const storedOrganization = localStorage.getItem("Organization");
         const response = await fetch(`${PortURL}/data?username=${storedUsername}&organization=${storedOrganization}`);
         if (response.ok) {
           const excelData = await response.json();
           setRetriveData(excelData);
-          console.log(excelData);
+          console.log(excelData); // Add this line to log the data received
         } else {
           console.error("Failed to fetch data:", response.statusText);
         }
@@ -148,6 +147,7 @@ import ExcelGrid from './ExcelGrid';
         console.error("Error fetching data:", error);
       }
     };
+    
     
     const onDrop = useCallback((acceptedFiles) => {
       setData([]);
@@ -253,8 +253,10 @@ import ExcelGrid from './ExcelGrid';
       localStorage.removeItem("isLoggedIn");
       localStorage.removeItem("UserName");
       localStorage.removeItem("email");
-      localStorage.removeItem("Organisation");
-      localStorage.removeItem("createdAt")
+      localStorage.removeItem("Organization");
+      localStorage.removeItem("createdAt");
+      localStorage.removeItem("Role_ID")
+
       navigate("/login");
     };
 
@@ -305,12 +307,15 @@ const handleSubmit = async () => {
     const sessionId = localStorage.getItem('sessionId');
     const email = localStorage.getItem('email');
     const organization = localStorage.getItem('Organization');
+    const Role_ID = localStorage.getItem('Role_ID');
 
     // Create userData object with username and organization
     const userData = {
       username: username,
       organization: organization,
-      email:email
+      email:email,
+      roleID: Role_ID
+
     };
 
     // Map through the data array to format dates if needed
@@ -506,13 +511,67 @@ const handleSubmit = async () => {
           message={snackbarMessage}
           onClose={handleCloseSnackbar}
           color={snackbarColor}      />
- <NavbarComponent
-        username={username}
-        handleLogout={handleLogout}
-        isMobile={isMobile}
-      />
-        
-  <ConfirmationModal
+
+        <Navbar bg="light" expand="lg" className="w-100">
+        <a href="/login" className="brand-wrapper">
+        <Link to="/dashboard" className="customNavbarBrand"></Link>
+      </a>
+      <div className="remaining-time">
+      {sessionExpired ? (
+        <p>Session expired</p>
+      ) : (
+        <p>Session expires in: {remainingTime}</p>
+      )}
+    </div>
+          <NavbarToggle aria-controls="basic-navbar-nav" />
+          <NavbarCollapse id="basic-navbar-nav">
+            <Nav className="ml-auto align-items-center">
+            
+              {isMobile ? (
+                <Dropdown className="d-flex username">
+                  
+            
+                  <Dropdown.Toggle
+                    id="dropdown-basic"
+                    as="div"
+                    className="customDropdown"
+                  >
+                    <div className="username-container">{username}
+                  <FontAwesomeIcon className="username" icon={faUser} />
+    </div>
+                  </Dropdown.Toggle>
+
+                  
+                  <Dropdown.Menu>
+                    <PopUpContainer>
+                      <ResetNewPassword  />
+                    </PopUpContainer>
+                    <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              ) : (
+              
+                
+              
+                  <React.Fragment >
+                    <div className="smallscreen">
+
+                  <div className="ml-auto align-items-center user ">
+                    <FontAwesomeIcon icon={faUser} /> {username}
+                  </div>
+                  <PopUpContainer  >
+                    <ResetPassword />
+                  </PopUpContainer> 
+                  <Dropdown.Item onClick={handleLogout} className="logout">Logout</Dropdown.Item>
+                  </div>
+
+
+                </React.Fragment>
+              )}
+            </Nav>
+          </NavbarCollapse>
+        </Navbar>
+        <ConfirmationModal
           show={showConfirmation}
           onHide={handleCloseConfirmation}
           onConfirm={handleConfirmLogout}
@@ -578,24 +637,105 @@ const handleSubmit = async () => {
   )}
       {loading && <LoadingSpinner />}
 
+{filteredData.length === 0 ? (
+        <div className="no-data-message">No data available</div>
+      ) :
+      <Container fluid className="mt-2">
+  <Row className="row Render-Row">
+    <Col className="col Render-Col">
+      <div className="table-responsive render">
+      <Table striped bordered hover>
+        <thead className="sticky-header">
+          <tr>
+            <th className="selection-cell">
+              <input
+                type="checkbox"
+                checked={selectedRowIds.length === filteredData.length}
+                onChange={() => handleCheckboxChange(null)}
+              />
+            </th>
+            {Object.keys(filteredData[0] || {}).filter(key => key !== 'ID' && key !== 'Org_ID' && key !== 'Username').map((key) => (  
+              <th key={key}>
+                {key === 'MonthYear' ? 'Date' : key}
+              </th>
+            ))}
+            <th className="action-cell">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredData.map((row, index) => (
+            <tr key={index}>
+              <td className="selection-cell">
+                <input
+                  type="checkbox"
+                  checked={selectedRowIds.includes(index)}
+                  onChange={() => handleCheckboxChange(index)}
+                />
+              </td>
+              {Object.keys(row).filter(key => key !== 'ID' && key !== 'Org_ID' && key !== 'Username').map((key) => (
+                <td key={key}>
+                  {editedRowId === index ? (
+                    <input
+                      type="text"
+                      value={editedRowData[key] || ""}
+                      onChange={(e) => handleInputChange(e, key)}
+                    />
+                  ) : (
+                    typeof row[key] === 'object' ? JSON.stringify(row[key]) : formatDateCell(row[key], key)
+                  )}
+                </td>
+              ))}
 
-   <ExcelGrid
-        filteredData={filteredData}
-        selectedRowIds={selectedRowIds}
-        editedRowId={editedRowId}
-        editedRowData={editedRowData}
-        handleCheckboxChange={handleCheckboxChange}
-        handleEdit={handleEdit}
-        handleCancel={handleCancel}
-        handleInputChange={handleInputChange}
-        handleSave={handleSave}
-        handleDelete={handleDelete}
-        formatDateCell={formatDateCell}
-      />
+              <td className="action-cell">
+                {editedRowId === index ? (
+                  <div className="action-buttons">
+                    <button
+                      className="btn  btn-sm Save"
+                      onClick={() => handleSave()}
+                    >
+                      <FontAwesomeIcon icon={faSave} />
+                    </button>
+                    <button
+                      className="btn btn-sm Cancel"
+                      onClick={() => handleCancel()}
+                    >
+                      <FontAwesomeIcon icon={faTimes} />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="action-buttons">
+                    <button
+                      className="btn  btn-sm Edit"
+                      onClick={() => handleEdit(index)}
+                    >
+                      <FontAwesomeIcon icon={faEdit} />
+                    </button>
+                    <button
+                      className="btn btn-sm Delete"
+                      onClick={() => handleDelete(index)}
+                    >
+                      <FontAwesomeIcon icon={faTrash} />
+                    </button>
+                  </div>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+
+      </div>
+    </Col>
+  </Row>
+</Container>
+
+    
+  }
         {loading && <LoadingSpinner />} 
       </div>
     );
   }
+
 
   export default Dashboard;
   
