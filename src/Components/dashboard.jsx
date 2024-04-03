@@ -62,7 +62,7 @@ import ExcelGrid from './ExcelGrid';
     const [uploadedFileName, setUploadedFileName] = useState("");
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [sessionExpired, setSessionExpired] = useState(false); // Track session expiration
-    const [remainingTime, setRemainingTime] = useState(200); // 60 seconds for one minute
+    const [remainingTime, setRemainingTime] = useState(500); // 60 seconds for one minute
     const [logoutModalOpen, setLogoutModalOpen] = useState(false);
     
     const navigate = useNavigate();
