@@ -67,7 +67,6 @@
 .table-response.render1 {
   max-height: min-content;
   overflow-y: auto;
-  /* height: 500px; */
   margin-right: 60px;
 }
 
