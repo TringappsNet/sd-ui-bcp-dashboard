@@ -2,21 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { Table } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faSave, faTrash,faBan } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faSave, faTrash, faBan } from '@fortawesome/free-solid-svg-icons';
 import { PortURL } from "./Config";
 import '../styles/UserPop.css';
 
 const UserPop = () => {
   const [excelData, setExcelData] = useState([]);
-  const [selectedRows, setSelectedRows] = useState([]);
+  const [selectedRow, setSelectedRow] = useState(null);
   const [editedRowId, setEditedRowId] = useState(null);
-  const [editedRole, setEditedRole] = useState(null); 
+  const [editedRole, setEditedRole] = useState(null);
   const [roles, setRoles] = useState([]);
+  const [deactivatedRows, setDeactivatedRows] = useState([]);
 
   useEffect(() => {
     fetchData();
     fetchRoles();
-
   }, []);
 
   const fetchData = async () => {
@@ -56,37 +56,45 @@ const UserPop = () => {
   };
 
 
+
   const handleEdit = async (index) => {
     try {
-      console.log('Editing row:', index);
-      // Fetch roles data
-      const response = await fetch(`${PortURL}/Updateuser`);
-      if (response.ok) {
-        const data = await response.json();
-        console.log('Fetched roles data:', data);
-        setRoles(data);
+      // Check if the row is deactivated
+      if (!deactivatedRows.includes(index)) {
+        console.log('Editing row:', index);
+        // Fetch roles data
+        const response = await fetch(`${PortURL}/Updateuser`);
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Fetched roles data:', data);
+          setRoles(data);
+        } else {
+          console.error('Failed to fetch roles:', response.statusText);
+        }
+  
+        // Set edited row ID
+        setEditedRowId(index);
+  
+        // Set edited role
+        const selectedRole = excelData[index].Role.trim() ? excelData[index].Role : null;
+        console.log('Selected Role:', selectedRole);
+        setEditedRole(selectedRole);
       } else {
-        console.error('Failed to fetch roles:', response.statusText);
+        console.log('Row is deactivated. Cannot edit.');
       }
-  
-      // Set edited row ID
-      setEditedRowId(index);
-  
-      // Set edited role
-      const selectedRole = excelData[index].Role.trim() ? excelData[index].Role : null;
-      console.log('Selected Role:', selectedRole);
-      setEditedRole(selectedRole);
     } catch (error) {
       console.error('Error editing row:', error);
     }
   };
   
-  
   const handleRoleChange = (event) => {
     const selectedRole = event.target.value;
     console.log('Selected Role:', selectedRole);
     setEditedRole(selectedRole);
+
   };  
+  };
+
   const handleSave = async () => {
     try {
       const updatedData = [...excelData];
@@ -114,15 +122,32 @@ const UserPop = () => {
           'Email':emailHeader
         },
         body: JSON.stringify(requestBody)
+
+      // Retrieve session ID and organization from localStorage
+      const sessionId = localStorage.getItem('sessionId');
+      const organization = localStorage.getItem('Organization');
+      const email = localStorage.getItem('email');
+
+      // Perform API call to save updated data
+      const response = await fetch(`${PortURL}/Updateuser`, {
+        method: 'POST',
+        body: JSON.stringify({ organization, Role: editedRole, email }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Session-ID': sessionId,
+          'Email': email  // Assuming you have 'email' stored in localStorage as well
+        }
       });
-  
+
       if (response.ok) {
         console.log('Role updated successfully');
         // You may want to update the local state or fetch data again to refresh the list
+        const responseData = await response.json(); // Parse response JSON
+        // Handle responseData as needed
       } else {
         console.error('Failed to update role:', response.statusText);
       }
-  
+
       setExcelData(updatedData);
       setEditedRowId(null);
     } catch (error) {
@@ -158,77 +183,104 @@ const UserPop = () => {
     }
   };
   
-  const handleDeactivate = async () => {
+
+  const handleDeactivate = async (index) => {
     try {
-      // Logic to deactivate selected users
-      console.log('Deactivate selected users:', selectedRows);
-      // Perform API call to deactivate selected users
+      // Perform API call to deactivate user
+      const email = localStorage.getItem('email');
+  
+      const response = await fetch(`${PortURL}/user-Active`, {
+        method: 'PUT',
+        body: JSON.stringify({   isActive: false, email }), // Include isActive status in the request body
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+  
+      if (response.ok) {
+        console.log('User deactivated successfully');
+  
+        // Update excelData state to mark the user as deactivated
+        const updatedData = [...excelData];
+        // updatedData[index].Status = 'Inactive'; // Assuming 'Status' is the column indicating user status
+        setExcelData(updatedData);
+        setDeactivatedRows([...deactivatedRows, index]);
+
+        // Show success message to the user
+        alert('User deactivated successfully');
+  
+       
+      } else {
+        console.error('Failed to deactivate user:', response.statusText);
+        // Handle failure response as needed
+        alert('Failed to deactivate user');
+      }
     } catch (error) {
-      console.error('Error deactivating users:', error);
+      console.error('Error deactivating user:', error);
+      alert('Error deactivating user');
     }
   };
+  
 
   return (
     <Container fluid className="User-2">
       <Row className="row Render-rr">
         <h7 className="h7">USERS</h7>
-        <button className="btn btn-sm Deactivate" onClick={handleDeactivate}>
-            <FontAwesomeIcon icon={faBan} /> 
-          </button>
         <Col className="col Render-cc">
-          <div className="table-responsive render">
+          <div className="table-response render1">
             <Table striped bordered hover>
-              <thead className='checkbox-container' >
+              <thead className='checkbox-container'>
                 <tr>
-                  <th className='checkbox-container'>Checkbox</th>
                   {Object.keys(excelData[0] || {}).map((key) => (
-                    <th  key={key}>{key}</th>
+                    <th key={key}>{key}</th>
                   ))}
-                  <th>Action</th>
+                  <th className='action-button'>Action</th>
                 </tr>
               </thead>
               <tbody>
                 {excelData.map((row, index) => (
-                  <tr key={index}>
-                    <td className='checkbox-container ' >
-                      <input
-                     
-                        type="checkbox"
-                        checked={selectedRows.includes(index)}
-                        onChange={() => handleCheckboxChange(index)}
-                      />
-                    </td>
-                    {Object.keys(row).map((key, i) => (
+  <tr key={index} className={`${selectedRow === index ? 'selected' : ''} ${deactivatedRows.includes(index) ? 'fade-out hidden' : ''}`}>
+  {Object.keys(row).map((key, i) => (
                       <td key={i}>
                         {editedRowId === index && key === 'Role' ? (
-                        <select value={editedRole || ''} onChange={handleRoleChange} style={{ color: 'black' }}>
-                        {roles.length > 0 && roles.map(role => (
-                          <option key={role.role_ID} value={role.role}>{role.role}</option>
-                        ))}
-                      </select>
+                          <select value={editedRole || ''} onChange={handleRoleChange} style={{ color: 'black' }}>
+                            {roles.length > 0 && roles.map(role => (
+                              <option key={role.role_ID} value={role.role}>{role.role}</option>
+                            ))}
+                          </select>
                         ) : (
                           row[key]
                         )}
                       </td>
                     ))}
-                    <td className='action-button'>
-                              {editedRowId === index ? (
-                                <div  >
-                                  <button className="btn btn-sm Save" onClick={handleSave}>
-                                    <FontAwesomeIcon icon={faSave} />
-                                  </button>
-                                </div>
-                              ) : (
-                                <div >
-                                  <button className="btn btn-sm Edit" onClick={() => handleEdit(index)}>
+                      <td className='action-button'>
+                        {editedRowId === index ? (
+                          <div >
+                            <button className="btn btn-sm Save " onClick={handleSave}>
+                              <FontAwesomeIcon icon={faSave} />
+                            </button>
+                          </div>
+                        ) : (
+                          <div >
+                              <button className="btn btn-sm Edit " onClick={() => handleEdit(index)} disabled={deactivatedRows.includes(index)}>
                                     <FontAwesomeIcon icon={faEdit} />
-                                  </button>
-                                
-                                </div>
-                              )}
-                            </td>
+                              </button>
 
+                              <button className="btn btn-sm Deactivate " onClick={() => handleDeactivate(index)}>
+                              <FontAwesomeIcon icon={faBan} />
+                            </button>
+                          
+                          </div>
+                          
+                        )}
+                        
+                      </td>
+                
+                        
+                    
+                    
                   </tr>
+                  
                 ))}
               </tbody>
             </Table>
@@ -240,12 +292,3 @@ const UserPop = () => {
 };
 
 export default UserPop;
-
-
-
-
-
-
-
-
-

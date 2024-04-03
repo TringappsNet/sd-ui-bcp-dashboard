@@ -1,81 +1,133 @@
-.search-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .close-button {
-    align-self: flex-end;
-    background-color: red;
-    color: red;
-
-  }
-  
-  .search {
-    margin-top: 10px;
-    margin-left: 40px;
-  }
-  
-  .grid-below {
-    max-height: 300px;
-    overflow-y: auto;
-  }
-  
-  .popup-content .close-button {
-    margin-top: 20px;
-    padding: 15px 16px;
-    background-color: #e3532c;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+  .search-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
     }
+  .h7{
+    font: bold;
+    
 
-    .del{
-      width: 12px;
-      height: 30px;
-      padding-bottom: 5px;
+  }
+
+  .render{
+    
+  }
+    .close-button {
+      align-self: flex-end;
+      background-color: red;
+      color: red;
 
     }
-    .popup-content .close-button:hover {
-        margin-top: 20px;
-        padding: 15px 16px;
-        background-color: #ca3e18;
-        color: #fff;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        }
+    
+    .search {
+      margin-top: 10px;
+      margin-left: 40px;
+    }
+    
+    .grid-below {
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    
+    .popup-content .close-button {
+      margin-top: 20px;
+      padding: 15px 16px;
+      background-color: #e3532c;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      }
 
+      .del{
+        width: 12px;
+        height: 30px;
+        padding-bottom: 5px;
 
-        .grid-below {
+      }
+      .popup-content .close-button:hover {
           margin-top: 20px;
-          border: 1px solid #ccc; /* Add border */
-          border-radius: 4px; /* Add border radius */
-          overflow: auto; /* Enable scrolling if needed */
+          padding: 15px 16px;
+          background-color: #ca3e18;
+          color: #fff;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          }
+
+
+          .grid-below {
+            margin-top: 20px;
+            border: 1px solid #ccc; /* Add border */
+            border-radius: 4px; /* Add border radius */
+            overflow: auto; /* Enable scrolling if needed */
+          }
+          
+          .grid-below table {
+            width: 100%;
+            border-collapse: collapse;
+          }
+          
+          .grid-below th,
+          .grid-below td {
+            border: 1px solid #ccc; /* Add cell borders */
+            padding: 0px;
+            text-align: center  ;
+          }
+          
+          .grid-below th {
+            background-color: #f2f2f2; /* Add header background color */
+          }
+          
+          .grid-below tr:hover {
+            background-color: #f0f0f0; /* Add hover effect */
+          }
+          
+          .input {
+            text-decoration: none; /* Remove underline */
+          }
+          .search-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          }
+          
+          .sticky-header th {
+            position: sticky;
+            top: 0;
+            background-color: white; /* Set the background color of sticky headers */
+            z-index: 2; /* Ensure it appears above other elements */
+          }
+          
+          .sticky-checkbox {
+            position: sticky;
+            left: 0;
+            z-index: 3; /* Ensure it appears above other sticky elements */
+            background-color: white; /* Set background color as needed */
+          }
+          
+          .action-column {
+            position: sticky;
+            right: 0;
+            z-index: 2; /* Ensure it appears above the table */
+            background-color: white; /* Set background color as needed */
+            max-width: 40px;
+          }
+          
+          
+          .action-buttons {
+            width: 40px; /* Adjust the width as needed */
+          }
+          
+          .save-button,
+          .edit-button {
+            width: 40px; /* Adjust the width for Save and Edit buttons */
+          }
+          
+          .table {
+            min-width: 900px;
+            width: max-content;
+            border-collapse: collapse;
         }
-        
-        .grid-below table {
-          width: 100%;
-          border-collapse: collapse;
-        }
-        
-        .grid-below th,
-        .grid-below td {
-          border: 1px solid #ccc; /* Add cell borders */
-          padding: 0px;
-          text-align: center  ;
-        }
-        
-        .grid-below th {
-          background-color: #f2f2f2; /* Add header background color */
-        }
-        
-        .grid-below tr:hover {
-          background-color: #f0f0f0; /* Add hover effect */
-        }
-        
-        .input {
-          text-decoration: none; /* Remove underline */
-        }
-        
+          

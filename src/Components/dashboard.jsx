@@ -1,31 +1,18 @@
   import React, { useState, useCallback, useEffect } from "react";
-  import {Link } from "react-router-dom";
+  //import {Link } from "react-router-dom";
 
-  import { Table } from "react-bootstrap";
+  //import { Table } from "react-bootstrap";
   import {
-    Navbar,
-    NavbarBrand,
-    Nav,
-    NavbarToggle,
-    NavbarCollapse,
     Button,
     Form,
     FormControl,
-    Container,
-    Row,
-    Col,
-    Dropdown  } from "react-bootstrap";
+    Container, } from "react-bootstrap";
   import { useDropzone } from "react-dropzone";
   import { useNavigate} from "react-router-dom";
   import * as XLSX from "xlsx";
   import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
   import {
-    faSearch,
-    faUser,
-    faEdit,
-    faSave,
     faTimes,
-    faTrash,
     faUpload,
   } from "@fortawesome/free-solid-svg-icons";
   import "bootstrap/dist/css/bootstrap.min.css";
@@ -37,8 +24,8 @@
   import LoadingSpinner from './LoadingSpinner'; 
   import ResetPassword from "./resetPassword";
   import ConfirmationModal from "./ConfirmationModal";
-import NavbarComponent from "./Navbar";
-import ExcelGrid from './ExcelGrid';
+  import NavbarComponent from "./Navbar";
+  import ExcelGrid from './ExcelGrid';
 
 
   function Dashboard() {
@@ -62,7 +49,7 @@ import ExcelGrid from './ExcelGrid';
     const [uploadedFileName, setUploadedFileName] = useState("");
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [sessionExpired, setSessionExpired] = useState(false); // Track session expiration
-    const [remainingTime, setRemainingTime] = useState(200); // 60 seconds for one minute
+    const [remainingTime, setRemainingTime] = useState(500); // 60 seconds for one minute
     const [logoutModalOpen, setLogoutModalOpen] = useState(false);
     
     const navigate = useNavigate();
@@ -74,7 +61,7 @@ import ExcelGrid from './ExcelGrid';
         navigate("/login");
       } else {
         const storedUsername = localStorage.getItem("UserName");
-        const storedOrganization = localStorage.getItem("Organisation");
+        const storedOrganization = localStorage.getItem("Organization");
         const storedEmail = localStorage.getItem("email");
         setUsername(storedUsername);
         setOrganization(storedOrganization);
@@ -135,12 +122,12 @@ import ExcelGrid from './ExcelGrid';
     const fetchData = async () => {
       try {
         const storedUsername = localStorage.getItem("UserName");
-        const storedOrganization = localStorage.getItem("Organisation");
+        const storedOrganization = localStorage.getItem("Organization");
         const response = await fetch(`${PortURL}/data?username=${storedUsername}&organization=${storedOrganization}`);
         if (response.ok) {
           const excelData = await response.json();
           setRetriveData(excelData);
-          console.log(excelData);
+          console.log(excelData); // Add this line to log the data received
         } else {
           console.error("Failed to fetch data:", response.statusText);
         }
@@ -148,6 +135,7 @@ import ExcelGrid from './ExcelGrid';
         console.error("Error fetching data:", error);
       }
     };
+    
     
     const onDrop = useCallback((acceptedFiles) => {
       setData([]);
@@ -253,8 +241,10 @@ import ExcelGrid from './ExcelGrid';
       localStorage.removeItem("isLoggedIn");
       localStorage.removeItem("UserName");
       localStorage.removeItem("email");
-      localStorage.removeItem("Organisation");
-      localStorage.removeItem("createdAt")
+      localStorage.removeItem("Organization");
+      localStorage.removeItem("createdAt");
+      localStorage.removeItem("Role_ID")
+
       navigate("/login");
     };
 
@@ -304,12 +294,16 @@ const handleSubmit = async () => {
     // Get session ID and organization from local storage
     const sessionId = localStorage.getItem('sessionId');
     const email = localStorage.getItem('email');
+    const organization = localStorage.getItem('Organization');
+    const Role_ID = localStorage.getItem('Role_ID');
 
     // Create userData object with username and organization
     const userData = {
       username: username,
       organization: organization,
-      email:email
+      email:email,
+      roleID: Role_ID
+
     };
 
     // Map through the data array to format dates if needed
@@ -500,101 +494,99 @@ const handleSubmit = async () => {
 
     return (
       <div className="dashboard-container">
-          <CustomSnackbar
-          open={snackbarOpen}
-          message={snackbarMessage}
-          onClose={handleCloseSnackbar}
-          color={snackbarColor}      />
- <NavbarComponent
-        username={username}
-        handleLogout={handleLogout}
-        isMobile={isMobile}
-      />
-        
-  <ConfirmationModal
-          show={showConfirmation}
-          onHide={handleCloseConfirmation}
-          onConfirm={handleConfirmLogout}
-          message="Are you sure you want to log out?"
-        />
-
-      
-
-  <Container fluid className="container-fluid mt-4">
-
-    <Form className="border shadow p-3 d-flex flex-column flex-lg-row">
-      <div className="search-wrapper col-lg-6 mb-3 mb-lg-0">
-        <FormControl
-          className="search-input"
-          type="text"
-          placeholder="Search"
-          style={{ flex: "1" }}
-          value={searchQuery}
-          onChange={handleSearchChange}
-        />
-      </div>
-      <div className="spacer"></div>
+      <CustomSnackbar
+      open={snackbarOpen}
+      message={snackbarMessage}
+      onClose={handleCloseSnackbar}
+      color={snackbarColor}      />
+<NavbarComponent
+    username={username}
+    handleLogout={handleLogout}
+    isMobile={isMobile}
+  />
     
-      <div className="filename mr-3 col-lg-2 mb-3 ">
-        {uploadedFileName ? (
-          <div className="d-flex align-items-center">
-            <p className="mb-0">{`File: ${uploadedFileName}`}</p>
-            <FontAwesomeIcon
-              icon={faTimes} // Cancel icon
-              className="ml-2 cancel-icon"
-              onClick={() => setUploadedFileName("")} // onClick handler to clear uploadedFileName
-            />
-          </div>
-        ) : (
-          <p className="mb-0">No file uploaded</p>
-        )}
+<ConfirmationModal
+      show={showConfirmation}
+      onHide={handleCloseConfirmation}
+      onConfirm={handleConfirmLogout}
+      message="Are you sure you want to log out?"
+    />
+
+  
+
+<Container fluid className="container-fluid mt-4">
+
+<Form className="border shadow p-3 d-flex flex-column flex-lg-row">
+  <div className="search-wrapper col-lg-6 mb-3 mb-lg-0">
+    <FormControl
+      className="search-input"
+      type="text"
+      placeholder="Search"
+      style={{ flex: "1" }}
+      value={searchQuery}
+      onChange={handleSearchChange}
+    />
+  </div>
+  <div className="spacer"></div>
+
+  <div className="filename mr-3 col-lg-2 mb-3 ">
+    {uploadedFileName ? (
+      <div className="d-flex align-items-center">
+        <p className="mb-0">{`File: ${uploadedFileName}`}</p>
+        <FontAwesomeIcon
+          icon={faTimes} // Cancel icon
+          className="ml-2 cancel-icon"
+          onClick={() => setUploadedFileName("")} // onClick handler to clear uploadedFileName
+        />
       </div>
-      <div className="spacer"></div>
+    ) : (
+      <p className="mb-0">No file uploaded</p>
+    )}
+  </div>
+  <div className="spacer"></div>
 
-      <div className="custom-file-upload d-flex">
-        
-        <div {...getRootProps()} className="Upload ">
-          <input {...getInputProps()} accept=".xlsx, .xls" />
-          {isDragActive ? (
-            <p>Drop the files here ...</p>
-          ) : (
-            <Button className="btn btn-secondary btn-sm  Upload">
-              <FontAwesomeIcon  className="clearicon" icon={faUpload} />
-              Upload 
-            </Button>
-          )}
-        </div>
-        <div className="spacer"></div>
-
-        <Button className="btn  btn-secondary submit" onClick={handleSubmit}>
-          Submit
+  <div className="custom-file-upload d-flex">
+    
+    <div {...getRootProps()} className="Upload ">
+      <input {...getInputProps()} accept=".xlsx, .xls" />
+      {isDragActive ? (
+        <p>Drop the files here ...</p>
+      ) : (
+        <Button className="btn btn-secondary btn-sm  Upload">
+          <FontAwesomeIcon  className="clearicon" icon={faUpload} />
+          Upload 
         </Button>
-      </div>
-    </Form>
-  </Container>
-  {loading && (
-    <div className="loading-spinner"></div>
-  )}
-      {loading && <LoadingSpinner />}
+    
+          <div className="spacer"></div>
+
+    <Button className="btn  btn-secondary submit" onClick={handleSubmit}>
+      Submit
+    </Button>
+  </div>
+</Form>
+</Container>
+{loading && (
+<div className="loading-spinner"></div>
+)}
+  {loading && <LoadingSpinner />}
 
 
-   {/* <ExcelGrid
-        filteredData={filteredData}
-        selectedRowIds={selectedRowIds}
-        editedRowId={editedRowId}
-        editedRowData={editedRowData}
-        handleCheckboxChange={handleCheckboxChange}
-        handleEdit={handleEdit}
-        handleCancel={handleCancel}
-        handleInputChange={handleInputChange}
-        handleSave={handleSave}
-        handleDelete={handleDelete}
-        formatDateCell={formatDateCell}
-      /> */}
-        {loading && <LoadingSpinner />} 
-      </div>
-    );
-  }
-
+<ExcelGrid
+    filteredData={filteredData}
+    selectedRowIds={selectedRowIds}
+    editedRowId={editedRowId}
+    editedRowData={editedRowData}
+    handleCheckboxChange={handleCheckboxChange}
+    handleEdit={handleEdit}
+    handleCancel={handleCancel}
+    handleInputChange={handleInputChange}
+    handleSave={handleSave}
+    handleDelete={handleDelete}
+    formatDateCell={formatDateCell}
+  />
+    {loading && <LoadingSpinner />} 
+  </div>
+);
+}
   export default Dashboard;
   

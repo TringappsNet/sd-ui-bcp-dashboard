@@ -8,7 +8,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './Components/Login';
 import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-
+import UserPop from './Components/UserPop';
+import OrgPop from './Components/OrganizationPopup';
 function App() {
   useEffect(() => {
     document.title = 'BCP'; 
@@ -28,6 +29,10 @@ function App() {
       <Route path="/register" element={<Register/>} />
       <Route path="/dashboard" element={<Dashboard/>} />
       <Route path="/send-invite" element={<SendInvite />} />
+      <Route path="/UserPop" element={<UserPop />} />
+      <Route path="/OrgPop" element={<OrgPop />} />
+
+      
     </Routes>
   </Router>
   );
