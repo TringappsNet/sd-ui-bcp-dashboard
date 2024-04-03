@@ -165,15 +165,7 @@ setLoading(false);
               </Form.Text>
             </Col>
           </Row>
-          {/* <Row className="mb-3">
-            <Col>
-              <Form.Check
-                type="checkbox"
-                label="Remember me"
-                className="text-right"
-              />
-            </Col>
-          </Row> */}
+       
           <div className="btn-container mt-5 mb-5">
             <Button type="submit" className="btn btn-success  rounded-pill ">
               Sign in
