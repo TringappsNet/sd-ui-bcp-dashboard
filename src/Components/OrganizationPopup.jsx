@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState,useEffect} from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { Table } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faSave, faBan, faSearch, faTrash} from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faSave, faBan, faSearch, faTrash, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { PortURL } from "./Config";
 import '../styles/OrgPopup.css';
 
-const OrgPop = () => {
+const OrgPop = ({ handleClose }) => {
   const [excelData, setExcelData] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
   const [editedRowId, setEditedRowId] = useState(null);
@@ -116,12 +116,20 @@ const OrgPop = () => {
   const handleSearch = () => {
     const filtered = excelData.filter((org) => org.org_name.toLowerCase().includes(searchQuery.toLowerCase()));
     setFilteredData(filtered);
+
+   
+  
   };
 
   return (
+    <>
     <Container fluid className="User-2">
       <Row className="row Render-rr">
-        <h7 className="h7">Organization</h7>
+      <div className='row '>
+            <FontAwesomeIcon icon={faTimesCircle} className="close-icon1" onClick={handleClose} />
+
+<h7 className="h7">ORGANISATION</h7>
+            </div>
         <div className="search-container">
           <input
             type="text"
@@ -136,7 +144,7 @@ const OrgPop = () => {
         {/* <button className="btn btn-sm Deactivate" onClick={handleDeactivate}>
           <FontAwesomeIcon icon={faBan} />
         </button> */}
-<Col className="col Render-cc">
+<Col className="col Render-cc1">
   <div className="table-responsive render">
     <Table striped bordered hover>
       <thead className="sticky-header">
@@ -202,6 +210,8 @@ const OrgPop = () => {
 
       </Row>
     </Container>
+      
+    </>
   );
 };
 

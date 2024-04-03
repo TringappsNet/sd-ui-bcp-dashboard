@@ -59,13 +59,14 @@ const PopUpContainer = () => {
 
       {(showResetPopup || showInvitePopup || showOrganizationPopup || showAdminPopup) && (
         <div className="popup-container">
-          <span className="cancel-symbol" onClick={handleClosePopups}>✖</span>
 
-          <div className="backdrop" onClick={handleClosePopups}></div>
+          <div className="backdrop" ><span className="cancel-symbol " onClick={handleClosePopups}>✖</span>
+</div>
           <div className="popup-inner" onClick={(e) => e.stopPropagation()}>
             {showResetPopup && <ResetNewPassword onClose={handleResetSuccess} />}
             {showInvitePopup && <SendInvite onClose={handleResetSuccess} />}
             {showOrganizationPopup && <OrganizationPopup handleClose={handleClosePopups} />}
+            
             {showAdminPopup && <UserPop handleClose={handleClosePopups} />}
           </div>
         </div>
