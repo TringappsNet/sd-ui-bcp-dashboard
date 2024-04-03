@@ -1,72 +1,86 @@
 .User-2 {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .Render-rr {
-    width: 70%;
-    height: 80%;
-    background-color: #fff; /* White background */
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Drop shadow effect */
-    padding-top: 20px;
-  }
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  .Render-cc{
-    padding-top: 40px;
-    padding-left: 80px;
-  }
+.Render-rr {
+  width: 70%;
+  height: 80%;
+  background-color: #fff; /* White background */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Drop shadow effect */
+  padding-top: 20px;
+}
 
-  .h7{
-    font-family: "Montserrat", sans-serif;
-  }
-  
-  .table-container {
-    overflow-x: auto;
-  }
-  
-  .sticky-header th,
-  .sticky-column {
-    position: sticky;
-    top: 0;
-    z-index: 1;
-    background-color: #fff; 
-  }
-  
-  .sticky-column {
-    left: 0;
-  }
-  
-  .text-right {
-    text-align: right;
-  }
-  
-  .Deactivate{
-    width: 50px;
-    border: 1px solid grey;
-  margin-left: 400px;
-  }
+.Render-cc {
+  padding-top: 40px;
+  padding-left: 80px;
+}
 
+.h7 {
+  font-family: "Montserrat", sans-serif;
+}
 
-  .action-button {
-    position: sticky;
-    right: 0;
-    background-color: #fff;
-    z-index: 1;
-  }
-  
-  .checkbox-container {
-    position: sticky;
-    left: 0;
-    background-color: #fff;
-    z-index: 1;
-  }
-  @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap')
+.table-container {
+  overflow-x: auto;
+}
+
+.sticky-header th,
+.sticky-column {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: #fff;
+}
+
+.sticky-column {
+  left: 0;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.Deactivate{
+  width: 10px;
+}
+.action-button {
+  position: sticky;
+  right: 0;
+  background-color: #fff;
+  z-index: 1;
+  max-width: 70px;
+}
+
+.checkbox-container {
+  position: sticky;
+  left: 0;
+  background-color: #fff;
+  z-index: 1;
+  max-width: 70px;
+}
+
+.deactivated {
+  background-color: #f8d7da; /* Light red background */
+  color: #721c24; /* Dark red text color */
+}
+
+.table-responsive.render {
+  max-height: min-content;
+  overflow-y: auto;
+  height: 500px;
+  margin-right: 60px;
+}
+.fade-out {
+  transition: opacity 1s ease; /* Add transition effect for opacity */
+  opacity: 0; /* Set opacity to 0 to create the fade out effect */
+}
+
