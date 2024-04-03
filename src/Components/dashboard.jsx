@@ -1,31 +1,18 @@
   import React, { useState, useCallback, useEffect } from "react";
-  import {Link } from "react-router-dom";
+  //import {Link } from "react-router-dom";
 
-  import { Table } from "react-bootstrap";
+  //import { Table } from "react-bootstrap";
   import {
-    Navbar,
-    NavbarBrand,
-    Nav,
-    NavbarToggle,
-    NavbarCollapse,
     Button,
     Form,
     FormControl,
-    Container,
-    Row,
-    Col,
-    Dropdown  } from "react-bootstrap";
+    Container, } from "react-bootstrap";
   import { useDropzone } from "react-dropzone";
   import { useNavigate} from "react-router-dom";
   import * as XLSX from "xlsx";
   import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
   import {
-    faSearch,
-    faUser,
-    faEdit,
-    faSave,
     faTimes,
-    faTrash,
     faUpload,
   } from "@fortawesome/free-solid-svg-icons";
   import "bootstrap/dist/css/bootstrap.min.css";
@@ -37,7 +24,8 @@
   import LoadingSpinner from './LoadingSpinner'; 
   import ResetPassword from "./resetPassword";
   import ConfirmationModal from "./ConfirmationModal";
-
+  import NavbarComponent from "./Navbar";
+  import ExcelGrid from './ExcelGrid';
 
 
   function Dashboard() {
@@ -506,236 +494,100 @@ const handleSubmit = async () => {
 
     return (
       <div className="dashboard-container">
-          <CustomSnackbar
-          open={snackbarOpen}
-          message={snackbarMessage}
-          onClose={handleCloseSnackbar}
-          color={snackbarColor}      />
+      <CustomSnackbar
+      open={snackbarOpen}
+      message={snackbarMessage}
+      onClose={handleCloseSnackbar}
+      color={snackbarColor}      />
+<NavbarComponent
+    username={username}
+    handleLogout={handleLogout}
+    isMobile={isMobile}
+  />
+    
+<ConfirmationModal
+      show={showConfirmation}
+      onHide={handleCloseConfirmation}
+      onConfirm={handleConfirmLogout}
+      message="Are you sure you want to log out?"
+    />
 
-        <Navbar bg="light" expand="lg" className="w-100">
-        <a href="/login" className="brand-wrapper">
-        <Link to="/dashboard" className="customNavbarBrand"></Link>
-      </a>
-      <div className="remaining-time">
-      {sessionExpired ? (
-        <p>Session expired</p>
+  
+
+<Container fluid className="container-fluid mt-4">
+
+<Form className="border shadow p-3 d-flex flex-column flex-lg-row">
+  <div className="search-wrapper col-lg-6 mb-3 mb-lg-0">
+    <FormControl
+      className="search-input"
+      type="text"
+      placeholder="Search"
+      style={{ flex: "1" }}
+      value={searchQuery}
+      onChange={handleSearchChange}
+    />
+  </div>
+  <div className="spacer"></div>
+
+  <div className="filename mr-3 col-lg-2 mb-3 ">
+    {uploadedFileName ? (
+      <div className="d-flex align-items-center">
+        <p className="mb-0">{`File: ${uploadedFileName}`}</p>
+        <FontAwesomeIcon
+          icon={faTimes} // Cancel icon
+          className="ml-2 cancel-icon"
+          onClick={() => setUploadedFileName("")} // onClick handler to clear uploadedFileName
+        />
+      </div>
+    ) : (
+      <p className="mb-0">No file uploaded</p>
+    )}
+  </div>
+  <div className="spacer"></div>
+
+  <div className="custom-file-upload d-flex">
+    
+    <div {...getRootProps()} className="Upload ">
+      <input {...getInputProps()} accept=".xlsx, .xls" />
+      {isDragActive ? (
+        <p>Drop the files here ...</p>
       ) : (
-        <p>Session expires in: {remainingTime}</p>
+        <Button className="btn btn-secondary btn-sm  Upload">
+          <FontAwesomeIcon  className="clearicon" icon={faUpload} />
+          Upload 
+        </Button>
       )}
     </div>
-          <NavbarToggle aria-controls="basic-navbar-nav" />
-          <NavbarCollapse id="basic-navbar-nav">
-            <Nav className="ml-auto align-items-center">
-            
-              {isMobile ? (
-                <Dropdown className="d-flex username">
-                  
-            
-                  <Dropdown.Toggle
-                    id="dropdown-basic"
-                    as="div"
-                    className="customDropdown"
-                  >
-                    <div className="username-container">{username}
-                  <FontAwesomeIcon className="username" icon={faUser} />
-    </div>
-                  </Dropdown.Toggle>
+    <div className="spacer"></div>
 
-                  
-                  <Dropdown.Menu>
-                    <PopUpContainer>
-                      <ResetNewPassword  />
-                    </PopUpContainer>
-                    <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-              ) : (
-              
-                
-              
-                  <React.Fragment >
-                    <div className="smallscreen">
-
-                  <div className="ml-auto align-items-center user ">
-                    <FontAwesomeIcon icon={faUser} /> {username}
-                  </div>
-                  <PopUpContainer  >
-                    <ResetPassword />
-                  </PopUpContainer> 
-                  <Dropdown.Item onClick={handleLogout} className="logout">Logout</Dropdown.Item>
-                  </div>
-
-
-                </React.Fragment>
-              )}
-            </Nav>
-          </NavbarCollapse>
-        </Navbar>
-        <ConfirmationModal
-          show={showConfirmation}
-          onHide={handleCloseConfirmation}
-          onConfirm={handleConfirmLogout}
-          message="Are you sure you want to log out?"
-        />
-
-      
-
-  <Container fluid className="container-fluid mt-4">
-
-    <Form className="border shadow p-3 d-flex flex-column flex-lg-row">
-      <div className="search-wrapper col-lg-6 mb-3 mb-lg-0">
-        <FormControl
-          className="search-input"
-          type="text"
-          placeholder="Search"
-          style={{ flex: "1" }}
-          value={searchQuery}
-          onChange={handleSearchChange}
-        />
-      </div>
-      <div className="spacer"></div>
-    
-      <div className="filename mr-3 col-lg-2 mb-3 ">
-        {uploadedFileName ? (
-          <div className="d-flex align-items-center">
-            <p className="mb-0">{`File: ${uploadedFileName}`}</p>
-            <FontAwesomeIcon
-              icon={faTimes} // Cancel icon
-              className="ml-2 cancel-icon"
-              onClick={() => setUploadedFileName("")} // onClick handler to clear uploadedFileName
-            />
-          </div>
-        ) : (
-          <p className="mb-0">No file uploaded</p>
-        )}
-      </div>
-      <div className="spacer"></div>
-
-      <div className="custom-file-upload d-flex">
-        
-        <div {...getRootProps()} className="Upload ">
-          <input {...getInputProps()} accept=".xlsx, .xls" />
-          {isDragActive ? (
-            <p>Drop the files here ...</p>
-          ) : (
-            <Button className="btn btn-secondary btn-sm  Upload">
-              <FontAwesomeIcon  className="clearicon" icon={faUpload} />
-              Upload 
-            </Button>
-          )}
-        </div>
-        <div className="spacer"></div>
-
-        <Button className="btn  btn-secondary submit" onClick={handleSubmit}>
-          Submit
-        </Button>
-      </div>
-    </Form>
-  </Container>
-  {loading && (
-    <div className="loading-spinner"></div>
-  )}
-      {loading && <LoadingSpinner />}
-
-{filteredData.length === 0 ? (
-        <div className="no-data-message">No data available</div>
-      ) :
-      <Container fluid className="mt-2">
-  <Row className="row Render-Row">
-    <Col className="col Render-Col">
-      <div className="table-responsive render">
-      <Table striped bordered hover>
-        <thead className="sticky-header">
-          <tr>
-            <th className="selection-cell">
-              <input
-                type="checkbox"
-                checked={selectedRowIds.length === filteredData.length}
-                onChange={() => handleCheckboxChange(null)}
-              />
-            </th>
-            {Object.keys(filteredData[0] || {}).filter(key => key !== 'ID' && key !== 'Org_ID' && key !== 'Username').map((key) => (  
-              <th key={key}>
-                {key === 'MonthYear' ? 'Date' : key}
-              </th>
-            ))}
-            <th className="action-cell">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredData.map((row, index) => (
-            <tr key={index}>
-              <td className="selection-cell">
-                <input
-                  type="checkbox"
-                  checked={selectedRowIds.includes(index)}
-                  onChange={() => handleCheckboxChange(index)}
-                />
-              </td>
-              {Object.keys(row).filter(key => key !== 'ID' && key !== 'Org_ID' && key !== 'Username').map((key) => (
-                <td key={key}>
-                  {editedRowId === index ? (
-                    <input
-                      type="text"
-                      value={editedRowData[key] || ""}
-                      onChange={(e) => handleInputChange(e, key)}
-                    />
-                  ) : (
-                    typeof row[key] === 'object' ? JSON.stringify(row[key]) : formatDateCell(row[key], key)
-                  )}
-                </td>
-              ))}
-
-              <td className="action-cell">
-                {editedRowId === index ? (
-                  <div className="action-buttons">
-                    <button
-                      className="btn  btn-sm Save"
-                      onClick={() => handleSave()}
-                    >
-                      <FontAwesomeIcon icon={faSave} />
-                    </button>
-                    <button
-                      className="btn btn-sm Cancel"
-                      onClick={() => handleCancel()}
-                    >
-                      <FontAwesomeIcon icon={faTimes} />
-                    </button>
-                  </div>
-                ) : (
-                  <div className="action-buttons">
-                    <button
-                      className="btn  btn-sm Edit"
-                      onClick={() => handleEdit(index)}
-                    >
-                      <FontAwesomeIcon icon={faEdit} />
-                    </button>
-                    <button
-                      className="btn btn-sm Delete"
-                      onClick={() => handleDelete(index)}
-                    >
-                      <FontAwesomeIcon icon={faTrash} />
-                    </button>
-                  </div>
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
-
-      </div>
-    </Col>
-  </Row>
+    <Button className="btn  btn-secondary submit" onClick={handleSubmit}>
+      Submit
+    </Button>
+  </div>
+</Form>
 </Container>
-
-    
-  }
-        {loading && <LoadingSpinner />} 
-      </div>
-    );
-  }
+{loading && (
+<div className="loading-spinner"></div>
+)}
+  {loading && <LoadingSpinner />}
 
 
+<ExcelGrid
+    filteredData={filteredData}
+    selectedRowIds={selectedRowIds}
+    editedRowId={editedRowId}
+    editedRowData={editedRowData}
+    handleCheckboxChange={handleCheckboxChange}
+    handleEdit={handleEdit}
+    handleCancel={handleCancel}
+    handleInputChange={handleInputChange}
+    handleSave={handleSave}
+    handleDelete={handleDelete}
+    formatDateCell={formatDateCell}
+  />
+    {loading && <LoadingSpinner />} 
+  </div>
+);
+}
   export default Dashboard;
   
