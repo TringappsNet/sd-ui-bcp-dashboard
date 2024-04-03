@@ -56,8 +56,10 @@ const PopUpContainer = () => {
     <div>
       <button onClick={handleResetPopupToggle} className='reset'> Reset Password</button>
       <button onClick={handleInvitePopupToggle} className='invite'> Send Invite</button>
-      <button onClick={handleOrganizationPopupToggle} className='organization'>Organization</button>
-      <button onClick={handleAdminPopupToggle} className='admin'>User</button>
+      {/* <button onClick={handleOrganizationPopupToggle} className='organization'>Organization</button>
+      <button onClick={handleAdminPopupToggle} className='admin'>User</button> */}
+      <button  className='organization'>Organization</button>
+      <button  className='admin'>User</button>
 
       {(showResetPopup || showInvitePopup || showOrganizationPopup || showAdminPopup) && (
         <div className="popup-container">

@@ -16,6 +16,7 @@ function ForgotPassword() {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarType, setSnackbarType] = useState('error');
   const [loading, setLoading] = useState(false); 
+  const [snackbarVariant, setSnackbarVariant] = useState('success');
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -24,17 +25,17 @@ function ForgotPassword() {
       const response = await axios.post(`${PortURL}/forgot-password`, { email });
       if (response.status === 200) {
         setSnackbarMessage(response.data.message);
-        setSnackbarType('success');
+        setSnackbarVariant('success');
       } else if (response.status === 404) {
         setSnackbarMessage(response.data.message);
-        setSnackbarType('error');
+        setSnackbarVariant('error');
       } else {
         setSnackbarMessage('Error sending reset link email');
-        setSnackbarType('error');
+        setSnackbarVariant('error');
       }
     } catch (error) {
       setSnackbarMessage(error.response.data.message || 'Error sending reset link email');
-      setSnackbarType('error');
+      setSnackbarVariant('error');
     }
     setLoading(false); 
     setSnackbarOpen(true);
@@ -78,9 +79,13 @@ function ForgotPassword() {
       </div>
       <CustomSnackbar
         message={snackbarMessage}
-        open={snackbarOpen}
+        variant={snackbarVariant}
         onClose={handleCloseSnackbar}
-        type={snackbarType}
+        open={snackbarOpen}
+  
+        // color={snackColor}
+
+
       />
       {loading && <LoadingSpinner />} 
     </div>

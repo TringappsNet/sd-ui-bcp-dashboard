@@ -5,8 +5,11 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Stack from '@mui/material/Stack';
 import '../styles/snackbar.css';
+import SnackbarContent from '@mui/material/SnackbarContent';
 
 export default function CustomSnackbar({ message, variant, onClose, open }) {
+
+  // console.log(message, variant, onClose, open);
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
@@ -14,44 +17,38 @@ export default function CustomSnackbar({ message, variant, onClose, open }) {
     onClose();
   };
 
-  let backgroundColor = '#D16E6E'; 
+  let bgColor = ''; 
   if (variant === 'success') {
-    backgroundColor = '#82c971'; // Green color for success variant
+    bgColor = '#82c971'; // Green color for success variant
+  } else if (variant === 'error') { 
+     bgColor = '#D16E6E'; 
   }
 
-  // Close the Snackbar after 5 seconds
-  React.useEffect(() => {
-    const timer = setTimeout(() => {
-      handleClose();
-    }, 5000);
-    return () => clearTimeout(timer);
-  }, [open]);
-
+// console.log(bgCo lor)
   return (
-    <Stack spacing={2} sx={{ maxWidth: 600 }}>
-      <Snackbar
-        className='mt-4'
-        sx={{ maxWidth: 600, backgroundColor }} 
+    <Stack>
+     <Snackbar
+        sx={{ maxWidth: 1000 }} 
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         open={open}
         onClose={handleClose}
-        message={message}
+        autoHideDuration={5000}
         action={
-          <React.Fragment>
-            <IconButton
-              aria-label="close"
-              color="White"
-              sx={{ p: 0.5 }}
-              onClick={handleClose}
-            >
-              <CloseIcon />
-            </IconButton>
-          </React.Fragment>
+          <IconButton
+            aria-label="close"
+            color="inherit" // Inherit theme color for consistency
+            // sx={{ p: 0.5 }}
+            onClick={handleClose}
+          >
+            <CloseIcon />
+          </IconButton>
         }
-        classes={{
-          root: 'customSnackbar',
-        }}
-      />
+      >
+        <SnackbarContent
+          style={{ backgroundColor: `${bgColor}` }}
+          message={message}
+        />
+      </Snackbar>
     </Stack>
   );
 }

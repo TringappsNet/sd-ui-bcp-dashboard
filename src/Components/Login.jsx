@@ -23,6 +23,9 @@ function Login() {
   const [serverError, setServerError] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackColor,setSnackColor]=useState('success');
+  const [snackbarVariant, setSnackbarVariant] = useState('success');
+
   const navigate = useNavigate();
 
 
@@ -38,19 +41,25 @@ function Login() {
     if (!email) {
       setSnackbarMessage('Email is required');
       setSnackbarOpen(true);
+      // setSnackColor('red');
+      setSnackbarVariant('error');
+      
       return;
     }
   
     if (!password) {
-      setPasswordError('Password is required');
       setSnackbarMessage('Password is required');
       setSnackbarOpen(true);
+      setSnackbarVariant('error');
+
       return;
     }
   
     if (!email.includes('@')) {
       setSnackbarMessage('Please enter a valid email');
       setSnackbarOpen(true);
+      setSnackbarVariant('error');
+
       return;
     }
   
@@ -83,11 +92,15 @@ function Login() {
 
     setSnackbarMessage(data.error || 'An error occurred while logging in.');
     setSnackbarOpen(true);
+    setSnackbarVariant('error');
+
   }
 } catch (error) {
   console.error('Error logging in:', error);
   setSnackbarMessage('An error occurred while logging in.');
   setSnackbarOpen(true);
+  setSnackbarVariant('error');
+
 }
 
 setLoading(false);
@@ -127,7 +140,6 @@ setLoading(false);
             fullWidth
             variant="outlined"
             size="small"
-            error={!!emailError}
           />
           </Form.Group>
           <Form.Group controlId="formBasicPassword" className="mb-2 mt-2 ">
@@ -175,13 +187,17 @@ setLoading(false);
         
       </Container>
       <CustomSnackbar
-        open={snackbarOpen}
         message={snackbarMessage}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        variant={snackbarVariant}
         onClose={handleCloseSnackbar}
+        open={snackbarOpen}
+  
+        // color={snackColor}
+
+
       />
     </div>
-    {loading && <LoadingSpinner />} 
+    {/* {loading && <LoadingSpinner />}  */}
    </div>
   );
 }
