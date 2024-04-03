@@ -43,8 +43,8 @@ const action = (
 return (
   <div>
     {/* <Button onClick={handleClick}>Open Snackbar</Button> */}
+
     <Snackbar
-      sx={{ maxWidth: 1000 }} 
       anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       open={open}
       onClose={handleClose}
@@ -53,7 +53,7 @@ return (
       action={action}
     >
      <SnackbarContent
-          style={{ backgroundColor: `${bgColor}` }}
+          style={{ backgroundColor: `${bgColor}`,width:'700px' }}
           message={message}
         />
       </Snackbar>
