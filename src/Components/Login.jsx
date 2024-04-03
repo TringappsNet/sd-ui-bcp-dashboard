@@ -85,6 +85,7 @@ function Login() {
         localStorage.setItem('createdAt', data1.createdAt);
         localStorage.setItem('Role_ID', data1.Role_ID);
 
+        localStorage.setItem('Org_ID', data1.Org_ID);
 
     navigate('/dashboard');
   } else {

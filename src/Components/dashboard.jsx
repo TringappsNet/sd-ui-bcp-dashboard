@@ -299,15 +299,17 @@ const handleSubmit = async () => {
     // Get session ID and organization from local storage
     const sessionId = localStorage.getItem('sessionId');
     const email = localStorage.getItem('email');
-    const organization = localStorage.getItem('Organisation');
+    // const organization = localStorage.getItem('Organisation');
     const Role_ID = localStorage.getItem('Role_ID');
+    const Org_ID = localStorage.getItem('Org_ID');
 
     // Create userData object with username and organization
     const userData = {
       username: username,
-      organization: organization,
+      orgID:Org_ID ,
       email:email,
       roleID: Role_ID
+
 
     };
 
