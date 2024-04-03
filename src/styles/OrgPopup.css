@@ -10,88 +10,22 @@
 
   }
 
-  .render{
+  
+   .Render-cc1{
+ padding-top: 50px;
+ padding-left: 50px;
+   }
+
     
-  }
-    .close-button {
-      align-self: flex-end;
-      background-color: red;
-      color: red;
 
-    }
     
-    .search {
-      margin-top: 10px;
-      margin-left: 40px;
-    }
-    
-    .grid-below {
-      max-height: 300px;
-      overflow-y: auto;
-    }
-    
-    .popup-content .close-button {
-      margin-top: 20px;
-      padding: 15px 16px;
-      background-color: #e3532c;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      }
 
-      .del{
-        width: 12px;
-        height: 30px;
-        padding-bottom: 5px;
-
-      }
-      .popup-content .close-button:hover {
-          margin-top: 20px;
-          padding: 15px 16px;
-          background-color: #ca3e18;
-          color: #fff;
-          border: none;
-          border-radius: 4px;
-          cursor: pointer;
-          }
-
-
-          .grid-below {
-            margin-top: 20px;
-            border: 1px solid #ccc; /* Add border */
-            border-radius: 4px; /* Add border radius */
-            overflow: auto; /* Enable scrolling if needed */
-          }
-          
-          .grid-below table {
-            width: 100%;
-            border-collapse: collapse;
-          }
-          
-          .grid-below th,
-          .grid-below td {
-            border: 1px solid #ccc; /* Add cell borders */
-            padding: 0px;
-            text-align: center  ;
-          }
-          
-          .grid-below th {
-            background-color: #f2f2f2; /* Add header background color */
-          }
-          
-          .grid-below tr:hover {
-            background-color: #f0f0f0; /* Add hover effect */
-          }
+         
           
           .input {
             text-decoration: none; /* Remove underline */
           }
-          .search-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-          }
+        
           
           .sticky-header th {
             position: sticky;
@@ -131,3 +65,7 @@
             border-collapse: collapse;
         }
           
+        .close-icon1{
+          padding-left: 500px;
+          margin-top: 2px;
+        }
