@@ -12,6 +12,7 @@ const UserPop = () => {
   const [editedRowId, setEditedRowId] = useState(null);
   const [editedRole, setEditedRole] = useState(null);
   const [roles, setRoles] = useState([]);
+  const [deactivatedRows, setDeactivatedRows] = useState([]);
 
   useEffect(() => {
     fetchData();
@@ -45,32 +46,36 @@ const UserPop = () => {
       console.error('Error fetching roles:', error);
     }
   };
-
   const handleEdit = async (index) => {
     try {
-      console.log('Editing row:', index);
-      // Fetch roles data
-      const response = await fetch(`${PortURL}/Get-Role`);
-      if (response.ok) {
-        const data = await response.json();
-        console.log('Fetched roles data:', data);
-        setRoles(data);
+      // Check if the row is deactivated
+      if (!deactivatedRows.includes(index)) {
+        console.log('Editing row:', index);
+        // Fetch roles data
+        const response = await fetch(`${PortURL}/Get-Role`);
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Fetched roles data:', data);
+          setRoles(data);
+        } else {
+          console.error('Failed to fetch roles:', response.statusText);
+        }
+  
+        // Set edited row ID
+        setEditedRowId(index);
+  
+        // Set edited role
+        const selectedRole = excelData[index].Role.trim() ? excelData[index].Role : null;
+        console.log('Selected Role:', selectedRole);
+        setEditedRole(selectedRole);
       } else {
-        console.error('Failed to fetch roles:', response.statusText);
+        console.log('Row is deactivated. Cannot edit.');
       }
-
-      // Set edited row ID
-      setEditedRowId(index);
-
-      // Set edited role
-      const selectedRole = excelData[index].Role.trim() ? excelData[index].Role : null;
-      console.log('Selected Role:', selectedRole);
-      setEditedRole(selectedRole);
     } catch (error) {
       console.error('Error editing row:', error);
     }
   };
-
+  
   const handleRoleChange = (event) => {
     const selectedRole = event.target.value;
     console.log('Selected Role:', selectedRole);
@@ -120,7 +125,7 @@ const UserPop = () => {
   
       const response = await fetch(`${PortURL}/user-Active`, {
         method: 'PUT',
-        body: JSON.stringify({ index, isActive: false, email }), // Include isActive status in the request body
+        body: JSON.stringify({   isActive: false, email }), // Include isActive status in the request body
         headers: {
           'Content-Type': 'application/json'
         }
@@ -131,9 +136,10 @@ const UserPop = () => {
   
         // Update excelData state to mark the user as deactivated
         const updatedData = [...excelData];
-        updatedData[index].Status = 'Inactive'; // Assuming 'Status' is the column indicating user status
+        // updatedData[index].Status = 'Inactive'; // Assuming 'Status' is the column indicating user status
         setExcelData(updatedData);
-  
+        setDeactivatedRows([...deactivatedRows, index]);
+
         // Show success message to the user
         alert('User deactivated successfully');
   
@@ -155,7 +161,7 @@ const UserPop = () => {
       <Row className="row Render-rr">
         <h7 className="h7">USERS</h7>
         <Col className="col Render-cc">
-          <div className="table-responsive render">
+          <div className="table-response render1">
             <Table striped bordered hover>
               <thead className='checkbox-container'>
                 <tr>
@@ -167,8 +173,8 @@ const UserPop = () => {
               </thead>
               <tbody>
                 {excelData.map((row, index) => (
-                  <tr key={index} className={selectedRow === index ? 'selected' : ''}>
-                    {Object.keys(row).map((key, i) => (
+  <tr key={index} className={`${selectedRow === index ? 'selected' : ''} ${deactivatedRows.includes(index) ? 'fade-out hidden' : ''}`}>
+  {Object.keys(row).map((key, i) => (
                       <td key={i}>
                         {editedRowId === index && key === 'Role' ? (
                           <select value={editedRole || ''} onChange={handleRoleChange} style={{ color: 'black' }}>
@@ -181,25 +187,34 @@ const UserPop = () => {
                         )}
                       </td>
                     ))}
-                    <td className='action-button'>
-                      {editedRowId === index ? (
-                        <div>
-                          <button className="btn btn-sm Save" onClick={handleSave}>
-                            <FontAwesomeIcon icon={faSave} />
-                          </button>
-                        </div>
-                      ) : (
-                        <div>
-                          <button className="btn btn-sm Edit" onClick={() => handleEdit(index)}>
-                            <FontAwesomeIcon icon={faEdit} />
-                          </button>
-                          <button className="btn btn-sm Deactivate" onClick={() => handleDeactivate(index)}>
-                            <FontAwesomeIcon icon={faBan} />
-                          </button>
-                        </div>
-                      )}
-                    </td>
+                      <td className='action-button'>
+                        {editedRowId === index ? (
+                          <div >
+                            <button className="btn btn-sm Save " onClick={handleSave}>
+                              <FontAwesomeIcon icon={faSave} />
+                            </button>
+                          </div>
+                        ) : (
+                          <div >
+                              <button className="btn btn-sm Edit " onClick={() => handleEdit(index)} disabled={deactivatedRows.includes(index)}>
+                                    <FontAwesomeIcon icon={faEdit} />
+                              </button>
+
+                              <button className="btn btn-sm Deactivate " onClick={() => handleDeactivate(index)}>
+                              <FontAwesomeIcon icon={faBan} />
+                            </button>
+                          
+                          </div>
+                          
+                        )}
+                        
+                      </td>
+                
+                        
+                    
+                    
                   </tr>
+                  
                 ))}
               </tbody>
             </Table>
