@@ -12,31 +12,23 @@ function ResetNewPassword({ onClose }) {
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    let timer;
-    if (success) {
-      timer = setTimeout(() => {
-        onClose(); // Close the popup after 5 seconds
-      }, 1000);
-    }
-
-    return () => clearTimeout(timer); // Clean up the timer on unmount or when success changes
-  }, [success, onClose]);
+  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true); 
-
+  
     if (newPassword !== confirmNewPassword) {
       setError('Passwords do not match');
+      setLoading(false);
       return;
     }
-
+  
     try {
       const email = localStorage.getItem('email');
-
+  
       const response = await fetch(`${PortURL}/reset-new`, {
         method: 'POST',
         headers: {
@@ -44,13 +36,16 @@ function ResetNewPassword({ onClose }) {
         },
         body: JSON.stringify({ email, oldPassword, newPassword }),
       });
-
+  
       if (response.ok) {
         setSuccess(true);
         setOldPassword('');
         setNewPassword('');
         setConfirmNewPassword('');
         setError(null);
+        setTimeout(() => {
+          onClose();
+        }, 5000);
       } else {
         const data = await response.json();
         setError(data.message);
@@ -61,7 +56,8 @@ function ResetNewPassword({ onClose }) {
     }
     setLoading(false); 
   };
-
+  
+  
   return (
     <div className="form d-flex justify-content-center align-items-center">
       <Container className="mt-6 p-4 shadow bg-body rounded">
