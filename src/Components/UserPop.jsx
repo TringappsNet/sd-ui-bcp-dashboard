@@ -54,11 +54,13 @@ const UserPop = () => {
       setSelectedRows([...selectedRows, index]);
     }
   };
+
+
   const handleEdit = async (index) => {
     try {
       console.log('Editing row:', index);
       // Fetch roles data
-      const response = await fetch(`${PortURL}/Get-Role`);
+      const response = await fetch(`${PortURL}/Updateuser`);
       if (response.ok) {
         const data = await response.json();
         console.log('Fetched roles data:', data);
@@ -85,23 +87,38 @@ const UserPop = () => {
     console.log('Selected Role:', selectedRole);
     setEditedRole(selectedRole);
   };  
-  
   const handleSave = async () => {
     try {
       const updatedData = [...excelData];
       updatedData[editedRowId].Role = editedRole;
   
-      // Perform API call to save updated data
-      const response = await fetch(`${PortURL}/UpdateUsers/${updatedData[editedRowId].id}`, {
-        method: 'PUT',
-        body: JSON.stringify({ Role: editedRole }),
+      const sessionId = localStorage.getItem('sessionId');
+      const emailHeader = localStorage.getItem('email');
+      
+      if (!sessionId || !emailHeader) {
+        console.error('Session ID and Email headers are required!');
+        return;
+      }
+    
+      const requestBody = {
+        Email: emailHeader,
+        Role: editedRole,
+        Organization: updatedData[editedRowId].Organization
+      };
+  
+      const response = await fetch(`${PortURL}/Updateuser`, {
+        method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
-        }
+          'Content-Type': 'application/json',
+          'Session-ID': sessionId,
+          'Email':emailHeader
+        },
+        body: JSON.stringify(requestBody)
       });
   
       if (response.ok) {
         console.log('Role updated successfully');
+        // You may want to update the local state or fetch data again to refresh the list
       } else {
         console.error('Failed to update role:', response.statusText);
       }
@@ -112,6 +129,35 @@ const UserPop = () => {
       console.error('Error saving data:', error);
     }
   };
+  
+    
+  
+  
+  const handleBlockUser = async () => {
+    try {
+      // Logic to block selected users
+      console.log('Block selected users:', selectedRows);
+  
+      // Perform API call to block selected users
+      const response = await fetch(`${PortURL}/BlockUsers`, {
+        method: 'POST',
+        body: JSON.stringify({ users: selectedRows }), // Pass the list of selected user IDs
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+  
+      if (response.ok) {
+        console.log('Users blocked successfully');
+        // Update local state or fetch data again to refresh the list
+      } else {
+        console.error('Failed to block users:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error blocking users:', error);
+    }
+  };
+  
   const handleDeactivate = async () => {
     try {
       // Logic to deactivate selected users
