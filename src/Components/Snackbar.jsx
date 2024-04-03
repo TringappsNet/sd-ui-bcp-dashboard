@@ -25,30 +25,38 @@ export default function CustomSnackbar({ message, variant, onClose, open }) {
   }
 
 // console.log(bgCo lor)
-  return (
-    <Stack>
-     <Snackbar
-        sx={{ maxWidth: 1000 }} 
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        open={open}
-        onClose={handleClose}
-        autoHideDuration={5000}
-        action={
-          <IconButton
-            aria-label="close"
-            color="inherit" // Inherit theme color for consistency
-            // sx={{ p: 0.5 }}
-            onClick={handleClose}
-          >
-            <CloseIcon />
-          </IconButton>
-        }
-      >
-        <SnackbarContent
+
+const action = (
+  <React.Fragment>
+    
+    <IconButton
+      size="small"
+      aria-label="close"
+      color="inherit"
+      onClick={handleClose}
+    >
+      <CloseIcon fontSize="small" />
+    </IconButton>
+  </React.Fragment>
+);
+
+return (
+  <div>
+    {/* <Button onClick={handleClick}>Open Snackbar</Button> */}
+    <Snackbar
+      sx={{ maxWidth: 1000 }} 
+      anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      open={open}
+      onClose={handleClose}
+      autoHideDuration={3000}
+
+      action={action}
+    >
+     <SnackbarContent
           style={{ backgroundColor: `${bgColor}` }}
           message={message}
         />
       </Snackbar>
-    </Stack>
-  );
+  </div>
+);
 }
