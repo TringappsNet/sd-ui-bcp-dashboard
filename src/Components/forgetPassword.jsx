@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Form, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, Route,useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/forgetPassword.css';
 import { TextField } from '@mui/material';
@@ -17,6 +17,7 @@ function ForgotPassword() {
   const [snackbarType, setSnackbarType] = useState('error');
   const [loading, setLoading] = useState(false); 
   const [snackbarVariant, setSnackbarVariant] = useState('success');
+  const navigate = useNavigate(); 
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -26,6 +27,8 @@ function ForgotPassword() {
       if (response.status === 200) {
         setSnackbarMessage(response.data.message);
         setSnackbarVariant('success');
+        navigate('/login');
+
       } else if (response.status === 404) {
         setSnackbarMessage(response.data.message);
         setSnackbarVariant('error');
