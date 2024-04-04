@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Table } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faSave, faTrash, faBan, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faSave, faBan, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { PortURL } from "./Config";
 import '../styles/UserPop.css';
 
 const UserPop = ({ handleClose }) => {
   const [excelData, setExcelData] = useState([]);
-  const [selectedRow, setSelectedRow] = useState(null);
   const [editedRowId, setEditedRowId] = useState(null);
   const [editedRole, setEditedRole] = useState(null);
   const [roles, setRoles] = useState([]);
   const [deactivatedRows, setDeactivatedRows] = useState([]);
-  
+  const [searchQuery, setSearchQuery] = useState('');
+  const [editSuccess, setEditSuccess] = useState(false);
+  const [deactivateSuccess, setDeactivateSuccess] = useState(false);
+
   useEffect(() => {
     fetchData();
     fetchRoles();
@@ -48,25 +50,17 @@ const UserPop = ({ handleClose }) => {
 
   const handleEdit = async (index) => {
     try {
-      // Check if the row is deactivated
       if (!deactivatedRows.includes(index)) {
-        console.log('Editing row:', index);
-        // Fetch roles data
         const response = await fetch(`${PortURL}/Get-Role`);
         if (response.ok) {
           const data = await response.json();
-          console.log('Fetched roles data:', data);
           setRoles(data);
         } else {
           console.error('Failed to fetch roles:', response.statusText);
         }
 
-        // Set edited row ID
         setEditedRowId(index);
-
-        // Set edited role
         const selectedRole = excelData[index].Role.trim() ? excelData[index].Role : null;
-        console.log('Selected Role:', selectedRole);
         setEditedRole(selectedRole);
       } else {
         console.log('Row is deactivated. Cannot edit.');
@@ -78,93 +72,107 @@ const UserPop = ({ handleClose }) => {
 
   const handleRoleChange = (event) => {
     const selectedRole = event.target.value;
-    console.log('Selected Role:', selectedRole);
     setEditedRole(selectedRole);
   };
 
   const handleSave = async () => {
     try {
-      const updatedData = [...excelData];
-      updatedData[editedRowId].Role = editedRole;
-
-      // Retrieve session ID and organization from localStorage
-      const sessionId = localStorage.getItem('sessionId');
-      const organization = localStorage.getItem('Organization');
-      const email = localStorage.getItem('email');
-
-      // Perform API call to save updated data
-      const response = await fetch(`${PortURL}/Updateuser`, {
-        method: 'POST',
-        body: JSON.stringify({ organization, Role: editedRole, email }),
-        headers: {
-          'Content-Type': 'application/json',
-          'Session-ID': sessionId,
-          'Email': email  // Assuming you have 'email' stored in localStorage as well
+      if (editedRowId !== null) {
+        const updatedData = [...excelData];
+        updatedData[editedRowId].Role = editedRole;
+  
+        const { Organization, Email } = updatedData[editedRowId]; // Extract organization and email from the selected row
+  
+        const response = await fetch(`${PortURL}/Updateuser`, {
+          method: 'POST',
+          body: JSON.stringify({  email:Email,Role: editedRole}),
+          headers: {
+            'Content-Type': 'application/json',
+            'Session-ID': localStorage.getItem('sessionId'),
+            'Email': Email
+          }
+        });
+  
+        if (response.ok) {
+          console.log('Role updated successfully');
+          setEditSuccess(true);
+          const responseData = await response.json();
+          // Handle responseData as needed
+        } else {
+          console.error('Failed to update role:', response.statusText);
         }
-      });
-
-      if (response.ok) {
-        console.log('Role updated successfully');
-        const responseData = await response.json(); // Parse response JSON
-        // Handle responseData as needed
+  
+        setExcelData(updatedData);
+        setEditedRowId(null);
       } else {
-        console.error('Failed to update role:', response.statusText);
+        console.log('No row is currently being edited.');
       }
-
-      setExcelData(updatedData);
-      setEditedRowId(null);
     } catch (error) {
       console.error('Error saving data:', error);
     }
   };
-
+  
   const handleDeactivate = async (index) => {
     try {
-      // Perform API call to deactivate user
       const email = localStorage.getItem('email');
+      const isActive = excelData[index].isActive; // Assuming isActive status is stored in the excelData array
 
-      const response = await fetch(`${PortURL}/user-Active`, {
-        method: 'PUT',
-        body: JSON.stringify({   isActive: false, email }), // Include isActive status in the request body
-        headers: {
-          'Content-Type': 'application/json'
+      // Check if the user is active
+      if (isActive) {
+        const response = await fetch(`${PortURL}/user-Active`, {
+          method: 'PUT',
+          body: JSON.stringify({ isActive: false, email }), // Deactivate the user by setting isActive to false
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (response.ok) {
+          console.log('User deactivated successfully');
+          setDeactivateSuccess(true);
+          const updatedData = [...excelData];
+          updatedData[index].isActive = false; // Update isActive status in the local data
+          setExcelData(updatedData);
+          setDeactivatedRows([...deactivatedRows, index]);
+        } else {
+          console.error('Failed to deactivate user:', response.statusText);
         }
-      });
-
-      if (response.ok) {
-        console.log('User deactivated successfully');
-
-        // Update excelData state to mark the user as deactivated
-        const updatedData = [...excelData];
-        // updatedData[index].Status = 'Inactive'; // Assuming 'Status' is the column indicating user status
-        setExcelData(updatedData);
-        setDeactivatedRows([...deactivatedRows, index]);
-
-        // Show success message to the user
-        alert('User deactivated successfully');
-
-
       } else {
-        console.error('Failed to deactivate user:', response.statusText);
-        // Handle failure response as needed
-        alert('Failed to deactivate user');
+        // User is already inactive, no action needed
+        console.log('User is already deactivated.');
       }
     } catch (error) {
       console.error('Error deactivating user:', error);
-      alert('Error deactivating user');
     }
   };
 
+  const handleSearch = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  // Filter excelData based on searchQuery
+  const filteredData = excelData.filter((row) => {
+    const values = Object.values(row).join('').toLowerCase();
+    return values.includes(searchQuery.toLowerCase());
+  });
+
   return (
     <Container fluid className="mt-2">
-     
+      
       <Row className="row Render-Row1">
-     
         <Col className="col col1 Render-Col">
-        <div>
-        <h4>USERS</h4>
-      </div>
-          <div className="table-container" style={{  marginTop: '20px', height: '600px', overflowY: 'auto' }}>
+        {editSuccess && (
+            <div className="success-message">Edit successful!</div>
+          )}
+          {deactivateSuccess && (
+            <div className="success-message">Deactivated successfully!</div>
+          )}
+          <div className='User'>
+            <h4>USERS</h4>
+            <input type="text" placeholder="Search..." className='Usersearch' value={searchQuery} onChange={handleSearch} />
+          </div>
+        
+          <div className="table-container" style={{ marginTop: '20px', height: '600px', overflowY: 'auto' }}>
             <Table striped bordered hover className='grid'>
               <thead className="sticky-header">
                 <tr>
@@ -175,8 +183,8 @@ const UserPop = ({ handleClose }) => {
                 </tr>
               </thead>
               <tbody>
-                {excelData.map((row, index) => (
-                  <tr key={index}>
+                {filteredData.map((row, index) => (
+                  <tr key={index} className={row.isActive === 0 ? 'deactivated-row' : ''}>
                     {Object.keys(row).map((key, i) => (
                       <td key={i}>
                         {editedRowId === index && key === 'Role' ? (
@@ -202,11 +210,11 @@ const UserPop = ({ handleClose }) => {
                         </div>
                       ) : (
                         <div className="action-buttons">
-                          <button className="btn btn-sm Edit" onClick={() => handleEdit(index)}>
+                          <button className="btn btn-sm Edit" onClick={() => handleEdit(index)} disabled={row.isActive === 0}>
                             <FontAwesomeIcon icon={faEdit} />
                           </button>
                           <button className="btn btn-sm Deactivate" onClick={() => handleDeactivate(index)}>
-                            <FontAwesomeIcon icon={faBan} />  
+                            <FontAwesomeIcon icon={faBan} />
                           </button>
                         </div>
                       )}
@@ -216,6 +224,7 @@ const UserPop = ({ handleClose }) => {
               </tbody>
             </Table>
           </div>
+        
         </Col>
       </Row>
     </Container>
@@ -223,4 +232,3 @@ const UserPop = ({ handleClose }) => {
 };
 
 export default UserPop;
-

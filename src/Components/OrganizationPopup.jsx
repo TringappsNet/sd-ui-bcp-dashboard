@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Table } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faSave, faBan, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faSave, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { PortURL } from "./Config";
 import '../styles/ExcelGrid.css'; // Assuming you have a CSS file for styling
+import '../styles/OrgPopup.css'; // Assuming you have a CSS file for styling
 
 const OrgPop = ({ handleClose }) => {
   const [excelData, setExcelData] = useState([]);
   const [editedRowIndex, setEditedRowIndex] = useState(null);
   const [editedOrgName, setEditedOrgName] = useState('');
-  const [filteredData, setFilteredData] = useState([]);
+  const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
     fetchData();
@@ -21,7 +22,6 @@ const OrgPop = ({ handleClose }) => {
       if (response.ok) {
         const data = await response.json();
         setExcelData(data);
-        setFilteredData(data); // Initialize filtered data with all data
       } else {
         console.error('Failed to fetch Excel data:', response.statusText);
       }
@@ -32,7 +32,7 @@ const OrgPop = ({ handleClose }) => {
 
   const handleEdit = (index) => {
     setEditedRowIndex(index);
-    setEditedOrgName(filteredData[index].org_name);
+    setEditedOrgName(excelData[index].org_name);
   };
 
   const handleInputChange = (event) => {
@@ -54,7 +54,7 @@ const OrgPop = ({ handleClose }) => {
 
       if (response.ok) {
         console.log('Organization updated successfully');
-        // You may want to update the local state or fetch data again to refresh the list
+        setSuccessMessage('Organization updated successfully');
       } else {
         console.error('Failed to update organization:', response.statusText);
       }
@@ -74,6 +74,7 @@ const OrgPop = ({ handleClose }) => {
           <div>
             <h4>ORGANIZATIONS</h4>
           </div>
+          {successMessage && <div className="success-message">{successMessage}</div>}
           <div className="table-container">
             <Table striped bordered hover className='grid'>
               <thead className="sticky-header">
