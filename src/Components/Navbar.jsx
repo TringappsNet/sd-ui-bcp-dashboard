@@ -7,18 +7,18 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import PopUpContainer from "./popup";
-
+import "../styles/NavBar.css";
 const NavbarComponent = ({ username, handleLogout, isMobile }) => {
   return (
     <Navbar bg="light" expand="lg" className="w-100">
-    <a href="/login" className="brand-wrapper">
+    <a href="/dashboard" className="brand-wrapper">
       <Link to="/dashboard" className="customNavbarBrand"></Link>
     </a>
-    <NavbarToggle aria-controls="basic-navbar-nav" />
-    <NavbarCollapse id="basic-navbar-nav">
-      <Nav className="ml-auto align-items-center">
+    <NavbarToggle aria-controls="" />
+    <NavbarCollapse id="">
+      <Nav className="ml-auto ">
         {isMobile ? (
-          <Dropdown className="d-flex username">
+          <Dropdown className=''>
             <Dropdown.Toggle
               id="dropdown-basic"
               as="div"
@@ -30,11 +30,13 @@ const NavbarComponent = ({ username, handleLogout, isMobile }) => {
               </div>
             </Dropdown.Toggle>
   
-            <Dropdown.Menu>
-              <PopUpContainer>{/* <ResetNewPassword  /> */}</PopUpContainer>
-              <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
+            <Dropdown.Menu  className='Menu'>
+              <PopUpContainer></PopUpContainer>
+              <div onClick={handleLogout}>Logout</div>
             </Dropdown.Menu>
           </Dropdown>
+
+
         ) : (
           <React.Fragment>
             <div className="smallscreen">
@@ -42,7 +44,6 @@ const NavbarComponent = ({ username, handleLogout, isMobile }) => {
                 <FontAwesomeIcon icon={faUser} /> {username}
               </div>
               <PopUpContainer>
-                {/* <ResetPassword /> */}
               </PopUpContainer>
               <Dropdown.Item onClick={handleLogout} className="logout">
                 Logout
