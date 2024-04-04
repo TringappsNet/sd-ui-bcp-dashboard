@@ -9,32 +9,32 @@ const PopUpContainer = () => {
   const [showResetPopup, setShowResetPopup] = useState(false);
   const [showInvitePopup, setShowInvitePopup] = useState(false);
   const [showOrganizationPopup, setShowOrganizationPopup] = useState(false);
-  const [showAdminPopup, setShowAdminPopup] = useState(false);
+  const [showUserPopup, setshowUserPopup] = useState(false);
   const [timerID, setTimerID] = useState(null);
 
   const handleResetPopupToggle = () => {
     setShowResetPopup(!showResetPopup);
     setShowInvitePopup(false); // Close invite popup
     setShowOrganizationPopup(false); // Close organization popup
-    setShowAdminPopup(false); // Close admin popup
+    setshowUserPopup(false); // Close admin popup
   };
 
   const handleInvitePopupToggle = () => {
     setShowInvitePopup(!showInvitePopup);
     setShowResetPopup(false); // Close reset password popup
     setShowOrganizationPopup(false); // Close organization popup
-    setShowAdminPopup(false); // Close admin popup
+    setshowUserPopup(false); // Close admin popup
   };
 
   const handleOrganizationPopupToggle = () => {
     setShowOrganizationPopup(!showOrganizationPopup);
-    setShowAdminPopup(false); // Close admin popup
+    setshowUserPopup(false); // Close admin popup
     setShowResetPopup(false); // Close reset password popup
     setShowInvitePopup(false); // Close invite popup
   };
 
-  const handleAdminPopupToggle = () => {
-    setShowAdminPopup(!showAdminPopup);
+  const handleUserPopupToggle = () => {
+    setshowUserPopup(!showUserPopup);
     setShowOrganizationPopup(false); // Close organization popup
     setShowResetPopup(false); // Close reset password popup
     setShowInvitePopup(false); // Close invite popup
@@ -44,7 +44,7 @@ const PopUpContainer = () => {
     setShowResetPopup(false);
     setShowInvitePopup(false);
     setShowOrganizationPopup(false);
-    setShowAdminPopup(false);
+    setshowUserPopup(false);
     
   };
 
@@ -58,24 +58,23 @@ const PopUpContainer = () => {
 
   return (
     <div>
-      <button onClick={handleResetPopupToggle} className='reset'> Reset Password</button>
-      <button onClick={handleInvitePopupToggle} className='invite'> Send Invite</button>
-      {/* <button onClick={handleOrganizationPopupToggle} className='organization'>Organization</button>
-      <button onClick={handleAdminPopupToggle} className='admin'>User</button> */}
-      <button  className='organization'>Organization</button>
-      <button  className='admin'>User</button>
+      <div onClick={handleResetPopupToggle} > Reset Password</div>
+      <div onClick={handleInvitePopupToggle} > Send Invite</div>
 
-      {(showResetPopup || showInvitePopup || showOrganizationPopup || showAdminPopup) && (
+      <div  >Organization</div>
+      <div>User</div>
+
+      {(showResetPopup || showInvitePopup || showOrganizationPopup || showUserPopup) && (
         <div className="popup-container">
 
           <div className="backdrop" ><span className="cancel-symbol " onClick={handleClosePopups}>✖</span>
 </div>
           <div className="popup-inner" onClick={(e) => e.stopPropagation()}>
             {showResetPopup && <ResetNewPassword onClose={handleResetSuccess} />}
-            {showInvitePopup && <SendInvite onClose={handleInviteSuccess} />}
+            {showInvitePopup && <SendInvite onClose={handleResetSuccess} />}
             {showOrganizationPopup && <OrganizationPopup handleClose={handleClosePopups} />}
             
-            {showAdminPopup && <UserPop handleClose={handleClosePopups} />}
+            {showUserPopup && <UserPop handleClose={handleClosePopups} />}
           </div>
         </div>
       )}
