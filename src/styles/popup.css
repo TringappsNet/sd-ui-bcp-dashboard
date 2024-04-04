@@ -33,12 +33,12 @@
   }
   
   .popup-inner {
-    position: relative;
+      /* position: relative; */
     padding: 0px;
     border-radius: 5px;
     z-index: 9999;
-    width: 80%; /* Set the width as desired */
-    max-width: 500px; /* Set the maximum width as desired */
+    width: 100%; /* Set the width as desired */
+    max-width: 1000px;
   }
   
   @media (max-width: 768px) {

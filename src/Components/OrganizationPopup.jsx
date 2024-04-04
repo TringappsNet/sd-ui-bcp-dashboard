@@ -125,11 +125,8 @@ const OrgPop = ({ handleClose }) => {
     <>
     <Container fluid className="User-2">
       <Row className="row Render-rr">
-      <div className='row '>
-            <FontAwesomeIcon icon={faTimesCircle} className="close-icon1" onClick={handleClose} />
 
 <h7 className="h7">ORGANISATION</h7>
-            </div>
         <div className="search-container">
           <input
             type="text"
