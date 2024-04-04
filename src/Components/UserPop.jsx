@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react';
+import { Container, Row, Col, Table } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faSave, faTrash, faBan, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { PortURL } from "./Config";
-import '../styles/ExcelGrid.css';
-import ExcelGrid from './ExcelGrid'; // Import the ExcelGrid component
+import '../styles/UserPop.css';
 
-const OrgPop = ({ handleClose }) => {
+const UserPop = ({ handleClose }) => {
   const [excelData, setExcelData] = useState([]);
-  const [selectedRows, setSelectedRows] = useState([]);
+  const [selectedRow, setSelectedRow] = useState(null);
   const [editedRowId, setEditedRowId] = useState(null);
-  const [editedOrgName, setEditedOrgName] = useState('');
-  const [filteredData, setFilteredData] = useState([]);
-
+  const [editedRole, setEditedRole] = useState(null);
+  const [roles, setRoles] = useState([]);
+  const [deactivatedRows, setDeactivatedRows] = useState([]);
+  
   useEffect(() => {
     fetchData();
+    fetchRoles();
   }, []);
 
   const fetchData = async () => {
@@ -20,7 +24,6 @@ const OrgPop = ({ handleClose }) => {
       if (response.ok) {
         const data = await response.json();
         setExcelData(data);
-        setFilteredData(data); // Initialize filtered data with all data
       } else {
         console.error('Failed to fetch Excel data:', response.statusText);
       }
@@ -29,92 +32,195 @@ const OrgPop = ({ handleClose }) => {
     }
   };
 
-  const handleCheckboxChange = (index) => {
-    if (selectedRows.includes(index)) {
-      setSelectedRows(selectedRows.filter(row => row !== index));
-    } else {
-      setSelectedRows([...selectedRows, index]);
+  const fetchRoles = async () => {
+    try {
+      const response = await fetch(`${PortURL}/Get-Role`);
+      if (response.ok) {
+        const data = await response.json();
+        setRoles(data);
+      } else {
+        console.error('Failed to fetch roles:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error fetching roles:', error);
     }
   };
 
-  const handleEdit = (index) => {
-    setEditedRowId(index);
-    setEditedOrgName(filteredData[index].org_name);
+  const handleEdit = async (index) => {
+    try {
+      // Check if the row is deactivated
+      if (!deactivatedRows.includes(index)) {
+        console.log('Editing row:', index);
+        // Fetch roles data
+        const response = await fetch(`${PortURL}/Get-Role`);
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Fetched roles data:', data);
+          setRoles(data);
+        } else {
+          console.error('Failed to fetch roles:', response.statusText);
+        }
+
+        // Set edited row ID
+        setEditedRowId(index);
+
+        // Set edited role
+        const selectedRole = excelData[index].Role.trim() ? excelData[index].Role : null;
+        console.log('Selected Role:', selectedRole);
+        setEditedRole(selectedRole);
+      } else {
+        console.log('Row is deactivated. Cannot edit.');
+      }
+    } catch (error) {
+      console.error('Error editing row:', error);
+    }
+  };
+
+  const handleRoleChange = (event) => {
+    const selectedRole = event.target.value;
+    console.log('Selected Role:', selectedRole);
+    setEditedRole(selectedRole);
   };
 
   const handleSave = async () => {
     try {
       const updatedData = [...excelData];
-      updatedData[editedRowId].org_name = editedOrgName;
-  
+      updatedData[editedRowId].Role = editedRole;
+
+      // Retrieve session ID and organization from localStorage
+      const sessionId = localStorage.getItem('sessionId');
+      const organization = localStorage.getItem('Organization');
+      const email = localStorage.getItem('email');
+
       // Perform API call to save updated data
-      const response = await fetch(`${PortURL}/update-org`, {
-        method: 'PUT',
-        body: JSON.stringify({ org_id: updatedData[editedRowId].org_ID, new_org_name: editedOrgName }),
+      const response = await fetch(`${PortURL}/Updateuser`, {
+        method: 'POST',
+        body: JSON.stringify({ organization, Role: editedRole, email }),
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Session-ID': sessionId,
+          'Email': email  // Assuming you have 'email' stored in localStorage as well
         }
       });
-  
+
       if (response.ok) {
-        console.log('Organization updated successfully');
-        // Update the local state or fetch data again to refresh the list
+        console.log('Role updated successfully');
+        const responseData = await response.json(); // Parse response JSON
+        // Handle responseData as needed
       } else {
-        console.error('Failed to update organization:', response.statusText);
+        console.error('Failed to update role:', response.statusText);
       }
-  
+
       setExcelData(updatedData);
       setEditedRowId(null);
-      setEditedOrgName('');
     } catch (error) {
       console.error('Error saving data:', error);
     }
   };
 
-  const handleDelete = async () => {
+  const handleDeactivate = async (index) => {
     try {
-      // Iterate through selected rows and delete organizations
-      for (const index of selectedRows) {
-        const response = await fetch(`${PortURL}/delete-Org`, {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ org_ID: filteredData[index].org_ID }) // Include the organization ID in the request body
-        });
-        if (response.ok) {
-          console.log('Organization deleted successfully. ID:', filteredData[index].org_ID);
-          // Remove the deleted organization from the local state
-          const updatedData = [...filteredData];
-          updatedData.splice(index, 1);
-          setFilteredData(updatedData);
-        } else {
-          console.error('Failed to delete organization:', response.statusText);
+      // Perform API call to deactivate user
+      const email = localStorage.getItem('email');
+
+      const response = await fetch(`${PortURL}/user-Active`, {
+        method: 'PUT',
+        body: JSON.stringify({   isActive: false, email }), // Include isActive status in the request body
+        headers: {
+          'Content-Type': 'application/json'
         }
+      });
+
+      if (response.ok) {
+        console.log('User deactivated successfully');
+
+        // Update excelData state to mark the user as deactivated
+        const updatedData = [...excelData];
+        // updatedData[index].Status = 'Inactive'; // Assuming 'Status' is the column indicating user status
+        setExcelData(updatedData);
+        setDeactivatedRows([...deactivatedRows, index]);
+
+        // Show success message to the user
+        alert('User deactivated successfully');
+
+
+      } else {
+        console.error('Failed to deactivate user:', response.statusText);
+        // Handle failure response as needed
+        alert('Failed to deactivate user');
       }
     } catch (error) {
-      console.error('Error deleting organization:', error);
+      console.error('Error deactivating user:', error);
+      alert('Error deactivating user');
     }
   };
 
-  const formatDateCell = (data, key) => {
-    // Implement your date formatting logic here
-    return data; // For now, just return the data as is
-  };
-
   return (
-    <ExcelGrid
-      filteredData={filteredData}
-      selectedRowIds={selectedRows}
-      editedRowId={editedRowId}
-      editedRowData={{ org_name: editedOrgName }}
-      handleCheckboxChange={handleCheckboxChange}
-      handleEdit={handleEdit}
-      handleSave={handleSave}
-      handleDelete={handleDelete}
-      formatDateCell={formatDateCell}
-    />
+    <Container fluid className="mt-2">
+     
+      <Row className="row Render-Row1">
+     
+        <Col className="col col1 Render-Col">
+        <div>
+        <h4>USERS</h4>
+      </div>
+          <div className="table-container" style={{  marginTop: '20px', height: '600px', overflowY: 'auto' }}>
+            <Table striped bordered hover className='grid'>
+              <thead className="sticky-header">
+                <tr>
+                  {Object.keys(excelData[0] || {}).map((key) => (
+                    <th key={key}>{key}</th>
+                  ))}
+                  <th className="action-cell">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {excelData.map((row, index) => (
+                  <tr key={index}>
+                    {Object.keys(row).map((key, i) => (
+                      <td key={i}>
+                        {editedRowId === index && key === 'Role' ? (
+                          <select value={editedRole || ''} onChange={handleRoleChange} style={{ color: 'black' }}>
+                            {roles.length > 0 && roles.map(role => (
+                              <option key={role.role_ID} value={role.role}>{role.role}</option>
+                            ))}
+                          </select>
+                        ) : (
+                          row[key]
+                        )}
+                      </td>
+                    ))}
+                    <td className="action-cell">
+                      {editedRowId === index ? (
+                        <div className="action-buttons">
+                          <button className="btn btn-sm Save" onClick={handleSave}>
+                            <FontAwesomeIcon icon={faSave} />
+                          </button>
+                          <button className="btn btn-sm Cancel" onClick={() => setEditedRowId(null)}>
+                            <FontAwesomeIcon icon={faTimesCircle} />
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="action-buttons">
+                          <button className="btn btn-sm Edit" onClick={() => handleEdit(index)}>
+                            <FontAwesomeIcon icon={faEdit} />
+                          </button>
+                          <button className="btn btn-sm Deactivate" onClick={() => handleDeactivate(index)}>
+                            <FontAwesomeIcon icon={faBan} />  
+                          </button>
+                        </div>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </div>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 
-export default OrgPop;
+export default UserPop;
+
