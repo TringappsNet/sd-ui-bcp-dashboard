@@ -16,7 +16,6 @@ function ForgotPassword({onClose}) {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [loading, setLoading] = useState(false); 
   const [snackbarVariant, setSnackbarVariant] = useState('success');
-  const navigate = useNavigate(); 
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -26,9 +25,7 @@ function ForgotPassword({onClose}) {
       if (response.status === 200) {
         setSnackbarMessage(response.data.message);
         setSnackbarVariant('success');
-        setTimeout(() => {
-          navigate('/login');
-        }, 5000);
+
        
 
       } else if (response.status === 404) {

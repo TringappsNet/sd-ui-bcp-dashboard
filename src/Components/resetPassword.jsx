@@ -3,6 +3,8 @@ import { Container, Form, Button } from 'react-bootstrap';
 import { TextField } from '@mui/material';
 import { PortURL } from './Config';
 import LoadingSpinner from './LoadingSpinner';
+import { useNavigate } from 'react-router-dom';
+
 
 function ResetPassword() {
   const [newPassword, setNewPassword] = useState('');
@@ -12,6 +14,7 @@ function ResetPassword() {
   const [loading, setLoading] = useState(false);
   const [emailId, setEmailId] = useState('');
   const [sessionId, setSessionId] = useState('');
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     const email = localStorage.getItem('email');
@@ -55,6 +58,9 @@ function ResetPassword() {
       if (response.ok) {
         setSuccess(true);
         setError(null);
+        setTimeout(() => {
+          navigate('/login');
+        }, 5000);
       } else {
         const data = await response.json();
         setError(data.message);
@@ -73,7 +79,7 @@ function ResetPassword() {
       <Container className=" mt-6 p-4 shadow bg-body ">
         <h6 className="text-center mb-4 mt-1 ">Reset Password</h6>
         <Form onSubmit={handleSubmit}>
-          {error && <div className="text-danger mb-3">{error}</div>}
+          {/* {error && <div className="text-danger mb-3">{error}</div>} */}
           {success && <div className="text-success mb-3">Password reset successfully!</div>}
           <Form.Group controlId="formBasicNewPassword" className="mb-4">
             <TextField
