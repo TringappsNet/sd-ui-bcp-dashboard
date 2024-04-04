@@ -8,7 +8,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { PortURL } from './Config';
 import Header from './Header';
-import CustomSnackbar from './Snackbar'; // Import Snackbar component
+import CustomSnackbar from './Snackbar'; 
 import LoadingSpinner from './LoadingSpinner'; 
 
 function Register() {

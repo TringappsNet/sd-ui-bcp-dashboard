@@ -130,7 +130,7 @@
         if (response.ok) {
           const excelData = await response.json();
           setRetriveData(excelData);
-          console.log(excelData); // Add this line to log the data received
+          console.log(excelData);
         } else {
           console.error("Failed to fetch data:", response.statusText);
         }

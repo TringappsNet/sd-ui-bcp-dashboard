@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Button, Form } from 'react-bootstrap';
-import { TextField, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+import { TextField, Select, MenuItem, FormControl, InputLabel, FormHelperText } from '@mui/material';
 import '../styles/sendInvite.css';
 import { PortURL } from './Config';
 import LoadingSpinner from './LoadingSpinner'; 
+import axios from 'axios';
 
-function SendInvite({ onClose }){
-
+function SendInvite({ onClose }) {
   const initialFormData = {
     email: '',
     role: '',
@@ -16,17 +16,35 @@ function SendInvite({ onClose }){
   const [formData, setFormData] = useState(initialFormData);
   const [loading, setLoading] = useState(false); 
   const [emailError, setEmailError] = useState('');
+  const [roleError, setRoleError] = useState('');
+  const [orgError, setOrgError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [organizations, setOrganizations] = useState([]);
+  const [roles, setRoles] = useState([]);
 
   useEffect(() => {
-    if (successMessage) {
-      const timer = setTimeout(() => {
-        setSuccessMessage('');
-      }, 5000);
+    // Fetch organizations and roles when the component mounts
+    fetchOrganizations();
+    fetchRoles();
+  }, []);
 
-      return () => clearTimeout(timer);
+  const fetchOrganizations = async () => {
+    try {
+      const response = await axios.get(`${PortURL}/Get-Org`);
+      setOrganizations(response.data);
+    } catch (error) {
+      console.error('Error fetching organizations:', error);
     }
-  }, [successMessage]);
+  };
+
+  const fetchRoles = async () => {
+    try {
+      const response = await axios.get(`${PortURL}/Get-Role`);
+      setRoles(response.data);
+    } catch (error) {
+      console.error('Error fetching roles:', error);
+    }
+  };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -36,6 +54,12 @@ function SendInvite({ onClose }){
     });
     if (name === 'email') {
       setEmailError('');
+    }
+    if (name === 'role') {
+      setRoleError('');
+    }
+    if (name === 'organization') {
+      setOrgError('');
     }
   };
 
@@ -50,13 +74,13 @@ function SendInvite({ onClose }){
     }
   
     if (!formData.role.trim()) {
-      setEmailError('Role is required');
+      setRoleError('Role is required');
       setLoading(false);
       return;
     }
   
     if (!formData.organization.trim()) {
-      setEmailError('Organization is required');
+      setOrgError('Organization is required');
       setLoading(false);
       return;
     }
@@ -75,7 +99,7 @@ function SendInvite({ onClose }){
         },
         body: JSON.stringify(formData)
       });
-        if (response.ok) {
+      if (response.ok) {
         const data = await response.json();
         console.log(data);
         setSuccessMessage('Invitation sent successfully');
@@ -83,7 +107,6 @@ function SendInvite({ onClose }){
         setTimeout(() => {
           onClose();
         }, 5000);
-        
       } else {
         const data = await response.json();
       }      
@@ -94,8 +117,6 @@ function SendInvite({ onClose }){
   
     setLoading(false);
   };
-  
-  
   
   return (
     <div className="form d-flex justify-content-center align-items-center">
@@ -121,7 +142,7 @@ function SendInvite({ onClose }){
             />
           </Form.Group>
           <Form.Group controlId="formBasicRole" className="mb-3">
-            <FormControl fullWidth size="small">
+            <FormControl fullWidth size="small" error={!!roleError}>
               <InputLabel id="role-select">Role</InputLabel>
               <Select
                 labelId="role-select"
@@ -129,16 +150,17 @@ function SendInvite({ onClose }){
                 label="Role"
                 value={formData.role}
                 onChange={handleChange}
-                
               >
-                <MenuItem value="admin">Admin</MenuItem>
-                <MenuItem value="manager">Manager</MenuItem>
-                <MenuItem value="employee">Employee</MenuItem>
+                <MenuItem value="">Select Role</MenuItem>
+                {roles.map(role => (
+                  <MenuItem key={role.role_ID} value={role.role}>{role.role}</MenuItem>
+                ))}
               </Select>
+              <FormHelperText>{roleError}</FormHelperText>
             </FormControl>
           </Form.Group>
           <Form.Group controlId="formBasicOrganization" className="mb-3">
-            <FormControl fullWidth size="small">
+            <FormControl fullWidth size="small" error={!!orgError}>
               <InputLabel id="organization-select">Organization</InputLabel>
               <Select
                 labelId="organization-select"
@@ -147,10 +169,12 @@ function SendInvite({ onClose }){
                 value={formData.organization}
                 onChange={handleChange}
               >
-                <MenuItem value="Tringapps">Tringapps</MenuItem>
-                <MenuItem value="Techi-Track">Techi-Track</MenuItem>
-                <MenuItem value="Jean-Martin">Jean-Martin</MenuItem>
+                <MenuItem value="">Select Organization</MenuItem>
+                {organizations.map(org => (
+                  <MenuItem key={org.org_ID} value={org.org_name}>{org.org_name}</MenuItem>
+                ))}
               </Select>
+              <FormHelperText>{orgError}</FormHelperText>
             </FormControl>
           </Form.Group>
           <Button type="submit" className="btn btn-success rounded-pill w-100">Submit</Button>
