@@ -10,11 +10,10 @@ import { PortURL } from './Config';
 import CustomSnackbar from './Snackbar'; 
 import LoadingSpinner from './LoadingSpinner'; 
 
-function ForgotPassword() {
+function ForgotPassword({onClose}) {
   const [email, setEmail] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [snackbarType, setSnackbarType] = useState('error');
   const [loading, setLoading] = useState(false); 
   const [snackbarVariant, setSnackbarVariant] = useState('success');
   const navigate = useNavigate(); 
@@ -27,7 +26,10 @@ function ForgotPassword() {
       if (response.status === 200) {
         setSnackbarMessage(response.data.message);
         setSnackbarVariant('success');
-        navigate('/login');
+        setTimeout(() => {
+          navigate('/login');
+        }, 5000);
+       
 
       } else if (response.status === 404) {
         setSnackbarMessage(response.data.message);
