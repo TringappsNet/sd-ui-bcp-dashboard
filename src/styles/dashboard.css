@@ -387,7 +387,7 @@
       border-radius: 5px;
       background-color: white;
       box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1), 0px 1px 3px rgba(0, 0, 0, 0.08);
-      width: 230px;
+      width: 200px;
       margin-top: 10px;
       margin-right: 10px;
 
@@ -397,7 +397,7 @@
       color: blue;
       margin-top: 10px;
       text-transform: capitalize;
-      min-width: 240px;
+      min-width: 200px;
       /* border: 1px solid black; */
       padding: 14px;
       margin: 5px;
@@ -418,10 +418,10 @@
         
 
     .logout {
-      padding-left: 30px;
+      padding-left: 40px;
       padding-bottom: 10px;
 
-      padding-top: 2px;
+      /* padding-top: 2px; */
 
   }
 
@@ -455,29 +455,6 @@
     color: black;
   }
 
-  .username-container{
-    color: #007bff;
-  }
-  .username-container,
-  .customDropdown {
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-
-  }
-
-  .username {
-    margin-right: 10px;
-    margin-left: 10px;
-  }
-
-  .dropdown {
-    padding-left: 100px;
-    display: flex;
-    flex-direction: row-reverse;
-  }
-
-
  
 
 
@@ -496,9 +473,8 @@
 
   .dropdown-menu[data-bs-popper] {
 top:160%;
-    left: 76px;
-
-}
+    top: 160%;
+    left: -20px;}
 
 
 
