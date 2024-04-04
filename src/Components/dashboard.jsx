@@ -130,7 +130,6 @@
         if (response.ok) {
           const excelData = await response.json();
           setRetriveData(excelData);
-          console.log(excelData);
         } else {
           console.error("Failed to fetch data:", response.statusText);
         }
@@ -192,7 +191,6 @@
     };
 
     const handleEdit = (rowId) => {
-      console.log("Editing row with ID:", rowId);
       // Set the edited row ID
       setEditedRowId(rowId);
       // Set the edited row data
@@ -200,15 +198,11 @@
     };
 
     const handleCancel = () => {
-      console.log("Canceling edit for row:", editedRowId);
       setEditedRowId(null);
     };
 
     const handleInputChange = (e, key) => {
       const { value } = e.target;
-      console.log("Key:", key);
-      console.log("Value:", value);
-      // Update the edited row data with the new value
       setEditedRowData((prevData) => ({
         ...prevData,
         [String(key)]: String(value || ""), // Convert both key and value to strings and provide a fallback value of an empty string if value is null or undefined
@@ -299,17 +293,15 @@ const handleSubmit = async () => {
     // Get session ID and organization from local storage
     const sessionId = localStorage.getItem('sessionId');
     const email = localStorage.getItem('email');
-    // const organization = localStorage.getItem('Organisation');
+    const organization = localStorage.getItem('Organisation');
     const Role_ID = localStorage.getItem('Role_ID');
-    const Org_ID = localStorage.getItem('Org_ID');
 
     // Create userData object with username and organization
     const userData = {
       username: username,
-      orgID:Org_ID ,
+      organization: organization,
       email:email,
       roleID: Role_ID
-
 
     };
 
@@ -349,7 +341,6 @@ const handleSubmit = async () => {
       setData([]);
       fetchData();
       const jsonResponse = await response.json();
-      console.log(jsonResponse);
 
       setUploadSuccess(true); 
       setUploadedFileName("");
@@ -393,7 +384,6 @@ const handleSubmit = async () => {
 
     const handleSave = async () => {
       try {
-        console.log("Edit saved data", editedRowData);
         const sessionId = localStorage.getItem('sessionId');
         const email = localStorage.getItem('email');
         // Format the MonthYear date to "YYYY-MM-DD"
@@ -430,8 +420,6 @@ const handleSubmit = async () => {
         });
 
         if (response.ok) {
-          console.log("Row updated successfully:", editedRowData);
-          // Optionally, you can refresh the data from the server
           fetchData();
           setSnackbarOpen(true);
           setSnackbarMessage("Row updated successfully");
@@ -456,14 +444,9 @@ const handleSubmit = async () => {
 
     const handleDelete = async (rowId) => {
       try {
-        console.log("Row ID:", rowId);
         const sessionId = localStorage.getItem('sessionId');
         const email = localStorage.getItem('email');
-        
-        console.log("Filtered Data:", filteredData);
-    
         const identifierToDelete = String(filteredData[rowId]?.ID);
-        console.log("Identifier to Delete:", identifierToDelete);
     
         const response = await fetch(`${PortURL}/delete`, {
           method: "POST",
