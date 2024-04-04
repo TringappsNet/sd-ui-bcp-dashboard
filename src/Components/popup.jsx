@@ -61,8 +61,8 @@ const PopUpContainer = () => {
       <div onClick={handleResetPopupToggle} > Reset Password</div>
       <div onClick={handleInvitePopupToggle} > Send Invite</div>
 
-      {/* <div  >Organization</div>
-      <div>User</div> */}
+      <div  onClick={handleOrganizationPopupToggle} >Organization</div>
+      <div onClick={handleUserPopupToggle} > User</div>
 
       {(showResetPopup || showInvitePopup || showOrganizationPopup || showUserPopup) && (
         <div className="popup-container">
@@ -72,7 +72,7 @@ const PopUpContainer = () => {
           <div className="popup-inner" onClick={(e) => e.stopPropagation()}>
             {showResetPopup && <ResetNewPassword onClose={handleResetSuccess} />}
             {showInvitePopup && <SendInvite onClose={handleInviteSuccess} />}
-            {showOrganizationPopup && <OrganizationPopup handleClose={handleClosePopups} />}
+            {showOrganizationPopup && <OrganizationPopup  className="Organisation"handleClose={handleClosePopups} />}
             
             {showUserPopup && <UserPop handleClose={handleClosePopups} />}
           </div>
