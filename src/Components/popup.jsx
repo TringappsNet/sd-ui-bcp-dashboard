@@ -61,8 +61,8 @@ const PopUpContainer = () => {
       <div onClick={handleResetPopupToggle} > Reset Password</div>
       <div onClick={handleInvitePopupToggle} > Send Invite</div>
 
-      <div  >Organization</div>
-      <div>User</div>
+      {/* <div  >Organization</div>
+      <div>User</div> */}
 
       {(showResetPopup || showInvitePopup || showOrganizationPopup || showUserPopup) && (
         <div className="popup-container">
