@@ -8,7 +8,10 @@ import {
   faTimes,
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
-import '../styles/dashboard.css';
+// import '../styles/dashboard.css';
+import '../styles/ExcelGrid.css';
+
+
 
 const ExcelGrid = ({
   filteredData,
