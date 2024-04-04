@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Table } from 'react-bootstrap';
 import { Container, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,7 +8,8 @@ import {
   faTimes,
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
-// import '../styles/dashboard.css';
+import '../styles/dashboard.css';
+
 import '../styles/ExcelGrid.css';
 
 
@@ -18,7 +19,6 @@ const ExcelGrid = ({
   selectedRowIds,
   editedRowId,
   editedRowData,
-  handleCheckboxChange,
   handleEdit,
   handleCancel,
   handleInputChange,
@@ -26,6 +26,32 @@ const ExcelGrid = ({
   handleDelete,
   formatDateCell,
 }) => {
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
+
+  const requestSort = (key) => {
+    let direction = 'ascending';
+    if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+      direction = 'descending';
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const sortedData = () => {
+    if (sortConfig.key !== null) {
+      const sorted = [...filteredData].sort((a, b) => {
+        if (a[sortConfig.key] < b[sortConfig.key]) {
+          return sortConfig.direction === 'ascending' ? -1 : 1;
+        }
+        if (a[sortConfig.key] > b[sortConfig.key]) {
+          return sortConfig.direction === 'ascending' ? 1 : -1;
+        }
+        return 0;
+      });
+      return sorted;
+    }
+    return filteredData;
+  };
+
   return (
     <Container fluid className="mt-2">
       <Row className="row Render-Row">
@@ -34,29 +60,20 @@ const ExcelGrid = ({
             <Table striped bordered hover>
               <thead className="sticky-header">
                 <tr>
-                  <th className="selection-cell">
-                    <input
-                      type="checkbox"
-                      checked={selectedRowIds.length === filteredData.length}
-                      onChange={() => handleCheckboxChange(null)}
-                    />
-                  </th>
                   {Object.keys(filteredData[0] || {}).map((key) => (
-                    <th key={key}>{key}</th>
+                    <th key={key} onClick={() => requestSort(key)}>
+                      {key}
+                      {sortConfig.key === key && (
+                        <span>{sortConfig.direction === 'ascending' ? ' ▲' : ' ▼'}</span>
+                      )}
+                    </th>
                   ))}
                   <th className="action-cell">Action</th>
                 </tr>
               </thead>
               <tbody>
-                {filteredData.map((row, index) => (
+                {sortedData().map((row, index) => (
                   <tr key={index}>
-                    <td className="selection-cell">
-                      <input
-                        type="checkbox"
-                        checked={selectedRowIds.includes(index)}
-                        onChange={() => handleCheckboxChange(index)}
-                      />
-                    </td>
                     {Object.keys(row).map((key) => (
                       <td key={key}>
                         {editedRowId === index ? (
