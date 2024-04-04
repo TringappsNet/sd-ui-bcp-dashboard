@@ -71,7 +71,7 @@ const PopUpContainer = () => {
 </div>
           <div className="popup-inner" onClick={(e) => e.stopPropagation()}>
             {showResetPopup && <ResetNewPassword onClose={handleResetSuccess} />}
-            {showInvitePopup && <SendInvite onClose={handleResetSuccess} />}
+            {showInvitePopup && <SendInvite onClose={handleInviteSuccess} />}
             {showOrganizationPopup && <OrganizationPopup handleClose={handleClosePopups} />}
             
             {showUserPopup && <UserPop handleClose={handleClosePopups} />}
