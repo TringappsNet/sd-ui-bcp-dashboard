@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import { Container, Row, Col, Table } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faSave, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { PortURL } from "./Config";
-import '../styles/ExcelGrid.css';
-import ExcelGrid from './ExcelGrid'; // Import the ExcelGrid component
+import '../styles/ExcelGrid.css'; // Assuming you have a CSS file for styling
+import '../styles/OrgPopup.css'; // Assuming you have a CSS file for styling
 
 const OrgPop = ({ handleClose }) => {
   const [excelData, setExcelData] = useState([]);
-  const [selectedRows, setSelectedRows] = useState([]);
-  const [editedRowId, setEditedRowId] = useState(null);
+  const [editedRowIndex, setEditedRowIndex] = useState(null);
   const [editedOrgName, setEditedOrgName] = useState('');
-  const [filteredData, setFilteredData] = useState([]);
+  const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
     fetchData();
@@ -20,7 +22,6 @@ const OrgPop = ({ handleClose }) => {
       if (response.ok) {
         const data = await response.json();
         setExcelData(data);
-        setFilteredData(data); // Initialize filtered data with all data
       } else {
         console.error('Failed to fetch Excel data:', response.statusText);
       }
@@ -29,91 +30,103 @@ const OrgPop = ({ handleClose }) => {
     }
   };
 
-  const handleCheckboxChange = (index) => {
-    if (selectedRows.includes(index)) {
-      setSelectedRows(selectedRows.filter(row => row !== index));
-    } else {
-      setSelectedRows([...selectedRows, index]);
-    }
+  const handleEdit = (index) => {
+    setEditedRowIndex(index);
+    setEditedOrgName(excelData[index].org_name);
   };
 
-  const handleEdit = (index) => {
-    setEditedRowId(index);
-    setEditedOrgName(filteredData[index].org_name);
+  const handleInputChange = (event) => {
+    setEditedOrgName(event.target.value);
   };
 
   const handleSave = async () => {
     try {
       const updatedData = [...excelData];
-      updatedData[editedRowId].org_name = editedOrgName;
-  
-      // Perform API call to save updated data
+      updatedData[editedRowIndex].org_name = editedOrgName;
+
       const response = await fetch(`${PortURL}/update-org`, {
         method: 'PUT',
-        body: JSON.stringify({ org_id: updatedData[editedRowId].org_ID, new_org_name: editedOrgName }),
+        body: JSON.stringify({ org_id: updatedData[editedRowIndex].org_ID, new_org_name: editedOrgName }),
         headers: {
           'Content-Type': 'application/json'
         }
       });
-  
+
       if (response.ok) {
         console.log('Organization updated successfully');
-        // Update the local state or fetch data again to refresh the list
+        setSuccessMessage('Organization updated successfully');
       } else {
         console.error('Failed to update organization:', response.statusText);
       }
-  
+
       setExcelData(updatedData);
-      setEditedRowId(null);
+      setEditedRowIndex(null);
       setEditedOrgName('');
     } catch (error) {
       console.error('Error saving data:', error);
     }
   };
 
-  const handleDelete = async () => {
-    try {
-      // Iterate through selected rows and delete organizations
-      for (const index of selectedRows) {
-        const response = await fetch(`${PortURL}/delete-Org`, {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ org_ID: filteredData[index].org_ID }) // Include the organization ID in the request body
-        });
-        if (response.ok) {
-          console.log('Organization deleted successfully. ID:', filteredData[index].org_ID);
-          // Remove the deleted organization from the local state
-          const updatedData = [...filteredData];
-          updatedData.splice(index, 1);
-          setFilteredData(updatedData);
-        } else {
-          console.error('Failed to delete organization:', response.statusText);
-        }
-      }
-    } catch (error) {
-      console.error('Error deleting organization:', error);
-    }
-  };
-
-  const formatDateCell = (data, key) => {
-    // Implement your date formatting logic here
-    return data; // For now, just return the data as is
-  };
-
   return (
-    <ExcelGrid
-      filteredData={filteredData}
-      selectedRowIds={selectedRows}
-      editedRowId={editedRowId}
-      editedRowData={{ org_name: editedOrgName }}
-      handleCheckboxChange={handleCheckboxChange}
-      handleEdit={handleEdit}
-      handleSave={handleSave}
-      handleDelete={handleDelete}
-      formatDateCell={formatDateCell}
-    />
+    <Container fluid className="mt-2">
+      <Row className="row Render-Row1">
+        <Col className="col col1 Render-Col">
+          <div>
+            <h4>ORGANIZATIONS</h4>
+          </div>
+          {successMessage && <div className="success-message">{successMessage}</div>}
+          <div className="table-container">
+            <Table striped bordered hover className='grid'>
+              <thead className="sticky-header">
+                <tr>
+                  {Object.keys(excelData[0] || {}).map((key) => (
+                    <th key={key}>{key}</th>
+                  ))}
+                  <th className="action-cell">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {excelData.map((row, index) => (
+                  <tr key={index}>
+                    {Object.keys(row).map((key, i) => (
+                      <td key={i}>
+                        {editedRowIndex === index && key === 'org_name' ? (
+                          <input
+                            type="text"
+                            value={editedOrgName}
+                            onChange={handleInputChange}
+                          />
+                        ) : (
+                          row[key]
+                        )}
+                      </td>
+                    ))}
+                    <td className="action-cell">
+                      {editedRowIndex === index ? (
+                        <div className="action-buttons">
+                          <button className="btn btn-sm Save" onClick={handleSave}>
+                            <FontAwesomeIcon icon={faSave} />
+                          </button>
+                          <button className="btn btn-sm Cancel" onClick={() => setEditedRowIndex(null)}>
+                            <FontAwesomeIcon icon={faTimesCircle} />
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="action-buttons">
+                          <button className="btn btn-sm Edit" onClick={() => handleEdit(index)}>
+                            <FontAwesomeIcon icon={faEdit} />
+                          </button>
+                        </div>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </div>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

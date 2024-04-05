@@ -1,71 +1,16 @@
-  .search-container {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
-    }
-  .h7{
-    font: bold;
-    
+.table-container {
+  height: 600px; /* Set the initial height */
+  overflow-y: auto;
+}
 
-  }
+.table-container::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+}
 
-  
-   .Render-cc1{
- padding-top: 50px;
- padding-left: 50px;
-   }
+.table-container::-webkit-scrollbar-thumb {
+  background-color: #888; /* Color of the scrollbar thumb */
+}
 
-    
-
-    
-
-         
-          
-          .input {
-            text-decoration: none; /* Remove underline */
-          }
-        
-          
-          .sticky-header th {
-            position: sticky;
-            top: 0;
-            background-color: white; /* Set the background color of sticky headers */
-            z-index: 2; /* Ensure it appears above other elements */
-          }
-          
-          .sticky-checkbox {
-            position: sticky;
-            left: 0;
-            z-index: 3; /* Ensure it appears above other sticky elements */
-            background-color: white; /* Set background color as needed */
-          }
-          
-          .action-column {
-            position: sticky;
-            right: 0;
-            z-index: 2; /* Ensure it appears above the table */
-            background-color: white; /* Set background color as needed */
-            max-width: 40px;
-          }
-          
-          
-          .action-buttons {
-            width: 40px; /* Adjust the width as needed */
-          }
-          
-          .save-button,
-          .edit-button {
-            width: 40px; /* Adjust the width for Save and Edit buttons */
-          }
-          
-          .table {
-            min-width: 900px;
-            width: max-content;
-            border-collapse: collapse;
-        }
-          
-        .close-icon1{
-          padding-left: 500px;
-          margin-top: 2px;
-        }
+.table-container::-webkit-scrollbar-track {
+  background-color: #f1f1f1; /* Color of the scrollbar track */
+}
