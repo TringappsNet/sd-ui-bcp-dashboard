@@ -2,17 +2,9 @@ import React, { useState } from 'react';
 import { Table } from 'react-bootstrap';
 import { Container, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faEdit,
-  faSave,
-  faTimes,
-  faTrash,
-} from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faSave, faTimes, faTrash } from '@fortawesome/free-solid-svg-icons';
 import '../styles/dashboard.css';
-
 import '../styles/ExcelGrid.css';
-
-
 
 const ExcelGrid = ({
   filteredData,
@@ -25,6 +17,7 @@ const ExcelGrid = ({
   handleSave,
   handleDelete,
   formatDateCell,
+  roleID // Pass Role_ID as a prop
 }) => {
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
 
@@ -88,38 +81,45 @@ const ExcelGrid = ({
                       </td>
                     ))}
                     <td className="action-cell">
-                      {editedRowId === index ? (
-                        <div className="action-buttons">
-                          <button
-                            className="btn btn-sm Save"
-                            onClick={() => handleSave()}
-                          >
-                            <FontAwesomeIcon icon={faSave} />
-                          </button>
-                          <button
-                            className="btn btn-sm Cancel"
-                            onClick={() => handleCancel()}
-                          >
-                            <FontAwesomeIcon icon={faTimes} />
-                          </button>
-                        </div>
-                      ) : (
-                        <div className="action-buttons">
-                          <button
-                            className="btn btn-sm Edit"
-                            onClick={() => handleEdit(index)}
-                          >
-                            <FontAwesomeIcon icon={faEdit} />
-                          </button>
-                          <button
-                            className="btn btn-sm Delete"
-                            onClick={() => handleDelete(index)}
-                          >
-                            <FontAwesomeIcon icon={faTrash} />
-                          </button>
-                        </div>
-                      )}
-                    </td>
+                    {roleID == 1 ? (
+                      <>
+                        {editedRowId === index ? (
+                          <div className="action-buttons">
+                            <button
+                              className="btn btn-sm Save"
+                              onClick={() => handleSave()}
+                            >
+                              <FontAwesomeIcon icon={faSave} />
+                            </button>
+                            <button
+                              className="btn btn-sm Cancel"
+                              onClick={() => handleCancel()}
+                            >
+                              <FontAwesomeIcon icon={faTimes} />
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="action-buttons">
+                            <button
+                              className="btn btn-sm Edit"
+                              onClick={() => handleEdit(index)}
+                            >
+                              <FontAwesomeIcon icon={faEdit} />
+                            </button>
+                            <button
+                              className="btn btn-sm Delete"
+                              onClick={() => handleDelete(index)}
+                            >
+                              <FontAwesomeIcon icon={faTrash} />
+                            </button>
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                    <div className="action-buttons">
+                    </div>
+                    )}
+                  </td>
                   </tr>
                 ))}
               </tbody>

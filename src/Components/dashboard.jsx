@@ -52,6 +52,7 @@
     const [remainingTime, setRemainingTime] = useState(500); // 60 seconds for one minute
     const [logoutModalOpen, setLogoutModalOpen] = useState(false);
     const [snackbarVariant, setSnackbarVariant] = useState('success');
+    const [roleID, setRoleID] = useState('');
 
     const navigate = useNavigate();
    
@@ -64,8 +65,10 @@
         const storedUsername = localStorage.getItem("UserName");
         const storedOrganization = localStorage.getItem("Organization");
         const storedEmail = localStorage.getItem("email");
+        const storedRoleID = localStorage.getItem('Role_ID');
         setUsername(storedUsername);
         setOrganization(storedOrganization);
+        setRoleID(storedRoleID);
         setEmail(storedEmail);
 
         fetchData();
@@ -587,6 +590,7 @@ const handleSubmit = async () => {
       handleSave={handleSave}
       handleDelete={handleDelete}
       formatDateCell={formatDateCell}
+      roleID={roleID}
     />
   )}
 </div>
