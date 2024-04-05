@@ -116,8 +116,40 @@ const ExcelGrid = ({
                         )}
                       </>
                     ) : (
-                    <div className="action-buttons">
-                    </div>
+                      <>
+                      {editedRowId === index ? (
+                        <div className="action-buttons">
+                          <button
+                            className="btn btn-sm Save"
+                            onClick={() => handleSave()}
+                          >
+                            <FontAwesomeIcon icon={faSave} />
+                          </button>
+                          <button
+                            className="btn btn-sm Cancel"
+                            onClick={() => handleCancel()}
+                          >
+                            <FontAwesomeIcon icon={faTimes} />
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="action-buttons">
+                          <button
+                            className="btn btn-sm Edit disabled" // Add disabled class
+                            onClick={() => handleEdit(index)}
+                          >
+                            <FontAwesomeIcon icon={faEdit} className="blur-icon" /> {/* Apply blur to the icon */}
+                          </button>
+                          <button
+                            className="btn btn-sm Delete disabled" // Add disabled class
+                            onClick={() => handleDelete(index)}
+                          >
+                            <FontAwesomeIcon icon={faTrash} className="blur-icon" /> {/* Apply blur to the icon */}
+                          </button>
+                        </div>
+                      )}
+
+                    </>
                     )}
                   </td>
                   </tr>
