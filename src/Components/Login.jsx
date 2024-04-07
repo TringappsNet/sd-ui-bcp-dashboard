@@ -63,7 +63,7 @@ function Login() {
       return;
     }
   
-    const requestBody = { email, password };
+    const requestBody = { email, password};
   
     try {
       const response = await fetch(`${PortURL}/login`, {

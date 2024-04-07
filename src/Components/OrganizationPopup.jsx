@@ -15,20 +15,35 @@ const OrgPop = ({ handleClose }) => {
   useEffect(() => {
     fetchData();
   }, []);
-
-  const fetchData = async () => {
-    try {
-      const response = await fetch(`${PortURL}/Get-Org`);
-      if (response.ok) {
-        const data = await response.json();
-        setExcelData(data);
-      } else {
-        console.error('Failed to fetch Excel data:', response.statusText);
+  const fetchData = () => {
+    // Sample JSON data with 2 rows and 2 columns
+    const sampleData = [
+      {
+        "org_ID": 1,
+        "org_name": "Organization 1"
+      },
+      {
+        "org_ID": 2,
+        "org_name": "Organization 2"
       }
-    } catch (error) {
-      console.error('Error fetching Excel data:', error);
-    }
+    ];
+  
+    setExcelData(sampleData);
   };
+  
+  // const fetchData = async () => {
+  //   try {
+  //     const response = await fetch(`${PortURL}/Get-Org`);
+  //     if (response.ok) {
+  //       const data = await response.json();
+  //       setExcelData(data);
+  //     } else {
+  //       console.error('Failed to fetch Excel data:', response.statusText);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching Excel data:', error);
+  //   }
+  // };
 
   const handleEdit = (index) => {
     setEditedRowIndex(index);
@@ -68,21 +83,21 @@ const OrgPop = ({ handleClose }) => {
   };
 
   return (
-    <Container fluid className="mt-2">
+    <Container fluid className=" mt-10">
       <Row className="row Render-Row1">
         <Col className="col col1 Render-Col">
           <div>
             <h4>ORGANIZATIONS</h4>
           </div>
           {successMessage && <div className="success-message">{successMessage}</div>}
-          <div className="table-container">
+          <div className=" Org-pop-container table-container">
             <Table striped bordered hover className='grid'>
               <thead className="sticky-header">
                 <tr>
                   {Object.keys(excelData[0] || {}).map((key) => (
                     <th key={key}>{key}</th>
                   ))}
-                  <th className="action-cell">Action</th>
+                  <th className=' action-button' >Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -93,6 +108,7 @@ const OrgPop = ({ handleClose }) => {
                         {editedRowIndex === index && key === 'org_name' ? (
                           <input
                             type="text"
+                            className='OrgIn'
                             value={editedOrgName}
                             onChange={handleInputChange}
                           />
@@ -101,24 +117,26 @@ const OrgPop = ({ handleClose }) => {
                         )}
                       </td>
                     ))}
-                    <td className="action-cell">
-                      {editedRowIndex === index ? (
-                        <div className="action-buttons">
-                          <button className="btn btn-sm Save" onClick={handleSave}>
-                            <FontAwesomeIcon icon={faSave} />
-                          </button>
-                          <button className="btn btn-sm Cancel" onClick={() => setEditedRowIndex(null)}>
-                            <FontAwesomeIcon icon={faTimesCircle} />
-                          </button>
-                        </div>
-                      ) : (
-                        <div className="action-buttons">
-                          <button className="btn btn-sm Edit" onClick={() => handleEdit(index)}>
-                            <FontAwesomeIcon icon={faEdit} />
-                          </button>
-                        </div>
-                      )}
-                    </td>
+                   <td>
+                {editedRowIndex === index ? (
+                  <div className='editSave action-buttons'>
+                    <div onClick={handleSave}>
+                      <FontAwesomeIcon icon={faSave} />
+                    </div>
+                    <div onClick={() => setEditedRowIndex(null)}>
+                      <FontAwesomeIcon icon={faTimesCircle} />
+                    </div>
+                  </div>
+                ) : (
+                  <div>
+                    <button className="btn btn-sm Edit" onClick={() => handleEdit(index)}>
+                      <FontAwesomeIcon icon={faEdit} />
+                    </button>
+                  </div>
+                )}
+              </td>
+
+
                   </tr>
                 ))}
               </tbody>
