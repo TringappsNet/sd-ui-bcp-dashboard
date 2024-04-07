@@ -20,19 +20,57 @@ const UserPop = ({ handleClose }) => {
     fetchRoles();
   }, []);
 
-  const fetchData = async () => {
-    try {
-      const response = await fetch(`${PortURL}/users`);
-      if (response.ok) {
-        const data = await response.json();
-        setExcelData(data);
-      } else {
-        console.error('Failed to fetch Excel data:', response.statusText);
+
+  const fetchData = () => {
+    // Sample JSON data for users
+    const sampleData = [
+      {
+        "UserID": 1,
+        "Name": "John Doe",
+        "Email": "john.doe@example.com",
+        "Role": "Admin",
+        "isActive": 1
+      },
+      {
+        "UserID": 2,
+        "Name": "Jane Smith",
+        "Email": "jane.smith@example.com",
+        "Role": "User",
+        "isActive": 1
+      },
+      {
+        "UserID": 2,
+        "Name": "Jane Smith",
+        "Email": "jane.smith@example.com",
+        "Role": "User",
+        "isActive": 0 
+      },
+      {
+        "UserID": 2,
+        "Name": "Jane Smith",
+        "Email": "jane.smith@example.com",
+        "Role": "User",
+        "isActive": 1
       }
-    } catch (error) {
-      console.error('Error fetching Excel data:', error);
-    }
+    ];
+  
+    setExcelData(sampleData);
   };
+
+  
+  // const fetchData = async () => {
+  //   try {
+  //     const response = await fetch(`${PortURL}/users`);
+  //     if (response.ok) {
+  //       const data = await response.json();
+  //       setExcelData(data);
+  //     } else {
+  //       console.error('Failed to fetch Excel data:', response.statusText);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching Excel data:', error);
+  //   }
+  // };
 
   const fetchRoles = async () => {
     try {
@@ -121,7 +159,7 @@ const UserPop = ({ handleClose }) => {
       if (isActive) {
         const response = await fetch(`${PortURL}/user-Active`, {
           method: 'PUT',
-          body: JSON.stringify({ isActive: false, email }), // Deactivate the user by setting isActive to false
+          body: JSON.stringify({ isActive: 0, email }), // Deactivate the user by setting isActive to false
           headers: {
             'Content-Type': 'application/json'
           }
@@ -129,9 +167,9 @@ const UserPop = ({ handleClose }) => {
 
         if (response.ok) {
           console.log('User deactivated successfully');
-          setDeactivateSuccess(true);
+          setDeactivateSuccess(1);
           const updatedData = [...excelData];
-          updatedData[index].isActive = false; // Update isActive status in the local data
+          updatedData[index].isActive = 0; // Update isActive status in the local data
           setExcelData(updatedData);
           setDeactivatedRows([...deactivatedRows, index]);
         } else {
@@ -156,8 +194,10 @@ const UserPop = ({ handleClose }) => {
     return values.includes(searchQuery.toLowerCase());
   });
 
+  
+
   return (
-    <Container fluid className="mt-2">
+    <Container fluid className="mt-10">
       
       <Row className="row Render-Row1">
         <Col className="col col1 Render-Col">
@@ -172,8 +212,8 @@ const UserPop = ({ handleClose }) => {
             <input type="text" placeholder="Search..." className='Usersearch' value={searchQuery} onChange={handleSearch} />
           </div>
         
-          <div className="table-container" style={{ marginTop: '20px', height: '600px', overflowY: 'auto' }}>
-            <Table striped bordered hover className='grid'>
+          <div className="table-container" style={{  height: '500px', overflowY: 'auto' }}>
+            <Table  bordered hover striped className='grid'>
               <thead className="sticky-header">
                 <tr>
                   {Object.keys(excelData[0] || {}).map((key) => (
@@ -188,7 +228,7 @@ const UserPop = ({ handleClose }) => {
                     {Object.keys(row).map((key, i) => (
                       <td key={i}>
                         {editedRowId === index && key === 'Role' ? (
-                          <select value={editedRole || ''} onChange={handleRoleChange} style={{ color: 'black' }}>
+                          <select  className="Role" value={editedRole || ''} onChange={handleRoleChange} style={{ color: 'black' }}>
                             {roles.length > 0 && roles.map(role => (
                               <option key={role.role_ID} value={role.role}>{role.role}</option>
                             ))}

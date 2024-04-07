@@ -1,28 +1,35 @@
-
-/* 
-table {
-    min-width: 600px;
-    width: -webkit-fill-available;
-    border-collapse: collapse;
-} */
-
+.mt-10{
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh; 
+  }
 .table {
-    min-width: 600px;
-    width: -webkit-fill-available;
-    border-collapse: collapse;
-    height: 100px;
+    width:100vh;
+   
+}
+ .table th{
+    width: 120px;
+ }
+
+.table-container{
+    height: 500px;
+
 }
 
-.Render-Row1 {
-    margin: 10px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1), 0px 1px 3px rgba(0, 0, 0, 0.08);
-    /* height: 800px; */
-}
+  
+.deactivated-row:hover {
+    background: inherit;
+    background-color:inherit;
+    cursor: not-allowed !important;
+    }
+  
 
 
     tr.deactivated-row td {
         opacity: 0.5;
         background: #9d9999;
+        
     }
   
     .User{
@@ -30,12 +37,72 @@ table {
         justify-content: space-between;
         
     }
-    .Usersearch{
-        
-    }
+    
 
 
     .success-message{
         color: green;
         text-align: center;
     }
+
+
+.table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+
+  
+  .Render-Row1 {
+    max-width: 100%;
+  }
+ 
+ 
+  @media (max-width: 768px) {
+    .table {
+      width: 100%;
+      overflow-x: auto; 
+    }
+  }
+  
+  tr.deactivated-row td {
+    opacity: 0.5;
+    background: #9d9999;
+  }
+  
+
+  .success-message {
+    color: green;
+    text-align: center;
+  }
+  
+  .sticky-header th {
+    position: sticky;
+    top: -1px;
+    background-color: #ffffff;
+    z-index: 1;
+}
+
+.table-container {
+    box-shadow:none;
+    border-radius: 8px;
+    margin-top: 20px;
+    padding: 0;
+
+}
+td, th {
+    padding: 8px;
+  }
+  
+  .Role{
+    width: 100px;
+  }
+
+
+
+  .action-buttons {
+    position: sticky;
+    top: 0;
+    background-color:unset; /* Ensure visibility over the table */
+    z-index: 2; 
+  }
