@@ -26,7 +26,7 @@
   import ConfirmationModal from "./ConfirmationModal";
   import NavbarComponent from "./Navbar";
   import ExcelGrid from './ExcelGrid';
-
+  import columnMap from "../Objects/Objects";
 
   function Dashboard() {
     const [username, setUsername] = useState("");
@@ -52,6 +52,7 @@
     const [remainingTime, setRemainingTime] = useState(500); // 60 seconds for one minute
     const [logoutModalOpen, setLogoutModalOpen] = useState(false);
     const [snackbarVariant, setSnackbarVariant] = useState('success');
+    const [roleID, setRoleID] = useState('');
 
     const navigate = useNavigate();
    
@@ -64,8 +65,10 @@
         const storedUsername = localStorage.getItem("UserName");
         const storedOrganization = localStorage.getItem("Organization");
         const storedEmail = localStorage.getItem("email");
+        const storedRoleID = localStorage.getItem('Role_ID');
         setUsername(storedUsername);
         setOrganization(storedOrganization);
+        setRoleID(storedRoleID);
         setEmail(storedEmail);
 
         fetchData();
@@ -159,9 +162,10 @@
               row.some((cell) => cell !== null && cell !== "")
             );
             const header = trimmedData.shift();
+            const mappedHeader = header.map((col) => columnMap[col] || col);
             const newJsonData = trimmedData.map((row) => {
               const obj = {};
-              header.forEach((key, index) => {
+              mappedHeader.forEach((key, index) => {
                 obj[key] = row[index];
               });
               return obj;
@@ -293,7 +297,7 @@ const handleSubmit = async () => {
     // Get session ID and organization from local storage
     const sessionId = localStorage.getItem('sessionId');
     const email = localStorage.getItem('email');
-    const organization = localStorage.getItem('Organisation');
+    // const organization = localStorage.getItem('Organisation');
     const Role_ID = localStorage.getItem('Role_ID');
     const Org_ID = localStorage.getItem('Org_ID');
     const user_ID = localStorage.getItem('user_ID');
@@ -306,12 +310,22 @@ const handleSubmit = async () => {
       orgID: Org_ID,
       userId: user_ID,
 
+    const userId = localStorage.getItem('userId');
+
+
+    // Create userData object with username and organization
+    const userData = {
+      username: username,
+      orgID: Org_ID ,
+      email: email,
+      roleID: Role_ID,
+      userId: userId
     };
 
     // Map through the data array to format dates if needed
     const updatedData = data.map((row) => {
-      if (row["Month/Year"]) {
-        const dateString = row["Month/Year"].toString();
+      if (row["MonthYear"]) {
+        const dateString = row["MonthYear"].toString();
         const date = new Date(dateString);
         const year = date.getFullYear();
         const month = (date.getMonth() + 1).toString().padStart(2, "0");
@@ -320,7 +334,7 @@ const handleSubmit = async () => {
         const minutes = date.getMinutes().toString().padStart(2, "0");
         const seconds = "00";
         const formattedDate = `${year}-${month}-${day}' '${hours}:${minutes}:${seconds}`;
-        row["Month/Year"] = formattedDate;
+        row["MonthYear"] = formattedDate;
       }
       return row;
     });
@@ -329,7 +343,7 @@ const handleSubmit = async () => {
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
     // Send POST request to the server
-    const response = await fetch(`${PortURL}/bulk-upload`, {
+    const response = await fetch(`${PortURL}/bulk-upload-update`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -392,6 +406,10 @@ const handleSubmit = async () => {
         
         const Org_ID = localStorage.getItem('Org_ID');
     const userId = localStorage.getItem('user_ID');
+        const userId = localStorage.getItem('userId');
+        const Org_ID = localStorage.getItem('Org_ID');
+
+
         // Format the MonthYear date to "YYYY-MM-DD"
         const monthYearDate = new Date(editedRowData.MonthYear);
         const formattedMonthYear = `${monthYearDate.getFullYear()}-${(
@@ -451,6 +469,8 @@ const handleSubmit = async () => {
       try {
         const sessionId = localStorage.getItem('sessionId');
         const email = localStorage.getItem('email');
+        const userId = localStorage.getItem('userId');
+        const Org_ID = localStorage.getItem('Org_ID');
         const identifierToDelete = String(filteredData[rowId]?.ID);
         const Org_Id = localStorage.getItem('Org_ID');
         const userId = localStorage.getItem('user_ID');
@@ -463,7 +483,12 @@ const handleSubmit = async () => {
             "Email": email, 
           },
           body: JSON.stringify({ ids: [identifierToDelete],Org_Id,userId }),
-        });
+          body: JSON.stringify({
+            ids: [identifierToDelete],
+            Org_Id: Org_ID,
+            userId: userId
+          }),
+
 
         
         if (response.ok) {
@@ -594,6 +619,7 @@ const handleSubmit = async () => {
       handleSave={handleSave}
       handleDelete={handleDelete}
       formatDateCell={formatDateCell}
+      roleID={roleID}
     />
   )}
 </div>

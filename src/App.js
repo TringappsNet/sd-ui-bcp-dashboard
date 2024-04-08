@@ -10,6 +10,8 @@ import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import UserPop from './Components/UserPop';
 import OrgPop from './Components/OrganizationPopup';
+import DataGrid from './Components/Audit';
+
 function App() {
   useEffect(() => {
     document.title = 'BCP'; 
@@ -31,8 +33,8 @@ function App() {
       <Route path="/send-invite" element={<SendInvite />} />
       <Route path="/UserPop" element={<UserPop />} />
       <Route path="/OrgPop" element={<OrgPop />} />
+      <Route path="/Audit" element={<DataGrid />} />
 
-      
     </Routes>
   </Router>
   );

@@ -220,7 +220,16 @@
 
 
 
-
+  .disabled {
+    pointer-events: none; /* Disable pointer events */
+    opacity: 1; /* Reduce opacity to visually indicate disabled state */
+  }
+  
+  .blur-icon {
+    filter: blur(0.5px); /* Apply a blur filter to the icon */
+    color: #aeaeae;
+  }
+  
 
 
 
