@@ -33,7 +33,7 @@
 
     tr.deactivated-row td {
         opacity: 0.5;
-        background: #9d9999;
+        background: #ebe6e6;
         
     }
   
@@ -78,11 +78,7 @@
     }
   }
   
-  tr.deactivated-row td {
-    opacity: 0.5;
-    background: #9d9999;
-  }
-  
+ 
 
   .success-message {
     color: green;
@@ -105,6 +101,7 @@
 }
 td, th {
     padding: 8px;
+    text-align: center;
   }
   
   .Role{
