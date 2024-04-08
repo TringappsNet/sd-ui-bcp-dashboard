@@ -729,7 +729,7 @@ const handleFinancialSelect = (financial) => {
       <div className="spacer"></div>
 
       <div className="filename mr-3 col-lg-2 mb-3 ">
-      {uploadedFileName ? (
+      {roleID !== '3' && uploadedFileName ? (
         <div className="d-flex align-items-center">
           <p className="mb-0">{`File: ${uploadedFileName}`}</p>
           <FontAwesomeIcon
@@ -739,11 +739,12 @@ const handleFinancialSelect = (financial) => {
           />
         </div>
       ) : (
-        <p className="mb-0">No file uploaded</p>
+        roleID !== '3' && <p className="mb-0">No file uploaded</p>
       )}
     </div>
     <div className="spacer"></div>
     <div className="custom-file-upload d-flex align-items-center">
+      
       <div {...getRootProps()} className="Upload-Form">
         <input {...getInputProps()} accept=".xlsx, .xls" />
         {isDragActive ? (
@@ -767,9 +768,11 @@ const handleFinancialSelect = (financial) => {
           </Dropdown.Menu>
         </Dropdown>
 
-        <Button className="btn btn-secondary submit ml-2" onClick={handleSubmit}>
+        {roleID !== '3' && (
+        <Button className="btn  btn-secondary submit" onClick={handleSubmit}>
           Submit
         </Button>
+        )}
       </div>
     </Form>
 
