@@ -6,7 +6,6 @@ import { faEdit, faSave, faTimes, faTrash } from '@fortawesome/free-solid-svg-ic
 import '../styles/dashboard.css';
 import '../styles/ExcelGrid.css';
 
-
 const ExcelGrid = ({
   filteredData,
   selectedRowIds,
