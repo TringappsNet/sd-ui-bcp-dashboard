@@ -15,6 +15,7 @@ function SendInvite({ onClose }) {
 
   const [formData, setFormData] = useState(initialFormData);
   const [loading, setLoading] = useState(false); 
+  const [error, setError] = useState('');
   const [emailError, setEmailError] = useState('');
   const [roleError, setRoleError] = useState('');
   const [orgError, setOrgError] = useState('');
@@ -107,9 +108,11 @@ function SendInvite({ onClose }) {
           onClose();
         }, 5000);
       } else {
-        const data = await response.json();
+        const errorData = await response.json(); 
+        setSuccessMessage(''); 
+        setError(errorData.message); 
       }      
-      
+  
     } catch (error) {
       console.error('Error sending invitation:', error);
     }
@@ -117,13 +120,18 @@ function SendInvite({ onClose }) {
     setLoading(false);
   };
   
+  
   return (
     <div className="form d-flex justify-content-center align-items-center">
       <Container className="mt-6 p-4 shadow bg-body">
         <h6 className="text-center mb-4 mt-1 ">Send Invite</h6>
         {successMessage && (
-          <div className="text-success mb-3">{successMessage}</div>
+        <div className="text-success mb-3">{successMessage}</div>
         )}
+        {!successMessage && (
+        <div className="text-danger mb-3">{error}</div>
+        )}
+
         <Form onSubmit={handleSubmit}>
           <Form.Group controlId="formBasicEmail" className="mb-3">
             <TextField
