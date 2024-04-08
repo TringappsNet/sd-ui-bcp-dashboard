@@ -162,22 +162,24 @@ const UserPop = ({ handleClose }) => {
 
   return (
     <Container fluid className="mt-10">
-      
-      <Row className="row Render-Row1">
-        <Col className="col col1 Render-Col">
+    <Row className="row Render-Row1">
+      <Col className="col col1 Render-Col">
         {editSuccess && (
-            <div className="success-message">Edit successful!</div>
-          )}
-          {deactivateSuccess && (
-            <div className="success-message">Deactivated successfully!</div>
-          )}
-          <div className='User'>
-            <h4>USERS</h4>
-            <input type="text" placeholder="Search..." className='Usersearch' value={searchQuery} onChange={handleSearch} />
-          </div>
-        
-          <div className="table-container" style={{  height: '500px', overflowY: 'auto' }}>
-            <div  bordered  striped className='grid'>
+          <div className="success-message">Edit successful!</div>
+        )}
+        {deactivateSuccess && (
+          <div className="success-message">Deactivated successfully!</div>
+        )}
+        <div className='User'>
+          <h4>USERS</h4>
+          <input type="text" placeholder="Search..." className='Usersearch' value={searchQuery} onChange={handleSearch} />
+        </div>
+      
+        <div className="table-container" style={{  height: '500px', overflowY: 'auto' }}>
+          {filteredData.length === 0 ? (
+            <div className="no-data-message" >No data available</div>
+          ) : (
+            <table bordered striped className='grid'>
               <thead className="sticky-header">
                 <tr>
                   {Object.keys(excelData[0] || {}).map((key) => (
@@ -226,12 +228,13 @@ const UserPop = ({ handleClose }) => {
                   </tr>
                 ))}
               </tbody>
-            </div>
-          </div>
-        
-        </Col>
-      </Row>
-    </Container>
+            </table>
+          )}
+        </div>
+      
+      </Col>
+    </Row>
+  </Container>
   );
 };
 
