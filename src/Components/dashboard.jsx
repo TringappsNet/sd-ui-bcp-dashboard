@@ -27,6 +27,7 @@
   import NavbarComponent from "./Navbar";
   import ExcelGrid from './ExcelGrid';
   import columnMap from "../Objects/Objects";
+  import OverrideModal from "./OverrideModal";
 
   function Dashboard() {
     const [username, setUsername] = useState("");
@@ -52,6 +53,7 @@
     const [remainingTime, setRemainingTime] = useState(500); // 60 seconds for one minute
     const [logoutModalOpen, setLogoutModalOpen] = useState(false);
     const [snackbarVariant, setSnackbarVariant] = useState('success');
+    const [showModal, setShowModal] = useState(false);
     const [roleID, setRoleID] = useState('');
 
     const navigate = useNavigate();
@@ -143,12 +145,22 @@
 
     };
     
-    
-    const onDrop = useCallback((acceptedFiles) => {
+    const handleConfirm = () => {
+      handleSubmit();
+      setShowModal(false);
+    };
+  
+    const handleCloseModal = () => {
       setData([]);
-      acceptedFiles.forEach((file) => {
+      setUploadedFileName("");
+      setShowModal(false);
+    };
+    
+    const onDrop = useCallback(async (acceptedFiles) => {
+      setData([]);
+      acceptedFiles.forEach(async (file) => {
         const reader = new FileReader();
-        reader.onload = (e) => {
+        reader.onload = async (e) => {
           const data = e.target.result;
           try {
             const workbook = XLSX.read(data, { type: "buffer", cellDates: true });
@@ -170,16 +182,64 @@
               });
               return obj;
             });
-            setData((prevData) => [...prevData, ...newJsonData]);
+
+            const updatedData = newJsonData.map((row) => {
+              if (row["MonthYear"]) {
+                const dateString = row["MonthYear"].toString();
+                const date = new Date(dateString);
+                const year = date.getFullYear();
+                const month = (date.getMonth() + 1).toString().padStart(2, "0");
+                const day = date.getDate().toString().padStart(2, "0");
+                const hours = date.getHours().toString().padStart(2, "0");
+                const minutes = date.getMinutes().toString().padStart(2, "0");
+                const seconds = "00";
+                const formattedDate = `${year}-${month}-${day}' '${hours}:${minutes}:${seconds}`;
+                row["MonthYear"] = formattedDate;
+              }
+              return row;
+            });
+            setData((prevData) => [...prevData, ...updatedData]);
             setUploadedFileName(file.name);
+    
+            const Role_ID = localStorage.getItem('Role_ID');
+            const Org_ID = localStorage.getItem('Org_ID');
+            const userId = localStorage.getItem('user_ID');
+            try {
+                const response = await fetch(`${PortURL}/validate-duplicates`, {
+
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  userData: {
+                    userId: userId,
+                    Org_ID: Org_ID,
+                  },
+                  data: updatedData,
+                }),
+              });
+              if (response.ok) {
+                const responseData = await response.json();
+                const hasDuplicates = responseData.hasDuplicates;
+                if (hasDuplicates === true) {
+                  setShowModal(true);
+                }
+              } else {
+                console.error('Error:', response.statusText);
+              }
+            } catch (error) {
+              console.error('Error calling validate API:', error);
+            }
           } catch (error) {
             console.error("Error reading file:", error);
           }
         };
         reader.readAsArrayBuffer(file);
       });
-    }, []);
+    }, [setData, setUploadedFileName]);
 
+    
     const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
     const filteredData = retriveData.filter((row) => {
@@ -257,8 +317,6 @@
     };
 
    
-
-
     const formatMonthYear = (dateString) => {
       const date = new Date(dateString);
       // Add 10 seconds to the date
@@ -311,24 +369,6 @@ const handleSubmit = async () => {
       userId: userId
     };
 
-    // Map through the data array to format dates if needed
-    const updatedData = data.map((row) => {
-      if (row["MonthYear"]) {
-        const dateString = row["MonthYear"].toString();
-        const date = new Date(dateString);
-        const year = date.getFullYear();
-        const month = (date.getMonth() + 1).toString().padStart(2, "0");
-        const day = date.getDate().toString().padStart(2, "0");
-        const hours = date.getHours().toString().padStart(2, "0");
-        const minutes = date.getMinutes().toString().padStart(2, "0");
-        const seconds = "00";
-        const formattedDate = `${year}-${month}-${day}' '${hours}:${minutes}:${seconds}`;
-        row["MonthYear"] = formattedDate;
-      }
-      return row;
-    });
-
-    // Delay execution for 2 seconds (for demonstration purposes)
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
     // Send POST request to the server
@@ -339,7 +379,7 @@ const handleSubmit = async () => {
         "Session-ID": sessionId, 
         "Email": email, 
       },
-      body: JSON.stringify({ userData, data: updatedData }),
+      body: JSON.stringify({ userData, data }),
     });
 
     if (response.ok) {
@@ -350,13 +390,14 @@ const handleSubmit = async () => {
 
       setUploadSuccess(true); 
       setUploadedFileName("");
-      setSnackbarMessage("Data uploaded successfully");
+      setSnackbarMessage(jsonResponse.message);
       setSnackbarVariant("success");
     } else {
-      // Display error message
-      console.error("Error:", response.statusText);
+      const errorResponse = await response.json();
+      const errorMessage = errorResponse.message || "Data upload failed";
+      console.error("Error:", errorMessage);
       setSnackbarOpen(true);
-      setSnackbarMessage("Data upload failed");
+      setSnackbarMessage(errorMessage);
       setSnackbarVariant("error");
     }
   } catch (error) {
@@ -605,7 +646,14 @@ const handleSubmit = async () => {
     />
   )}
 </div>
-
+    <>
+      <OverrideModal
+        show={showModal}
+        onHide={handleCloseModal}
+        onConfirm={handleConfirm}
+        message="Are you sure you want to override?"
+      />
+    </>
 
     {loading && <LoadingSpinner />} 
   </div>
