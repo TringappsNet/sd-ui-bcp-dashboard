@@ -585,24 +585,25 @@ const handleSubmit = async () => {
   </div>
   <div className="spacer"></div>
 
-  <div className="filename mr-3 col-lg-2 mb-3 ">
-    {uploadedFileName ? (
-      <div className="d-flex align-items-center">
-        <p className="mb-0">{`File: ${uploadedFileName}`}</p>
-        <FontAwesomeIcon
-          icon={faTimes} // Cancel icon
-          className="ml-2 cancel-icon"
-          onClick={() => setUploadedFileName("")} // onClick handler to clear uploadedFileName
-        />
-      </div>
-    ) : (
-      <p className="mb-0">No file uploaded</p>
-    )}
-  </div>
-  <div className="spacer"></div>
+<div className="filename mr-3 col-lg-2 mb-3 ">
+  {roleID !== '3' && uploadedFileName ? (
+    <div className="d-flex align-items-center">
+      <p className="mb-0">{`File: ${uploadedFileName}`}</p>
+      <FontAwesomeIcon
+        icon={faTimes} // Cancel icon
+        className="ml-2 cancel-icon"
+        onClick={() => setUploadedFileName("")} 
+      />
+    </div>
+  ) : (
+    roleID !== '3' && <p className="mb-0">No file uploaded</p>
+  )}
+</div>
+
+<div className="spacer"></div>
 
   <div className="custom-file-upload d-flex">
-    
+  {roleID !== '3' && (  
     <div {...getRootProps()} className="Upload ">
       <input {...getInputProps()} accept=".xlsx, .xls" />
       {isDragActive ? (
@@ -614,11 +615,13 @@ const handleSubmit = async () => {
         </Button>
       )}
     </div>
+  )}
     <div className="spacer"></div>
-
+    {roleID !== '3' && (
     <Button className="btn  btn-secondary submit" onClick={handleSubmit}>
       Submit
     </Button>
+    )}
   </div>
 </Form>
 </Container>
