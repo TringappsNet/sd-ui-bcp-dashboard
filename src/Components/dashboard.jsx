@@ -295,13 +295,16 @@ const handleSubmit = async () => {
     const email = localStorage.getItem('email');
     const organization = localStorage.getItem('Organisation');
     const Role_ID = localStorage.getItem('Role_ID');
-
+    const Org_ID = localStorage.getItem('Org_ID');
+    const user_ID = localStorage.getItem('user_ID');
     // Create userData object with username and organization
     const userData = {
       username: username,
       organization: organization,
       email:email,
-      roleID: Role_ID
+      roleID: Role_ID,
+      orgID: Org_ID,
+      userId: user_ID,
 
     };
 
@@ -386,6 +389,9 @@ const handleSubmit = async () => {
       try {
         const sessionId = localStorage.getItem('sessionId');
         const email = localStorage.getItem('email');
+        
+        const Org_ID = localStorage.getItem('Org_ID');
+    const userId = localStorage.getItem('user_ID');
         // Format the MonthYear date to "YYYY-MM-DD"
         const monthYearDate = new Date(editedRowData.MonthYear);
         const formattedMonthYear = `${monthYearDate.getFullYear()}-${(
@@ -403,8 +409,7 @@ const handleSubmit = async () => {
             ...editedRowData,
             MonthYear: formattedMonthYear,
 
-          },email
-        };
+          },email,Org_ID,userId      };
 
         // Send the updated data to the server
 
@@ -447,7 +452,9 @@ const handleSubmit = async () => {
         const sessionId = localStorage.getItem('sessionId');
         const email = localStorage.getItem('email');
         const identifierToDelete = String(filteredData[rowId]?.ID);
-    
+        const Org_Id = localStorage.getItem('Org_ID');
+        const userId = localStorage.getItem('user_ID');
+
         const response = await fetch(`${PortURL}/delete`, {
           method: "POST",
           headers: {
@@ -455,7 +462,7 @@ const handleSubmit = async () => {
             "Session-ID": sessionId, 
             "Email": email, 
           },
-          body: JSON.stringify({ ids: [identifierToDelete] }),
+          body: JSON.stringify({ ids: [identifierToDelete],Org_Id,userId }),
         });
 
         

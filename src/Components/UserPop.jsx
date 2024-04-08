@@ -21,56 +21,21 @@ const UserPop = ({ handleClose }) => {
   }, []);
 
 
-  const fetchData = () => {
-    // Sample JSON data for users
-    const sampleData = [
-      {
-        "UserID": 1,
-        "Name": "John Doe",
-        "Email": "john.doe@example.com",
-        "Role": "Admin",
-        "isActive": 1
-      },
-      {
-        "UserID": 2,
-        "Name": "Jane Smith",
-        "Email": "jane.smith@example.com",
-        "Role": "User",
-        "isActive": 1
-      },
-      {
-        "UserID": 2,
-        "Name": "Jane Smith",
-        "Email": "jane.smith@example.com",
-        "Role": "User",
-        "isActive": 0 
-      },
-      {
-        "UserID": 2,
-        "Name": "Jane Smith",
-        "Email": "jane.smith@example.com",
-        "Role": "User",
-        "isActive": 1
+ 
+  
+  const fetchData = async () => {
+    try {
+      const response = await fetch(`${PortURL}/users`);
+      if (response.ok) {
+        const data = await response.json();
+        setExcelData(data);
+      } else {
+        console.error('Failed to fetch Excel data:', response.statusText);
       }
-    ];
-  
-    setExcelData(sampleData);
+    } catch (error) {
+      console.error('Error fetching Excel data:', error);
+    }
   };
-
-  
-  // const fetchData = async () => {
-  //   try {
-  //     const response = await fetch(`${PortURL}/users`);
-  //     if (response.ok) {
-  //       const data = await response.json();
-  //       setExcelData(data);
-  //     } else {
-  //       console.error('Failed to fetch Excel data:', response.statusText);
-  //     }
-  //   } catch (error) {
-  //     console.error('Error fetching Excel data:', error);
-  //   }
-  // };
 
   const fetchRoles = async () => {
     try {
@@ -149,14 +114,13 @@ const UserPop = ({ handleClose }) => {
       console.error('Error saving data:', error);
     }
   };
-  
   const handleDeactivate = async (index) => {
     try {
-      const email = localStorage.getItem('email');
-      const isActive = excelData[index].isActive; // Assuming isActive status is stored in the excelData array
-
-      // Check if the user is active
+      const isActive = excelData[index].isActive;
+  
       if (isActive) {
+        const email = excelData[index].Email; // Extract email from the selected row
+  
         const response = await fetch(`${PortURL}/user-Active`, {
           method: 'PUT',
           body: JSON.stringify({ isActive: 0, email }), // Deactivate the user by setting isActive to false
@@ -164,25 +128,25 @@ const UserPop = ({ handleClose }) => {
             'Content-Type': 'application/json'
           }
         });
-
+  
         if (response.ok) {
           console.log('User deactivated successfully');
           setDeactivateSuccess(1);
           const updatedData = [...excelData];
-          updatedData[index].isActive = 0; // Update isActive status in the local data
+          updatedData[index].isActive = 0;
           setExcelData(updatedData);
           setDeactivatedRows([...deactivatedRows, index]);
         } else {
           console.error('Failed to deactivate user:', response.statusText);
         }
       } else {
-        // User is already inactive, no action needed
         console.log('User is already deactivated.');
       }
     } catch (error) {
       console.error('Error deactivating user:', error);
     }
   };
+  
 
   const handleSearch = (event) => {
     setSearchQuery(event.target.value);
@@ -213,7 +177,7 @@ const UserPop = ({ handleClose }) => {
           </div>
         
           <div className="table-container" style={{  height: '500px', overflowY: 'auto' }}>
-            <Table  bordered hover striped className='grid'>
+            <div  bordered  striped className='grid'>
               <thead className="sticky-header">
                 <tr>
                   {Object.keys(excelData[0] || {}).map((key) => (
@@ -262,7 +226,7 @@ const UserPop = ({ handleClose }) => {
                   </tr>
                 ))}
               </tbody>
-            </Table>
+            </div>
           </div>
         
         </Col>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Table } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faSave, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faSave, faTimesCircle, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'; // Import the trash icon
 import { PortURL } from "./Config";
 import '../styles/ExcelGrid.css'; // Assuming you have a CSS file for styling
 import '../styles/OrgPopup.css'; // Assuming you have a CSS file for styling
@@ -11,39 +11,25 @@ const OrgPop = ({ handleClose }) => {
   const [editedRowIndex, setEditedRowIndex] = useState(null);
   const [editedOrgName, setEditedOrgName] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [addMode, setAddMode] = useState(false);
 
   useEffect(() => {
     fetchData();
   }, []);
-  const fetchData = () => {
-    // Sample JSON data with 2 rows and 2 columns
-    const sampleData = [
-      {
-        "org_ID": 1,
-        "org_name": "Organization 1"
-      },
-      {
-        "org_ID": 2,
-        "org_name": "Organization 2"
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch(`${PortURL}/Get-Org`);
+      if (response.ok) {
+        const data = await response.json();
+        setExcelData(data);
+      } else {
+        console.error('Failed to fetch Excel data:', response.statusText);
       }
-    ];
-  
-    setExcelData(sampleData);
+    } catch (error) {
+      console.error('Error fetching Excel data:', error);
+    }
   };
-  
-  // const fetchData = async () => {
-  //   try {
-  //     const response = await fetch(`${PortURL}/Get-Org`);
-  //     if (response.ok) {
-  //       const data = await response.json();
-  //       setExcelData(data);
-  //     } else {
-  //       console.error('Failed to fetch Excel data:', response.statusText);
-  //     }
-  //   } catch (error) {
-  //     console.error('Error fetching Excel data:', error);
-  //   }
-  // };
 
   const handleEdit = (index) => {
     setEditedRowIndex(index);
@@ -82,6 +68,61 @@ const OrgPop = ({ handleClose }) => {
     }
   };
 
+  const handleAddRow = () => {
+    setAddMode(true);
+    setEditedOrgName('');
+    setEditedRowIndex(null);
+  };
+
+  const handleSaveNewOrg = async () => {
+    try {
+      const response = await fetch(`${PortURL}/create-org`, {
+        method: 'POST',
+        body: JSON.stringify({ org_name: editedOrgName }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        console.log('New organization created successfully');
+        setSuccessMessage('New organization created successfully');
+        fetchData();
+      } else {
+        console.error('Failed to create new organization:', response.statusText);
+      }
+
+      setAddMode(false);
+      setEditedOrgName('');
+    } catch (error) {
+      console.error('Error saving new organization:', error);
+    }
+  };
+
+  const handleDeleteRow = async (index) => {
+    try {
+      const orgIDToDelete = excelData[index].org_ID;
+      const response = await fetch(`${PortURL}/delete-Org`, {
+        method: 'DELETE',
+        body: JSON.stringify({ org_ID :orgIDToDelete}),
+
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        console.log('Organization deleted successfully');
+        setSuccessMessage('Organization deleted successfully');
+        fetchData();
+      } else {
+        console.error('Failed to delete organization:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error deleting organization:', error);
+    }
+  };
+
   return (
     <Container fluid className=" mt-10">
       <Row className="row Render-Row1">
@@ -97,7 +138,7 @@ const OrgPop = ({ handleClose }) => {
                   {Object.keys(excelData[0] || {}).map((key) => (
                     <th key={key}>{key}</th>
                   ))}
-                  <th className=' action-button' >Action</th>
+                  <th className='action-button action-width'>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -117,30 +158,59 @@ const OrgPop = ({ handleClose }) => {
                         )}
                       </td>
                     ))}
-                   <td>
-                {editedRowIndex === index ? (
-                  <div className='editSave action-buttons'>
-                    <div onClick={handleSave}>
-                      <FontAwesomeIcon icon={faSave} />
-                    </div>
-                    <div onClick={() => setEditedRowIndex(null)}>
-                      <FontAwesomeIcon icon={faTimesCircle} />
-                    </div>
-                  </div>
-                ) : (
-                  <div>
-                    <button className="btn btn-sm Edit" onClick={() => handleEdit(index)}>
-                      <FontAwesomeIcon icon={faEdit} />
-                    </button>
-                  </div>
-                )}
-              </td>
-
-
+                    <td>
+                      {editedRowIndex === index && !addMode ? (
+                        <div className='editSave action-buttons'>
+                          <div onClick={handleSave}>
+                            <FontAwesomeIcon icon={faSave} />
+                          </div>
+                          <div onClick={() => setEditedRowIndex(null)}>
+                            <FontAwesomeIcon icon={faTimesCircle} />
+                          </div>
+                        </div>
+                      ) : (
+                        <div>
+                          <button className="btn btn-sm Edit" onClick={() => handleEdit(index)}>
+                            <FontAwesomeIcon icon={faEdit} />
+                          </button>
+                          <button className="btn btn-sm Delete" onClick={() => handleDeleteRow(index)}> {/* Delete button */}
+                            <FontAwesomeIcon icon={faTrash} />
+                          </button>
+                        </div>
+                      )}
+                    </td>
                   </tr>
                 ))}
+                {addMode && (
+                  <tr>
+                    <td colSpan={Object.keys(excelData[0] || {}).length}>
+                      <input
+                        type="text"
+                        className='OrgIn'
+                        placeholder="Enter new organization name"
+                        value={editedOrgName}
+                        onChange={handleInputChange}
+                      />
+                    </td>
+                    <td>
+                      <div className='editSave action-buttons'>
+                        <div onClick={handleSaveNewOrg}>
+                          <FontAwesomeIcon icon={faSave} />
+                        </div>
+                        <div onClick={() => setAddMode(false)}>
+                          <FontAwesomeIcon icon={faTimesCircle} />
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </Table>
+          </div>
+          <div>
+            <button className="btn btn-sm Add" onClick={handleAddRow}>
+              <FontAwesomeIcon icon={faPlus} /> Add Organization
+            </button>
           </div>
         </Col>
       </Row>
