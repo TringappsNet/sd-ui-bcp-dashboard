@@ -68,26 +68,31 @@ table{
 
 }
 /* UserPop.css */
-
+/* 
 .Org-pop-container *,
 .Org-pop-container ::after,
 .Org-pop-container ::before {
   box-sizing: content-box;
-}
+} */
 
 
 
 
 
 .OrgIn{
-  margin-top: 3px;
+  /* margin-top: 3px; */
   border: none;
   width: 170px;
-  padding: 6px;
+  padding: 2px;
   border-radius: 4px;
 }
 
-
+.OrgHead{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-left: 10px;
+}
 td{
   margin-top:6px;
 }
@@ -110,3 +115,13 @@ td{
   border: none;
   padding: 8px;
 }
+
+.editSave {
+  display: flex;
+  justify-content: space-around;
+  height: 32px;
+  padding-top: 0px;
+  /* padding-left: 16px; */
+  height: 30px;
+}
+

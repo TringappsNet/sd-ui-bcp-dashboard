@@ -33,19 +33,22 @@
 
     tr.deactivated-row td {
         opacity: 0.5;
-        background: #9d9999;
+        background: #ebe6e6;
         
     }
   
     .User{
         display: flex;
         justify-content: space-between;
+        align-items: center;
+        padding-left: 23px;
         
     }
     
     .Usersearch{
       border-radius: 5px;
       height: 35px;
+      border: 1px solid black;
 
     }
 
@@ -75,11 +78,7 @@
     }
   }
   
-  tr.deactivated-row td {
-    opacity: 0.5;
-    background: #9d9999;
-  }
-  
+ 
 
   .success-message {
     color: green;
@@ -94,14 +93,15 @@
 }
 
 .table-container {
-    box-shadow:none;
+    /* box-shadow:none; */
     border-radius: 8px;
     margin-top: 20px;
     padding: 0;
-
+    /* width: 1000px; */
 }
 td, th {
     padding: 8px;
+    text-align: center;
   }
   
   .Role{
@@ -116,3 +116,4 @@ td, th {
     background-color:unset; /* Ensure visibility over the table */
     z-index: 2; 
   }
+  

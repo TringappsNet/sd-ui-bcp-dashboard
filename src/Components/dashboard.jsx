@@ -497,7 +497,7 @@ const handleSubmit = async () => {
       try {
         const sessionId = localStorage.getItem('sessionId');
         const email = localStorage.getItem('email');
-        const userId = localStorage.getItem('userId');
+        const userId = localStorage.getItem('user_ID');
         const Org_ID = localStorage.getItem('Org_ID');
         const identifierToDelete = String(filteredData[rowId]?.ID);
 

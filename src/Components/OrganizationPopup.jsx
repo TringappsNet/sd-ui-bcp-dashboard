@@ -127,8 +127,11 @@ const OrgPop = ({ handleClose }) => {
     <Container fluid className=" mt-10">
       <Row className="row Render-Row1">
         <Col className="col col1 Render-Col">
-          <div>
+          <div className='OrgHead'>
             <h4>ORGANIZATIONS</h4>
+            <button className="btn btn-sm Add" onClick={handleAddRow}>
+              <FontAwesomeIcon icon={faPlus} /> Add Organization
+            </button>
           </div>
           {successMessage && <div className="success-message">{successMessage}</div>}
           <div className=" Org-pop-container table-container">
@@ -207,11 +210,11 @@ const OrgPop = ({ handleClose }) => {
               </tbody>
             </Table>
           </div>
-          <div>
+          {/* <div>
             <button className="btn btn-sm Add" onClick={handleAddRow}>
               <FontAwesomeIcon icon={faPlus} /> Add Organization
             </button>
-          </div>
+          </div> */}
         </Col>
       </Row>
     </Container>
