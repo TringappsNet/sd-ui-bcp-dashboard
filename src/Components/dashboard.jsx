@@ -26,7 +26,7 @@
   import ConfirmationModal from "./ConfirmationModal";
   import NavbarComponent from "./Navbar";
   import ExcelGrid from './ExcelGrid';
-
+  import columnMap from "../Objects/Objects";
 
   function Dashboard() {
     const [username, setUsername] = useState("");
@@ -162,9 +162,10 @@
               row.some((cell) => cell !== null && cell !== "")
             );
             const header = trimmedData.shift();
+            const mappedHeader = header.map((col) => columnMap[col] || col);
             const newJsonData = trimmedData.map((row) => {
               const obj = {};
-              header.forEach((key, index) => {
+              mappedHeader.forEach((key, index) => {
                 obj[key] = row[index];
               });
               return obj;
@@ -313,8 +314,8 @@ const handleSubmit = async () => {
 
     // Map through the data array to format dates if needed
     const updatedData = data.map((row) => {
-      if (row["Month/Year"]) {
-        const dateString = row["Month/Year"].toString();
+      if (row["MonthYear"]) {
+        const dateString = row["MonthYear"].toString();
         const date = new Date(dateString);
         const year = date.getFullYear();
         const month = (date.getMonth() + 1).toString().padStart(2, "0");
@@ -323,7 +324,7 @@ const handleSubmit = async () => {
         const minutes = date.getMinutes().toString().padStart(2, "0");
         const seconds = "00";
         const formattedDate = `${year}-${month}-${day}' '${hours}:${minutes}:${seconds}`;
-        row["Month/Year"] = formattedDate;
+        row["MonthYear"] = formattedDate;
       }
       return row;
     });
@@ -332,7 +333,7 @@ const handleSubmit = async () => {
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
     // Send POST request to the server
-    const response = await fetch(`${PortURL}/bulk-upload`, {
+    const response = await fetch(`${PortURL}/bulk-upload-update`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
