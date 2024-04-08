@@ -4,12 +4,17 @@
     align-items: center; 
     height: 100vh; 
   }
-.table {
+.grid {
     width:100vh;
+    font-size: small;
+    padding-left: 20px;
+   border: none;
+   border-radius: 10px;
+   top: 0%;
    
 }
- .table th{
-    width: 120px;
+ .grid tr th{
+    width: 190px;
  }
 
 .table-container{
@@ -38,6 +43,11 @@
         
     }
     
+    .Usersearch{
+      border-radius: 5px;
+      height: 35px;
+
+    }
 
 
     .success-message{
@@ -46,7 +56,7 @@
     }
 
 
-.table {
+.grid {
     border-collapse: collapse;
     width: 100%;
   }
@@ -59,8 +69,8 @@
  
  
   @media (max-width: 768px) {
-    .table {
-      width: 100%;
+    .grid {
+      /* width: 100%; */
       overflow-x: auto; 
     }
   }

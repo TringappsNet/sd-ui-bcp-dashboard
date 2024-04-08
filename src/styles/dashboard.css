@@ -92,9 +92,9 @@
     background-color: #efeded;
   }
 
-  .table-container tbody tr:hover {
+  /* .table-container tbody tr:hover {
     background-color: #f0f0f0;
-  }
+  } */
 
   .customLogo {
     width: 75px;

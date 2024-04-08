@@ -300,6 +300,16 @@ const handleSubmit = async () => {
     // const organization = localStorage.getItem('Organisation');
     const Role_ID = localStorage.getItem('Role_ID');
     const Org_ID = localStorage.getItem('Org_ID');
+    const user_ID = localStorage.getItem('user_ID');
+    // Create userData object with username and organization
+    const userData = {
+      username: username,
+      organization: organization,
+      email:email,
+      roleID: Role_ID,
+      orgID: Org_ID,
+      userId: user_ID,
+
     const userId = localStorage.getItem('userId');
 
 
@@ -393,6 +403,9 @@ const handleSubmit = async () => {
       try {
         const sessionId = localStorage.getItem('sessionId');
         const email = localStorage.getItem('email');
+        
+        const Org_ID = localStorage.getItem('Org_ID');
+    const userId = localStorage.getItem('user_ID');
         const userId = localStorage.getItem('userId');
         const Org_ID = localStorage.getItem('Org_ID');
 
@@ -414,8 +427,7 @@ const handleSubmit = async () => {
             ...editedRowData,
             MonthYear: formattedMonthYear,
 
-          },email, userId, Org_ID
-        };
+          },email,Org_ID,userId      };
 
         // Send the updated data to the server
 
@@ -460,7 +472,9 @@ const handleSubmit = async () => {
         const userId = localStorage.getItem('userId');
         const Org_ID = localStorage.getItem('Org_ID');
         const identifierToDelete = String(filteredData[rowId]?.ID);
-    
+        const Org_Id = localStorage.getItem('Org_ID');
+        const userId = localStorage.getItem('user_ID');
+
         const response = await fetch(`${PortURL}/delete`, {
           method: "POST",
           headers: {
@@ -468,12 +482,13 @@ const handleSubmit = async () => {
             "Session-ID": sessionId, 
             "Email": email, 
           },
+          body: JSON.stringify({ ids: [identifierToDelete],Org_Id,userId }),
           body: JSON.stringify({
             ids: [identifierToDelete],
             Org_Id: Org_ID,
             userId: userId
           }),
-        });
+
 
         
         if (response.ok) {

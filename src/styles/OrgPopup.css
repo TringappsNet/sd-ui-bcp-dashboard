@@ -46,6 +46,7 @@
   justify-content: space-around;
   height: 32px;
   padding-top: 10px;
+  padding-left: 16px;
 }
 
 
@@ -54,6 +55,7 @@
   top: 0;
   background-color: white; /* Ensure visibility over the table */
   z-index: 2; /* Ensure it's above the table */
+      background: none;
 }
 
 
@@ -78,9 +80,13 @@ table{
 
 
 .OrgIn{
-  margin-top: 6px;
+  margin-top: 3px;
   border: none;
+  width: 200px;
+  padding: 6px;
+  border-radius: 4px;
 }
+
 
 td{
   margin-top:6px;
@@ -93,4 +99,14 @@ td{
   padding-left: 0px;
   padding-top: 7px;
   margin-top: 6px;;
+}
+
+.action-width{
+  min-width: 100px;
+
+}
+
+.table-container th {
+  border: none;
+  padding: 8px;
 }
