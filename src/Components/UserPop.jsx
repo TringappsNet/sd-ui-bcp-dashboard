@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faSave, faBan, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { PortURL } from "./Config";
 import '../styles/UserPop.css';
+import ConfirmationModal from  './ConfirmationModal';
 
 const UserPop = ({ handleClose }) => {
   const [excelData, setExcelData] = useState([]);
@@ -14,6 +15,8 @@ const UserPop = ({ handleClose }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [editSuccess, setEditSuccess] = useState(false);
   const [deactivateSuccess, setDeactivateSuccess] = useState(false);
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [rowToDeactivate, setRowToDeactivate] = useState(null);
 
   useEffect(() => {
     fetchData();
@@ -114,31 +117,14 @@ const UserPop = ({ handleClose }) => {
       console.error('Error saving data:', error);
     }
   };
+
   const handleDeactivate = async (index) => {
     try {
       const isActive = excelData[index].isActive;
-  
+
       if (isActive) {
-        const email = excelData[index].Email; // Extract email from the selected row
-  
-        const response = await fetch(`${PortURL}/user-Active`, {
-          method: 'PUT',
-          body: JSON.stringify({ isActive: 0, email }), // Deactivate the user by setting isActive to false
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
-  
-        if (response.ok) {
-          console.log('User deactivated successfully');
-          setDeactivateSuccess(1);
-          const updatedData = [...excelData];
-          updatedData[index].isActive = 0;
-          setExcelData(updatedData);
-          setDeactivatedRows([...deactivatedRows, index]);
-        } else {
-          console.error('Failed to deactivate user:', response.statusText);
-        }
+        setRowToDeactivate(index);
+        setShowConfirmationModal(true);
       } else {
         console.log('User is already deactivated.');
       }
@@ -146,6 +132,38 @@ const UserPop = ({ handleClose }) => {
       console.error('Error deactivating user:', error);
     }
   };
+
+  const confirmDeactivation = async () => {
+    try {
+      const index = rowToDeactivate;
+      const email = excelData[index].Email; // Extract email from the selected row
+
+      const response = await fetch(`${PortURL}/user-Active`, {
+        method: 'PUT',
+        body: JSON.stringify({ isActive: 0, email }), // Deactivate the user by setting isActive to false
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        console.log('User deactivated successfully');
+        setDeactivateSuccess(1);
+        const updatedData = [...excelData];
+        updatedData[index].isActive = 0;
+        setExcelData(updatedData);
+        setDeactivatedRows([...deactivatedRows, index]);
+      } else {
+        console.error('Failed to deactivate user:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error deactivating user:', error);
+    }
+
+    setShowConfirmationModal(false);
+    setRowToDeactivate(null);
+  };
+
   
 
   const handleSearch = (event) => {
@@ -163,6 +181,11 @@ const UserPop = ({ handleClose }) => {
   return (
     <Container fluid className="mt-10">
     <Row className="row Render-Row1">
+       <ConfirmationModal
+            show={showConfirmationModal}
+            onHide={() => setShowConfirmationModal(false)}
+            onConfirm={confirmDeactivation}
+          />  
       <Col className="col col1 Render-Col">
         {editSuccess && (
           <div className="success-message">Edit successful!</div>
@@ -170,6 +193,7 @@ const UserPop = ({ handleClose }) => {
         {deactivateSuccess && (
           <div className="success-message">Deactivated successfully!</div>
         )}
+        
         <div className='User'>
           <h4>USERS</h4>
           <input type="text" placeholder="Search..." className='Usersearch' value={searchQuery} onChange={handleSearch} />
