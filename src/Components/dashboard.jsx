@@ -6,7 +6,8 @@
     Button,
     Form,
     FormControl,
-    Container, } from "react-bootstrap";
+    Container,
+    Dropdown } from "react-bootstrap";
   import { useDropzone } from "react-dropzone";
   import { useNavigate} from "react-router-dom";
   import * as XLSX from "xlsx";
@@ -14,6 +15,7 @@
   import {
     faTimes,
     faUpload,
+    faAngleDown
   } from "@fortawesome/free-solid-svg-icons";
   import "bootstrap/dist/css/bootstrap.min.css";
   import "../styles/dashboard.css";
@@ -53,6 +55,13 @@
     const [logoutModalOpen, setLogoutModalOpen] = useState(false);
     const [snackbarVariant, setSnackbarVariant] = useState('success');
     const [roleID, setRoleID] = useState('');
+    const [selectedPortfolio, setSelectedPortfolio] = useState(""); 
+    const [selectedFinancial, setSelectedFinancial] = useState(""); 
+    const [uploadPlaceholder, setUploadPlaceholder] = useState("Upload");
+    const [financialData, setFinancialData] = useState([]);
+    const [isFinancial, setIsFinancial] = useState(false);
+
+    const [selectedOption, setSelectedOption] = useState(null);
 
     const navigate = useNavigate();
    
@@ -143,9 +152,9 @@
 
     };
     
-    
     const onDrop = useCallback((acceptedFiles) => {
       setData([]);
+      setFinancialData([]);
       acceptedFiles.forEach((file) => {
         const reader = new FileReader();
         reader.onload = (e) => {
@@ -170,7 +179,11 @@
               });
               return obj;
             });
-            setData((prevData) => [...prevData, ...newJsonData]);
+            if (selectedOption === "Financial") {
+              setFinancialData((prevData) => [...prevData, ...newJsonData]);
+            } else if (selectedOption === "Portfolio") {
+              setData((prevData) => [...prevData, ...newJsonData]);
+            }
             setUploadedFileName(file.name);
           } catch (error) {
             console.error("Error reading file:", error);
@@ -178,9 +191,11 @@
         };
         reader.readAsArrayBuffer(file);
       });
-    }, []);
+    }, [selectedOption, setData, setFinancialData, setUploadedFileName]);
+
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+
 
     const filteredData = retriveData.filter((row) => {
       return Object.values(row || {}).some(
@@ -282,11 +297,11 @@ const formatDateCell = (value, key) => {
 
 
 
-const handleSubmit = async () => {
+const handlePortfolioSubmit = async () => {
   // Check if the data array is empty
   if (data.length === 0) {
     setSnackbarOpen(true);
-    setSnackbarMessage("File is empty");
+    setSnackbarMessage("Portfolio File is empty");
     setSnackbarVariant("error");
     return; // Exit the function early if the data array is empty
   }
@@ -369,6 +384,99 @@ const handleSubmit = async () => {
 
   setLoading(false);
 };
+
+
+
+
+
+
+const handleFinancialSubmit = async () => {
+  // Check if the financialData array is empty
+  if (financialData.length === 0) {
+    setSnackbarOpen(true);
+    setSnackbarMessage("Financial data is empty");
+    setSnackbarVariant("error");
+    return; // Exit the function early if the financialData array is empty
+  }
+
+  setLoading(true); 
+
+  try {
+    // Get session ID and email from local storage
+    const sessionId = localStorage.getItem('sessionId');
+    const email = localStorage.getItem('email');
+    const Role_ID = localStorage.getItem('Role_ID');
+    const Org_ID = localStorage.getItem('Org_ID');
+    const userId = localStorage.getItem('user_ID');
+    
+    // Create userData object with username and organization
+    const userData = {
+      username: username,
+      orgID: Org_ID ,
+      email: email,
+      roleID: Role_ID,
+      userId: userId
+    };
+
+    // Map through the financialData array to format dates if needed
+    const updatedFinancialData = financialData.map((row) => {
+      if (row["Date"]) {
+        const dateString = row["Date"].toString();
+        const date = new Date(dateString);
+        const formattedDate = date.toISOString(); // Format date as ISO string
+        row["Date"] = formattedDate;
+      }
+      return row;
+    });
+
+    console.log("Financial Data:", updatedFinancialData);
+
+    // Delay execution for 2 seconds (for demonstration purposes)
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    // Send POST request to the server (using different API endpoint)
+    const response = await fetch(`${PortURL}/financial-upload`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Session-ID": sessionId, 
+        "Email": email, 
+      },
+      body: JSON.stringify({ userData, financialData: updatedFinancialData }),
+    });
+
+    if (response.ok) {
+      // Reset state and display success message
+      setFinancialData([]);
+      fetchData(); // Assuming fetchData() is a function to refetch data
+      const jsonResponse = await response.json();
+
+      setUploadSuccess(true); 
+      setUploadedFileName("");
+      setSnackbarMessage("Financial data uploaded successfully");
+      setSnackbarVariant("success");
+    } else {
+      // Display error message
+      console.error("Error:", response.statusText);
+      setSnackbarOpen(true);
+      setSnackbarMessage("Financial data upload failed");
+      setSnackbarVariant("error");
+    }
+  } catch (error) {
+    // Display error message
+    console.error("Error:", error);
+    setSnackbarOpen(true);
+    setSnackbarMessage("Financial data upload failed");
+    setSnackbarVariant("error");
+  }
+
+  setLoading(false);
+};
+
+
+
+
+
 
 
     const handleCheckboxChange = (rowId) => {
@@ -502,6 +610,38 @@ const handleSubmit = async () => {
       setSnackbarMessage("");
     };
 
+
+
+ // Update the handlePortfolioSelect and handleFinancialSelect functions to set the selected option
+const handlePortfolioSelect = (portfolio) => {
+  setSelectedOption("Portfolio");
+  setSelectedPortfolio(portfolio);
+  setSelectedFinancial("");
+  setUploadPlaceholder(portfolio);
+};
+
+const handleFinancialSelect = (financial) => {
+  setSelectedOption("Financial");
+  setSelectedFinancial(financial);
+  setSelectedPortfolio("");
+  setUploadPlaceholder(financial);
+};
+
+    const handleSubmit = async () => {
+      // Check if the selected option is "Portfolio"
+      if (selectedPortfolio) {
+        // Call the portfolio submit handler
+        handlePortfolioSubmit();
+      } else if (selectedFinancial) {
+        // Call the financial submit handler
+        handleFinancialSubmit();
+      } else {
+        // Handle other cases or show an error message
+        console.log("Please select a portfolio or financial option");
+      }
+    };
+
+
     return (
       <div className="dashboard-container">
         <CustomSnackbar
@@ -530,57 +670,70 @@ const handleSubmit = async () => {
   
 
 <Container fluid className="container-fluid mt-4">
-
 <Form className="border shadow p-3 d-flex flex-column flex-lg-row">
-  <div className="search-wrapper col-lg-6 mb-3 mb-lg-0">
-    <FormControl
-      className="search-input"
-      type="text"
-      placeholder="Search"
-      style={{ flex: "1" }}
-      value={searchQuery}
-      onChange={handleSearchChange}
-    />
-  </div>
-  <div className="spacer"></div>
-
-  <div className="filename mr-3 col-lg-2 mb-3 ">
-    {uploadedFileName ? (
-      <div className="d-flex align-items-center">
-        <p className="mb-0">{`File: ${uploadedFileName}`}</p>
-        <FontAwesomeIcon
-          icon={faTimes} // Cancel icon
-          className="ml-2 cancel-icon"
-          onClick={() => setUploadedFileName("")} // onClick handler to clear uploadedFileName
+      <div className="search-wrapper col-lg-6 mb-3 mb-lg-0">
+        <FormControl
+          className="search-input"
+          type="text"
+          placeholder="Search"
+          style={{ flex: "1" }}
+          value={searchQuery}
+          onChange={handleSearchChange}
         />
       </div>
-    ) : (
-      <p className="mb-0">No file uploaded</p>
-    )}
-  </div>
-  <div className="spacer"></div>
+      <div className="spacer"></div>
 
-  <div className="custom-file-upload d-flex">
-    
-    <div {...getRootProps()} className="Upload ">
-      <input {...getInputProps()} accept=".xlsx, .xls" />
-      {isDragActive ? (
-        <p>Drop the files here ...</p>
+      <div className="filename mr-3 col-lg-2 mb-3 ">
+      {uploadedFileName ? (
+        <div className="d-flex align-items-center">
+          <p className="mb-0">{`File: ${uploadedFileName}`}</p>
+          <FontAwesomeIcon
+            icon={faTimes}
+            className="ml-2 cancel-icon"
+            onClick={() => setUploadedFileName("")} 
+          />
+        </div>
       ) : (
-        <Button className="btn btn-secondary btn-sm  Upload">
-          <FontAwesomeIcon  className="clearicon" icon={faUpload} />
-          Upload 
-        </Button>
+        <p className="mb-0">No file uploaded</p>
       )}
     </div>
     <div className="spacer"></div>
+    <div className="custom-file-upload d-flex align-items-center">
+      <div {...getRootProps()} className="Upload-Form">
+        <input {...getInputProps()} accept=".xlsx, .xls" />
+        {isDragActive ? (
+          <p>Drop the files here ...</p>
+        ) : (
+          <Button className="btn btn-secondary btn-sm Upload">
+            <FontAwesomeIcon className="clearicon" icon={faUpload} />
+            {uploadPlaceholder}
+          </Button>
+        )}
+      </div>
 
-    <Button className="btn  btn-secondary submit" onClick={handleSubmit}>
-      Submit
-    </Button>
-  </div>
-</Form>
-</Container>
+        <Dropdown className='dropdown-Form'>
+          <Dropdown.Toggle variant="secondary" id="dropdown-basic">
+            <FontAwesomeIcon icon={faAngleDown} />
+          </Dropdown.Toggle>
+
+          <Dropdown.Menu className='menu-drop'>
+            <Dropdown.Item onClick={() => handleFinancialSelect('Financial')}>Financial </Dropdown.Item>
+            <Dropdown.Item onClick={() => handlePortfolioSelect('Portfolio ')}>Portfolio </Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+
+        <Button className="btn btn-secondary submit ml-2" onClick={handleSubmit}>
+          Submit
+        </Button>
+      </div>
+    </Form>
+
+
+    
+    </Container>
+
+
+
 
 <div>
   {filteredData.length === 0 ? (
