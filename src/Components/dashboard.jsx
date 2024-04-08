@@ -300,20 +300,9 @@ const handleSubmit = async () => {
     // const organization = localStorage.getItem('Organisation');
     const Role_ID = localStorage.getItem('Role_ID');
     const Org_ID = localStorage.getItem('Org_ID');
-    const user_ID = localStorage.getItem('user_ID');
+    const userId = localStorage.getItem('user_ID');
     // Create userData object with username and organization
-    const userData = {
-      username: username,
-      organization: organization,
-      email:email,
-      roleID: Role_ID,
-      orgID: Org_ID,
-      userId: user_ID,
 
-    const userId = localStorage.getItem('userId');
-
-
-    // Create userData object with username and organization
     const userData = {
       username: username,
       orgID: Org_ID ,
@@ -403,11 +392,9 @@ const handleSubmit = async () => {
       try {
         const sessionId = localStorage.getItem('sessionId');
         const email = localStorage.getItem('email');
-        
         const Org_ID = localStorage.getItem('Org_ID');
-    const userId = localStorage.getItem('user_ID');
-        const userId = localStorage.getItem('userId');
-        const Org_ID = localStorage.getItem('Org_ID');
+        const userId = localStorage.getItem('user_ID');
+
 
 
         // Format the MonthYear date to "YYYY-MM-DD"
@@ -472,8 +459,6 @@ const handleSubmit = async () => {
         const userId = localStorage.getItem('userId');
         const Org_ID = localStorage.getItem('Org_ID');
         const identifierToDelete = String(filteredData[rowId]?.ID);
-        const Org_Id = localStorage.getItem('Org_ID');
-        const userId = localStorage.getItem('user_ID');
 
         const response = await fetch(`${PortURL}/delete`, {
           method: "POST",
@@ -482,15 +467,13 @@ const handleSubmit = async () => {
             "Session-ID": sessionId, 
             "Email": email, 
           },
-          body: JSON.stringify({ ids: [identifierToDelete],Org_Id,userId }),
           body: JSON.stringify({
             ids: [identifierToDelete],
             Org_Id: Org_ID,
             userId: userId
           }),
 
-
-        
+        }); 
         if (response.ok) {
           // If the deletion is successful, update the data state to reflect the changes
           const updatedData = filteredData.filter((row, index) => index !== rowId);
@@ -514,7 +497,6 @@ const handleSubmit = async () => {
       }
     };
     
-
     const handleCloseSnackbar = () => {
       setSnackbarOpen(false);
       setSnackbarMessage("");
