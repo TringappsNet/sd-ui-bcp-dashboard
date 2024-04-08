@@ -40,6 +40,8 @@
     .User{
         display: flex;
         justify-content: space-between;
+        align-items: center;
+        padding-left: 23px;
         
     }
     
@@ -94,7 +96,7 @@
 }
 
 .table-container {
-    box-shadow:none;
+    /* box-shadow:none; */
     border-radius: 8px;
     margin-top: 20px;
     padding: 0;
