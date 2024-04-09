@@ -841,7 +841,7 @@ const handleFinancialSelect = (financial) => {
         ) : (
           <Button className="btn btn-secondary btn-sm Upload" onClick={() => handlePortfolioSelect('Portfolio ')} >
              <FontAwesomeIcon className="clearicon" icon={faUpload} />
-             Portfolio
+             Upload
            </Button>
         )}
       </div>

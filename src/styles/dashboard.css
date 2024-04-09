@@ -378,6 +378,7 @@
  flex-direction: row;
  justify-content: space-between;
     }
+ 
     .filename>p {
       text-align: start;
   }
@@ -596,6 +597,12 @@ button, input, optgroup, select, textarea {
   font-size: inherit;
   line-height: inherit;
   /* border: none; */
+}
+
+
+
+.Upload{
+  margin-left: 10px;
 }
 /* .table-striped>tbody>tr:nth-of-type(odd)>* {
   --bs-table-color-type: var(--bs-table-striped-color);
