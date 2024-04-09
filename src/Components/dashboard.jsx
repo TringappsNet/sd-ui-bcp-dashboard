@@ -699,66 +699,66 @@ const handleFinancialSelect = (financial) => {
 
 
       />
-<NavbarComponent
-    username={username}
-    handleLogout={handleLogout}
-    isMobile={isMobile}
-  />
-    
-<ConfirmationModal
-      show={showConfirmation}
-      onHide={handleCloseConfirmation}
-      onConfirm={handleConfirmLogout}
-      message="Are you sure you want to log out?"
-    />
+      <NavbarComponent
+          username={username}
+          handleLogout={handleLogout}
+          isMobile={isMobile}
+        />
+          
+      <ConfirmationModal
+            show={showConfirmation}
+            onHide={handleCloseConfirmation}
+            onConfirm={handleConfirmLogout}
+            message="Are you sure you want to log out?"
+          />
 
   
 
-<Container fluid className="container-fluid mt-4">
-<Form className="border shadow p-3 d-flex flex-column flex-lg-row">
-      <div className="search-wrapper col-lg-6 mb-3 mb-lg-0">
-        <FormControl
-          className="search-input"
-          type="text"
-          placeholder="Search"
-          style={{ flex: "1" }}
-          value={searchQuery}
-          onChange={handleSearchChange}
-        />
-      </div>
-      <div className="spacer"></div>
+    <Container fluid className="container-fluid mt-4">
+    <Form className="border shadow p-3 d-flex flex-column flex-lg-row">
+          <div className="search-wrapper col-lg-6 mb-3 mb-lg-0">
+            <FormControl
+              className="search-input"
+              type="text"
+              placeholder="Search"
+              style={{ flex: "1" }}
+              value={searchQuery}
+              onChange={handleSearchChange}
+            />
+          </div>
+          <div className="spacer"></div>
 
-      <div className="filename mr-3 col-lg-2 mb-3 ">
-      {roleID !== '3' && uploadedFileName ? (
-        <div className="d-flex align-items-center">
-          <p className="mb-0">{`File: ${uploadedFileName}`}</p>
-          <FontAwesomeIcon
-            icon={faTimes}
-            className="ml-2 cancel-icon"
-            onClick={() => setUploadedFileName("")} 
-          />
+          <div className="filename mr-3 col-lg-2 mb-3 ">
+          {roleID !== '3' && uploadedFileName ? (
+            <div className="d-flex align-items-center">
+              <p className="mb-0">{`File: ${uploadedFileName}`}</p>
+              <FontAwesomeIcon
+                icon={faTimes}
+                className="ml-2 cancel-icon"
+                onClick={() => setUploadedFileName("")} 
+              />
+            </div>
+          ) : (
+            roleID !== '3' && <p className="mb-0">No file uploaded</p>
+          )}
         </div>
-      ) : (
-        roleID !== '3' && <p className="mb-0">No file uploaded</p>
-      )}
-    </div>
-    <div className="spacer"></div>
-    {roleID !== '3' && (
-    <div className="custom-file-upload d-flex align-items-center">
-      
-      <div {...getRootProps()} className="Upload-Form">
-        <input {...getInputProps()} accept=".xlsx, .xls" />
-        {isDragActive ? (
-          <p>Drop the files here ...</p>
-        ) : (
-          <Button className="btn btn-secondary btn-sm Upload">
-            <FontAwesomeIcon className="clearicon" icon={faUpload} />
-            {uploadPlaceholder}
-          </Button>
-        )}
-      </div>
+        <div className="spacer"></div>
+        {roleID !== '3' && (
+        <div className="custom-file-upload d-flex align-items-center">
+          
+          <div {...getRootProps()} className="Upload-Form">
+            <input {...getInputProps()} accept=".xlsx, .xls" />
+            {isDragActive ? (
+              <p>Drop the files here ...</p>
+            ) : (
+              <Button className="btn btn-secondary btn-sm Upload">
+                <FontAwesomeIcon className="clearicon" icon={faUpload} />
+                {uploadPlaceholder}
+              </Button>
+            )}
+          </div>
 
-        <Dropdown className='dropdown-Form'>
+          <Dropdown className='dropdown-Form'>
           <Dropdown.Toggle variant="secondary" id="dropdown-basic">
             <FontAwesomeIcon icon={faAngleDown} />
           </Dropdown.Toggle>
