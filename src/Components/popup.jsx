@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ResetNewPassword from './resetNewPassword';
 import SendInvite from './sendInvite';
 import OrganizationPopup from './OrganizationPopup';
@@ -6,46 +6,51 @@ import UserPop from './UserPop';
 import '../styles/popup.css';
 
 const PopUpContainer = () => {
+  const [roleID, setRoleID] = useState(null);
   const [showResetPopup, setShowResetPopup] = useState(false);
   const [showInvitePopup, setShowInvitePopup] = useState(false);
   const [showOrganizationPopup, setShowOrganizationPopup] = useState(false);
-  const [showUserPopup, setshowUserPopup] = useState(false);
-  const [timerID, setTimerID] = useState(null);
+  const [showUserPopup, setShowUserPopup] = useState(false);
+
+  // Fetch roleID from localStorage when component mounts
+  useEffect(() => {
+    const storedRoleID = localStorage.getItem('Role_ID');
+    setRoleID(storedRoleID);
+  }, []);
 
   const handleResetPopupToggle = () => {
     setShowResetPopup(!showResetPopup);
-    setShowInvitePopup(false); // Close invite popup
-    setShowOrganizationPopup(false); // Close organization popup
-    setshowUserPopup(false); // Close admin popup
+    setShowInvitePopup(false);
+    setShowOrganizationPopup(false);
+    setShowUserPopup(false);
   };
 
   const handleInvitePopupToggle = () => {
     setShowInvitePopup(!showInvitePopup);
-    setShowResetPopup(false); // Close reset password popup
-    setShowOrganizationPopup(false); // Close organization popup
-    setshowUserPopup(false); // Close admin popup
+    setShowResetPopup(false);
+    setShowOrganizationPopup(false);
+    setShowUserPopup(false);
   };
 
   const handleOrganizationPopupToggle = () => {
     setShowOrganizationPopup(!showOrganizationPopup);
-    setshowUserPopup(false); // Close admin popup
-    setShowResetPopup(false); // Close reset password popup
-    setShowInvitePopup(false); // Close invite popup
+    setShowUserPopup(false);
+    setShowResetPopup(false);
+    setShowInvitePopup(false);
   };
 
   const handleUserPopupToggle = () => {
-    setshowUserPopup(!showUserPopup);
-    setShowOrganizationPopup(false); // Close organization popup
-    setShowResetPopup(false); // Close reset password popup
-    setShowInvitePopup(false); // Close invite popup
+    setShowUserPopup(!showUserPopup);
+    setShowOrganizationPopup(false);
+    setShowResetPopup(false);
+    setShowInvitePopup(false);
   };
 
   const handleClosePopups = () => {
     setShowResetPopup(false);
     setShowInvitePopup(false);
     setShowOrganizationPopup(false);
-    setshowUserPopup(false);
-    
+    setShowUserPopup(false);
   };
 
   const handleResetSuccess = () => {
@@ -56,29 +61,39 @@ const PopUpContainer = () => {
     setShowInvitePopup(false); 
   };
 
+  if (!roleID) {
+    return <div>Loading...</div>; // Add loading indicator if roleID is not available yet
+  }
+
   return (
     <div>
-      <div onClick={handleResetPopupToggle} > Reset Password</div>
-      <div onClick={handleInvitePopupToggle} > Send Invite</div>
+  <div className="dropdown-item-hover" onClick={handleResetPopupToggle}>Reset Password</div>
+  <div className="dropdown-item-hover" onClick={handleInvitePopupToggle}>Send Invite</div>
 
-      <div  onClick={handleOrganizationPopupToggle} >Organization</div>
-      <div onClick={handleUserPopupToggle} > User</div>
+  {/* Conditionally render based on roleID */}
+  {roleID === '1' && (
+    <>
+      <div className="dropdown-item-hover" onClick={handleOrganizationPopupToggle}>Organization</div>
+      <div className="dropdown-item-hover" onClick={handleUserPopupToggle}>User</div>
+    </>
+  )}
 
-      {(showResetPopup || showInvitePopup || showOrganizationPopup || showUserPopup) && (
-        <div className="popup-container">
-
-            <div className="backdrop" ><span  className="cancel-symbol " onClick={handleClosePopups}>✖</span>
-  </div>
-          <div className="popup-inner" onClick={(e) => e.stopPropagation()}>
-            {showResetPopup && <ResetNewPassword onClose={handleResetSuccess} />}
-            {showInvitePopup && <SendInvite onClose={handleInviteSuccess} />}
-            {showOrganizationPopup && <OrganizationPopup  className="Organisation" handleClose={handleClosePopups} />}
-            
-            {showUserPopup && <UserPop handleClose={handleClosePopups} />}
-          </div>
-        </div>
-      )}
+  {/* Render popups based on roleID */}
+  {(showResetPopup || showInvitePopup || (showOrganizationPopup && roleID === '1') || (showUserPopup && roleID === '1')) && (
+    <div className="popup-container">
+      <div className="backdrop">
+        <span className="cancel-symbol" onClick={handleClosePopups}>✖</span>
+      </div>
+      <div className="popup-inner" onClick={(e) => e.stopPropagation()}>
+        {showResetPopup && <ResetNewPassword onClose={handleResetSuccess} />}
+        {showInvitePopup && <SendInvite onClose={handleInviteSuccess} />}
+        {(showOrganizationPopup && roleID === '1') && <OrganizationPopup className="Organisation" handleClose={handleClosePopups} />}
+        {(showUserPopup && roleID === '1') && <UserPop handleClose={handleClosePopups} />}
+      </div>
     </div>
+  )}
+</div>
+
   );
 };
 
