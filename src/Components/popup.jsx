@@ -67,14 +67,14 @@ const PopUpContainer = () => {
 
   return (
     <div>
-  <div onClick={handleResetPopupToggle}>Reset Password</div>
-  <div onClick={handleInvitePopupToggle}>Send Invite</div>
+  <div className="dropdown-item-hover" onClick={handleResetPopupToggle}>Reset Password</div>
+  <div className="dropdown-item-hover" onClick={handleInvitePopupToggle}>Send Invite</div>
 
   {/* Conditionally render based on roleID */}
   {roleID === '1' && (
     <>
-      <div onClick={handleOrganizationPopupToggle}>Organization</div>
-      <div onClick={handleUserPopupToggle}>User</div>
+      <div className="dropdown-item-hover" onClick={handleOrganizationPopupToggle}>Organization</div>
+      <div className="dropdown-item-hover" onClick={handleUserPopupToggle}>User</div>
     </>
   )}
 
