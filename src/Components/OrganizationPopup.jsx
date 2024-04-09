@@ -55,7 +55,7 @@ const OrgPop = ({ handleClose }) => {
       });
 
       if (response.ok) {
-        console.log('Organization updated successfully');
+        setErrorMessage(false);
         setSuccessMessage('Organization updated successfully');
       } else {
         console.error('Failed to update organization:', response.statusText);
@@ -87,6 +87,7 @@ const OrgPop = ({ handleClose }) => {
 
       if (response.ok) {
         console.log('New organization created successfully');
+        setErrorMessage(false);
         setSuccessMessage('New organization created successfully');
         fetchData();
       } else {
@@ -113,15 +114,17 @@ const OrgPop = ({ handleClose }) => {
       });
 
       if (response.ok) {
-        console.log('Organization deleted successfully');
-        setSuccessMessage('Organization deleted successfully');
+        setErrorMessage(false);
+        setSuccessMessage(true);
         fetchData();
       } else {
-        setErrorMessage('Delete failed: Organization assigned to user!');
+        setSuccessMessage(false);
+        setErrorMessage(true);
         console.error('Failed to delete organization:', response.statusText);
       }
     } catch (error) {
-      setErrorMessage('Delete failed: Organization assigned to user!');
+      setSuccessMessage(false);
+      setErrorMessage(true);
       console.error('Error deleting organization:', error);
     }
   };
@@ -136,8 +139,12 @@ const OrgPop = ({ handleClose }) => {
               <FontAwesomeIcon icon={faPlus} /> Add Organization
             </button>
           </div>
-          {successMessage && <div className="success-message">{successMessage}</div>}
-          {errorMessage && <div className="error-message">{errorMessage}</div>}
+
+            <div className="message-container">
+              {successMessage && <div className="success-message">Organization deleted successfully</div>}
+              {errorMessage && <div className="error-message">Delete failed: Organization assigned to user!</div>}
+            </div>
+  
           <div className=" Org-pop-container table-container">
             <Table striped bordered hover className='grid'>
               <thead className="sticky-header">
