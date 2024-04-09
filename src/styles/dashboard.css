@@ -604,6 +604,10 @@ button, input, optgroup, select, textarea {
 .Upload{
   margin-left: 10px;
 }
+
+.UploadText{
+  padding-left: 7px;
+}
 /* .table-striped>tbody>tr:nth-of-type(odd)>* {
   --bs-table-color-type: var(--bs-table-striped-color);
   --bs-table-bg-type: var(--bs-table-striped-bg);
