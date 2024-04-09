@@ -11,6 +11,7 @@ const OrgPop = ({ handleClose }) => {
   const [editedRowIndex, setEditedRowIndex] = useState(null);
   const [editedOrgName, setEditedOrgName] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const [addMode, setAddMode] = useState(false);
 
   useEffect(() => {
@@ -116,9 +117,11 @@ const OrgPop = ({ handleClose }) => {
         setSuccessMessage('Organization deleted successfully');
         fetchData();
       } else {
+        setErrorMessage('Delete failed: Organization assigned to user!');
         console.error('Failed to delete organization:', response.statusText);
       }
     } catch (error) {
+      setErrorMessage('Delete failed: Organization assigned to user!');
       console.error('Error deleting organization:', error);
     }
   };
@@ -134,6 +137,7 @@ const OrgPop = ({ handleClose }) => {
             </button>
           </div>
           {successMessage && <div className="success-message">{successMessage}</div>}
+          {errorMessage && <div className="error-message">{errorMessage}</div>}
           <div className=" Org-pop-container table-container">
             <Table striped bordered hover className='grid'>
               <thead className="sticky-header">
