@@ -167,6 +167,8 @@
 
 const portfolioOnDrop = useCallback(async (acceptedFiles) => {
   setData([]);
+  setLoading(true); 
+
   acceptedFiles.forEach(async (file) => {
     const reader = new FileReader();
     reader.onload = async (e) => {
@@ -234,6 +236,8 @@ const portfolioOnDrop = useCallback(async (acceptedFiles) => {
             const hasDuplicates = responseData.hasDuplicates;
             if (hasDuplicates === true) {
               setShowModal(true);
+              setLoading(false); 
+
             }
           } else {
             console.error('Error:', response.statusText);
