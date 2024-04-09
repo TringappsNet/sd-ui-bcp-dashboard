@@ -82,6 +82,7 @@
         setEmail(storedEmail);
 
         fetchData();
+        console.log(retriveData);
         setShowPreview(true);
       }
     }, [navigate]);
@@ -143,6 +144,7 @@
         if (response.ok) {
           const excelData = await response.json();
           setRetriveData(excelData);
+          
         } else {
           console.error("Failed to fetch data:", response.statusText);
         }
@@ -397,6 +399,7 @@ const onDrop = useCallback(async (acceptedFiles) => {
         });
         setData((prevData) => [...prevData, ...updatedData]);
         setUploadedFileName(file.name);
+        // console.log("Updated Data",updatedData);
 
         const Role_ID = localStorage.getItem('Role_ID');
         const Org_ID = localStorage.getItem('Org_ID');
@@ -522,21 +525,17 @@ const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
    
     const formatMonthYear = (dateString) => {
       const date = new Date(dateString);
-      // Add 10 seconds to the date
-      date.setSeconds(date.getSeconds() + 100);
-      const month = date.toLocaleString('default', { month: 'short' });
-      const year = date.getFullYear().toString().substr(-2);
-      return `${month.toUpperCase()} ${year}`;
+      const month = new Intl.DateTimeFormat('en-US', { month: 'short' }).format(date);
+      const year = date.getFullYear();
+      const formattedDate = `${month} ${year}`;
+      // console.log('Formatted monthyear:', formattedDate); // Log the formatted date to the console
+      return formattedDate;
     };
-    
-// Modify the function used to render the date cell
-const formatDateCell = (value, key) => {
-  // Check if the key is "MonthYear"
+
+    const formatDateCell = (value, key) => {
   if (key === "MonthYear") {
-    // Format the date using the formatMonthYear function
     return formatMonthYear(value);
   }
-  // Return the value as is for other keys
   return value;
 };
 
