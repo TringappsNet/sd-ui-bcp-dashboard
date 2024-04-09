@@ -9,6 +9,7 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
 import PopUpContainer from "./popup";
 import "../styles/NavBar.css";
 const NavbarComponent = ({ username, handleLogout, isMobile }) => {
+  const role = localStorage.getItem('role');
   return (
     <Navbar bg="light" expand="lg" className="w-100">
     <a href="/dashboard" className="brand-wrapper">
@@ -26,6 +27,9 @@ const NavbarComponent = ({ username, handleLogout, isMobile }) => {
             >
               <div className="username-container">
                 {username}
+              </div>
+              <div className="username-container">
+                ({role})
                 <FontAwesomeIcon className="username" icon={faUser} />
               </div>
             </Dropdown.Toggle>
@@ -41,7 +45,7 @@ const NavbarComponent = ({ username, handleLogout, isMobile }) => {
           <React.Fragment>
             <div className="smallscreen">
               <div className="ml-auto align-items-center user ">
-                <FontAwesomeIcon icon={faUser} /> {username}
+                <FontAwesomeIcon icon={faUser} /> {username} {role}
               </div>
               <PopUpContainer>
               </PopUpContainer>

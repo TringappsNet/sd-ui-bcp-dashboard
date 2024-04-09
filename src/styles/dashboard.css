@@ -18,8 +18,8 @@
   }
 
   .dropdown-menu {
-    min-width: 100px;
-    margin-left: 82px;
+    min-width: 210px;
+    /* margin-left: 70px; */
     margin-top: 20px;
     padding: 11px;
     --bs-dropdown-link-active-color: #000000; 
