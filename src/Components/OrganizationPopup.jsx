@@ -145,6 +145,29 @@ const OrgPop = ({ handleClose }) => {
                 </tr>
               </thead>
               <tbody>
+              {addMode && (
+                  <tr>
+                    <td colSpan={Object.keys(excelData[0] || {}).length}>
+                      <input
+                        type="text"
+                        className='OrgIn'
+                        placeholder="New organization "
+                        value={editedOrgName}
+                        onChange={handleInputChange}
+                      />
+                    </td>
+                    <td>
+                      <div className='editSave action-buttons'>
+                        <div onClick={handleSaveNewOrg}>
+                          <FontAwesomeIcon icon={faSave} />
+                        </div>
+                        <div onClick={() => setAddMode(false)}>
+                          <FontAwesomeIcon icon={faTimesCircle} />
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                )}
                 {excelData.map((row, index) => (
                   <tr key={index}>
                     {Object.keys(row).map((key, i) => (
@@ -184,29 +207,7 @@ const OrgPop = ({ handleClose }) => {
                     </td>
                   </tr>
                 ))}
-                {addMode && (
-                  <tr>
-                    <td colSpan={Object.keys(excelData[0] || {}).length}>
-                      <input
-                        type="text"
-                        className='OrgIn'
-                        placeholder="Enter new organization name"
-                        value={editedOrgName}
-                        onChange={handleInputChange}
-                      />
-                    </td>
-                    <td>
-                      <div className='editSave action-buttons'>
-                        <div onClick={handleSaveNewOrg}>
-                          <FontAwesomeIcon icon={faSave} />
-                        </div>
-                        <div onClick={() => setAddMode(false)}>
-                          <FontAwesomeIcon icon={faTimesCircle} />
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                )}
+              
               </tbody>
             </Table>
           </div>

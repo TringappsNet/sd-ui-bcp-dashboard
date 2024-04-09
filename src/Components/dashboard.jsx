@@ -47,8 +47,6 @@
     const [retriveData, setRetriveData] = useState([]);
     const [snackbarMessage, setSnackbarMessage] = useState("");
     const [isMobile, setIsMobile] = useState(false);
-    const [navbarCollapsed, setNavbarCollapsed] = useState(false); // Track Navbar collapse state
-    const [snackbarColor, setSnackbarColor] = useState("success"); 
     const [uploadedFileName, setUploadedFileName] = useState("");
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [sessionExpired, setSessionExpired] = useState(false); // Track session expiration
@@ -57,6 +55,7 @@
     const [snackbarVariant, setSnackbarVariant] = useState('success');
     const [showModal, setShowModal] = useState(false);
     const [roleID, setRoleID] = useState('');
+    
     const [selectedPortfolio, setSelectedPortfolio] = useState(""); 
     const [selectedFinancial, setSelectedFinancial] = useState(""); 
     const [uploadPlaceholder, setUploadPlaceholder] = useState("Upload");
@@ -164,101 +163,190 @@
       setShowModal(false);
     };
     
-    const onDrop = useCallback((acceptedFiles) => {
-      setData([]);
-      setFinancialData([]);
-   
-      acceptedFiles.forEach(async (file) => {
-        const reader = new FileReader();
-        reader.onload = async (e) => {
-          const data = e.target.result;
-          try {
-            const workbook = XLSX.read(data, { type: "buffer", cellDates: true });
-            const sheetName = workbook.SheetNames[0];
-            const sheet = workbook.Sheets[sheetName];
-            const jsonData = XLSX.utils.sheet_to_json(sheet, {
-              header: 1,
-              dateNF: "yyyy-mm-dd hh:mm:ss",
-            });
-            const trimmedData = jsonData.filter((row) =>
-              row.some((cell) => cell !== null && cell !== "")
-            );
-            const header = trimmedData.shift();
-            const mappedHeader = header.map((col) => columnMap[col] || col);
-            const newJsonData = trimmedData.map((row) => {
-              const obj = {};
-              mappedHeader.forEach((key, index) => {
-                obj[key] = row[index];
-              });
-              return obj;
-            });
-            if (selectedOption === "Financial") {
-              setFinancialData((prevData) => [...prevData, ...newJsonData]);
-            } else if (selectedOption === "Portfolio") {
-              setData((prevData) => [...prevData, ...newJsonData]);
-            }
 
 
-            const updatedData = newJsonData.map((row) => {
-              if (row["MonthYear"]) {
-                const dateString = row["MonthYear"].toString();
-                const date = new Date(dateString);
-                const year = date.getFullYear();
-                const month = (date.getMonth() + 1).toString().padStart(2, "0");
-                const day = date.getDate().toString().padStart(2, "0");
-                const hours = date.getHours().toString().padStart(2, "0");
-                const minutes = date.getMinutes().toString().padStart(2, "0");
-                const seconds = "00";
-                const formattedDate = `${year}-${month}-${day}' '${hours}:${minutes}:${seconds}`;
-                row["MonthYear"] = formattedDate;
-              }
-              return row;
-            });
-            setData((prevData) => [...prevData, ...updatedData]);
-            setUploadedFileName(file.name);
-    
-            const Role_ID = localStorage.getItem('Role_ID');
-            const Org_ID = localStorage.getItem('Org_ID');
-            const userId = localStorage.getItem('user_ID');
-            try {
-                const response = await fetch(`${PortURL}/validate-duplicates`, {
+const portfolioOnDrop = useCallback(async (acceptedFiles) => {
+  setData([]);
+  acceptedFiles.forEach(async (file) => {
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      const data = e.target.result;
+      try {
+        const workbook = XLSX.read(data, { type: "buffer", cellDates: true });
+        const sheetName = workbook.SheetNames[0];
+        const sheet = workbook.Sheets[sheetName];
+        const jsonData = XLSX.utils.sheet_to_json(sheet, {
+          header: 1,
+          dateNF: "yyyy-mm-dd hh:mm:ss",
+        });
+        const trimmedData = jsonData.filter((row) =>
+          row.some((cell) => cell !== null && cell !== "")
+        );
+        const header = trimmedData.shift();
+        const mappedHeader = header.map((col) => columnMap[col] || col);
+        const newJsonData = trimmedData.map((row) => {
+          const obj = {};
+          mappedHeader.forEach((key, index) => {
+            obj[key] = row[index];
+          });
+          return obj;
+        });
 
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                  userData: {
-                    userId: userId,
-                    Org_ID: Org_ID,
-                  },
-                  data: updatedData,
-                }),
-              });
-              if (response.ok) {
-                const responseData = await response.json();
-                const hasDuplicates = responseData.hasDuplicates;
-                if (hasDuplicates === true) {
-                  setShowModal(true);
-                }
-              } else {
-                console.error('Error:', response.statusText);
-              }
-            } catch (error) {
-              console.error('Error calling validate API:', error);
-            }
-          } catch (error) {
-            console.error("Error reading file:", error);
+        const updatedData = newJsonData.map((row) => {
+          if (row["MonthYear"]) {
+            const dateString = row["MonthYear"].toString();
+            const date = new Date(dateString);
+            const year = date.getFullYear();
+            const month = (date.getMonth() + 1).toString().padStart(2, "0");
+            const day = date.getDate().toString().padStart(2, "0");
+            const hours = date.getHours().toString().padStart(2, "0");
+            const minutes = date.getMinutes().toString().padStart(2, "0");
+            const seconds = "00";
+            const formattedDate = `${year}-${month}-${day}' '${hours}:${minutes}:${seconds}`;
+            row["MonthYear"] = formattedDate;
           }
-        };
-        reader.readAsArrayBuffer(file);
-      });
-    }, [selectedOption, setData, setFinancialData, setUploadedFileName]);
+          return row;
+        });
 
+        setData((prevData) => [...prevData, ...newJsonData]);
+        setUploadedFileName(file.name);
+
+        const Role_ID = localStorage.getItem('Role_ID');
+        const Org_ID = localStorage.getItem('Org_ID');
+        const userId = localStorage.getItem('user_ID');
+        try {
+            const response = await fetch(`${PortURL}/validate-duplicates`, {
+
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              userData: {
+                userId: userId,
+                Org_ID: Org_ID,
+              },
+              data: updatedData,
+            }),
+          });
+          if (response.ok) {
+            const responseData = await response.json();
+            const hasDuplicates = responseData.hasDuplicates;
+            if (hasDuplicates === true) {
+              setShowModal(true);
+            }
+          } else {
+            console.error('Error:', response.statusText);
+          }
+        } catch (error) {
+          console.error('Error calling validate API:', error);
+        }
+
+
+      } catch (error) {
+        console.error("Error reading file:", error);
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  });
+}, [setData, setUploadedFileName]);
+
+
+const financialOnDrop = useCallback(async (acceptedFiles) => {
+  setFinancialData([]);
+  acceptedFiles.forEach(async (file) => {
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      const data = e.target.result;
+      try {
+        const workbook = XLSX.read(data, { type: "buffer", cellDates: true });
+        const sheetName = workbook.SheetNames[0];
+        const sheet = workbook.Sheets[sheetName];
+        const jsonData = XLSX.utils.sheet_to_json(sheet, {
+          header: 1,
+          dateNF: "yyyy-mm-dd hh:mm:ss",
+        });
+        const trimmedData = jsonData.filter((row) =>
+          row.some((cell) => cell !== null && cell !== "")
+        );
+        const header = trimmedData.shift();
+        const mappedHeader = header.map((col) => columnMap[col] || col);
+        const newJsonData = trimmedData.map((row) => {
+          const obj = {};
+          mappedHeader.forEach((key, index) => {
+            obj[key] = row[index];
+          });
+          return obj;
+        });
+
+        const updatedData = newJsonData.map((row) => {
+          if (row["MonthYear"]) {
+            const dateString = row["MonthYear"].toString();
+            const date = new Date(dateString);
+            const year = date.getFullYear();
+            const month = (date.getMonth() + 1).toString().padStart(2, "0");
+            const day = date.getDate().toString().padStart(2, "0");
+            const hours = date.getHours().toString().padStart(2, "0");
+            const minutes = date.getMinutes().toString().padStart(2, "0");
+            const seconds = "00";
+            const formattedDate = `${year}-${month}-${day}' '${hours}:${minutes}:${seconds}`;
+            row["MonthYear"] = formattedDate;
+          }
+          return row;
+        });
+
+        setFinancialData((prevData) => [...prevData, ...newJsonData]);
+        setUploadedFileName(file.name);
+
+        const Role_ID = localStorage.getItem('Role_ID');
+        const Org_ID = localStorage.getItem('Org_ID');
+        const userId = localStorage.getItem('user_ID');
+        try {
+            const response = await fetch(`${PortURL}/upload-financial-data`, {
+
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              userData: {
+                userId: userId,
+                Org_ID: Org_ID,
+              },
+              data: updatedData,
+            }),
+          });
+          if (response.ok) {
+            console.log('Financial data uploaded successfully');
+          } else {
+            console.error('Error:', response.statusText);
+          }
+        } catch (error) {
+          console.error('Error uploading financial data:', error);
+        }
+
+
+      } catch (error) {
+        console.error("Error reading file:", error);
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  });
+}, [setFinancialData]);
+
+// Main onDrop function
+const onDrop = useCallback((acceptedFiles) => {
+  if (selectedOption === "Financial") {
+    financialOnDrop(acceptedFiles);
+  } else if (selectedOption === "Portfolio") {
+    portfolioOnDrop(acceptedFiles);
+  }
+}, [selectedOption, financialOnDrop, portfolioOnDrop]);
+
+const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
 
     
-    const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
 
     const filteredData = retriveData.filter((row) => {
@@ -742,24 +830,25 @@ const handleFinancialSelect = (financial) => {
             roleID !== '3' && <p className="mb-0">No file uploaded</p>
           )}
         </div>
-        <div className="spacer"></div>
-        {roleID !== '3' && (
-        <div className="custom-file-upload d-flex align-items-center">
-          
-          <div {...getRootProps()} className="Upload-Form">
-            <input {...getInputProps()} accept=".xlsx, .xls" />
-            {isDragActive ? (
-              <p>Drop the files here ...</p>
-            ) : (
-              <Button className="btn btn-secondary btn-sm Upload">
-                <FontAwesomeIcon className="clearicon" icon={faUpload} />
-                {uploadPlaceholder}
-              </Button>
-            )}
-          </div>
 
-          <Dropdown className='dropdown-Form'>
-          <Dropdown.Toggle variant="secondary" id="dropdown-basic">
+    <div className="spacer"></div>
+    <div className="custom-file-upload d-flex align-items-center">
+      
+      <div {...getRootProps()} className="Upload-Form">
+        <input {...getInputProps()} accept=".xlsx, .xls" />
+        {isDragActive ? (
+          <p>Drop the files here ...</p>
+        ) : (
+          <Button className="btn btn-secondary btn-sm Upload" onClick={() => handlePortfolioSelect('Portfolio ')} >
+             <FontAwesomeIcon className="clearicon" icon={faUpload} />
+             Upload
+           </Button>
+        )}
+      </div>
+
+
+            {/* <Dropdown className='dropdown-Form'>
+          <Dropdown.Toggle variant="secondary" id="dropdown-basic dropdown">
             <FontAwesomeIcon icon={faAngleDown} />
           </Dropdown.Toggle>
 
@@ -767,7 +856,7 @@ const handleFinancialSelect = (financial) => {
             <Dropdown.Item onClick={() => handleFinancialSelect('Financial')}>Financial </Dropdown.Item>
             <Dropdown.Item onClick={() => handlePortfolioSelect('Portfolio ')}>Portfolio </Dropdown.Item>
           </Dropdown.Menu>
-        </Dropdown>
+        </Dropdown> */}
 
         {roleID !== '3' && (
         <Button className="btn  btn-secondary submit" onClick={handleSubmit}>
@@ -775,8 +864,9 @@ const handleFinancialSelect = (financial) => {
         </Button>
         )}
       </div>
-      )}
     </Form>
+
+
 
 
     

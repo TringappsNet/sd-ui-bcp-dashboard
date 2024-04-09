@@ -39,7 +39,7 @@ display: flex;
   }
 
   .dropdown {
-    /* padding-left: 100px; */
+    padding-left: 100px;
     display: flex;
     flex-direction: row-reverse;
     cursor: pointer;
