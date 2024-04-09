@@ -41,6 +41,11 @@
     /* max-width: 1000px; */
   }
   
+  .dropdown-item-hover:hover {
+    background-color: #d6d6d6; /* Change the background color on hover */
+    cursor: pointer; /* Change the cursor to indicate interaction */
+  }
+  
   
 .Orgainsation{
   background-color: aqua;
