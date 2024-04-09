@@ -743,6 +743,7 @@ const handleFinancialSelect = (financial) => {
       )}
     </div>
     <div className="spacer"></div>
+    {roleID !== '3' && (
     <div className="custom-file-upload d-flex align-items-center">
       
       <div {...getRootProps()} className="Upload-Form">
@@ -774,6 +775,7 @@ const handleFinancialSelect = (financial) => {
         </Button>
         )}
       </div>
+      )}
     </Form>
 
 
