@@ -422,7 +422,8 @@ const onDrop = useCallback(async (acceptedFiles) => {
             if (hasDuplicates === true) {
               setShowModal(true);
               setLoading(false); 
-
+            }else if(hasDuplicates === false){
+              setLoading(false); 
             }
           } else {
             console.error('Error:', response.statusText);
