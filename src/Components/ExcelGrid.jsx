@@ -17,7 +17,7 @@ const ExcelGrid = ({
   handleInputChange,
   handleSave,
   handleDelete,
-  formatDateCell,
+  // formatDateCell,
   roleID // Pass Role_ID as a prop
 }) => {
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
@@ -46,6 +46,26 @@ const ExcelGrid = ({
     return filteredData;
   };
 
+
+  
+  const formatMonthYear = (dateString) => {
+    const date = new Date(dateString);
+    const month = new Intl.DateTimeFormat('en-US', { month: 'short' }).format(date);
+    const year = date.getFullYear();
+    const formattedDate = `${month} ${year}`;
+    return formattedDate;
+  };
+  
+
+
+
+const formatDateCell = (value, key) => {
+if (key === "MonthYear") {
+return formatMonthYear(value);
+}
+return value;
+};
+
   return (
     <Container fluid className="mt-2">
       <Row className="row Render-Row">
@@ -69,13 +89,22 @@ const ExcelGrid = ({
                 {sortedData().map((row, index) => (
                   <tr key={index}>
                     {Object.keys(row).map((key) => (
-                      <td key={key}>
+                    
+                    <td key={key}>
+                       
                         {editedRowId === index ? (
+                        
+                        key === 'CompanyName' ? (
+                          <span>{row[key]}</span>
+                        ) : key === 'monthyear' ? (
+                          <span>{formatMonthYear(row[key])}</span> 
+                        ) : (
                           <input
                             type="text"
                             value={editedRowData[key] || ''}
                             onChange={(e) => handleInputChange(e, key)}
                           />
+                        )
                         ) : (
                           formatDateCell(row[key], key)
                         )}
