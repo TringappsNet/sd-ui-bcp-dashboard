@@ -5,11 +5,11 @@ const ConfirmationModal = ({ show, onHide, onConfirm, message }) => {
   return (
     <Modal show={show} onHide={onHide} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Confirm Action</Modal.Title>
+        <Modal.Title >Confirm Action</Modal.Title>
       </Modal.Header>
-      <Modal.Body>{message}</Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={onHide}>
+      <Modal.Body >{message}</Modal.Body>
+      <Modal.Footer >
+        <Button variant="danger" onClick={onHide}>
           Cancel
         </Button>
         <Button variant="primary" onClick={onConfirm}>

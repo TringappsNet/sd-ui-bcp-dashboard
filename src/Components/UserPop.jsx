@@ -125,6 +125,7 @@ const UserPop = ({ handleClose }) => {
       if (isActive) {
         setRowToDeactivate(index);
         setShowConfirmationModal(true);
+        
       } else {
         console.log('User is already deactivated.');
       }
@@ -185,6 +186,8 @@ const UserPop = ({ handleClose }) => {
             show={showConfirmationModal}
             onHide={() => setShowConfirmationModal(false)}
             onConfirm={confirmDeactivation}
+            message="Are you sure you want to Deactivate the User?"
+
           />  
       <Col className="col col1 Render-Col">
         {editSuccess && (

@@ -46,13 +46,20 @@ const ExcelGrid = ({
     return filteredData;
   };
 
-
-  
   const formatMonthYear = (dateString) => {
-    const date = new Date(dateString);
-    const month = new Intl.DateTimeFormat('en-US', { month: 'short' }).format(date);
-    const year = date.getFullYear();
-    const formattedDate = `${month} ${year}`;
+    // Split the dateString into month and year parts
+    const [monthStr, yearStr] = dateString.split(' ');
+    // Convert the month string into a number (0-indexed)
+    const month = new Date(Date.parse(monthStr + ' 1, 2000')).getMonth();
+    // Get the year as a number
+    const year = parseInt(yearStr) + 2000; // Assuming '22' means '2022'
+  
+    // Format the date using Intl.DateTimeFormat
+    const formattedDate = new Intl.DateTimeFormat('en-US', {
+      month: 'short',
+      year: 'numeric'
+    }).format(new Date(year, month));
+  
     return formattedDate;
   };
   
