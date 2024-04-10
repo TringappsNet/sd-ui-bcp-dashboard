@@ -97,11 +97,17 @@ function Register() {
       });
   
       if (response.ok) {
+        setLoading(false); 
+        const data = await response.json();
+        setSnackbarMessage(data.message); 
+        setSnackbarOpen(true);
+        setSnackbarVariant('success');
         console.log('User registered successfully!');
-        navigate('/login');
+        setTimeout(() => {
+          navigate('/login');
+        }, 5000);
       } else {
         const data = await response.json();
-        console.error('Error registering user:', data.message);
         if (response.status === 400) {
           if (data.errors) {
             if (data.errors.firstName) {
@@ -114,22 +120,23 @@ function Register() {
               setPhoneNumberError(data.errors.phoneNo);
             }
             if (data.errors.password) {
-              setPasswordError(data.errors.password);
-            }
+              setSnackbarMessage(data.errors.password);
+              setSnackbarOpen(true);
+              setSnackbarVariant('error');            }
           } else {
             console.error('Unexpected server error:', data.message);
           }
+        } else {
+          console.error('Error registering user:', data.message);
         }
-        setSnackbarMessage(data.error || 'An error occurred while registering.');
+        setSnackbarMessage(data.errors.password);
         setSnackbarOpen(true);
         setSnackbarVariant('error');
       }
     } catch (error) {
-      console.error('Error registering user:', error.message);
       setSnackbarMessage('An error occurred while registering.');
       setSnackbarOpen(true);
       setSnackbarVariant('error');
-
     }
     setLoading(false); 
   };
@@ -265,6 +272,7 @@ function Register() {
       <CustomSnackbar
         open={snackbarOpen}
         message={snackbarMessage}
+        variant={snackbarVariant}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         onClose={handleCloseSnackbar}
       />
