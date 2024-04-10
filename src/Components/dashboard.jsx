@@ -49,20 +49,20 @@
     const [isMobile, setIsMobile] = useState(false);
     const [uploadedFileName, setUploadedFileName] = useState("");
     const [showConfirmation, setShowConfirmation] = useState(false);
-    const [sessionExpired, setSessionExpired] = useState(false); // Track session expiration
+    // const [sessionExpired, setSessionExpired] = useState(false); // Track session expiration
     const [remainingTime, setRemainingTime] = useState(500); // 60 seconds for one minute
     const [logoutModalOpen, setLogoutModalOpen] = useState(false);
     const [snackbarVariant, setSnackbarVariant] = useState('success');
     const [showModal, setShowModal] = useState(false);
     const [roleID, setRoleID] = useState('');
     
-    const [selectedPortfolio, setSelectedPortfolio] = useState(""); 
-    const [selectedFinancial, setSelectedFinancial] = useState(""); 
-    const [uploadPlaceholder, setUploadPlaceholder] = useState("Upload");
-    const [financialData, setFinancialData] = useState([]);
-    const [isFinancial, setIsFinancial] = useState(false);
+    // const [selectedPortfolio, setSelectedPortfolio] = useState(""); 
+    // const [selectedFinancial, setSelectedFinancial] = useState(""); 
+    // const [uploadPlaceholder, setUploadPlaceholder] = useState("Upload");
+    // const [financialData, setFinancialData] = useState([]);
+    // const [isFinancial, setIsFinancial] = useState(false);
 
-    const [selectedOption, setSelectedOption] = useState(null);
+    // const [selectedOption, setSelectedOption] = useState(null);
 
     const navigate = useNavigate();
    
@@ -87,11 +87,9 @@
     }, [navigate]);
 
     useEffect(() => {
-      // Set up a timer to decrement remainingTime every second
       const timer = setInterval(() => {
         setRemainingTime((prevTime) => {
           if (prevTime <= 0) {
-            // Session expired, trigger logout
             clearInterval(timer);
             handleLogout();
             return 0;
@@ -100,14 +98,12 @@
         });
       }, 1000);
   
-      // Clean up timer on component unmount
       return () => clearInterval(timer);
     }, []);
   
     useEffect(() => {
       if (remainingTime === 0) {
-        // Session expired, redirect to login page
-        handleLogout(); // Or any other logout logic you have
+        handleLogout(); 
         navigate("/login");
       }
     }, [remainingTime]);
@@ -143,6 +139,7 @@
         if (response.ok) {
           const excelData = await response.json();
           setRetriveData(excelData);
+          // console.log("retrived data",excelData);
         } else {
           console.error("Failed to fetch data:", response.statusText);
         }
@@ -365,7 +362,7 @@ const onDrop = useCallback(async (acceptedFiles) => {
         const sheet = workbook.Sheets[sheetName];
         const jsonData = XLSX.utils.sheet_to_json(sheet, {
           header: 1,
-          dateNF: "yyyy-mm-dd hh:mm:ss",
+          dateNF: "mmm-yy", // Specify the custom date format as "Jan-22"
         });
         const trimmedData = jsonData.filter((row) =>
           row.some((cell) => cell !== null && cell !== "")
@@ -377,13 +374,18 @@ const onDrop = useCallback(async (acceptedFiles) => {
           mappedHeader.forEach((key, index) => {
             obj[key] = row[index];
           });
+          //console.log("obj",obj);
+
           return obj;
         });
 
         const updatedData = newJsonData.map((row) => {
           if (row["MonthYear"]) {
             const dateString = row["MonthYear"].toString();
-            const date = new Date(dateString);
+            let date = new Date(dateString);
+            // Add 1 minute
+            date.setMinutes(date.getMinutes() + 1);
+            // const date = new Date(dateString);
             const year = date.getFullYear();
             const month = (date.getMonth() + 1).toString().padStart(2, "0");
             const day = date.getDate().toString().padStart(2, "0");
@@ -393,6 +395,7 @@ const onDrop = useCallback(async (acceptedFiles) => {
             const formattedDate = `${year}-${month}-${day}' '${hours}:${minutes}:${seconds}`;
             row["MonthYear"] = formattedDate;
           }
+          // console.log(row["MonthYear"], typeof row["MonthYear"]);
           return row;
         });
         setData((prevData) => [...prevData, ...updatedData]);
@@ -520,25 +523,23 @@ const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
     };
 
    
-    const formatMonthYear = (dateString) => {
-      const date = new Date(dateString);
-      // Add 10 seconds to the date
-      date.setSeconds(date.getSeconds() + 100);
-      const month = date.toLocaleString('default', { month: 'short' });
-      const year = date.getFullYear().toString().substr(-2);
-      return `${month.toUpperCase()} ${year}`;
-    };
+
+
+//     const formatMonthYear = (dateString) => {
+//       const date = new Date(dateString);
+//       // Add 10 seconds to the date
+//       date.setSeconds(date.getSeconds() + 100);
+//       const month = date.toLocaleString('default', { month: 'short' });
+//       const year = date.getFullYear().toString().substr(-2);
+//       return `${month.toUpperCase()} ${year}`;
+//     };
     
-// Modify the function used to render the date cell
-const formatDateCell = (value, key) => {
-  // Check if the key is "MonthYear"
-  if (key === "MonthYear") {
-    // Format the date using the formatMonthYear function
-    return formatMonthYear(value);
-  }
-  // Return the value as is for other keys
-  return value;
-};
+// const formatDateCell = (value, key) => {
+//   if (key === "MonthYear") {
+//     return formatMonthYear(value);
+//   }
+//   return value;
+// };
 
 
 
@@ -705,25 +706,22 @@ const formatDateCell = (value, key) => {
 
 
 const handleSubmit = async () => {
-  // Check if the data array is empty
   if (data.length === 0) {
     setSnackbarOpen(true);
     setSnackbarMessage("File is empty");
     setSnackbarVariant("error");
-    return; // Exit the function early if the data array is empty
+    return;
   }
 
   setLoading(true); 
 
   try {
-    // Get session ID and organization from local storage
     const sessionId = localStorage.getItem('sessionId');
     const email = localStorage.getItem('email');
     // const organization = localStorage.getItem('Organisation');
     const Role_ID = localStorage.getItem('Role_ID');
     const Org_ID = localStorage.getItem('Org_ID');
     const userId = localStorage.getItem('user_ID');
-    // Create userData object with username and organization
 
     const userData = {
       username: username,
@@ -735,7 +733,6 @@ const handleSubmit = async () => {
 
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    // Send POST request to the server
     const response = await fetch(`${PortURL}/bulk-upload-update`, {
       method: "POST",
       headers: {
@@ -747,7 +744,8 @@ const handleSubmit = async () => {
     });
 
     if (response.ok) {
-      // Reset state and display success message
+      // console.log("Date format",data);
+
       setData([]);
       fetchData();
       const jsonResponse = await response.json();
@@ -765,7 +763,6 @@ const handleSubmit = async () => {
       setSnackbarVariant("error");
     }
   } catch (error) {
-    // Display error message
     console.error("Error:", error);
     setSnackbarOpen(true);
     setSnackbarMessage("Data upload failed");
@@ -1117,7 +1114,7 @@ const handleSubmit = async () => {
       handleInputChange={handleInputChange}
       handleSave={handleSave}
       handleDelete={handleDelete}
-      formatDateCell={formatDateCell}
+      // formatDateCell={formatDateCell}
       roleID={roleID}
     />
   )}

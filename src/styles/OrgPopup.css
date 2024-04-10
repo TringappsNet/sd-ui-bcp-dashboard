@@ -90,6 +90,9 @@ table{
   border-radius: 4px;
 }
 
+.OrgIn::placeholder{
+  padding-left: 20px;
+}
 .OrgHead{
   display: flex;
   flex-direction: row;

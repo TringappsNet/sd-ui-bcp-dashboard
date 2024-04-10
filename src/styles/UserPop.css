@@ -50,6 +50,11 @@
       height: 35px;
       border: 1px solid black;
 
+
+    }
+
+    .Usersearch::placeholder{
+      padding-left: 20px;
     }
 
 
@@ -97,8 +102,8 @@
     border-radius: 8px;
     margin-top: 20px;
     padding: 0;
-    width: 1000px;
-}
+    /* width: 1000px; */
+}  
 td, th {
     padding: 8px;
     text-align: center;
