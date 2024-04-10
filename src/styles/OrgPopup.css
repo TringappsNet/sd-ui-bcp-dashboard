@@ -91,7 +91,7 @@ table{
 }
 
 .OrgIn::placeholder{
-  padding-left: 20px;
+  padding-left: 10px;
 }
 .OrgHead{
   display: flex;
