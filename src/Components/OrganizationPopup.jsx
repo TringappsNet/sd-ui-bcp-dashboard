@@ -118,17 +118,20 @@ const OrgPop = ({ handleClose }) => {
       if (response.ok) {
         setErrorMessage(false);
         setSuccessMessage(true);
+        setSuccessMessage('Organization Deleted Successfully')
         setTimeout(() => setSuccessMessage(''), 3000);
         fetchData();
       } else {
         setSuccessMessage(false);
         setErrorMessage(true);
+        setErrorMessage('Delete failed: Organization assigned to user!');
         setTimeout(() => setErrorMessage(''), 3000);
         console.error('Failed to delete organization:', response.statusText);
       }
     } catch (error) {
       setSuccessMessage(false);
       setErrorMessage(true);
+      setErrorMessage('Delete failed: Organization assigned to user!');
       console.error('Error deleting organization:', error);
     }
   };
@@ -145,8 +148,8 @@ const OrgPop = ({ handleClose }) => {
           </div>
 
             <div className="message-container">
-              {successMessage && <div className="success-message">Organization deleted successfully</div>}
-              {errorMessage && <div className="error-message">Delete failed: Organization assigned to user!</div>}
+              {successMessage && <div className="success-message">{successMessage}</div>}
+              {errorMessage && <div className="error-message">{errorMessage}</div>}
             </div>
   
           <div className=" Org-pop-container table-container">
