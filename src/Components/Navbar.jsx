@@ -25,13 +25,16 @@ const NavbarComponent = ({ username, handleLogout, isMobile }) => {
               as="div"
               className="customDropdown"
             >
+              <div className='access-container'>
               <div className="username-container">
                 {username}
               </div>
-              <div className="username-container">
+              <div className="role-container">
                 ({role})
-                <FontAwesomeIcon className="username" icon={faUser} />
               </div>
+              </div>
+              
+              <FontAwesomeIcon className="username" icon={faUser} />
             </Dropdown.Toggle>
   
             <Dropdown.Menu  className='Menu'>
@@ -44,8 +47,11 @@ const NavbarComponent = ({ username, handleLogout, isMobile }) => {
         ) : (
           <React.Fragment>
             <div className="smallscreen">
-              <div className="ml-auto align-items-center user ">
-                <FontAwesomeIcon icon={faUser} /> {username} {role}
+              <div className="ml-auto user ">
+              <FontAwesomeIcon className='icon' icon={faUser} />{username} 
+              </div>
+              <div className="ml-auto role">
+                 ({role})
               </div>
               <PopUpContainer>
               </PopUpContainer>
