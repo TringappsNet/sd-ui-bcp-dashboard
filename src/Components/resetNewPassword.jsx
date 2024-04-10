@@ -14,17 +14,10 @@ function ResetNewPassword({ onClose }) {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [snackbarVariant, setSnackbarVariant] = useState('success');
 
-  
-  const handleCloseSnackbar = () => {
-    setSnackbarOpen(false);
-    setSnackbarMessage('');
-
+  const hasError = (field) => {
+    return error && error.toLowerCase().includes(field.toLowerCase());
   };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true); 
@@ -32,10 +25,11 @@ function ResetNewPassword({ onClose }) {
     if (newPassword !== confirmNewPassword) {
       setError('Passwords do not match');
       setLoading(false);
-      setSnackbarVariant('error');
-      setSnackbarMessage('Passwords do not match');
-      setSnackbarOpen(true);
-
+  
+      setTimeout(() => {
+        setError(null);
+      }, 5000); // Set timeout to clear the error message after 2 seconds
+  
       return;
     }
   
@@ -58,33 +52,38 @@ function ResetNewPassword({ onClose }) {
         setError(null);
         setTimeout(() => {
           onClose();
-        }, 5000);
+        }, 3000);
       } else {
         const data = await response.json();
         setError(data.message);
-        
+  
+        setTimeout(() => {
+          setError(null);
+        }, 5000); 
       }
     } catch (error) {
       console.error('Error resetting password:', error.message);
       setError('Error resetting password');
-      setSnackbarVariant('error');
-      setSnackbarMessage('Error resetting password');
-      setSnackbarOpen(true);
+  
+      setTimeout(() => {
+        setError(null);
+      }, 5000); 
     }
     setLoading(false); 
   };
   
   
+  
   return (
     <div className="form d-flex justify-content-center align-items-center">
       <Container className="mt-6 p-4 shadow bg-body rounded">
-        <h6 className="text-center mb-5 mt-3 fw-bold">RESET PASSWORD</h6>
+        <h6 className="text-center mb-3 mt-3 fw-bold">RESET PASSWORD</h6>
         <Form onSubmit={handleSubmit}>
           {error && <div className="text-danger mb-3">{error}</div>}
           {success && <div className="text-success mb-3">Password reset successfully!</div>}
           <Form.Group controlId="formBasicOldPassword" className="mb-4">
             <TextField
-              className="label"
+              className={`label ${hasError('old password') ? 'error' : ''}`} 
               type="password"
               label="Old password"
               value={oldPassword}
@@ -96,7 +95,7 @@ function ResetNewPassword({ onClose }) {
           </Form.Group>
           <Form.Group controlId="formBasicNewPassword" className="mb-4">
             <TextField
-              className="label"
+              className={`label ${hasError('new password') ? 'error' : ''}`} // Apply error class if error occurred
               type="password"
               label="New password"
               value={newPassword}
@@ -108,7 +107,7 @@ function ResetNewPassword({ onClose }) {
           </Form.Group>
           <Form.Group controlId="formBasicConfirmNewPassword" className="mb-4">
             <TextField
-              className="label"
+              className={`label ${hasError('confirm new password') ? 'error' : ''}`} // Apply error class if error occurred
               type="password"
               label="Confirm new password"
               value={confirmNewPassword}
@@ -125,12 +124,6 @@ function ResetNewPassword({ onClose }) {
           </div>
         </Form>
       </Container>
-      <CustomSnackbar
-        open={snackbarOpen}
-        message={snackbarMessage}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        onClose={handleCloseSnackbar}
-      />
       {loading && <LoadingSpinner />} 
     </div>
   );

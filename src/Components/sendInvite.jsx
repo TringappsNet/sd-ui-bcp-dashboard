@@ -71,18 +71,27 @@ function SendInvite({ onClose }) {
     if (!formData.email.trim()) {
       setEmailError('Email is required');
       setLoading(false);
+      setTimeout(() => {
+        setEmailError('');
+      }, 5000); // Clear email error message after 2 seconds
       return;
     }
   
     if (!formData.role.trim()) {
       setRoleError('Role is required');
       setLoading(false);
+      setTimeout(() => {
+        setRoleError('');
+      }, 5000); // Clear role error message after 2 seconds
       return;
     }
   
     if (!formData.organization.trim()) {
       setOrgError('Organization is required');
       setLoading(false);
+      setTimeout(() => {
+        setOrgError('');
+      }, 5000); // Clear organization error message after 2 seconds
       return;
     }
   
@@ -106,11 +115,14 @@ function SendInvite({ onClose }) {
         setFormData(initialFormData); 
         setTimeout(() => {
           onClose();
-        }, 5000);
+        }, 2000);
       } else {
         const errorData = await response.json(); 
         setSuccessMessage(''); 
         setError(errorData.message); 
+        setTimeout(() => {
+          setError('');
+        }, 2000); // Clear error message after 2 seconds
       }      
   
     } catch (error) {
@@ -119,6 +131,7 @@ function SendInvite({ onClose }) {
   
     setLoading(false);
   };
+  
   
   
   return (
