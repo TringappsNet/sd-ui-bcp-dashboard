@@ -115,14 +115,14 @@ function SendInvite({ onClose }) {
         setFormData(initialFormData); 
         setTimeout(() => {
           onClose();
-        }, 2000);
+        }, 3000);
       } else {
         const errorData = await response.json(); 
         setSuccessMessage(''); 
         setError(errorData.message); 
         setTimeout(() => {
           setError('');
-        }, 2000); // Clear error message after 2 seconds
+        }, 3000); 
       }      
   
     } catch (error) {
