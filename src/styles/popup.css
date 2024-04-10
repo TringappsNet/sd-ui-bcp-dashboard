@@ -42,7 +42,7 @@
   }
   
   .dropdown-item-hover:hover {
-    background-color: #d6d6d6; /* Change the background color on hover */
+    color: #088f2c; /* Change the background color on hover */
     cursor: pointer; /* Change the cursor to indicate interaction */
   }
   

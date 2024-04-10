@@ -18,8 +18,8 @@
   }
 
   .dropdown-menu {
-    min-width: 100px;
-    margin-left: 82px;
+    min-width: 210px;
+    /* margin-left: 70px; */
     margin-top: 20px;
     padding: 11px;
     --bs-dropdown-link-active-color: #000000; 
@@ -343,13 +343,17 @@
 
     .user {
       color: blue;
-      margin-top: 10px;
       text-transform: capitalize;
       min-width: 200px;
-      /* border: 1px solid black; */
-      padding: 14px;
-      margin: 5px;
-      padding-left: 20px;
+      margin: 30px 30px 0 30px
+    }
+    .role{
+      color: rgb(255, 119, 119);
+      padding-bottom: 10px;
+    }
+    .icon{
+      padding-right: 9px;
+      padding-left: 7px;
     }
    
    
