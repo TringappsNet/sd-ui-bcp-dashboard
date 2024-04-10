@@ -635,7 +635,7 @@ const handleSubmit = async () => {
   <div className="filename mr-3 col-lg-2 mb-3 ">
     {uploadedFileName ? (
       <div className="d-flex align-items-center">
-        <p className="mb-0">{`File: ${uploadedFileName}`}</p>
+        <p className="mb-0 overflow-hidden">{`File: ${uploadedFileName}`}</p>
         <FontAwesomeIcon
           icon={faTimes} // Cancel icon
           className="ml-2 cancel-icon"
