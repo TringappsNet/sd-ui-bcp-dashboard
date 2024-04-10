@@ -57,6 +57,7 @@ const OrgPop = ({ handleClose }) => {
       if (response.ok) {
         setErrorMessage(false);
         setSuccessMessage('Organization updated successfully');
+        setTimeout(() => setSuccessMessage(''), 3000);
       } else {
         console.error('Failed to update organization:', response.statusText);
       }
@@ -89,6 +90,7 @@ const OrgPop = ({ handleClose }) => {
         console.log('New organization created successfully');
         setErrorMessage(false);
         setSuccessMessage('New organization created successfully');
+        setTimeout(() => setSuccessMessage(''), 3000);
         fetchData();
       } else {
         console.error('Failed to create new organization:', response.statusText);
@@ -116,10 +118,12 @@ const OrgPop = ({ handleClose }) => {
       if (response.ok) {
         setErrorMessage(false);
         setSuccessMessage(true);
+        setTimeout(() => setSuccessMessage(''), 3000);
         fetchData();
       } else {
         setSuccessMessage(false);
         setErrorMessage(true);
+        setTimeout(() => setErrorMessage(''), 3000);
         console.error('Failed to delete organization:', response.statusText);
       }
     } catch (error) {
