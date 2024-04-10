@@ -102,10 +102,9 @@ function Register() {
         setSnackbarMessage(data.message); 
         setSnackbarOpen(true);
         setSnackbarVariant('success');
-        console.log('User registered successfully!');
         setTimeout(() => {
           navigate('/login');
-        }, 5000);
+        }, 3000);
       } else {
         const data = await response.json();
         if (response.status === 400) {
