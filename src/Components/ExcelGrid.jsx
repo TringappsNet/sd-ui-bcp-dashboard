@@ -21,52 +21,36 @@ const ExcelGrid = ({
   roleID // Pass Role_ID as a prop
 }) => {
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
+const requestSort = (key) => {
+  let direction = 'ascending';
+  if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+    direction = 'descending';
+  }
   
-  const requestSort = (key) => {
-    let direction = 'ascending';
-    if (sortConfig.key === key && sortConfig.direction === 'ascending') {
-      direction = 'descending';
-    }
-    
-    // For "MonthYear" column, sort by parsed month and year values
-    if (key === 'MonthYear') {
-      setSortConfig({ key, direction });
-    } else {
-      setSortConfig({ key, direction });
-    }
-  };
-  
+  // For "MonthYear" column, sort by parsed month and year values
+  if (key === 'MonthYear') {
+    setSortConfig({ key, direction });
+  } else {
+    setSortConfig({ key, direction });
+  }
+};
+
+
   const sortedData = () => {
     if (sortConfig.key !== null) {
       const sorted = [...filteredData].sort((a, b) => {
-        if (sortConfig.key === 'MonthYear') {
-          const [monthA, yearA] = a[sortConfig.key].split(' ');
-          const [monthB, yearB] = b[sortConfig.key].split(' ');
-  
-          // Compare years first
-          if (yearA !== yearB) {
-            return sortConfig.direction === 'ascending' ? (parseInt(yearA) - parseInt(yearB)) : (parseInt(yearB) - parseInt(yearA));
-          }
-  
-          // If years are the same, compare months
-          const monthNumA = new Date(Date.parse(`${monthA} 1, 2000`)).getMonth();
-          const monthNumB = new Date(Date.parse(`${monthB} 1, 2000`)).getMonth();
-          return sortConfig.direction === 'ascending' ? (monthNumA - monthNumB) : (monthNumB - monthNumA);
-        } else {
-          if (a[sortConfig.key] < b[sortConfig.key]) {
-            return sortConfig.direction === 'ascending' ? -1 : 1;
-          }
-          if (a[sortConfig.key] > b[sortConfig.key]) {
-            return sortConfig.direction === 'ascending' ? 1 : -1;
-          }
-          return 0;
+        if (a[sortConfig.key] < b[sortConfig.key]) {
+          return sortConfig.direction === 'ascending' ? -1 : 1;
         }
+        if (a[sortConfig.key] > b[sortConfig.key]) {
+          return sortConfig.direction === 'ascending' ? 1 : -1;
+        }
+        return 0;
       });
       return sorted;
     }
     return filteredData;
   };
-  
 
   const formatMonthYear = (dateString) => {
     // Split the dateString into month and year parts
@@ -103,7 +87,8 @@ return value;
             <Table striped bordered hover>
               <thead className="sticky-header">
                 <tr>
-                  {Object.keys(filteredData[0] || {}).map((key) => (
+                {Object.keys(filteredData[0] || {}).map((key) => (
+                    key !== 'ID' && // Exclude the 'id' column
                     <th key={key} onClick={() => requestSort(key)}>
                       {key}
                       {sortConfig.key === key && (
@@ -118,24 +103,26 @@ return value;
                 {sortedData().map((row, index) => (
                   <tr key={index}>
                     {Object.keys(row).map((key) => (
-                    
+                                          key !== 'ID' && // Exclude the 'id' column
+
                     <td key={key}>
                        
-                        {editedRowId === index ? (
-                        
-                        key === 'CompanyName' ? (
-                          <span>{row[key]}</span>
-                        ) : key === 'monthyear' ? (
-                          <span>{formatMonthYear(row[key])}</span> 
-                        ) : (
-                          <input
-                            type="text"
-                            value={editedRowData[key] || ''}
-                            onChange={(e) => handleInputChange(e, key)}
-                          />
+                       {editedRowId === index ? (
+                          key === 'CompanyName' || key === 'MonthYear' ? ( // Make 'CompanyName' and 'MonthYear' uneditable
+                            <span>{row[key]}</span>
+                          ) : (
+                            <input
+                              type="text"
+                              value={editedRowData[key] || ''}
+                              onChange={(e) => handleInputChange(e, key)}
+                            />
                         )
                         ) : (
-                          formatDateCell(row[key], key)
+                          key === 'MonthYear' ? ( // Make 'MonthYear' uneditable
+                            <span>{formatMonthYear(row[key])}</span>
+                          ) : (
+                            row[key]
+                          )
                         )}
                       </td>
                     ))}
