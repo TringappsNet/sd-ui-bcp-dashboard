@@ -66,8 +66,8 @@ const PopUpContainer = () => {
   }
 
   return (
-    <div>
-  <div className="dropdown-item-hover" onClick={handleResetPopupToggle}>Reset Password</div>
+    <div className='text'>
+  <div className="dropdown-item-hover border-text" onClick={handleResetPopupToggle}>Reset Password</div>
   <div className="dropdown-item-hover" onClick={handleInvitePopupToggle}>Send Invite</div>
 
   {/* Conditionally render based on roleID */}

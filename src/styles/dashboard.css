@@ -30,7 +30,7 @@
   }
 
   .dropdown-menu {
-    min-width: 220px;
+    min-width: 200px;
     /* margin-left: 70px; */
     margin-top: 20px;
     padding: 11px;
@@ -437,8 +437,8 @@
   
 
   .dropdown-menu[data-bs-popper] {
-    top: 160%;
-    left: -20px;}
+    top: 100%
+  }
 
 
 

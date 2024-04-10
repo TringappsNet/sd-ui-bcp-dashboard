@@ -43,10 +43,13 @@
   
   .dropdown-item-hover:hover {
     color: #07c239;
-    cursor: pointer; 
+    cursor: pointer;
   }
-  
-  
+
+  .dropdown-item-hover{
+    padding: 3px;
+  }
+
 .Orgainsation{
   background-color: aqua;
   padding-left: 100px;
@@ -60,6 +63,11 @@
   width: 90%; /* Adjust the width for smaller screens */
   max-width: none; /* Remove max-width for smaller screens */
 }
+
+.text{
+  font-size: 14px;
+}
+
 
   @media (max-width: 768px) {
     .reset, .invite {

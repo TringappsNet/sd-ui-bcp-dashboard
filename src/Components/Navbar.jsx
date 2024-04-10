@@ -41,7 +41,7 @@ const NavbarComponent = ({ username, handleLogout, isMobile }) => {
 
               <Dropdown.Menu className='Menu'>
                 <PopUpContainer></PopUpContainer>
-                <div className="dropdown-item-hover" onClick={handleLogout}>Logout</div>
+                <div className="dropdown-item-hover text" onClick={handleLogout}>Logout</div>
               </Dropdown.Menu>
             </Dropdown>
           ) : (
