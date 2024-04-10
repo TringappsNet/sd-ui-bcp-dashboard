@@ -86,6 +86,7 @@ function Login() {
         localStorage.setItem('Role_ID', data1.Role_ID);
         localStorage.setItem('Org_ID', data1.Org_ID);
         localStorage.setItem('user_ID', data1.userId);
+        localStorage.setItem('role', data1.role);
         
 
 

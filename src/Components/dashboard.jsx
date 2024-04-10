@@ -33,6 +33,7 @@
 
   function Dashboard() {
     const [username, setUsername] = useState("");
+    const[role, setRole] = useState("");
     const [data, setData] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [editedRowId, setEditedRowId] = useState(null); // Track edited row ID
@@ -76,10 +77,12 @@
         const storedOrganization = localStorage.getItem("Organization");
         const storedEmail = localStorage.getItem("email");
         const storedRoleID = localStorage.getItem('Role_ID');
+        const storedRole = localStorage.getItem('role')
         setUsername(storedUsername);
         setOrganization(storedOrganization);
         setRoleID(storedRoleID);
         setEmail(storedEmail);
+        setRole(storedRole)
 
         fetchData();
         setShowPreview(true);
@@ -722,13 +725,16 @@ const handleSubmit = async () => {
     const Role_ID = localStorage.getItem('Role_ID');
     const Org_ID = localStorage.getItem('Org_ID');
     const userId = localStorage.getItem('user_ID');
+    const role = localStorage.getItem('role')
+    // Create userData object with username and organization
 
     const userData = {
       username: username,
       orgID: Org_ID ,
       email: email,
       roleID: Role_ID,
-      userId: userId
+      userId: userId,
+      role: role
     };
 
     await new Promise((resolve) => setTimeout(resolve, 2000));
