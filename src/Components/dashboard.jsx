@@ -296,7 +296,9 @@ const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
       localStorage.removeItem("email");
       localStorage.removeItem("Organization");
       localStorage.removeItem("createdAt");
-      localStorage.removeItem("Role_ID")
+      localStorage.removeItem("Org_ID");
+      localStorage.removeItem("role");
+      localStorage.removeItem("user_ID");
 
       navigate("/login");
     };
