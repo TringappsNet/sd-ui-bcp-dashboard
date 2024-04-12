@@ -1,8 +1,11 @@
 import React, { useState,useEffect } from 'react';
 import { Container, Form, Button } from 'react-bootstrap';
-import { TextField } from '@mui/material';
+import { TextField, InputAdornment } from '@mui/material';
 import { PortURL } from './Config';
 import LoadingSpinner from './LoadingSpinner';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import CustomSnackbar from './Snackbar'; 
 import { useNavigate } from 'react-router-dom';
 
 
@@ -14,7 +17,20 @@ function ResetPassword() {
   const [loading, setLoading] = useState(false);
   const [emailId, setEmailId] = useState('');
   const [sessionId, setSessionId] = useState('');
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarVariant, setSnackbarVariant] = useState('success');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate(); 
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);  
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
 
   useEffect(() => {
     const email = localStorage.getItem('email');
@@ -58,6 +74,9 @@ function ResetPassword() {
       if (response.ok) {
         setSuccess(true);
         setError(null);
+        setSnackbarMessage('Password reset successfully!');
+        setSnackbarVariant('success');
+        setSnackbarOpen(true);
         setTimeout(() => {
           navigate('/login');
         }, 5000);
@@ -71,38 +90,64 @@ function ResetPassword() {
       setError('Error resetting password');
     }
     setLoading(false);
+    setSnackbarOpen(true);
   };
   
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
+  };
 
   return (
     <div className="form d-flex justify-content-center align-items-center">
       <Container className=" mt-6 p-4 shadow bg-body ">
         <h6 className="text-center mb-4 mt-1 ">Reset Password</h6>
         <Form onSubmit={handleSubmit}>
-          {/* {error && <div className="text-danger mb-3">{error}</div>} */}
-          {success && <div className="text-success mb-3">Password reset successfully!</div>}
+          {error && <div className="text-danger mb-3">{error}</div>}
+          {/* {success && <div className="text-success mb-3">Password reset successfully!</div>} */}
           <Form.Group controlId="formBasicNewPassword" className="mb-4">
-            <TextField
+             <TextField
               className="label"
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               label="New password"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               fullWidth
               variant="outlined"
               size="small"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    {showPassword ? (
+                      <VisibilityIcon onClick={togglePasswordVisibility} />
+                    ) : (
+                      <VisibilityOffIcon onClick={togglePasswordVisibility} />
+                    )}
+                  </InputAdornment>
+                ),
+              }}
             />
           </Form.Group>
           <Form.Group controlId="formBasicConfirmNewPassword" className="mb-4">
             <TextField
               className="label"
-              type="password"
+              type={confirmNewPassword ? 'text' : 'password'}
               label="Confirm new password"
               value={confirmNewPassword}
               onChange={(e) => setConfirmNewPassword(e.target.value)}
               fullWidth
               variant="outlined"
               size="small"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    {showConfirmPassword ? (
+                      <VisibilityIcon onClick={toggleConfirmPasswordVisibility} />
+                    ) : (
+                      <VisibilityOffIcon onClick={toggleConfirmPasswordVisibility} />
+                    )}
+                  </InputAdornment>
+                ),
+              }}
             />
           </Form.Group>
           <div className="btn-container">
@@ -110,6 +155,16 @@ function ResetPassword() {
           </div>
         </Form>
       </Container>
+      <CustomSnackbar
+        message={snackbarMessage}
+        variant={snackbarVariant}
+        onClose={handleCloseSnackbar}
+        open={snackbarOpen}
+  
+        // color={snackColor}
+
+
+      />
       {loading && <LoadingSpinner />}
     </div>
   );
