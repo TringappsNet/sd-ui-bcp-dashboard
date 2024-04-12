@@ -127,7 +127,7 @@ return value;
                       </td>
                     ))}
                     <td className="action-cell">
-                    {roleID == 1 ? (
+                    {roleID == 1 || roleID == 2 ? (
                       <>
                         {editedRowId === index ? (
                           <div className="action-buttons">
