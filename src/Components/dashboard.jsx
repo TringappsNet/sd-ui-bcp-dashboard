@@ -37,8 +37,8 @@ function Dashboard() {
     const [isMobile, setIsMobile] = useState(false);
     const [uploadedFileName, setUploadedFileName] = useState("");
     const [showConfirmation, setShowConfirmation] = useState(false);
-    const [remainingTime, setRemainingTime] = useState(500);
-    const [logoutModalOpen, setLogoutModalOpen] = useState(false);
+    // const [remainingTime, setRemainingTime] = useState(500);
+    // const [logoutModalOpen, setLogoutModalOpen] = useState(false);
     const [snackbarVariant, setSnackbarVariant] = useState('success');
     const [showModal, setShowModal] = useState(false);
     const [roleID, setRoleID] = useState('');
@@ -69,28 +69,28 @@ function Dashboard() {
     }, [navigate]);
 
 
-    useEffect(() => {
-      const timer = setInterval(() => {
-        setRemainingTime((prevTime) => {
-          if (prevTime <= 0) {
-            clearInterval(timer);
-            handleLogout();
-            return 0;
-          }
-          return prevTime - 1;
-        });
-      }, 10000000);
+    // useEffect(() => {
+    //   const timer = setInterval(() => {
+    //     setRemainingTime((prevTime) => {
+    //       if (prevTime <= 0) {
+    //         clearInterval(timer);
+    //         handleLogout();
+    //         return 0;
+    //       }
+    //       return prevTime - 1;
+    //     });
+    //   }, 10000000);
   
-      return () => clearInterval(timer);
-    }, []);
+    //   return () => clearInterval(timer);
+    // }, []);
   
 
-    useEffect(() => {
-      if (remainingTime === 0) {
-        handleLogout(); 
-        navigate("/login");
-      }
-    }, [remainingTime]);
+    // useEffect(() => {
+    //   if (remainingTime === 0) {
+    //     handleLogout(); 
+    //     navigate("/login");
+    //   }
+    // }, [remainingTime]);
   
 
     useEffect(() => {
@@ -126,7 +126,6 @@ function Dashboard() {
         if (response.ok) {
           const excelData = await response.json();
           setRetriveData(excelData);
-          
         } else {
           console.error("Failed to fetch data:", response.statusText);
         }
@@ -136,8 +135,6 @@ function Dashboard() {
       setLoading(false); 
 
     };
-
-    
       const handleConfirm = () => {
       handleSubmit();
       setShowModal(false);
@@ -275,15 +272,6 @@ const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
     const handleLogout = () => {
       
-        localStorage.removeItem("sessionId");
-        localStorage.removeItem("isLoggedIn");
-        localStorage.removeItem("UserName");
-        localStorage.removeItem("email");
-        localStorage.removeItem("Organization");
-        localStorage.removeItem("createdAt");
-        localStorage.removeItem("Org_ID");
-        localStorage.removeItem("role");
-        localStorage.removeItem("user_ID");
 
       setShowConfirmation(true);
     };
@@ -303,6 +291,7 @@ const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
       navigate("/login");
     };
+    
 
     const handleCloseConfirmation = () => {
       setShowConfirmation(false);

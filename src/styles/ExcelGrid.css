@@ -335,9 +335,13 @@
     border: none;
     margin-left: 15px;
 
+
   }
 
   
+  input{
+    width: 106px;
+  }
   .uneditable-column {
     background-color: gray; /* Change color to indicate uneditable */
     display: none;
