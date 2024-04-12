@@ -80,11 +80,18 @@ function ResetPassword() {
         setTimeout(() => {
           navigate('/login');
         }, 5000);
-      } else {
-        const data = await response.json();
-        setError(data.message);
-        setSuccess(false);
-      }
+        }else {
+          const data = await response.json();
+          // Check if it's an expiration error
+          if (response.status === 400 && data.message) {
+            setSnackbarMessage('Reset token has expired');
+            setSnackbarVariant('error');
+            setSnackbarOpen(true);
+          } else {
+            setError(data.message);
+            setSuccess(false);
+          }
+        }
     } catch (error) {
       console.error('Error resetting password:', error.message);
       setError('Error resetting password');
