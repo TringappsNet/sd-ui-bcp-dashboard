@@ -40,7 +40,7 @@ import OverrideModal from "./OverrideModal";
     const [uploadedFileName, setUploadedFileName] = useState("");
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [remainingTime, setRemainingTime] = useState(500);
-    const [logoutModalOpen, setLogoutModalOpen] = useState(false);
+    // const [logoutModalOpen, setLogoutModalOpen] = useState(false);
     const [snackbarVariant, setSnackbarVariant] = useState('success');
     const [showModal, setShowModal] = useState(false);
     const [roleID, setRoleID] = useState('');
@@ -128,6 +128,7 @@ import OverrideModal from "./OverrideModal";
         if (response.ok) {
           const excelData = await response.json();
           setRetriveData(excelData);
+          console.log("setRetrived data",retriveData)
         } else {
           console.error("Failed to fetch data:", response.statusText);
         }
@@ -137,6 +138,9 @@ import OverrideModal from "./OverrideModal";
       setLoading(false); 
 
     };
+
+
+    
       const handleConfirm = () => {
       handleSubmit();
       setShowModal(false);
@@ -182,6 +186,8 @@ const onDrop = useCallback(async (acceptedFiles) => {
           if (row["MonthYear"]) {
             const dateString = row["MonthYear"].toString();
             const date = new Date(dateString);
+            date.setMinutes(date.getMinutes() + 1);
+
             const year = date.getFullYear();
             const month = (date.getMonth() + 1).toString().padStart(2, "0");
             const day = date.getDate().toString().padStart(2, "0");
@@ -258,6 +264,7 @@ const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
     const handleEdit = (rowId) => {
       setEditedRowId(rowId);
       setEditedRowData(filteredData[rowId]);
+      console.log("edited row data",editedRowData);
     };
 
     const handleCancel = () => {
@@ -410,60 +417,60 @@ const handleSubmit = async () => {
         const email = localStorage.getItem('email');
         const Org_ID = localStorage.getItem('Org_ID');
         const userId = localStorage.getItem('user_ID');
-
-
-
+    
         const monthYearDate = new Date(editedRowData.MonthYear);
-        const formattedMonthYear = `${monthYearDate.getFullYear()}-${(
-          monthYearDate.getMonth() + 1
-        )
-          .toString()
-          .padStart(2, "0")}-${monthYearDate
-          .getDate()
-          .toString()
-          .padStart(2, "0")}`;
-
+        monthYearDate.setMinutes(monthYearDate.getMinutes() + 1);
+    
+        // Get the current year
+        const currentYear = new Date().getFullYear()+1;
+    
+        // Determine the year to use
+        const yearToUse = currentYear === 2023 ? 2023 : monthYearDate.getFullYear();
+    
+        const formattedMonthYear = `${yearToUse}-${(monthYearDate.getMonth() + 1).toString().padStart(2, "0")}-${monthYearDate.getDate().toString().padStart(2, "0")}`;
+    
+    
         const payload = {
           editedRow: {
             ...editedRowData,
             MonthYear: formattedMonthYear,
-
-          },email,Org_ID,userId      };
-
-
+          },
+          email,
+          Org_ID,
+          userId
+        };
+    
         const response = await fetch(`${PortURL}/update`, {
-          method: "POST", 
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
-            
-            "Session-ID": sessionId, 
-            "Email": email, 
+            "Session-ID": sessionId,
+            "Email": email,
           },
-          body: JSON.stringify(payload), 
+          body: JSON.stringify(payload),
         });
-
+    
         if (response.ok) {
           fetchData();
           setSnackbarOpen(true);
           setSnackbarMessage("Row updated successfully");
-          setSnackbarVariant("success"); 
-
-          setEditedRowId(null); 
+          setSnackbarVariant("success");
+    
+          setEditedRowId(null);
         } else {
           console.error("Error updating row:", response.statusText);
           setSnackbarOpen(true);
           setSnackbarMessage("Error updating row");
-          setSnackbarVariant("error"); 
-
+          setSnackbarVariant("error");
         }
       } catch (error) {
         console.error("Error updating row:", error);
         setSnackbarOpen(true);
         setSnackbarMessage("Error updating row");
         setSnackbarVariant("error");
-
       }
     };
+     
 
     const handleDelete = async (rowId) => {
       try {
