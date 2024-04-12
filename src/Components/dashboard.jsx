@@ -81,7 +81,7 @@ import OverrideModal from "./OverrideModal";
           }
           return prevTime - 1;
         });
-      }, 1000);
+      }, 10000000);
   
       return () => clearInterval(timer);
     }, []);

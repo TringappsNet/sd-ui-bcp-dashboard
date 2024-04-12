@@ -68,11 +68,12 @@ const PopUpContainer = () => {
   return (
     <div className='text'>
   <div className="dropdown-item-hover border-text" onClick={handleResetPopupToggle}>Reset Password</div>
-  <div className="dropdown-item-hover" onClick={handleInvitePopupToggle}>Send Invite</div>
+  {/* <div className="dropdown-item-hover" onClick={handleInvitePopupToggle}>Send Invite</div> */}
 
   {/* Conditionally render based on roleID */}
   {roleID === '1' && (
     <>
+    <div className="dropdown-item-hover" onClick={handleInvitePopupToggle}>Send Invite</div>
       <div className="dropdown-item-hover" onClick={handleOrganizationPopupToggle}>Organization</div>
       <div className="dropdown-item-hover" onClick={handleUserPopupToggle}>User</div>
     </>
@@ -86,7 +87,7 @@ const PopUpContainer = () => {
       </div>
       <div className="popup-inner" onClick={(e) => e.stopPropagation()}>
         {showResetPopup && <ResetNewPassword onClose={handleResetSuccess} />}
-        {showInvitePopup && <SendInvite onClose={handleInviteSuccess} />}
+        {(showInvitePopup && roleID === '1') && <SendInvite onClose={handleInviteSuccess} />}
         {(showOrganizationPopup && roleID === '1') && <OrganizationPopup className="Organisation" handleClose={handleClosePopups} />}
         {(showUserPopup && roleID === '1') && <UserPop handleClose={handleClosePopups} />}
       </div>
