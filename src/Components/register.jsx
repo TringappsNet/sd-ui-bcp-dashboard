@@ -10,10 +10,12 @@ import { PortURL } from './Config';
 import Header from './Header';
 import CustomSnackbar from './Snackbar'; 
 import LoadingSpinner from './LoadingSpinner'; 
+import { MuiPhone } from './InternationalPhone';
 
 function Register() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [phone, setPhone] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -27,6 +29,7 @@ function Register() {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarVariant, setSnackbarVariant] = useState('success');
+  
 
   const navigate = useNavigate();
 
@@ -184,7 +187,7 @@ function Register() {
               </Form.Group>
             </Col>
           </Row>
-          <Form.Group controlId="formPhoneNumber" className="mb-4">
+          {/* <Form.Group controlId="formPhoneNumber" className="mb-4">
             <TextField
               className="label"
               type="tel"
@@ -206,7 +209,19 @@ function Register() {
                 inputMode: 'numeric',
               }}
             />
-          </Form.Group>
+          </Form.Group> */}
+           <Form.Group controlId="formPhoneNumber" className="mb-4">
+            <MuiPhone
+              value={phoneNumber}
+              onChange={(phone) => {
+                setPhoneNumber(phone);
+                setPhoneNumberError('');
+              }}
+              fullWidth
+              size="small"
+            />
+          </Form.Group>        
+          
           <Form.Group controlId="formNewPassword" className="mb-4">
             <TextField
               className="label"
