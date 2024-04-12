@@ -53,24 +53,22 @@ const requestSort = (key) => {
   };
 
   const formatMonthYear = (dateString) => {
-    // Split the dateString into month and year parts
-    const [monthStr, yearStr] = dateString.split(' ');
-    // Convert the month string into a number (0-indexed)
-    const month = new Date(Date.parse(monthStr + ' 1, 2000')).getMonth();
-    // Get the year as a number
-    const year = parseInt(yearStr) + 2000; // Assuming '22' means '2022'
-  
-    // Format the date using Intl.DateTimeFormat
-    const formattedDate = new Intl.DateTimeFormat('en-US', {
-      month: 'short',
-      year: 'numeric'
-    }).format(new Date(year, month));
-  
-    return formattedDate;
-  };
-  
+    const [year, month] = dateString.split('-');
+    // Convert month number to its abbreviated name
+    const originalDate = new Date(`${year}-${month}-01`);
+    originalDate.setMonth(originalDate.getMonth() + 1); // Add one month
+    const newYear = originalDate.getFullYear();
+    const newMonth = originalDate.getMonth() + 1; // Adding 1 to convert 0-indexed month to 1-indexed
+    // Convert new month number to its abbreviated name
+    const newMonthName = originalDate.toLocaleString('en-US', { month: 'short' });
+    // Combine the new month abbreviation and last two digits of the new year
+    return `${newMonthName}-${newYear.toString().slice(-2)}`;
+};
 
 
+
+// Example usage:
+console.log(formatMonthYear('2024-03')); // Output: "Apr-24"
 
 const formatDateCell = (value, key) => {
 if (key === "MonthYear") {
@@ -78,6 +76,8 @@ return formatMonthYear(value);
 }
 return value;
 };
+
+
 
   return (
     <Container fluid className="mt-2">
@@ -101,31 +101,30 @@ return value;
               </thead>
               <tbody>
                 {sortedData().map((row, index) => (
-                  <tr key={index}>
-                    {Object.keys(row).map((key) => (
-                                          key !== 'ID' && // Exclude the 'id' column
-
-                    <td key={key}>
-                       
-                       {editedRowId === index ? (
-                          key === 'CompanyName' || key === 'MonthYear' ? ( // Make 'CompanyName' and 'MonthYear' uneditable
-                            <span>{row[key]}</span>
-                          ) : (
-                            <input
-                              type="text"
-                              value={editedRowData[key] || ''}
-                              onChange={(e) => handleInputChange(e, key)}
-                            />
-                        )
-                        ) : (
-                          key === 'MonthYear' ? ( // Make 'MonthYear' uneditable
-                            <span>{formatMonthYear(row[key])}</span>
-                          ) : (
-                            row[key]
+                        <tr key={index}>
+                        {Object.keys(row).map((key) => (
+                          key !== 'ID' && (
+                            <td key={key}>
+                              {editedRowId === index ? (
+                                key === 'MonthYear' ? (
+                                  <input
+                                    type="date"
+                                    value={editedRowData[key] || ''}
+                                    onChange={(e) => handleInputChange(e, key)}
+                                  />
+                                ) : (
+                                  <input
+                                    type="text"
+                                    value={editedRowData[key] || ''}
+                                    onChange={(e) => handleInputChange(e, key)}
+                                  />
+                                )
+                              ) : (
+                                <span>{key === 'MonthYear' ? formatMonthYear(row[key]) : row[key]}</span>
+                              )}
+                            </td>
                           )
-                        )}
-                      </td>
-                    ))}
+                        ))}
                     <td className="action-cell">
                     {roleID == 1 || roleID == 2 ? (
                       <>
