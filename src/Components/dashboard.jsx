@@ -152,6 +152,8 @@ const onDrop = useCallback(async (acceptedFiles) => {
   setLoading(true); 
 
   acceptedFiles.forEach(async (file) => {
+    if (file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
+    file.type === "application/vnd.ms-excel"){  
     const reader = new FileReader();
     reader.onload = async (e) => {
       const data = e.target.result;
@@ -232,22 +234,46 @@ const onDrop = useCallback(async (acceptedFiles) => {
       }
     };
     reader.readAsArrayBuffer(file);
+    }
   });
 }, [setData, setUploadedFileName]);
 
 
 const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
+
+   
+const formatMonthYear = (dateString) => {
+  const date = new Date(dateString);
+  date.setSeconds(date.getSeconds() + 100);
+  const month = date.toLocaleString('default', { month: 'short' });
+  const year = date.getFullYear().toString().substr(-2);
+  return `${month.toUpperCase()} ${year}`;
+};
+
+const formatDateCell = (value, key) => {
+if (key === "MonthYear") {
+return formatMonthYear(value);
+}
+return value;
+};
+
+
+
     
+const filteredData = retriveData.filter((row) => {
+  return Object.entries(row).some(([key, value]) => {
+    if (key === 'MonthYear') {
+      // Special handling for the "MonthYear" field
+      const formattedMonthYear = formatMonthYear(value);
+      return formattedMonthYear.toLowerCase().includes(searchQuery.toLowerCase());
+    }
+    // For other fields, perform regular search
+    return value && value.toString().toLowerCase().includes(searchQuery.toLowerCase());
+    
+  });
+});
 
-
-    const filteredData = retriveData.filter((row) => {
-      return Object.values(row || {}).some(
-        (value) =>
-          value &&
-          value.toString().toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    });
 
     const handleSearchChange = (e) => {
       setSearchQuery(e.target.value);
@@ -296,24 +322,6 @@ const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
     const handleCloseConfirmation = () => {
       setShowConfirmation(false);
     };
-
-   
-    const formatMonthYear = (dateString) => {
-      const date = new Date(dateString);
-      date.setSeconds(date.getSeconds() + 100);
-      const month = date.toLocaleString('default', { month: 'short' });
-      const year = date.getFullYear().toString().substr(-2);
-      return `${month.toUpperCase()} ${year}`;
-    };
-    
-const formatDateCell = (value, key) => {
-  if (key === "MonthYear") {
-    return formatMonthYear(value);
-  }
-  return value;
-};
-
-
 
 const handleSubmit = async () => {
   if (data.length === 0) {
