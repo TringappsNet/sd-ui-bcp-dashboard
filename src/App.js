@@ -20,7 +20,7 @@ function App() {
     
     <Router>
        <Helmet>
-      <title>BCP | Your Company Name</title> 
+      <title>BCP</title> 
       <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     </Helmet>
     <Routes>

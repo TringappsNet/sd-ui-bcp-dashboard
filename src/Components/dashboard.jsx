@@ -14,11 +14,9 @@ import ConfirmationModal from "./ConfirmationModal";
 import NavbarComponent from "./Navbar";
 import ExcelGrid from "./ExcelGrid";
 import columnMap from "../Objects/Objects";
-import OverrideModal from "./OverrideModal";
 
 
-
-  function Dashboard() {
+function Dashboard() {
 
 
     const [username, setUsername] = useState("");
@@ -541,12 +539,19 @@ const handleSubmit = async () => {
           isMobile={isMobile}
         />
           
-      <ConfirmationModal
-            show={showConfirmation}
-            onHide={handleCloseConfirmation}
-            onConfirm={handleConfirmLogout}
-            message="Are you sure you want to log out?"
-          />
+          
+          <ConfirmationModal
+          show={showConfirmation}
+          onHide={handleCloseConfirmation}
+          onConfirm={handleConfirmLogout}
+          title="Confirm Action"
+          cancelText="Close"
+          confirmText="Logout"
+          cancelVariant="secondary"
+          confirmVariant="danger"
+          message="Are you sure you want to log out?"
+        />
+
 
   
 
@@ -706,12 +711,17 @@ const handleSubmit = async () => {
   )}
 </div>
     <>
-      <OverrideModal
-        show={showModal}
-        onHide={handleCloseModal}
-        onConfirm={handleConfirm}
-        message="Are you sure you want to override?"
-      />
+    <ConfirmationModal
+          show={showModal}
+          onHide={handleCloseModal}
+          onConfirm={handleConfirm}
+          title="Confirm Override"
+          cancelText="No"
+          confirmText="Yes"
+          cancelVariant="secondary"
+          confirmVariant="danger"
+          message="Are you sure you want to override?"
+        />
     </>
 
     {loading && <LoadingSpinner />} 
