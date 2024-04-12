@@ -177,7 +177,7 @@ setLoading(false);
           <Row className="mb-2 mt-1 ">
             <Col>
               <Form.Text className="text-left">
-                <Link to="/forgot-password">Forgot Password?</Link>
+                <Link to="/forgot-password" className="forgot-password-link">Forgot Password?</Link>
               </Form.Text>
             </Col>
           </Row>

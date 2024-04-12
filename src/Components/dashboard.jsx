@@ -81,7 +81,7 @@ import OverrideModal from "./OverrideModal";
           }
           return prevTime - 1;
         });
-      }, 1000);
+      }, 10000000);
   
       return () => clearInterval(timer);
     }, []);
@@ -287,6 +287,10 @@ const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
         localStorage.removeItem("email");
         localStorage.removeItem("Organization");
         localStorage.removeItem("createdAt");
+        localStorage.removeItem("Org_ID");
+        localStorage.removeItem("role");
+        localStorage.removeItem("user_ID");
+
       setShowConfirmation(true);
     };
 
@@ -299,7 +303,9 @@ const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
       localStorage.removeItem("email");
       localStorage.removeItem("Organization");
       localStorage.removeItem("createdAt");
-      localStorage.removeItem("Role_ID")
+      localStorage.removeItem("Org_ID");
+      localStorage.removeItem("role");
+      localStorage.removeItem("user_ID");
 
       navigate("/login");
     };
@@ -640,7 +646,7 @@ const handleSubmit = async () => {
   <div className="spacer"></div>
 
   <div className="filename mr-3 col-lg-2 mb-3 ">
-    {uploadedFileName ? (
+  {roleID !== '3' && uploadedFileName ? (
       <div className="d-flex align-items-center">
         <p className="mb-0 overflow-hidden">{`File: ${uploadedFileName}`}</p>
         <FontAwesomeIcon
@@ -650,13 +656,12 @@ const handleSubmit = async () => {
         />
       </div>
     ) : (
-      <p className="mb-0">No file uploaded</p>
+      roleID !== '3' && <p className="mb-0"></p>
     )}
   </div>
   <div className="spacer"></div>
-
+  {roleID !== '3' && (
   <div className="custom-file-upload d-flex">
-    
     <div {...getRootProps()} className="Upload ">
       <input {...getInputProps()} accept=".xlsx, .xls" />
       {isDragActive ? (
@@ -669,11 +674,13 @@ const handleSubmit = async () => {
       )}
     </div>
     <div className="spacer"></div>
-
+    {roleID !== '3' && (
     <Button className="btn  btn-secondary submit" onClick={handleSubmit}>
       Submit
     </Button>
+    )}
   </div>
+)}
 </Form>
 </Container>
 
