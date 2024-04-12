@@ -52,23 +52,20 @@ const requestSort = (key) => {
     return filteredData;
   };
 
-  const formatMonthYear = (dateString) => {
-    const [year, month] = dateString.split('-');
-    // Convert month number to its abbreviated name
-    const originalDate = new Date(`${year}-${month}-01`);
-    originalDate.setMonth(originalDate.getMonth() + 1); // Add one month
-    const newYear = originalDate.getFullYear();
-    const newMonth = originalDate.getMonth() + 1; // Adding 1 to convert 0-indexed month to 1-indexed
-    // Convert new month number to its abbreviated name
-    const newMonthName = originalDate.toLocaleString('en-US', { month: 'short' });
-    // Combine the new month abbreviation and last two digits of the new year
-    return `${newMonthName}-${newYear.toString().slice(-2)}`;
+ const formatMonthYear = (dateString) => {
+  // Parse the date string into a Date object
+  const date = new Date(dateString);
+  // Add one minute to the date
+  date.setMinutes(date.getMinutes() + 1);
+  // Extract month and year components
+  const month = date.toLocaleString('default', { month: 'short' });
+  const year = date.getFullYear().toString().substr(-2);
+  // Format the month and year into the desired format
+  return `${month.toUpperCase()} ${year}`;
 };
 
 
 
-// Example usage:
-console.log(formatMonthYear('2024-03')); // Output: "Apr-24"
 
 const formatDateCell = (value, key) => {
 if (key === "MonthYear") {
@@ -76,6 +73,7 @@ return formatMonthYear(value);
 }
 return value;
 };
+
 
 
 
@@ -105,7 +103,10 @@ return value;
                         {Object.keys(row).map((key) => (
                           key !== 'ID' && (
                             <td key={key}>
-                              {editedRowId === index ? (
+                            {editedRowId === index ? (
+                              (key === 'CompanyName') ? (
+                                <span>{editedRowData[key]}</span> // Display the company name as a span instead of an input
+                              ) : (
                                 key === 'MonthYear' ? (
                                   <input
                                     type="date"
@@ -119,10 +120,12 @@ return value;
                                     onChange={(e) => handleInputChange(e, key)}
                                   />
                                 )
-                              ) : (
-                                <span>{key === 'MonthYear' ? formatMonthYear(row[key]) : row[key]}</span>
-                              )}
-                            </td>
+                              )
+                            ) : (
+                              <span>{key === 'MonthYear' ? formatMonthYear(row[key]) : row[key]}</span>
+                            )}
+                          </td>
+                          
                           )
                         ))}
                     <td className="action-cell">
