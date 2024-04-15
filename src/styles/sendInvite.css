@@ -23,6 +23,9 @@
   cursor: pointer;
 }
 
+.submit {
+  margin-left: 27px;
+}
 @media (min-width: 768px) {
   .container {
     max-width: 500px;
