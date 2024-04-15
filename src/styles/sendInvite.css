@@ -26,7 +26,10 @@
 }
 
 .submit {
-  margin-left: 0;
+  background-color: #299689 ;
+}
+.submit:hover {
+  background-color: #227d72 ;
 }
 @media (min-width: 768px) {
   .container {
