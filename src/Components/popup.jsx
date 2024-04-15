@@ -82,9 +82,6 @@ const PopUpContainer = () => {
   {/* Render popups based on roleID */}
   {(showResetPopup || showInvitePopup || (showOrganizationPopup && roleID === '1') || (showUserPopup && roleID === '1')) && (
     <div className="popup-container">
-      <div className="backdrop">
-        <span className="cancel-symbol" onClick={handleClosePopups}>✖</span>
-      </div>
       <div className="popup-inner" onClick={(e) => e.stopPropagation()}>
         {showResetPopup && <ResetNewPassword onClose={handleResetSuccess} />}
         {(showInvitePopup && roleID === '1') && <SendInvite onClose={handleInviteSuccess} />}

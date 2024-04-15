@@ -20,6 +20,15 @@
   }
 }
 
+.close-org {
+  position:static;
+  top: 0;
+  right: 0;
+  margin-left: 50rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+
 .error-message {
   color: brown;
   text-align: center;

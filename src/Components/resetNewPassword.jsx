@@ -91,10 +91,12 @@ function ResetNewPassword({ onClose }) {
   };
   
   
-  
+
+
   return (
     <div className="form d-flex justify-content-center align-items-center">
       <Container className="mt-6 p-4 shadow bg-body rounded">
+      <span className="close-icon" onClick={onClose}>✖</span>
         <h6 className="text-center mb-3 mt-3 fw-bold">RESET PASSWORD</h6>
         <Form onSubmit={handleSubmit}>
           {error && <div className="text-danger mb-3">{error}</div>}

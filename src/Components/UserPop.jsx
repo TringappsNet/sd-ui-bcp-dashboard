@@ -177,7 +177,7 @@ const UserPop = ({ handleClose }) => {
     return values.includes(searchQuery.toLowerCase());
   });
 
-  
+
 
   return (
     <Container fluid className="mt-10">
@@ -196,7 +196,10 @@ const UserPop = ({ handleClose }) => {
         {deactivateSuccess && (
           <div className="success-message">Deactivated successfully!</div>
         )}
-        
+        <div>
+        <span className="close-Users" onClick={handleClose}>✖</span>
+        </div>
+        <br></br>
         <div className='User'>
           <h4>USERS</h4>
           <input type="text" placeholder="Search..." className='Usersearch' value={searchQuery} onChange={handleSearch} />
