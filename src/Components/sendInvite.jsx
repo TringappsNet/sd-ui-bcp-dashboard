@@ -170,7 +170,6 @@ function SendInvite({ onClose }) {
                 value={formData.role}
                 onChange={handleChange}
               >
-                <MenuItem value="">Select Role</MenuItem>
                 {roles.map(role => (
                   <MenuItem key={role.role_ID} value={role.role}>{role.role}</MenuItem>
                 ))}
@@ -188,7 +187,6 @@ function SendInvite({ onClose }) {
                 value={formData.organization}
                 onChange={handleChange}
               >
-                <MenuItem value="">Select Organization</MenuItem>
                 {organizations.map(org => (
                   <MenuItem key={org.org_ID} value={org.org_name}>{org.org_name}</MenuItem>
                 ))}
