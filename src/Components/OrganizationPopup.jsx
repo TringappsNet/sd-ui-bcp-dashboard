@@ -160,6 +160,7 @@ const OrgPop = ({ handleClose }) => {
               <tr>
                 <th className='org-id-header'>Org ID</th> 
                 <th className='org-name-header'>Organization Name</th> 
+                <th className='Users'>Users</th> 
 
                 <th className='action-headers'>Action</th> 
               </tr>
@@ -202,7 +203,7 @@ const OrgPop = ({ handleClose }) => {
                      ) : (
                        key === 'org_name' ? (
                          <span>
-                           {row[key]} | {row['user_count']} 
+                           {row[key]} 
                          </span>
                        ) : (
                          row[key]

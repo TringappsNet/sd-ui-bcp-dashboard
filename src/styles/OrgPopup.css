@@ -1,6 +1,24 @@
 /* Add the following CSS to your existing stylesheet */
 
 
+.Usercount{
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.orgname{
+  width: 100px;
+ 
+}
+.slash{
+  width: 100px;
+
+}
+
+.count{
+  width: 100px;
+
+}
 .org-id-header {
   width: 30; /* Adjust the width of the Org ID column */
 }
@@ -10,7 +28,7 @@
 }
 
 .action-header {
-  width: 15%; /* Adjust the width of the Action column */
+  width: 5%; /* Adjust the width of the Action column */
 }
 
 .grid tr th {
@@ -129,6 +147,7 @@ table{
 .OrgIn::placeholder{
   padding-left: 10px;
 }
+
 .OrgHead{
   display: flex;
   flex-direction: row;
@@ -146,7 +165,8 @@ td{
   font-size: small;
   padding-left: 0px;
   padding-top: 7px;
-  margin-top: 6px;;
+  margin-top: 6px;
+  border: none;
 }
 
 .action-width{
@@ -168,3 +188,7 @@ td{
   height: 30px;
 }
 
+
+.action-headers{
+  padding-left: 200px;
+}
