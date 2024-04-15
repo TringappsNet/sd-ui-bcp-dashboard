@@ -24,6 +24,7 @@ const OrgPop = ({ handleClose }) => {
       if (response.ok) {
         const data = await response.json();
         setExcelData(data);
+        console.log("ORgDate",data);
       } else {
         console.error('Failed to fetch Excel data:', response.statusText);
       }
@@ -190,24 +191,24 @@ const OrgPop = ({ handleClose }) => {
                 {excelData.map((row, index) => (
                   <tr key={index}>
                     {Object.keys(row).map((key, i) => (
-                      <td key={i}>
-                        {editedRowIndex === index && key === 'org_name' ? (
-                          <input
-                            type="text"
-                            className='OrgIn'
-                            value={editedOrgName}
-                            onChange={handleInputChange}
-                          />
-                        ) : (
-                            key === 'org_name' ? (
-            <span>
-              {row[key]} | {row['number_of_users']} users
-            </span>
-          ) : (
-            row[key]
-          )
-        )}
-                      </td>
+                     <td key={i}>
+                     {editedRowIndex === index && key === 'org_name' ? (
+                       <input
+                         type="text"
+                         className='OrgIn'
+                         value={editedOrgName}
+                         onChange={handleInputChange}
+                       />
+                     ) : (
+                       key === 'org_name' ? (
+                         <span>
+                           {row[key]} | {row['user_count']} 
+                         </span>
+                       ) : (
+                         row[key]
+                       )
+                     )}
+                   </td>
                     ))}
                     <td>
                       {editedRowIndex === index && !addMode ? (
