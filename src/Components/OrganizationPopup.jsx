@@ -157,7 +157,7 @@ const OrgPop = ({ handleClose }) => {
         <div className="Org-pop-container table-container">
           <Table striped bordered hover >
             <thead className="sticky-header">
-              <tr>
+              <tr className='Org_heading'>
                 <th className='org-id-header'>Org ID</th> 
                 <th className='org-name-header'>Organization Name</th> 
 
@@ -188,51 +188,62 @@ const OrgPop = ({ handleClose }) => {
                     </td>
                   </tr>
                 )}
-                {excelData.map((row, index) => (
-                  <tr key={index}>
-                    {Object.keys(row).map((key, i) => (
-                     <td key={i}>
-                     {editedRowIndex === index && key === 'org_name' ? (
-                       <input
-                         type="text"
-                         className='OrgIn'
-                         value={editedOrgName}
-                         onChange={handleInputChange}
-                       />
-                     ) : (
-                       key === 'org_name' ? (
-                         <span>
-                           {row[key]} | {row['user_count']} 
-                         </span>
-                       ) : (
-                         row[key]
-                       )
-                     )}
-                   </td>
-                    ))}
-                    <td>
-                      {editedRowIndex === index && !addMode ? (
-                        <div className='editSave '>
-                          <div onClick={handleSave}>
-                            <FontAwesomeIcon icon={faSave} />
-                          </div>
-                          <div onClick={() => setEditedRowIndex(null)}>
-                            <FontAwesomeIcon icon={faTimesCircle} />
-                          </div>
-                        </div>
-                      ) : (
-                        <div className='d-flex editSave '>
-                          <div className=" btn-sm Edit" onClick={() => handleEdit(index)}>
-                            <FontAwesomeIcon icon={faEdit} />
-                          </div>
-                          <div className=" btn-sm Delete" onClick={() => handleDeleteRow(index)}> 
-                            <FontAwesomeIcon icon={faTrash} />
-                          </div>
-                        </div>
-                      )}
-                    </td>
-                  </tr>
-                ))}
+           {excelData.map((row, index) => (
+  <tr key={index}>
+    {Object.keys(row).map((key, i) => (
+      <td key={i}>
+        {editedRowIndex === index && key === 'org_name' ? (
+          <input
+            type="text"
+            className='OrgIn'
+            value={editedOrgName}
+            onChange={handleInputChange}
+          />
+        ) : (
+          key === 'org_name' ? (
+            <span className='Usercount'>
+
+              <div className='orgname'>
+              {row[key]} 
+               </div>
+
+              <div className='slash'  >
+                |
+              </div>
+              <div className='usercount'  >
+                
+              </div>
+            </span>
+          ) : (
+            row[key]
+          )
+        )}
+      </td>
+    ))}
+    <td>
+      {editedRowIndex === index && !addMode ? (
+        <div className='editSave '>
+          <div onClick={handleSave}>
+            <FontAwesomeIcon icon={faSave} />
+          </div>
+          <div onClick={() => setEditedRowIndex(null)}>
+            <FontAwesomeIcon icon={faTimesCircle} />
+          </div>
+        </div>
+      ) : (
+        <div className='d-flex editSave '>
+          <div className=" btn-sm Edit" onClick={() => handleEdit(index)}>
+            <FontAwesomeIcon icon={faEdit} />
+          </div>
+          <div className=" btn-sm Delete" onClick={() => handleDeleteRow(index)}> 
+            <FontAwesomeIcon icon={faTrash} />
+          </div>
+        </div>
+      )}
+    </td>
+  </tr>
+))}
+
               
               </tbody>
             </Table>
