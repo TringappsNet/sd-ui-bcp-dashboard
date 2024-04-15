@@ -7,6 +7,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import CustomSnackbar from './Snackbar'; 
 import { useNavigate } from 'react-router-dom';
+import '../styles/resetPassword.css';
 
 
 function ResetPassword() {
@@ -163,7 +164,7 @@ function ResetPassword() {
           </Form.Group>
           
           <div className="btn-container">
-            <Button type="submit" className="btn btn-success rounded-pill w-100">Reset Password</Button>
+            <div type="submit" className="btn btn-success rounded-pill w-100 submit">Reset Password</div>
           </div>
         </Form>
       </Container>

@@ -69,11 +69,17 @@ body{
 }
 
 
-.btn-success{
+.login{
    background-color: #299689;
    width: 250px;
    border: #299689;
+   margin-left: -3px;
 }
+
+.login:hover {
+  background-color: #1d7d72;
+}
+
 p{
   text-align: center;
   font-size:smaller;
