@@ -125,16 +125,33 @@ function Dashboard() {
         const response = await fetch(`${PortURL}/data?username=${storedUsername}&organization=${storedOrganization}`);
         if (response.ok) {
           const excelData = await response.json();
-          setRetriveData(excelData);
+          
+          // Modify the "MonthYear" column data by adding one minute to each date
+          const modifiedData = excelData.map((row) => ({
+            ...row,
+            MonthYear: addOneMinuteToDate(row.MonthYear)
+          }));
+          
+          // Set the modified data in the state
+          setRetriveData(modifiedData); 
+          console.log("retrived data",modifiedData);
         } else {
           console.error("Failed to fetch data:", response.statusText);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false); 
-
     };
+    
+    // Function to add one minute to a given date string
+    const addOneMinuteToDate = (dateString) => {
+      const date = new Date(dateString);
+      date.setMinutes(date.getMinutes() + 1000);
+      return date.toISOString(); // Format the modified date as an ISO string or in your desired format
+    };
+    
       const handleConfirm = () => {
       handleSubmit();
       setShowModal(false);
@@ -309,20 +326,20 @@ const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
     };
 
    
-    const formatMonthYear = (dateString) => {
-      const date = new Date(dateString);
-      date.setSeconds(date.getSeconds() + 100);
-      const month = date.toLocaleString('default', { month: 'short' });
-      const year = date.getFullYear().toString().substr(-2);
-      return `${month.toUpperCase()} ${year}`;
-    };
+//     const formatMonthYear = (dateString) => {
+//       const date = new Date(dateString);
+//       date.setSeconds(date.getSeconds() + 100);
+//       const month = date.toLocaleString('default', { month: 'short' });
+//       const year = date.getFullYear().toString().substr(-2);
+//       return `${month.toUpperCase()} ${year}`;
+//     };
     
-const formatDateCell = (value, key) => {
-  if (key === "MonthYear") {
-    return formatMonthYear(value);
-  }
-  return value;
-};
+// const formatDateCell = (value, key) => {
+//   if (key === "MonthYear") {
+//     return formatMonthYear(value);
+//   }
+//   return value;
+// };
 
 
 
@@ -705,7 +722,7 @@ const handleSubmit = async () => {
       handleInputChange={handleInputChange}
       handleSave={handleSave}
       handleDelete={handleDelete}
-      formatDateCell={formatDateCell}
+      // formatDateCell={formatDateCell}
       roleID={roleID}
     />
   )}
