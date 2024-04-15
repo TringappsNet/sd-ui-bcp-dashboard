@@ -43,6 +43,8 @@ function Dashboard() {
     const [showModal, setShowModal] = useState(false);
     const [roleID, setRoleID] = useState('');
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [rowToDelete, setRowToDelete] = useState(null);
+ 
 
     const navigate = useNavigate();
    
@@ -491,16 +493,22 @@ const handleSubmit = async () => {
       }
     };
  
-    const handleConfirmDelete = () => {
-      setShowDeleteModal(true);
-    }
+    // const handleConfirmDelete = () => {
+    //   setShowDeleteModal(true);
+    // }
 
     const handleCloseDelete = () => {
       setShowDeleteModal(false);
     }
 
-    const handleDelete = async (rowId) => {
-      
+    const handleDelete = (rowId) => {
+      setRowToDelete(rowId);
+      setShowDeleteModal(true);
+    };
+  
+    const handleConfirmDelete = async () => {
+      setShowDeleteModal(false);
+      const rowId = rowToDelete;      
       try {
         const sessionId = localStorage.getItem('sessionId');
         const email = localStorage.getItem('email');
@@ -737,7 +745,7 @@ const handleSubmit = async () => {
       handleCancel={handleCancel}
       handleInputChange={handleInputChange}
       handleSave={handleSave}
-      handleDelete={handleConfirmDelete}
+      handleDelete={handleDelete}
       formatDateCell={formatDateCell}
       roleID={roleID}
     />
@@ -763,7 +771,7 @@ const handleSubmit = async () => {
     <ConfirmationModal
           show={showDeleteModal}
           onHide={handleCloseDelete}
-          onConfirm={handleDelete}
+          onConfirm={handleConfirmDelete}
           title="Confirm Delete"
           cancelText="No"
           confirmText="Delete"
