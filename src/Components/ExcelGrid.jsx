@@ -57,7 +57,7 @@ const requestSort = (key) => {
   // Parse the date string into a Date object
   const date = new Date(dateString);
   // Add one minute to the date
-  date.setMinutes(date.getMinutes() + 1);
+  date.setMinutes(date.getMinutes() );
   // Extract month and year components
   const month = date.toLocaleString('default', { month: 'short' });
   const year = date.getFullYear().toString().substr(-2);
@@ -75,6 +75,24 @@ return formatMonthYear(value);
 return value;
 };
 
+
+const formatNumber = (number) => {
+  if (!number) return ''; // Handle empty or null values
+
+  // Convert the number to a string
+  let formattedNumber = number.toString();
+
+  // Split the number into integer and decimal parts
+  const parts = formattedNumber.split('.');
+  
+  // Format the integer part with commas
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+  // Join the integer and decimal parts with a period
+  formattedNumber = parts.join('.');
+
+  return formattedNumber;
+};
 
 
 const reversedColumnMap = reverseColumnMap(columnMap);
@@ -107,7 +125,7 @@ const reversedColumnMap = reverseColumnMap(columnMap);
                             <td key={key}>
                             {editedRowId === index ? (
                               (key === 'CompanyName') ? (
-                                <span>{editedRowData[key]}</span> // Display the company name as a span instead of an input
+                                <span>{editedRowData[key]}</span>
                               ) : (
                                 key === 'MonthYear' ? (
                                   <input
@@ -118,17 +136,16 @@ const reversedColumnMap = reverseColumnMap(columnMap);
                                 ) : (
                                   <input
                                     type="text"
-                                    value={editedRowData[key] || ''}
+                                    value={formatNumber(editedRowData[key])} // Apply formatNumber function
                                     onChange={(e) => handleInputChange(e, key)}
                                   />
                                 )
                               )
                             ) : (
-                              <span>{key === 'MonthYear' ? formatMonthYear(row[key]) : row[key]}</span>
+                              <span>{key === 'MonthYear' ? formatMonthYear(row[key]) : formatNumber(row[key])}</span>
                             )}
                           </td>
-                          
-                          )
+                                                    )
                         ))}
                     <td className="action-cell">
                     {roleID == 1 || roleID == 2 ? (

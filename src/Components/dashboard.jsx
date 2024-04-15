@@ -116,7 +116,6 @@ function Dashboard() {
 
 
 
-
     const fetchData = async () => {
       try {
         setLoading(true); 
@@ -125,16 +124,33 @@ function Dashboard() {
         const response = await fetch(`${PortURL}/data?username=${storedUsername}&organization=${storedOrganization}`);
         if (response.ok) {
           const excelData = await response.json();
-          setRetriveData(excelData);
+          
+          // Modify the "MonthYear" column data by adding one minute to each date
+          const modifiedData = excelData.map((row) => ({
+            ...row,
+            MonthYear: addOneMinuteToDate(row.MonthYear)
+          }));
+          
+          // Set the modified data in the state
+          setRetriveData(modifiedData); 
+          console.log("retrived data",modifiedData);
         } else {
           console.error("Failed to fetch data:", response.statusText);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false); 
-
     };
+    
+    // Function to add one minute to a given date string
+    const addOneMinuteToDate = (dateString) => {
+      const date = new Date(dateString);
+      date.setMinutes(date.getMinutes() + 1000);
+      return date.toISOString(); // Format the modified date as an ISO string or in your desired format
+    };
+    
     
     const handleConfirm = () => {
       handleSubmit();
