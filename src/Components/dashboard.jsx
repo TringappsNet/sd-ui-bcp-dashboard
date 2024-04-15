@@ -147,95 +147,106 @@ function Dashboard() {
     };
     
 
-const onDrop = useCallback(async (acceptedFiles) => {
-  setData([]);
-  setLoading(true); 
-
-  acceptedFiles.forEach(async (file) => {
-    const reader = new FileReader();
-    reader.onload = async (e) => {
-      const data = e.target.result;
-      try {
-        const workbook = XLSX.read(data, { type: "buffer", cellDates: true });
-        const sheetName = workbook.SheetNames[0];
-        const sheet = workbook.Sheets[sheetName];
-        const jsonData = XLSX.utils.sheet_to_json(sheet, {
-          header: 1,
-          dateNF: "yyyy-mm-dd hh:mm:ss",
-        });
-        const trimmedData = jsonData.filter((row) =>
-          row.some((cell) => cell !== null && cell !== "")
-        );
-        const header = trimmedData.shift();
-        const mappedHeader = header.map((col) => columnMap[col] || col);
-        const newJsonData = trimmedData.map((row) => {
-          const obj = {};
-          mappedHeader.forEach((key, index) => {
-            obj[key] = row[index];
-          });
-          return obj;
-        });
-
-        const updatedData = newJsonData.map((row) => {
-          if (row["MonthYear"]) {
-            const dateString = row["MonthYear"].toString();
-            const date = new Date(dateString);
-            const year = date.getFullYear();
-            const month = (date.getMonth() + 1).toString().padStart(2, "0");
-            const day = date.getDate().toString().padStart(2, "0");
-            const hours = date.getHours().toString().padStart(2, "0");
-            const minutes = date.getMinutes().toString().padStart(2, "0");
-            const seconds = "00";
-            const formattedDate = `${year}-${month}-${day}' '${hours}:${minutes}:${seconds}`;
-            row["MonthYear"] = formattedDate;
-          }
-          return row;
-        });
-        setData((prevData) => [...prevData, ...updatedData]);
-        setUploadedFileName(file.name);
-
-        const Role_ID = localStorage.getItem('Role_ID');
-        const Org_ID = localStorage.getItem('Org_ID');
-        const userId = localStorage.getItem('user_ID');
-        try {
-            const response = await fetch(`${PortURL}/validate-duplicates`, {
-
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              userData: {
-                userId: userId,
-                Org_ID: Org_ID,
-              },
-              data: updatedData,
-            }),
-          });
-          if (response.ok) {
-            const responseData = await response.json();
-            const hasDuplicates = responseData.hasDuplicates;
-            if (hasDuplicates === true) {
-              setShowModal(true);
-              setLoading(false); 
-            }else if(hasDuplicates === false){
-              setLoading(false); 
-            }
-          } else {
-            console.error('Error:', response.statusText);
-          }
-        } catch (error) {
-          console.error('Error calling validate API:', error);
+    const onDrop = useCallback(async (acceptedFiles) => {
+      setData([]);
+      setLoading(true); 
+    
+      acceptedFiles.forEach(async (file) => {
+        // Check if the file extension is supported
+        const fileExtension = file.name.split('.').pop().toLowerCase();
+        if (fileExtension !== 'xlsx' && fileExtension !== 'xls') {
+          // Display error message for unsupported file format
+          setLoading(false); 
+          setSnackbarOpen(true);
+          setSnackbarMessage('File type not supported');
+          setSnackbarVariant("error");
+          // alert('Unsupported file format. Please upload only .xlsx or .xls files.');
+          return;
         }
-      } catch (error) {
-        console.error("Error reading file:", error);
-      }
-    };
-    reader.readAsArrayBuffer(file);
-  });
-}, [setData, setUploadedFileName]);
-
-
+    
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+          const data = e.target.result;
+          try {
+            const workbook = XLSX.read(data, { type: "buffer", cellDates: true });
+            const sheetName = workbook.SheetNames[0];
+            const sheet = workbook.Sheets[sheetName];
+            const jsonData = XLSX.utils.sheet_to_json(sheet, {
+              header: 1,
+              dateNF: "yyyy-mm-dd hh:mm:ss",
+            });
+            const trimmedData = jsonData.filter((row) =>
+              row.some((cell) => cell !== null && cell !== "")
+            );
+            const header = trimmedData.shift();
+            const mappedHeader = header.map((col) => columnMap[col] || col);
+            const newJsonData = trimmedData.map((row) => {
+              const obj = {};
+              mappedHeader.forEach((key, index) => {
+                obj[key] = row[index];
+              });
+              return obj;
+            });
+    
+            const updatedData = newJsonData.map((row) => {
+              if (row["MonthYear"]) {
+                const dateString = row["MonthYear"].toString();
+                const date = new Date(dateString);
+                const year = date.getFullYear();
+                const month = (date.getMonth() + 1).toString().padStart(2, "0");
+                const day = date.getDate().toString().padStart(2, "0");
+                const hours = date.getHours().toString().padStart(2, "0");
+                const minutes = date.getMinutes().toString().padStart(2, "0");
+                const seconds = "00";
+                const formattedDate = `${year}-${month}-${day}' '${hours}:${minutes}:${seconds}`;
+                row["MonthYear"] = formattedDate;
+              }
+              return row;
+            });
+            setData((prevData) => [...prevData, ...updatedData]);
+            setUploadedFileName(file.name);
+    
+            const Role_ID = localStorage.getItem('Role_ID');
+            const Org_ID = localStorage.getItem('Org_ID');
+            const userId = localStorage.getItem('user_ID');
+            try {
+                const response = await fetch(`${PortURL}/validate-duplicates`, {
+    
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  userData: {
+                    userId: userId,
+                    Org_ID: Org_ID,
+                  },
+                  data: updatedData,
+                }),
+              });
+              if (response.ok) {
+                const responseData = await response.json();
+                const hasDuplicates = responseData.hasDuplicates;
+                if (hasDuplicates === true) {
+                  setShowModal(true);
+                  setLoading(false); 
+                }else if(hasDuplicates === false){
+                  setLoading(false); 
+                }
+              } else {
+                console.error('Error:', response.statusText);
+              }
+            } catch (error) {
+              console.error('Error calling validate API:', error);
+            }
+          } catch (error) {
+            console.error("Error reading file:", error);
+          }
+        };
+        reader.readAsArrayBuffer(file);
+      });
+    }, [setData, setUploadedFileName]);
+    
 const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
     
