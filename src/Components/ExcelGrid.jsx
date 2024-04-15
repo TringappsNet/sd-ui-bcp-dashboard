@@ -62,7 +62,7 @@
     const month = date.toLocaleString('default', { month: 'short' });
     const year = date.getFullYear().toString().substr(-2);
     // Format the month and year into the desired format
-    return `${month.toUpperCase()} ${year}`;
+    return `${month.toLocaleString()}-${year}`;
   };
 
 
