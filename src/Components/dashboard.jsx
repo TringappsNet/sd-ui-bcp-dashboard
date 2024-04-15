@@ -270,13 +270,6 @@ const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
     
 
 
-    const filteredData = retriveData.filter((row) => {
-      return Object.values(row || {}).some(
-        (value) =>
-          value &&
-          value.toString().toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    });
 
     const handleSearchChange = (e) => {
       setSearchQuery(e.target.value);
@@ -338,6 +331,18 @@ const formatDateCell = (value, key) => {
   return value;
 };
 
+
+const filteredData = retriveData.filter((row) => {
+  return Object.keys(row || {}).some((key) => {
+    // Check if the key is 'MonthYear' and the value includes the search query
+    if (key === 'MonthYear') {
+      const monthYearValue = formatMonthYear(row[key]);
+      return monthYearValue.toLowerCase().includes(searchQuery.toLowerCase());
+    }
+    // For other columns, check if the value includes the search query
+    return row[key] && row[key].toString().toLowerCase().includes(searchQuery.toLowerCase());
+  });
+});
 
 
 const handleSubmit = async () => {
