@@ -194,7 +194,7 @@ function SendInvite({ onClose }) {
               <FormHelperText>{orgError}</FormHelperText>
             </FormControl>
           </Form.Group>
-          <Button type="submit" className="btn btn-success rounded-pill w-100 submit">Submit</Button>
+          <div type="submit" className="btn btn-success rounded-pill w-100 submit">Submit</div>
         </Form>
       </Container>
       {loading && <LoadingSpinner />}

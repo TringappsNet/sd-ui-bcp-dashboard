@@ -1,5 +1,7 @@
 .btn-success {
   width: 100%; /* Initially occupy full width */
+  margin-left: 0; /* Remove the initial margin */
+
 }
 
 
@@ -24,7 +26,7 @@
 }
 
 .submit {
-  margin-left: 27px;
+  margin-left: 0;
 }
 @media (min-width: 768px) {
   .container {
@@ -33,8 +35,9 @@
   }
 
   .btn-success {
-    width: 80%; /* Set button width to a percentage of the container width */
-    max-width: 400px; /* Set maximum width for the button */
+    width: 100%; /* Set button width to a percentage of the container width */
+
   }
 }
+
 
