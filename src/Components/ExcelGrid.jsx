@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faSave, faTimes, faTrash } from '@fortawesome/free-solid-svg-icons';
 import '../styles/dashboard.css';
 import '../styles/ExcelGrid.css';
+import {columnMap, reverseColumnMap} from "../Objects/Objects";
 
 
 const ExcelGrid = ({
@@ -94,6 +95,7 @@ const formatNumber = (number) => {
 };
 
 
+const reversedColumnMap = reverseColumnMap(columnMap);
 
   return (
     <Container fluid className="mt-2">
@@ -106,7 +108,7 @@ const formatNumber = (number) => {
                 {Object.keys(filteredData[0] || {}).map((key) => (
                     key !== 'ID' && // Exclude the 'id' column
                     <th key={key} onClick={() => requestSort(key)}>
-                      {key}
+                      {reversedColumnMap[key] || key}
                       {sortConfig.key === key && (
                         <span>{sortConfig.direction === 'ascending' ? ' ▲' : ' ▼'}</span>
                       )}

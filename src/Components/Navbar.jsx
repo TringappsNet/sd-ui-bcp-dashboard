@@ -56,7 +56,7 @@ const NavbarComponent = ({ username, handleLogout, isMobile }) => {
                   </div>
                 )}
                 <PopUpContainer />
-                <Dropdown.Item onClick={handleLogout} className="logout">
+                <Dropdown.Item onClick={handleLogout} className="logout text">
                   Logout
                 </Dropdown.Item>
               </div>

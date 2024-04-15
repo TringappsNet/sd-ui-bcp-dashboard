@@ -131,12 +131,12 @@ function SendInvite({ onClose }) {
   
     setLoading(false);
   };
-  
-  
+
   
   return (
     <div className="form d-flex justify-content-center align-items-center">
       <Container className="mt-6 p-4 shadow bg-body">
+      <span className="close-SendInvite" onClick={onClose}>✖</span>
         <h6 className="text-center mb-4 mt-1 ">Send Invite</h6>
         {successMessage && (
         <div className="text-success mb-3">{successMessage}</div>
@@ -144,7 +144,6 @@ function SendInvite({ onClose }) {
         {!successMessage && (
         <div className="text-danger mb-3">{error}</div>
         )}
-
         <Form onSubmit={handleSubmit}>
           <Form.Group controlId="formBasicEmail" className="mb-3">
             <TextField
@@ -171,7 +170,6 @@ function SendInvite({ onClose }) {
                 value={formData.role}
                 onChange={handleChange}
               >
-                <MenuItem value="">Select Role</MenuItem>
                 {roles.map(role => (
                   <MenuItem key={role.role_ID} value={role.role}>{role.role}</MenuItem>
                 ))}
@@ -189,7 +187,6 @@ function SendInvite({ onClose }) {
                 value={formData.organization}
                 onChange={handleChange}
               >
-                <MenuItem value="">Select Organization</MenuItem>
                 {organizations.map(org => (
                   <MenuItem key={org.org_ID} value={org.org_name}>{org.org_name}</MenuItem>
                 ))}
@@ -197,7 +194,7 @@ function SendInvite({ onClose }) {
               <FormHelperText>{orgError}</FormHelperText>
             </FormControl>
           </Form.Group>
-          <Button type="submit" className="btn btn-success rounded-pill w-100">Submit</Button>
+          <Button type="submit" className="btn btn-success rounded-pill w-100 submit">Submit</Button>
         </Form>
       </Container>
       {loading && <LoadingSpinner />}

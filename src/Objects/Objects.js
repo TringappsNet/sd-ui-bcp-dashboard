@@ -1,4 +1,4 @@
-const columnMap = {
+export const columnMap = {
     "Month/Year": "MonthYear",
     "Company Name": "CompanyName",
     "Revenue Actual": "RevenueActual",
@@ -28,6 +28,13 @@ const columnMap = {
     "Quarter": "Quarter"
   };
 
-
-  export default columnMap;
-
+  export const reverseColumnMap = (columnMap) => {
+    const reversedMap = {};
+    // Iterate over the keys of the original columnMap object
+    Object.keys(columnMap).forEach((key) => {
+      const value = columnMap[key];
+      // Swap the key and value in the reversedMap object
+      reversedMap[value] = key;
+    });
+    return reversedMap;
+  };

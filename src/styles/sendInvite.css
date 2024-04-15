@@ -14,7 +14,18 @@
   padding: 0%;
 
 }
+.close-SendInvite {
+  position:static;
+  top: 0;
+  right: 0;
+  margin-left: 27rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
 
+.submit {
+  margin-left: 27px;
+}
 @media (min-width: 768px) {
   .container {
     max-width: 500px;
