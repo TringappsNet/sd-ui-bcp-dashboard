@@ -146,7 +146,7 @@ const OrgPop = ({ handleClose }) => {
         <div className='OrgHead'>
           <h4>Portfolio Company</h4>
           <button className="btn btn-sm Add" onClick={handleAddRow}>
-            <FontAwesomeIcon icon={faPlus} /> Add Company
+            <FontAwesomeIcon icon={faPlus} /> Add Portfolio
           </button>
         </div>
         <div className="message-container">
@@ -169,8 +169,8 @@ const OrgPop = ({ handleClose }) => {
                     <td colSpan={Object.keys(excelData[0] || {}).length}>
                       <input
                         type="text"
-                        className='OrgIn'
-                        placeholder="New Company "
+                        className='addCompany'
+                        placeholder="New Portfolio "
                         value={editedOrgName}
                         onChange={handleInputChange}
                       />

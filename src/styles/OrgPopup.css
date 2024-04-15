@@ -99,18 +99,33 @@ table{
 
 
 
-
 .OrgIn {
   margin-left: -5px;
   border: none;
   width: 529px;
-  padding: 0px;
-  height: 34px;
+  /* padding: 0px; */
+  height: 38px;
   margin-bottom: 3px;
   /* border-radius: 4px; */
   padding-left: 30px;
   margin: -5px;
+  margin-top: -7px;
 }
+
+.addCompany{
+
+    margin-left: 30px;
+    border: none;
+    width: 731px;
+    /* padding: 0px; */
+    height: 38px;
+    margin-bottom: 3px;
+    /* border-radius: 4px; */
+    padding-left: 30px;
+    margin: -5px;
+    margin-top: -7px;
+}
+
 .OrgIn::placeholder{
   padding-left: 10px;
 }
