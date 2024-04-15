@@ -283,6 +283,7 @@ function Register() {
           </div>
         </Form>
       </Container>
+      
       <CustomSnackbar
         open={snackbarOpen}
         message={snackbarMessage}

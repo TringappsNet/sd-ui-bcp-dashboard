@@ -88,8 +88,6 @@ function Login() {
         localStorage.setItem('user_ID', data1.userId);
         localStorage.setItem('role', data1.role);
         
-
-
     navigate('/dashboard');
   } else {
     const data = await response.json();
@@ -195,7 +193,6 @@ setLoading(false);
         variant={snackbarVariant}
         onClose={handleCloseSnackbar}
         open={snackbarOpen}
-  
         // color={snackColor}
 
 
