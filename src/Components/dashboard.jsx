@@ -13,7 +13,7 @@ import LoadingSpinner from "./LoadingSpinner";
 import ConfirmationModal from "./ConfirmationModal";
 import NavbarComponent from "./Navbar";
 import ExcelGrid from "./ExcelGrid";
-import columnMap from "../Objects/Objects";
+import {columnMap} from "../Objects/Objects";
 
 
 function Dashboard() {
@@ -135,6 +135,7 @@ function Dashboard() {
       setLoading(false); 
 
     };
+    
     const handleConfirm = () => {
       handleSubmit();
       setShowModal(false);
@@ -247,6 +248,7 @@ function Dashboard() {
       });
     }, [setData, setUploadedFileName]);
     
+
 const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
     
