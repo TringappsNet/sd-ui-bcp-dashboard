@@ -11,7 +11,6 @@ import { useNavigate } from 'react-router-dom';
 
 function ResetPassword() {
   const [newPassword, setNewPassword] = useState('');
-  const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -22,6 +21,7 @@ function ResetPassword() {
   const [snackbarVariant, setSnackbarVariant] = useState('success');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState('');
   const navigate = useNavigate(); 
 
   const togglePasswordVisibility = () => {
@@ -31,6 +31,7 @@ function ResetPassword() {
   const toggleConfirmPasswordVisibility = () => {
     setShowConfirmPassword(!showConfirmPassword);
   };
+
 
   useEffect(() => {
     const email = localStorage.getItem('email');
@@ -47,7 +48,7 @@ function ResetPassword() {
     const urlParams = new URLSearchParams(window.location.search);
     const resetToken = urlParams.get('token');
   
-    if (newPassword !== confirmNewPassword) {
+    if (newPassword !== confirmPassword) {
       setError('Passwords do not match');
       setLoading(false);
       return;
@@ -134,16 +135,19 @@ function ResetPassword() {
               }}
             />
           </Form.Group>
-          <Form.Group controlId="formBasicConfirmNewPassword" className="mb-4">
+
+          <Form.Group controlId="formConfirmPassword" className="mb-4">
             <TextField
               className="label"
-              type={confirmNewPassword ? 'text' : 'password'}
-              label="Confirm new password"
-              value={confirmNewPassword}
-              onChange={(e) => setConfirmNewPassword(e.target.value)}
+              type={showConfirmPassword ? 'text' : 'password'}
+              label="Confirm password"
+              value={confirmPassword}
+              onChange={(e) => {
+                setConfirmPassword(e.target.value);
+              }}
               fullWidth
-              variant="outlined"
               size="small"
+
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -157,6 +161,7 @@ function ResetPassword() {
               }}
             />
           </Form.Group>
+          
           <div className="btn-container">
             <Button type="submit" className="btn btn-success rounded-pill w-100">Reset Password</Button>
           </div>
