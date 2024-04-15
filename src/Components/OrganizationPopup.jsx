@@ -138,33 +138,31 @@ const OrgPop = ({ handleClose }) => {
 
   return (
     <Container fluid className=" mt-10">
-      <Row className="row Render-Row1">
-        <Col className="col col1 Render-Col">
-          <div>
+        <Row className="row Render-Row1">
+      <Col className="col col1 Render-Col">
+        <div>
           <span className="close-org" onClick={handleClose}>✖</span>
-          </div>
-          <div className='OrgHead'>
-            <h4>Portfolio Company</h4>
-            <button className="btn btn-sm Add" onClick={handleAddRow}>
-              <FontAwesomeIcon icon={faPlus} /> Add Company
-            </button>
-          </div>
+        </div>
+        <div className='OrgHead'>
+          <h4>Portfolio Company</h4>
+          <button className="btn btn-sm Add" onClick={handleAddRow}>
+            <FontAwesomeIcon icon={faPlus} /> Add Company
+          </button>
+        </div>
+        <div className="message-container">
+          {successMessage && <div className="success-message">{successMessage}</div>}
+          {errorMessage && <div className="error-message">{errorMessage}</div>}
+        </div>
+        <div className="Org-pop-container table-container">
+          <Table striped bordered hover >
+            <thead className="sticky-header">
+              <tr>
+                <th className='org-id-header'>Org ID</th> 
+                <th className='org-name-header'>Organization Name</th> 
 
-            <div className="message-container">
-              {successMessage && <div className="success-message">{successMessage}</div>}
-              {errorMessage && <div className="error-message">{errorMessage}</div>}
-            </div>
-  
-          <div className=" Org-pop-container table-container">
-            <Table striped bordered hover className='grid'>
-              <thead className="sticky-header">
-                <tr>
-                  {Object.keys(excelData[0] || {}).map((key) => (
-                    <th key={key}>{key}</th>
-                  ))}
-                  <th className='action-button action-width'>Action</th>
-                </tr>
-              </thead>
+                <th className='action-headers'>Action</th> 
+              </tr>
+            </thead>
               <tbody>
               {addMode && (
                   <tr>
@@ -172,7 +170,7 @@ const OrgPop = ({ handleClose }) => {
                       <input
                         type="text"
                         className='OrgIn'
-                        placeholder="New organization "
+                        placeholder="New Company "
                         value={editedOrgName}
                         onChange={handleInputChange}
                       />
@@ -201,13 +199,19 @@ const OrgPop = ({ handleClose }) => {
                             onChange={handleInputChange}
                           />
                         ) : (
-                          row[key]
-                        )}
+                            key === 'org_name' ? (
+            <span>
+              {row[key]} | {row['number_of_users']} users
+            </span>
+          ) : (
+            row[key]
+          )
+        )}
                       </td>
                     ))}
                     <td>
                       {editedRowIndex === index && !addMode ? (
-                        <div className='editSave action-buttons'>
+                        <div className='editSave '>
                           <div onClick={handleSave}>
                             <FontAwesomeIcon icon={faSave} />
                           </div>
@@ -216,13 +220,13 @@ const OrgPop = ({ handleClose }) => {
                           </div>
                         </div>
                       ) : (
-                        <div>
-                          <button className="btn btn-sm Edit" onClick={() => handleEdit(index)}>
+                        <div className='d-flex editSave '>
+                          <div className=" btn-sm Edit" onClick={() => handleEdit(index)}>
                             <FontAwesomeIcon icon={faEdit} />
-                          </button>
-                          <button className="btn btn-sm Delete" onClick={() => handleDeleteRow(index)}> {/* Delete button */}
+                          </div>
+                          <div className=" btn-sm Delete" onClick={() => handleDeleteRow(index)}> 
                             <FontAwesomeIcon icon={faTrash} />
-                          </button>
+                          </div>
                         </div>
                       )}
                     </td>
