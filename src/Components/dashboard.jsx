@@ -42,7 +42,7 @@ function Dashboard() {
     const [snackbarVariant, setSnackbarVariant] = useState('success');
     const [showModal, setShowModal] = useState(false);
     const [roleID, setRoleID] = useState('');
-    
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
 
     const navigate = useNavigate();
    
@@ -135,7 +135,7 @@ function Dashboard() {
       setLoading(false); 
 
     };
-      const handleConfirm = () => {
+    const handleConfirm = () => {
       handleSubmit();
       setShowModal(false);
     };
@@ -271,12 +271,8 @@ const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
     };
 
     const handleLogout = () => {
-      
-
       setShowConfirmation(true);
     };
-
-
     
     const handleConfirmLogout = () => {
       localStorage.removeItem("sessionId");
@@ -460,8 +456,17 @@ const handleSubmit = async () => {
 
       }
     };
+ 
+    const handleConfirmDelete = () => {
+      setShowDeleteModal(true);
+    }
+
+    const handleCloseDelete = () => {
+      setShowDeleteModal(false);
+    }
 
     const handleDelete = async (rowId) => {
+      
       try {
         const sessionId = localStorage.getItem('sessionId');
         const email = localStorage.getItem('email');
@@ -483,17 +488,21 @@ const handleSubmit = async () => {
           }),
 
         }); 
-        if (response.ok) {
+
+          if (response.ok) {
           const updatedData = filteredData.filter((row, index) => index !== rowId);
           setRetriveData(updatedData); 
           setSnackbarOpen(true);
           setSnackbarMessage("Row deleted successfully");
           setSnackbarVariant('success');
+          setShowDeleteModal(false);
+
         } else {
           console.error("Error deleting row:", response.statusText);
           setSnackbarOpen(true);
           setSnackbarMessage("Error deleting row");
           setSnackbarVariant('error');
+          setShowDeleteModal(false);
 
         }
       } catch (error) {
@@ -501,6 +510,7 @@ const handleSubmit = async () => {
         setSnackbarOpen(true);
         setSnackbarMessage("Error deleting row");
         setSnackbarVariant('error');
+        setShowDeleteModal(false);
 
       }
     };
@@ -528,7 +538,7 @@ const handleSubmit = async () => {
           isMobile={isMobile}
         />
           
-          
+          {/* Logout Confirmation popup */}
           <ConfirmationModal
           show={showConfirmation}
           onHide={handleCloseConfirmation}
@@ -693,12 +703,13 @@ const handleSubmit = async () => {
       handleCancel={handleCancel}
       handleInputChange={handleInputChange}
       handleSave={handleSave}
-      handleDelete={handleDelete}
+      handleDelete={handleConfirmDelete}
       formatDateCell={formatDateCell}
       roleID={roleID}
     />
   )}
 </div>
+{/* Override Confirmation popup */}
     <>
     <ConfirmationModal
           show={showModal}
@@ -712,6 +723,22 @@ const handleSubmit = async () => {
           message="Are you sure you want to override?"
         />
     </>
+
+    {/* Delete Confirmation popup */}
+    <>
+    <ConfirmationModal
+          show={showDeleteModal}
+          onHide={handleCloseDelete}
+          onConfirm={handleDelete}
+          title="Confirm Delete"
+          cancelText="No"
+          confirmText="Delete"
+          cancelVariant="secondary"
+          confirmVariant="danger"
+          message="Are you sure you want to override?"
+        />
+    </>
+
 
     {loading && <LoadingSpinner />} 
   </div>
