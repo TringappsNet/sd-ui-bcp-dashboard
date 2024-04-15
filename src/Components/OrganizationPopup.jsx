@@ -141,9 +141,9 @@ const OrgPop = ({ handleClose }) => {
       <Row className="row Render-Row1">
         <Col className="col col1 Render-Col">
           <div className='OrgHead'>
-            <h4>ORGANIZATIONS</h4>
+            <h4>Portfolio Company</h4>
             <button className="btn btn-sm Add" onClick={handleAddRow}>
-              <FontAwesomeIcon icon={faPlus} /> Add Organization
+              <FontAwesomeIcon icon={faPlus} /> Add Company
             </button>
           </div>
 
