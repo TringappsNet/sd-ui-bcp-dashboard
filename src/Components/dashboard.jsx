@@ -777,7 +777,7 @@ const handleSubmit = async () => {
           confirmText="Delete"
           cancelVariant="secondary"
           confirmVariant="danger"
-          message="Are you sure you want to delete?"
+          message={`Are you sure you want to delete the row with ${formatMonthYear(filteredData[rowToDelete]?.MonthYear)}?`}
         />
     </>
 
