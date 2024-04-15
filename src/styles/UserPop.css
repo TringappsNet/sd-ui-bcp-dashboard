@@ -22,7 +22,15 @@
 
 }
 
-  
+.close-Users {
+  position:static;
+  top: 0;
+  right: 0;
+  margin-left: 65rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+
 .deactivated-row:hover {
     background: inherit;
     background-color:inherit;
