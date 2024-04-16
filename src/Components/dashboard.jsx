@@ -44,6 +44,7 @@ function Dashboard() {
     const [roleID, setRoleID] = useState('');
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [rowToDelete, setRowToDelete] = useState(null);
+    const [showUpdateModal, setShowUpdateModal] = useState(false);
  
 
     const navigate = useNavigate();
@@ -432,15 +433,80 @@ const handleSubmit = async () => {
       }
     };
 
+    const handleUpdateValidation = async () => {
+      setLoading(true);
+      const sessionId = localStorage.getItem('sessionId');
+      const email = localStorage.getItem('email');
+      const Org_ID = localStorage.getItem('Org_ID');
+      const userId = localStorage.getItem('user_ID');
+      const monthYearDate = new Date(editedRowData.MonthYear);
+      const formattedMonthYear = `${monthYearDate.getFullYear()}-${(
+        monthYearDate.getMonth() + 1
+      )
+        .toString()
+        .padStart(2, "0")}-${monthYearDate
+        .getDate()
+        .toString()
+        .padStart(2, "0")}`;
+
+      const payload = {
+        editedRow: {
+          ...editedRowData,
+          MonthYear: formattedMonthYear,
+
+        },email,Org_ID,userId      };
+
+      try {
+        const validateResponse = await fetch(`${PortURL}/validate-duplicates`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            userData: {
+              userId: userId,
+              Org_ID: Org_ID,
+            },
+            data: [payload.editedRow], 
+          }),
+        });
+    
+        if (validateResponse.ok) {
+          const validationResult = await validateResponse.json();
+          const hasDuplicates = validationResult.hasDuplicates;
+          
+          if (hasDuplicates === true) {
+            setLoading(false);
+            setShowUpdateModal(true);
+          } else {
+            setLoading(false);
+            handleSave();
+          }
+        } else {
+          console.error("Error validating duplicates:", validateResponse.statusText);
+          setSnackbarOpen(true);
+          setSnackbarMessage("Error validating duplicates");
+          setSnackbarVariant("error");
+        }
+      } catch (error) {
+        console.error("Error validating duplicates:", error);
+        setSnackbarOpen(true);
+        setSnackbarMessage("Error validating duplicates");
+        setSnackbarVariant("error");
+      }
+    };
+    
+    const handleCloseUpdate = () => {
+      setShowUpdateModal(false);
+    };  
+
     const handleSave = async () => {
+      setLoading(true);
       try {
         const sessionId = localStorage.getItem('sessionId');
         const email = localStorage.getItem('email');
         const Org_ID = localStorage.getItem('Org_ID');
         const userId = localStorage.getItem('user_ID');
-
-
-
         const monthYearDate = new Date(editedRowData.MonthYear);
         const formattedMonthYear = `${monthYearDate.getFullYear()}-${(
           monthYearDate.getMonth() + 1
@@ -491,11 +557,10 @@ const handleSubmit = async () => {
         setSnackbarVariant("error");
 
       }
+      setLoading(false);
+      setShowUpdateModal(false);
     };
  
-    // const handleConfirmDelete = () => {
-    //   setShowDeleteModal(true);
-    // }
 
     const handleCloseDelete = () => {
       setShowDeleteModal(false);
@@ -744,7 +809,7 @@ const handleSubmit = async () => {
       handleEdit={handleEdit}
       handleCancel={handleCancel}
       handleInputChange={handleInputChange}
-      handleSave={handleSave}
+      handleSave={handleUpdateValidation}
       handleDelete={handleDelete}
       formatDateCell={formatDateCell}
       roleID={roleID}
@@ -778,6 +843,21 @@ const handleSubmit = async () => {
           cancelVariant="secondary"
           confirmVariant="danger"
           message={`Are you sure you want to delete the row with ${formatMonthYear(filteredData[rowToDelete]?.MonthYear)}?`}
+        />
+    </>
+
+     {/* override Update popup */}
+     <>
+    <ConfirmationModal
+          show={showUpdateModal}
+          onHide={handleCloseUpdate}
+          onConfirm={handleSave}
+          title="Confirm Update Override"
+          cancelText="No"
+          confirmText="Update"
+          cancelVariant="secondary"
+          confirmVariant="danger"
+          message={`Are you sure you want to override Update?`}
         />
     </>
 
