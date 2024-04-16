@@ -177,7 +177,7 @@ const UserPop = ({ handleClose }) => {
     return values.includes(searchQuery.toLowerCase());
   });
 
-
+  const columnNames = ['Username', 'Company', 'Email', 'Role', 'isActive'];
 
   return (
     <Container fluid className="mt-10">
@@ -213,9 +213,9 @@ const UserPop = ({ handleClose }) => {
             <table bordered striped className='grid'>
               <thead className="sticky-header">
                 <tr>
-                  {Object.keys(excelData[0] || {}).map((key) => (
-                    <th key={key}>{key}</th>
-                  ))}
+                {Object.keys(excelData[0] || {}).map((key, index) => (
+                  <th key={index}>{columnNames[index]}</th>
+                ))}
                   <th className="action-cell">Action</th>
                 </tr>
               </thead>
