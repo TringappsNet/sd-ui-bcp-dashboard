@@ -599,7 +599,7 @@ display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 50px;
-  width: 1060px;
+  /* width: 1060px; */
 
 }
 button, input, optgroup, select, textarea {

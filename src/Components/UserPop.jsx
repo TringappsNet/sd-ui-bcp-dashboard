@@ -189,6 +189,9 @@ const UserPop = ({ handleClose }) => {
             message="Are you sure you want to Deactivate the User?"
 
           />  
+           <div className='close-user'>
+        <span className="close-Users" onClick={handleClose}>✖</span>
+        </div>
       <Col className="col col1 Render-Col">
         {editSuccess && (
           <div className="success-message">Edit successful!</div>
@@ -196,9 +199,7 @@ const UserPop = ({ handleClose }) => {
         {deactivateSuccess && (
           <div className="success-message">Deactivated successfully!</div>
         )}
-        <div>
-        <span className="close-Users" onClick={handleClose}>✖</span>
-        </div>
+       
         <br></br>
         <div className='User'>
           <h4>USERS</h4>
@@ -237,7 +238,7 @@ const UserPop = ({ handleClose }) => {
                     <td className="action-cell">
                       {editedRowId === index ? (
                         <div className="action-buttons">
-                          <button className="btn btn-sm Save" onClick={handleSave}>
+                          <button className="btn btn-sm " onClick={handleSave}>
                             <FontAwesomeIcon icon={faSave} />
                           </button>
                           <button className="btn btn-sm Cancel" onClick={() => setEditedRowId(null)}>
