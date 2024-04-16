@@ -322,13 +322,16 @@
     background-position: center; */
   }
   
+.GridInput{
+      border: none;
 
+}
   button, input, optgroup, select, textarea {
     margin: -5px;
     font-family: inherit;
     font-size: inherit;
     line-height: inherit;
-    border: none;
+    /* border: none; */
     margin-left: 15px;
 
 
