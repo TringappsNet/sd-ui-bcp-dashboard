@@ -171,9 +171,9 @@ function ResetNewPassword({ onClose }) {
             />
           </Form.Group>
           <div className="btn-container">
-            <div type="submit" className="btn btn-success rounded-pill submit">
+            <Button type="submit" className="btn btn-success rounded-pill submit">
               Reset Password
-            </div>
+            </Button>
           </div>
         </Form>
       </Container>
