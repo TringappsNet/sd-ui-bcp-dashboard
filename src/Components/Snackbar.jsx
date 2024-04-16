@@ -41,7 +41,7 @@ export default function CustomSnackbar({ message, variant, onClose, open }) {
         >
           <CloseIcon  />
         </IconButton>
-        <div style={{color:"white",paddingLeft:'20px',fontFamily:"sans-serif"}}>{message}</div>
+        <div style={{color:"white",paddingLeft:'20px',fontFamily:"inherit"}}>{message}</div>
       </div>
     </Snackbar>
   );
