@@ -349,6 +349,7 @@ const filteredData = retriveData.filter((row) => {
 
 
 const handleSubmit = async () => {
+  setUploadedFileName("");
   if (data.length === 0) {
     setSnackbarOpen(true);
     setSnackbarMessage("File is empty");
