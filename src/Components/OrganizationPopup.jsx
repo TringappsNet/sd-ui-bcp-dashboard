@@ -57,10 +57,10 @@ const OrgPop = ({ handleClose }) => {
 
       if (response.ok) {
         setErrorMessage(false);
-        setSuccessMessage('Organization updated successfully');
+        setSuccessMessage('Portfolio Company updated successfully');
         setTimeout(() => setSuccessMessage(''), 3000);
       } else {
-        console.error('Failed to update organization:', response.statusText);
+        console.error('Failed to update Portfolio Company:', response.statusText);
       }
 
       setExcelData(updatedData);
@@ -88,19 +88,19 @@ const OrgPop = ({ handleClose }) => {
       });
 
       if (response.ok) {
-        console.log('New organization created successfully');
+        console.log('New Portfolio Company created successfully');
         setErrorMessage(false);
-        setSuccessMessage('New organization created successfully');
+        setSuccessMessage('New Portfolio Company created successfully');
         setTimeout(() => setSuccessMessage(''), 3000);
         fetchData();
       } else {
-        console.error('Failed to create new organization:', response.statusText);
+        console.error('Failed to create new Portfolio Company:', response.statusText);
       }
 
       setAddMode(false);
       setEditedOrgName('');
     } catch (error) {
-      console.error('Error saving new organization:', error);
+      console.error('Error saving new Portfolio Company:', error);
     }
   };
 
@@ -119,21 +119,21 @@ const OrgPop = ({ handleClose }) => {
       if (response.ok) {
         setErrorMessage(false);
         setSuccessMessage(true);
-        setSuccessMessage('Organization Deleted Successfully')
+        setSuccessMessage('Portfolio Company Deleted Successfully')
         setTimeout(() => setSuccessMessage(''), 3000);
         fetchData();
       } else {
         setSuccessMessage(false);
         setErrorMessage(true);
-        setErrorMessage('Delete failed: Organization assigned to user!');
+        setErrorMessage('Deletion Unsuccessful: Portfolio Company assigned to user!');
         setTimeout(() => setErrorMessage(''), 3000);
-        console.error('Failed to delete organization:', response.statusText);
+        console.error('Failed to delete Portfolio Company:', response.statusText);
       }
     } catch (error) {
       setSuccessMessage(false);
       setErrorMessage(true);
-      setErrorMessage('Delete failed: Organization assigned to user!');
-      console.error('Error deleting organization:', error);
+      setErrorMessage('Deletion Unsuccessful: Portfolio Company assigned to user!');
+      console.error('Error deleting Portfolio Company:', error);
     }
   };
 
@@ -147,7 +147,7 @@ const OrgPop = ({ handleClose }) => {
         <div className='OrgHead'>
           <h4>Portfolio Company</h4>
           <button className="btn btn-sm Add" onClick={handleAddRow}>
-            <FontAwesomeIcon icon={faPlus} /> Add Portfolio
+            <FontAwesomeIcon icon={faPlus} /> Add Portfolio Companies
           </button>
         </div>
         <div className="message-container">
@@ -159,7 +159,7 @@ const OrgPop = ({ handleClose }) => {
             <thead className="sticky-header">
               <tr>
                 <th className='org-id-header'>Org ID</th> 
-                <th className='org-name-header'>Organization Name</th> 
+                <th className='org-name-header'>Portfolio Company</th> 
                 <th className='Users'>Users</th> 
 
                 <th className='action-headers'>Action</th> 

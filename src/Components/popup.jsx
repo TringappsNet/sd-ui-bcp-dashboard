@@ -74,8 +74,8 @@ const PopUpContainer = () => {
   {roleID === '1' && (
     <>
     <div className="dropdown-item-hover" onClick={handleInvitePopupToggle}>Send Invite</div>
-      <div className="dropdown-item-hover" onClick={handleOrganizationPopupToggle}>Portfolio</div>
-      <div className="dropdown-item-hover" onClick={handleUserPopupToggle}>User</div>
+      <div className="dropdown-item-hover" onClick={handleOrganizationPopupToggle}>Portfolio Company</div>
+      <div className="dropdown-item-hover" onClick={handleUserPopupToggle}>Users</div>
     </>
   )}
 
