@@ -167,7 +167,7 @@
               <span>{key === 'MonthYear' ? formatMonthYear(row[key]) : formatNumber(row[key])}</span>
             )}
           </td>
-                            
+
                                                       )
                           ))}
                       <td className="action-cell">
