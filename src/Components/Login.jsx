@@ -181,7 +181,7 @@ setLoading(false);
           </Row>
        
           <div className="btn-container mt-5 mb-5">
-            <Button type="submit" className="btn rounded-pill login  btn-success">
+            <Button type="submit" className="btn rounded-pill login ">
               Sign in
             </Button>
           </div>
@@ -198,7 +198,7 @@ setLoading(false);
 
       />
     </div>
-    {/* {loading && <LoadingSpinner />}  */}
+    {loading && <LoadingSpinner />} 
    </div>
   );
 }
