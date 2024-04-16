@@ -177,7 +177,8 @@ const UserPop = ({ handleClose }) => {
     return values.includes(searchQuery.toLowerCase());
   });
 
-
+  const columnNames = ['Username', 'Company', 'Email', 'Role', 'isActive'];
+  
 
   return (
     <Container fluid className="mt-10">
@@ -189,9 +190,6 @@ const UserPop = ({ handleClose }) => {
             message="Are you sure you want to Deactivate the User?"
 
           />  
-           <div className='close-user'>
-        <span className="close-Users" onClick={handleClose}>✖</span>
-        </div>
       <Col className="col col1 Render-Col">
         {editSuccess && (
           <div className="success-message">Edit successful!</div>
@@ -199,7 +197,9 @@ const UserPop = ({ handleClose }) => {
         {deactivateSuccess && (
           <div className="success-message">Deactivated successfully!</div>
         )}
-       
+        <div>
+        <span className="close-Users" onClick={handleClose}>✖</span>
+        </div>
         <br></br>
         <div className='User'>
           <h4>USERS</h4>
@@ -213,9 +213,9 @@ const UserPop = ({ handleClose }) => {
             <table bordered striped className='grid'>
               <thead className="sticky-header">
                 <tr>
-                  {Object.keys(excelData[0] || {}).map((key) => (
-                    <th key={key}>{key}</th>
-                  ))}
+                {Object.keys(excelData[0] || {}).map((key, index) => (
+                <th key={index}>{columnNames[index]}</th>
+                ))}
                   <th className="action-cell">Action</th>
                 </tr>
               </thead>
@@ -238,7 +238,7 @@ const UserPop = ({ handleClose }) => {
                     <td className="action-cell">
                       {editedRowId === index ? (
                         <div className="action-buttons">
-                          <button className="btn btn-sm " onClick={handleSave}>
+                          <button className="btn btn-sm Save" onClick={handleSave}>
                             <FontAwesomeIcon icon={faSave} />
                           </button>
                           <button className="btn btn-sm Cancel" onClick={() => setEditedRowId(null)}>
