@@ -146,7 +146,7 @@ const OrgPop = ({ handleClose }) => {
         </div>
         <br></br>
         <div className='OrgHead'>
-          <h4>Portfolio Company</h4>
+          <h4>Portfolio Companies</h4>
           <button className="btn btn-sm Add" onClick={handleAddRow}>
             <FontAwesomeIcon icon={faPlus} /> Add New
           </button>
@@ -156,63 +156,62 @@ const OrgPop = ({ handleClose }) => {
           {errorMessage && <div className="error-message">{errorMessage}</div>}
         </div>
         <div className="Org-pop-container table-container">
-          <Table striped bordered hover >
+        <Table striped bordered hover>
             <thead className="sticky-header">
               <tr>
-                <th className='org-id-header'>Org ID</th> 
                 <th className='org-name-header'>Company Name</th> 
-                <th className='Users'>Users</th> 
-
+                <th className='users-header'>Users</th> 
                 <th className='action-headers'>Action</th> 
               </tr>
             </thead>
-              <tbody>
+            <tbody>
               {addMode && (
-                  <tr>
-                    <td colSpan={Object.keys(excelData[0] || {}).length}>
-                      <input
-                        type="text"
-                        className='addCompany'
-                        placeholder="New Portfolio "
-                        value={editedOrgName}
-                        onChange={handleInputChange}
-                      />
-                    </td>
-                    <td>
-                      <div className='editSave action-buttons'>
-                        <div onClick={handleSaveNewOrg}>
-                          <FontAwesomeIcon icon={faSave} />
-                        </div>
-                        <div onClick={() => setAddMode(false)}>
-                          <FontAwesomeIcon icon={faTimesCircle} />
-                        </div>
+                <tr>
+                  <td colSpan={Object.keys(excelData[0] || {}).length}>
+                    <input
+                      type="text"
+                      className='addCompany'
+                      placeholder="New Portfolio "
+                      value={editedOrgName}
+                      onChange={handleInputChange}
+                    />
+                  </td>
+                  <td>
+                    <div className='editSave action-buttons'>
+                      <div onClick={handleSaveNewOrg}>
+                        <FontAwesomeIcon icon={faSave} />
                       </div>
+                      <div onClick={() => setAddMode(false)}>
+                        <FontAwesomeIcon icon={faTimesCircle} />
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              )}
+              {excelData.map((row, index) => (
+                <tr key={index}>
+                  {Object.keys(row).map((key, i) => (
+                    key !== 'org_ID' && // Exclude org_ID column
+                    <td key={i}>
+                      {editedRowIndex === index && key === 'org_name' ? (
+                        <input
+                          type="text"
+                          className='OrgIn'
+                          value={editedOrgName}
+                          onChange={handleInputChange}
+                        />
+                      ) : (
+                        key === 'org_name' ? (
+                          <span>
+                            {row[key]} 
+                          </span>
+                        ) : (
+                          row[key]
+                        )
+                      )}
                     </td>
-                  </tr>
-                )}
-                {excelData.map((row, index) => (
-                  <tr key={index}>
-                    {Object.keys(row).map((key, i) => (
-                     <td key={i}>
-                     {editedRowIndex === index && key === 'org_name' ? (
-                       <input
-                         type="text"
-                         className='OrgIn'
-                         value={editedOrgName}
-                         onChange={handleInputChange}
-                       />
-                     ) : (
-                       key === 'org_name' ? (
-                         <span>
-                           {row[key]} 
-                         </span>
-                       ) : (
-                         row[key]
-                       )
-                     )}
-                   </td>
-                    ))}
-                    <td>
+                  ))}
+                  <td>
                       {editedRowIndex === index && !addMode ? (
                         <div className='editSave '>
                           <div onClick={handleSave}>
@@ -233,11 +232,11 @@ const OrgPop = ({ handleClose }) => {
                         </div>
                       )}
                     </td>
-                  </tr>
-                ))}
-              
-              </tbody>
-            </Table>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+
           </div>
           {/* <div>
             <button className="btn btn-sm Add" onClick={handleAddRow}>
