@@ -7,16 +7,17 @@
 }
 
 .orgname{
-  width: 100px;
+  width: 40px;
  
 }
 .slash{
-  width: 100px;
+  /* width: 100px; */
+  color: gray;
 
 }
 
 .count{
-  width: 100px;
+  width: 40px;
 
 }
 
