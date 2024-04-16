@@ -136,6 +136,8 @@
                                   ) : (
                                     <input
                                       type="text"
+                                      className='GridInput'
+                        
                                       value={editedRowData[key]} // No need to apply formatNumber function
                                       onChange={(e) => handleInputChange(e, key)}
                                     />
