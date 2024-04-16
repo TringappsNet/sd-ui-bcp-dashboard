@@ -36,7 +36,7 @@ export default function CustomSnackbar({ message, variant, onClose, open }) {
           size="small"
           aria-label="close"
           color="inherit"
-          style={{ position: 'absolute', color:'white',top: '50%', left: '50%', transform: 'translate(150%, -50%)', background:'none' }}
+          style={{ position: 'absolute', color:'white',top: '50%', left: '50%', transform: 'translate(160%, -50%)', background:'none' }}
           onClick={handleClose}
         >
           <CloseIcon  />
