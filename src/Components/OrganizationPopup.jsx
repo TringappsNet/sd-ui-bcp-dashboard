@@ -6,6 +6,7 @@ import { PortURL } from "./Config";
 import '../styles/ExcelGrid.css'; // Assuming you have a CSS file for styling
 import '../styles/OrgPopup.css'; // Assuming you have a CSS file for styling
 
+
 const OrgPop = ({ handleClose }) => {
   const [excelData, setExcelData] = useState([]);
   const [editedRowIndex, setEditedRowIndex] = useState(null);
@@ -146,7 +147,7 @@ const OrgPop = ({ handleClose }) => {
         </div>
         <br></br>
         <div className='OrgHead'>
-          <h4>Portfolio Company</h4>
+          <h4>Portfolio Companies</h4>
           <button className="btn btn-sm Add" onClick={handleAddRow}>
             <FontAwesomeIcon icon={faPlus} /> Add New
           </button>
@@ -161,7 +162,7 @@ const OrgPop = ({ handleClose }) => {
           <Table striped bordered hover >
             <thead className="sticky-header">
               <tr>
-                <th className='org-name-header'>Company Name</th> 
+                <th className={'org-name-header sticky-header company-header'}>Company Name</th> 
 
                 <th className='action-headers'>Action</th> 
               </tr>

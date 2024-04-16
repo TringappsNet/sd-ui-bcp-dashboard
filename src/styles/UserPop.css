@@ -104,6 +104,10 @@
     top: -1px;
     background-color: #ffffff;
     z-index: 1;
+    text-align: center;
+}
+.action-headers {
+  text-align: center !important;
 }
 
 .table-container {
