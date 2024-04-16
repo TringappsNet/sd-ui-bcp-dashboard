@@ -38,6 +38,8 @@
           setEditedRowData(editedRow);
         }
       }
+
+      
     }, [sortConfig, editedRowId]);
     
     // 
@@ -54,14 +56,15 @@
     };
     
 
-
     const sortedData = () => {
       if (sortConfig.key !== null) {
         const sorted = [...filteredData].sort((a, b) => {
-          if (a[sortConfig.key] < b[sortConfig.key]) {
+          const keyA = a[sortConfig.key];
+          const keyB = b[sortConfig.key];
+          if (keyA < keyB) {
             return sortConfig.direction === 'ascending' ? -1 : 1;
           }
-          if (a[sortConfig.key] > b[sortConfig.key]) {
+          if (keyA > keyB) {
             return sortConfig.direction === 'ascending' ? 1 : -1;
           }
           return 0;
@@ -70,6 +73,7 @@
       }
       return filteredData;
     };
+    
 
   const formatMonthYear = (dateString) => {
     // Parse the date string into a Date object
@@ -252,6 +256,8 @@
                   ))}
                 </tbody>
               </Table>
+
+
             </div>
           </Col>
         </Row>

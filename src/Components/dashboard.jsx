@@ -814,6 +814,9 @@ const handleSubmit = async () => {
       formatDateCell={formatDateCell}
       roleID={roleID}
       setEditedRowData={setEditedRowData}
+      setRowToDelete={setRowToDelete}
+      rowToDelete={rowToDelete}
+
       
     />
   )}
