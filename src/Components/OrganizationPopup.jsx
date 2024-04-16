@@ -156,85 +156,82 @@ const OrgPop = ({ handleClose }) => {
           {errorMessage && <div className="error-message">{errorMessage}</div>}
         </div>
         <div className="Org-pop-container table-container">
+         
+
           <Table striped bordered hover >
             <thead className="sticky-header">
               <tr>
-                <th className='org-id-header'>Org ID</th> 
                 <th className='org-name-header'>Company Name</th> 
-                <th className='Users'>Users</th> 
 
                 <th className='action-headers'>Action</th> 
               </tr>
             </thead>
               <tbody>
               {addMode && (
-                  <tr>
-                    <td colSpan={Object.keys(excelData[0] || {}).length}>
-                      <input
-                        type="text"
-                        className='addCompany'
-                        placeholder="New Portfolio "
-                        value={editedOrgName}
-                        onChange={handleInputChange}
-                      />
-                    </td>
-                    <td>
-                      <div className='editSave action-buttons'>
-                        <div onClick={handleSaveNewOrg}>
-                          <FontAwesomeIcon icon={faSave} />
-                        </div>
-                        <div onClick={() => setAddMode(false)}>
-                          <FontAwesomeIcon icon={faTimesCircle} />
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                )}
-                {excelData.map((row, index) => (
-                  <tr key={index}>
-                    {Object.keys(row).map((key, i) => (
-                     <td key={i}>
-                     {editedRowIndex === index && key === 'org_name' ? (
-                       <input
-                         type="text"
-                         className='OrgIn'
-                         value={editedOrgName}
-                         onChange={handleInputChange}
-                       />
-                     ) : (
-                       key === 'org_name' ? (
-                         <span>
-                           {row[key]} 
-                         </span>
-                       ) : (
-                         row[key]
-                       )
-                     )}
-                   </td>
-                    ))}
-                    <td>
-                      {editedRowIndex === index && !addMode ? (
-                        <div className='editSave '>
-                          <div onClick={handleSave}>
-                            <FontAwesomeIcon icon={faSave} />
-                          </div>
-                          <div onClick={() => setEditedRowIndex(null)}>
-                            <FontAwesomeIcon icon={faTimesCircle} />
-                          </div>
-                        </div>
-                      ) : (
-                        <div className='d-flex editSave '>
-                          <div className=" btn-sm Edit" onClick={() => handleEdit(index)}>
-                            <FontAwesomeIcon icon={faEdit} />
-                          </div>
-                          <div className=" btn-sm Delete" onClick={() => handleDeleteRow(index)}> 
-                            <FontAwesomeIcon icon={faTrash} />
-                          </div>
-                        </div>
-                      )}
-                    </td>
-                  </tr>
-                ))}
+  <tr>
+    <td>
+      <input
+        type="text"
+        className='addCompany'
+        placeholder="New Portfolio"
+        value={editedOrgName}
+        onChange={handleInputChange}
+      />
+    </td>
+    <td>
+      <div className='editSave action-buttons'>
+        <div onClick={handleSaveNewOrg}>
+          <FontAwesomeIcon icon={faSave} />
+        </div>
+        <div onClick={() => setAddMode(false)}>
+          <FontAwesomeIcon icon={faTimesCircle} />
+        </div>
+      </div>
+    </td>
+  </tr>
+)}
+{excelData.map((row, index) => (
+  <tr key={index}>
+    <td>
+      {editedRowIndex === index && row.org_name ? (
+        <input
+          type="text"
+          className='OrgIn'
+          value={editedOrgName}
+          onChange={handleInputChange}
+        />
+      ) : (
+        <span className='Usercount'>
+          <div className='orgname'>{row.org_name}</div>
+          <div className='slash'>|</div>
+            <div className='count'>{row.user_count}</div>
+       
+        </span>
+      )}
+    </td>
+    <td>
+      {editedRowIndex === index && !addMode ? (
+        <div className='editSave '>
+          <div onClick={handleSave}>
+            <FontAwesomeIcon icon={faSave} />
+          </div>
+          <div onClick={() => setEditedRowIndex(null)}>
+            <FontAwesomeIcon icon={faTimesCircle} />
+          </div>
+        </div>
+      ) : (
+        <div className='d-flex editSave '>
+          <div className="btn-sm Edit" onClick={() => handleEdit(index)}>
+            <FontAwesomeIcon icon={faEdit} />
+          </div>
+          <div className="btn-sm Delete" onClick={() => handleDeleteRow(index)}> 
+            <FontAwesomeIcon icon={faTrash} />
+          </div>
+        </div>
+      )}
+    </td>
+  </tr>
+))}
               
               </tbody>
             </Table>

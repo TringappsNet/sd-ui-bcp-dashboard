@@ -131,7 +131,7 @@
                 <thead className="sticky-header">
                   <tr>
                   {Object.keys(filteredData[0] || {}).map((key) => (
-                      key !== 'ID' && // Exclude the 'id' column
+                      key !== 'id' && // Exclude the 'id' column
                       <th key={key} onClick={() => requestSort(key)}>
                         {reversedColumnMap[key] || key}
                         {sortConfig.key === key && (
@@ -146,7 +146,7 @@
                   {sortedData().map((row, index) => (
                           <tr key={index}>
                           {Object.keys(row).map((key) => (
-                            key !== 'ID' && (
+                            key !== 'id' && (
                               <td key={key}>
                               {editedRowId === index ? (
                                 (key === 'CompanyName') ? (
