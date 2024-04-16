@@ -204,7 +204,7 @@ const OrgPop = ({ handleClose }) => {
         <span className='Usercount'>
           <div className='orgname'>{row.org_name}</div>
           <div className='slash'>|</div>
-            <div className='count'>{row.user_count}</div>
+            <div className='count'>{row.user_count}  users</div>
        
         </span>
       )}
