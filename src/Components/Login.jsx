@@ -36,9 +36,9 @@ function Login() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setLoading(true);
   
     if (!email) {
+      setLoading(false);
       setSnackbarMessage('Email is required');
       setSnackbarOpen(true);
       // setSnackColor('red');
@@ -48,6 +48,7 @@ function Login() {
     }
   
     if (!password) {
+      setLoading(false);
       setSnackbarMessage('Password is required');
       setSnackbarOpen(true);
       setSnackbarVariant('error');
@@ -56,6 +57,7 @@ function Login() {
     }
   
     if (!email.includes('@')) {
+      setLoading(false);
       setSnackbarMessage('Please enter a valid email');
       setSnackbarOpen(true);
       setSnackbarVariant('error');
@@ -66,6 +68,7 @@ function Login() {
     const requestBody = { email, password};
   
     try {
+      setLoading(true);
       const response = await fetch(`${PortURL}/login`, {
         method: 'POST',
         headers: {
@@ -87,11 +90,11 @@ function Login() {
         localStorage.setItem('Org_ID', data1.Org_ID);
         localStorage.setItem('user_ID', data1.userId);
         localStorage.setItem('role', data1.role);
-        
-    navigate('/dashboard');
+        setLoading(false);
+        navigate('/dashboard');
   } else {
     const data = await response.json();
-
+    setLoading(false);
     setSnackbarMessage(data.error || 'An error occurred while logging in.');
     setSnackbarOpen(true);
     setSnackbarVariant('error');
@@ -99,6 +102,7 @@ function Login() {
   }
 } catch (error) {
   console.error('Error logging in:', error);
+  setLoading(false);
   setSnackbarMessage('An error occurred while logging in.');
   setSnackbarOpen(true);
   setSnackbarVariant('error');
@@ -181,7 +185,7 @@ setLoading(false);
           </Row>
        
           <div className="btn-container mt-5 mb-5">
-            <Button type="submit" className="btn rounded-pill login ">
+            <Button type="submit" className="btn rounded-pill login btn-success ">
               Sign in
             </Button>
           </div>
