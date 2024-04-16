@@ -1,4 +1,4 @@
-  import React, { useState } from 'react';
+  import React, { useState,useEffect } from 'react';
   import { Table } from 'react-bootstrap';
   import { Container, Row, Col } from 'react-bootstrap';
   import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -6,6 +6,7 @@
   import '../styles/dashboard.css';
   import '../styles/ExcelGrid.css';
   import {columnMap, reverseColumnMap} from "../Objects/Objects";
+
 
 
   const ExcelGrid = ({
@@ -35,7 +36,9 @@
       setSortConfig({ key, direction });
     }
   };
-
+  useEffect(() => {
+  console.log("edited rowdata ",editedRowData);
+  } , []);
 
     const sortedData = () => {
       if (sortConfig.key !== null) {
@@ -138,7 +141,7 @@
                                       type="text"
                                       className='GridInput'
                         
-                                      value={editedRowData[key]} // No need to apply formatNumber function
+                                      value={editedRowData[key]}
                                       onChange={(e) => handleInputChange(e, key)}
                                     />
                                   )
