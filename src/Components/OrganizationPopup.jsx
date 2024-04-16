@@ -144,10 +144,11 @@ const OrgPop = ({ handleClose }) => {
         <div className='closeIcon'>
           <span className="close-org" onClick={handleClose}>✖</span>
         </div>
+        <br></br>
         <div className='OrgHead'>
           <h4>Portfolio Company</h4>
           <button className="btn btn-sm Add" onClick={handleAddRow}>
-            <FontAwesomeIcon icon={faPlus} /> Add Portfolio Companies
+            <FontAwesomeIcon icon={faPlus} /> Add New
           </button>
         </div>
         <div className="message-container">
