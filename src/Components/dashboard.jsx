@@ -813,6 +813,8 @@ const handleSubmit = async () => {
       handleDelete={handleDelete}
       formatDateCell={formatDateCell}
       roleID={roleID}
+      setEditedRowData={setEditedRowData}
+      
     />
   )}
 </div>

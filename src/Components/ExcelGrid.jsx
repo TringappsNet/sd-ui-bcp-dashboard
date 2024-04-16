@@ -9,36 +9,51 @@
 
 
 
+  
   const ExcelGrid = ({
     filteredData,
     selectedRowIds,
     editedRowId,
     editedRowData,
+    setEditedRowData,
     handleEdit,
     handleCancel,
     handleInputChange,
     handleSave,
-    handleDelete,
+    handleDelete, 
+    editedRow,
+
     // formatDateCell,
     roleID // Pass Role_ID as a prop
   }) => {
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
-  const requestSort = (key) => {
-    let direction = 'ascending';
-    if (sortConfig.key === key && sortConfig.direction === 'ascending') {
-      direction = 'descending';
-    }
+  
+
+    useEffect(() => {
+      // Update editedRowData when filteredData or sortConfig changes
+      // Check if editedRowId is defined to prevent errors when no row is being edited
+      if (editedRowId !== null) {
+        const editedRow = sortedData()[editedRowId];
+        if (editedRow) {
+          setEditedRowData(editedRow);
+        }
+      }
+    }, [sortConfig, editedRowId]);
     
-    // For "MonthYear" column, sort by parsed month and year values
-    if (key === 'MonthYear') {
-      setSortConfig({ key, direction });
-    } else {
-      setSortConfig({ key, direction });
-    }
-  };
-  useEffect(() => {
-  console.log("edited rowdata ",editedRowData);
-  } , []);
+    // 
+    const requestSort = (key) => {
+      // Check if the key is one of the allowed columns for sorting
+      if (key === 'CompanyName' || key === 'MonthYear') {
+        let direction = 'ascending';
+        if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+          direction = 'descending';
+        }
+        
+        setSortConfig({ key, direction });
+      }
+    };
+    
+
 
     const sortedData = () => {
       if (sortConfig.key !== null) {
@@ -97,7 +112,14 @@
     return formattedNumber;
   };
 
-
+  const formatDateForInput = (dateString) => {
+    if (!dateString) return ''; // Handle empty or null values
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    let month = (date.getMonth() + 1).toString().padStart(2, '0');
+    let day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+};
   const reversedColumnMap = reverseColumnMap(columnMap);
 
     return (
@@ -132,10 +154,11 @@
                                 ) : (
                                   key === 'MonthYear' ? (
                                     <input
-                                      type="date"
-                                      value={editedRowData[key] || ''}
-                                      onChange={(e) => handleInputChange(e, key)}
-                                    />
+                                    type="date"
+                                    value={formatDateForInput(editedRowData[key])}
+                                    onChange={(e) => handleInputChange(e, key)}
+                                />
+                                
                                   ) : (
                                     <input
                                       type="text"
