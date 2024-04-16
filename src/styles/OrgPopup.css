@@ -192,3 +192,14 @@ td{
 .action-headers{
   padding-left: 200px;
 }
+
+.closeIcon{
+  position: relative;
+  padding-top: 10px;
+  padding-right: 10px;
+}
+.close-org{
+  position: absolute;
+ 
+
+}

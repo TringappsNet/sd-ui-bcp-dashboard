@@ -141,7 +141,7 @@ const OrgPop = ({ handleClose }) => {
     <Container fluid className=" mt-10">
         <Row className="row Render-Row1">
       <Col className="col col1 Render-Col">
-        <div>
+        <div className='closeIcon'>
           <span className="close-org" onClick={handleClose}>✖</span>
         </div>
         <div className='OrgHead'>
