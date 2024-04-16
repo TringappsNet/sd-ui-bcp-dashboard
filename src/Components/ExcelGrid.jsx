@@ -143,37 +143,31 @@
                   </tr>
                 </thead>
                 <tbody>
-                  {sortedData().map((row, index) => (
-                          <tr key={index}>
-                          {Object.keys(row).map((key) => (
-                            key !== 'ID' && (
-                              <td key={key}>
-                              {editedRowId === index ? (
-                                (key === 'CompanyName') ? (
-                                  <span>{editedRowData[key]}</span>
-                                ) : (
-                                  key === 'MonthYear' ? (
-                                    <input
-                                    type="date"
-                                    value={formatDateForInput(editedRowData[key])}
-                                    onChange={(e) => handleInputChange(e, key)}
-                                />
-                                
-                                  ) : (
-                                    <input
-                                      type="text"
-                                      className='GridInput'
-                        
-                                      value={editedRowData[key]}
-                                      onChange={(e) => handleInputChange(e, key)}
-                                    />
-                                  )
-                                )
-                              ) : (
-                                <span>{key === 'MonthYear' ? formatMonthYear(row[key]) : formatNumber(row[key])}</span>
-                              )}
-                            </td>
-                            
+                {sortedData().map((row, index) => (
+    <tr key={index}>
+      {Object.keys(row).map((key) => (
+        key !== 'ID' && (
+          <td key={key}>
+            {editedRowId === index ? (
+              (key === 'CompanyName') ? (
+                <span>{editedRowData[key]}</span>
+              ) : (
+                key === 'MonthYear' ? (
+                  <span>{formatMonthYear(row[key])}</span> // Render as plain text
+                ) : (
+                  <input
+                    type="text"
+                    className='GridInput'
+                    value={editedRowData[key]}
+                    onChange={(e) => handleInputChange(e, key)}
+                  />
+                )
+              )
+            ) : (
+              <span>{key === 'MonthYear' ? formatMonthYear(row[key]) : formatNumber(row[key])}</span>
+            )}
+          </td>
+
                                                       )
                           ))}
                       <td className="action-cell">
