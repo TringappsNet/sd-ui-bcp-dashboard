@@ -14,7 +14,7 @@ import ConfirmationModal from "./ConfirmationModal";
 import NavbarComponent from "./Navbar";
 import ExcelGrid from "./ExcelGrid";
 import {columnMap} from "../Objects/Objects";
-
+import AuditGrid from './Audit';
 
 function Dashboard() {
 
@@ -45,6 +45,7 @@ function Dashboard() {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [rowToDelete, setRowToDelete] = useState(null);
     const [showUpdateModal, setShowUpdateModal] = useState(false);
+    const [selectionModel, setSelectionModel] = useState([]);
  
 
     const navigate = useNavigate();
@@ -627,8 +628,37 @@ const handleSubmit = async () => {
       setSnackbarMessage("");
     };
 
-
-
+    const columns = [
+      { field: 'ID', headerName: 'ID', width: 90 },
+      { field: 'MonthYear', headerName: 'MonthYear', width: 200 },
+      { field: 'CompanyName', headerName: 'Company Name', width: 200 },
+      { field: 'RevenueActual', headerName: 'Revenue Actual', width: 150 },
+      { field: 'RevenueBudget', headerName: 'Revenue Budget', width: 150 },
+      { field: 'GrossProfitActual', headerName: 'Gross Profit Actual', width: 180 },
+      { field: 'GrossProfitBudget', headerName: 'Gross Profit Budget', width: 180 },
+      { field: 'SGAActual', headerName: 'SGA Actual', width: 120 },
+      { field: 'SGABudget', headerName: 'SGA Budget', width: 120 },
+      { field: 'EBITDAActual', headerName: 'EBITDA Actual', width: 150 },
+      { field: 'EBITDABudget', headerName: 'EBITDA Budget', width: 150 },
+      { field: 'CapExActual', headerName: 'CapEx Actual', width: 150 },
+      { field: 'CapExBudget', headerName: 'CapEx Budget', width: 150 },
+      { field: 'FixedAssetsNetActual', headerName: 'Fixed Assets Net Actual', width: 200 },
+      { field: 'FixedAssetsNetBudget', headerName: 'Fixed Assets Net Budget', width: 200 },
+      { field: 'CashActual', headerName: 'Cash Actual', width: 150 },
+      { field: 'CashBudget', headerName: 'Cash Budget', width: 150 },
+      { field: 'TotalDebtActual', headerName: 'Total Debt Actual', width: 180 },
+      { field: 'TotalDebtBudget', headerName: 'Total Debt Budget', width: 180 },
+      { field: 'AccountsReceivableActual', headerName: 'Accounts Receivable Actual', width: 220 },
+      { field: 'AccountsReceivableBudget', headerName: 'Accounts Receivable Budget', width: 220 },
+      { field: 'AccountsPayableActual', headerName: 'Accounts Payable Actual', width: 220 },
+      { field: 'AccountsPayableBudget', headerName: 'Accounts Payable Budget', width: 220 },
+      { field: 'InventoryActual', headerName: 'Inventory Actual', width: 150 },
+      { field: 'InventoryBudget', headerName: 'Inventory Budget', width: 150 },
+      { field: 'EmployeesActual', headerName: 'Employees Actual', width: 150 },
+      { field: 'EmployeesBudget', headerName: 'Employees Budget', width: 150 },
+      { field: 'Quarter', headerName: 'Quarter', width: 120 },
+    ];
+    
     return (
       <div className="dashboard-container">
 
@@ -791,7 +821,14 @@ const handleSubmit = async () => {
 </Form>
 </Container>
 
-
+<div style={{ height: 400, width: '100%' }}>
+      <AuditGrid
+        rows={retriveData}
+        columns={columns}
+        selectionModel={selectionModel}
+        onSelectionModelChange={setSelectionModel}
+      />
+    </div>
 
 <div>
   {filteredData.length === 0 ? (
@@ -818,6 +855,8 @@ const handleSubmit = async () => {
     />
   )}
 </div>
+
+
 {/* Override Confirmation popup */}
     <>
     <ConfirmationModal
@@ -865,6 +904,8 @@ const handleSubmit = async () => {
 
 
     {loading && <LoadingSpinner />} 
+
+    
   </div>
 );
 }
