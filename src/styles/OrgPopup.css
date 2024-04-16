@@ -19,16 +19,14 @@
   width: 100px;
 
 }
-.org-id-header {
-  width: 30; /* Adjust the width of the Org ID column */
-}
+
 
 .org-name-header {
-  width: 65%; 
+  width: 80%; 
 }
 
 .action-header {
-  width: 5%; /* Adjust the width of the Action column */
+  width: 40%; /* Adjust the width of the Action column */
 }
 
 .grid tr th {
@@ -115,12 +113,19 @@ table{
 }
 
 
-
+.company_name{
+  display: flex;
+  justify-content:space-evenly;
+  
+}
+.orgname{
+  width: 50px;
+}
 
 .OrgIn {
   margin-left: -5px;
   border: 1px solid black;
-  width: 529px;
+  width: 654px;
   /* padding: 0px; */
   height: 38px;
   margin-bottom: 3px;
@@ -135,7 +140,7 @@ table{
 
     margin-left: 30px;
     border: none;
-    width: 731px;
+    width: 651px;
     /* padding: 0px; */
     height: 38px;
     margin-bottom: 3px;
