@@ -160,7 +160,7 @@ const OrgPop = ({ handleClose }) => {
             <thead className="sticky-header">
               <tr>
                 <th className='org-id-header'>Org ID</th> 
-                <th className='org-name-header'>Portfolio Company</th> 
+                <th className='org-name-header'>Company Name</th> 
                 <th className='Users'>Users</th> 
 
                 <th className='action-headers'>Action</th> 
