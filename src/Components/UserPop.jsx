@@ -182,13 +182,20 @@ const UserPop = ({ handleClose }) => {
   return (
     <Container fluid className="mt-10">
     <Row className="row Render-Row1">
-       <ConfirmationModal
-            show={showConfirmationModal}
-            onHide={() => setShowConfirmationModal(false)}
-            onConfirm={confirmDeactivation}
-            message="Are you sure you want to Deactivate the User?"
-
-          />  
+    
+    <>
+    <ConfirmationModal
+          show={showConfirmationModal}
+          onHide={() => setShowConfirmationModal(false)}
+          onConfirm={confirmDeactivation}
+          title="Confirm Deactivate"
+          cancelText="No"
+          confirmText="Yes"
+          cancelVariant="secondary"
+          confirmVariant="danger"
+          message={`Are you sure you want to Deactivate the User?`}
+        />
+    </>
            <div className='close-user'>
         <span className="close-Users" onClick={handleClose}>✖</span>
         </div>
