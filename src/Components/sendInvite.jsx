@@ -179,11 +179,11 @@ function SendInvite({ onClose }) {
           </Form.Group>
           <Form.Group controlId="formBasicOrganization" className="mb-3">
             <FormControl fullWidth size="small" error={!!orgError}>
-              <InputLabel id="organization-select">Organization</InputLabel>
+              <InputLabel id="organization-select">Portfolio Company</InputLabel>
               <Select
                 labelId="organization-select"
                 name="organization"
-                label="Organization"
+                label="Portfolio Company"
                 value={formData.organization}
                 onChange={handleChange}
               >
