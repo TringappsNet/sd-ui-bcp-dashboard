@@ -43,7 +43,7 @@ function Dashboard() {
     const [showModal, setShowModal] = useState(false);
     const [roleID, setRoleID] = useState('');
     const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const [rowToDelete, setRowToDelete] = useState(null);
+    const [rowToDelete, setRowToDelete] = useState(0);
     const [showUpdateModal, setShowUpdateModal] = useState(false);
     const [selectionModel, setSelectionModel] = useState([]);
  
@@ -137,7 +137,7 @@ function Dashboard() {
           
           // Set the modified data in the state
           setRetriveData(modifiedData); 
-          console.log("retrived data",modifiedData);
+          // console.log("retrived data",modifiedData);
         } else {
           console.error("Failed to fetch data:", response.statusText);
         }
@@ -279,10 +279,6 @@ const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
       setSearchQuery(e.target.value);
     };
 
-    const handleEdit = (rowId) => {
-      setEditedRowId(rowId);
-      setEditedRowData(filteredData[rowId]);
-    };
 
     const handleCancel = () => {
       setEditedRowId(null);
@@ -567,15 +563,25 @@ const handleSubmit = async () => {
     const handleCloseDelete = () => {
       setShowDeleteModal(false);
     }
+    const handleEdit = (rowId) => {
+      // console.log("edited  row id " ,rowId);
+      setEditedRowId(rowId);
+      setEditedRowData(filteredData[rowId]);
+    };
 
-    const handleDelete = (rowId) => {
-      setRowToDelete(rowId);
+    const handleDelete = (index,columnId) => {
+      setRowToDelete(columnId);
+
+      // console.log("index andcolumnID",index,columnId)
+
       setShowDeleteModal(true);
+      // console.log("row current delete data",rowToDelete);
     };
   
     const handleConfirmDelete = async () => {
       setShowDeleteModal(false);
-      const rowId = rowToDelete;      
+      const rowId = rowToDelete;    
+      // console.log("confirm delte",rowId);  
       try {
         const sessionId = localStorage.getItem('sessionId');
         const email = localStorage.getItem('email');
@@ -583,6 +589,9 @@ const handleSubmit = async () => {
         const Org_ID = localStorage.getItem('Org_ID');
         const identifierToDelete = String(filteredData[rowId]?.ID);
 
+//  console.log("identifier delete",identifierToDelete);
+
+ const stringRow=String(rowId);
         const response = await fetch(`${PortURL}/delete`, {
           method: "POST",
           headers: {
@@ -591,15 +600,20 @@ const handleSubmit = async () => {
             "Email": email, 
           },
           body: JSON.stringify({
-            ids: [identifierToDelete],
+            ids: [stringRow],
             Org_Id: Org_ID,
             userId: userId
           }),
 
         }); 
 
+        
           if (response.ok) {
-          const updatedData = filteredData.filter((row, index) => index !== rowId);
+
+           fetchData();   
+           const updatedData=retriveData ;        
+          // const updatedData = filteredData.filter((row, index) => index !== rowId);
+          // console.log("updated Data after deleting ",updatedData);
           setRetriveData(updatedData); 
           setSnackbarOpen(true);
           setSnackbarMessage("Row deleted successfully");
@@ -852,6 +866,8 @@ const handleSubmit = async () => {
       formatDateCell={formatDateCell}
       roleID={roleID}
       setEditedRowData={setEditedRowData}
+      rowToDelete={rowToDelete}
+      setRowToDelete={setRowToDelete}
       
     />
   )}
@@ -884,8 +900,8 @@ const handleSubmit = async () => {
           confirmText="Delete"
           cancelVariant="secondary"
           confirmVariant="danger"
-          message={`Are you sure you want to delete the row ${formatMonthYear(filteredData[rowToDelete]?.MonthYear)}?`}
-        />
+          message={`Are you sure you want to delete the row ${formatMonthYear(filteredData.find(row => row.ID === rowToDelete)?.MonthYear)}?`}
+          />
     </>
 
      {/* override Update popup */}

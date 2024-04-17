@@ -6,6 +6,7 @@
   import '../styles/dashboard.css';
   import '../styles/ExcelGrid.css';
   import {columnMap, reverseColumnMap} from "../Objects/Objects";
+import { Key } from 'react-bootstrap-icons';
 
 
 
@@ -22,6 +23,7 @@
     handleSave,
     handleDelete, 
     editedRow,
+    rowToDelete,
 
     // formatDateCell,
     roleID // Pass Role_ID as a prop
@@ -30,20 +32,19 @@
   
 
     useEffect(() => {
-      // Update editedRowData when filteredData or sortConfig changes
-      // Check if editedRowId is defined to prevent errors when no row is being edited
+    
       if (editedRowId !== null) {
         const editedRow = sortedData()[editedRowId];
         if (editedRow) {
           setEditedRowData(editedRow);
         }
       }
-    }, [sortConfig, editedRowId]);
+    }, [sortConfig, editedRowId,rowToDelete]);
     
     // 
     const requestSort = (key) => {
       // Check if the key is one of the allowed columns for sorting
-      if (key === 'CompanyName' || key === 'MonthYear') {
+      if (Key) {
         let direction = 'ascending';
         if (sortConfig.key === key && sortConfig.direction === 'ascending') {
           direction = 'descending';
@@ -192,13 +193,13 @@
                             <div className="action-buttons">
                               <button
                                 className="btn btn-sm Edit"
-                                onClick={() => handleEdit(index)}
+                                onClick={() => handleEdit(index,row.ID)}
                               >
                                 <FontAwesomeIcon icon={faEdit} />
                               </button>
                               <button
                                 className="btn btn-sm Delete"
-                                onClick={() => handleDelete(index)}
+                                onClick={() => handleDelete(index,row.ID)}
                               >
                                 <FontAwesomeIcon icon={faTrash} />
                               </button>
