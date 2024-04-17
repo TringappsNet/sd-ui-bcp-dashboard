@@ -910,12 +910,12 @@ const handleSubmit = async () => {
           show={showUpdateModal}
           onHide={handleCloseUpdate}
           onConfirm={handleSave}
-          title="Confirm Update Override"
+          title="Confirm Update"
           cancelText="No"
           confirmText="Update"
           cancelVariant="secondary"
           confirmVariant="danger"
-          message={`Are you sure you want to override Update?`}
+          message={`Are you sure you want to update?`}
         />
     </>
 
