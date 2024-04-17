@@ -213,7 +213,7 @@ const UserPop = ({ handleClose }) => {
           <input type="text" placeholder="Search..." className='Usersearch' value={searchQuery} onChange={handleSearch} />
         </div>
       
-        <div className="table-container" style={{  height: '500px', overflowY: 'auto' }}>
+        <div className="table-container" style={{  height: '500px' }}>
           {filteredData.length === 0 ? (
             <div className="no-data-message" >No data available</div>
           ) : (

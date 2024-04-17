@@ -45,7 +45,6 @@
 
 .table-container {
   height: 500px;
-  overflow: auto; /* Enable scrolling if content exceeds container height */
 }
 
 /* Apply responsive styles for smaller screens */
@@ -88,7 +87,6 @@
   
   /* Enable horizontal scrolling for smaller screens */
   .table-container {
-    overflow-x: auto;
   }
 }
 
