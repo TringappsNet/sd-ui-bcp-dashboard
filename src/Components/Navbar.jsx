@@ -1,4 +1,3 @@
-// Navbar.js
 
 import React from 'react';
 import { Navbar, Nav, Dropdown } from 'react-bootstrap';
@@ -13,9 +12,9 @@ const NavbarComponent = ({ username, handleLogout, isMobile }) => {
 
   return (
     <Navbar bg="light" expand="lg" className="w-100">
-      <a href="/dashboard" className="brand-wrapper">
-        <Link to="/dashboard" className="customNavbarBrand"></Link>
-      </a>
+      <Link to="/dashboard" className="brand-wrapper">
+        <div className="customNavbarBrand"></div>
+      </Link>
       <Navbar.Toggle aria-controls="" />
       <Navbar.Collapse id="">
         <Nav className="ml-auto">

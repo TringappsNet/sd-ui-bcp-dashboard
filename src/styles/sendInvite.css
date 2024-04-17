@@ -1,10 +1,8 @@
 .btn-success {
-  width: 100%; /* Initially occupy full width */
-  margin-left: 0; /* Remove the initial margin */
+  width: 100%; 
+  margin-left: 0; 
 
 }
-
-
 
 #role-select:focus,
 #organization-select:focus {
@@ -34,13 +32,11 @@
 @media (min-width: 768px) {
   .container {
     max-width: 500px;
-    margin-bottom: 250px; /* Set maximum width for the container */
+    margin-bottom: 250px; 
   }
 
   .btn-success {
-    width: 100%; /* Set button width to a percentage of the container width */
+    width: 100%; 
 
   }
 }
-
-

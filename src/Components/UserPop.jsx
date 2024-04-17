@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Table } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faSave, faBan, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { PortURL } from "./Config";
@@ -87,7 +87,7 @@ const UserPop = ({ handleClose }) => {
         const updatedData = [...excelData];
         updatedData[editedRowId].Role = editedRole;
   
-        const { Organization, Email } = updatedData[editedRowId]; // Extract organization and email from the selected row
+        const {  Email } = updatedData[editedRowId];
   
         const response = await fetch(`${PortURL}/Updateuser`, {
           method: 'POST',
@@ -102,8 +102,7 @@ const UserPop = ({ handleClose }) => {
         if (response.ok) {
           console.log('Role updated successfully');
           setEditSuccess(true);
-          const responseData = await response.json();
-          // Handle responseData as needed
+          // const responseData = await response.json();
         } else {
           console.error('Failed to update role:', response.statusText);
         }
@@ -137,11 +136,11 @@ const UserPop = ({ handleClose }) => {
   const confirmDeactivation = async () => {
     try {
       const index = rowToDeactivate;
-      const email = excelData[index].Email; // Extract email from the selected row
+      const email = excelData[index].Email; 
 
       const response = await fetch(`${PortURL}/user-Active`, {
         method: 'PUT',
-        body: JSON.stringify({ isActive: 0, email }), // Deactivate the user by setting isActive to false
+        body: JSON.stringify({ isActive: 0, email }), 
         headers: {
           'Content-Type': 'application/json'
         }
@@ -171,7 +170,6 @@ const UserPop = ({ handleClose }) => {
     setSearchQuery(event.target.value);
   };
 
-  // Filter excelData based on searchQuery
   const filteredData = excelData.filter((row) => {
     const values = Object.values(row).join('').toLowerCase();
     return values.includes(searchQuery.toLowerCase());

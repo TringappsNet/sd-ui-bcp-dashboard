@@ -24,7 +24,6 @@ function SendInvite({ onClose }) {
   const [roles, setRoles] = useState([]);
 
   useEffect(() => {
-    // Fetch organizations and roles when the component mounts
     fetchOrganizations();
     fetchRoles();
   }, []);
@@ -73,7 +72,7 @@ function SendInvite({ onClose }) {
       setLoading(false);
       setTimeout(() => {
         setEmailError('');
-      }, 5000); // Clear email error message after 2 seconds
+      }, 5000); 
       return;
     }
   
@@ -82,7 +81,7 @@ function SendInvite({ onClose }) {
       setLoading(false);
       setTimeout(() => {
         setRoleError('');
-      }, 5000); // Clear role error message after 2 seconds
+      }, 5000);
       return;
     }
   
@@ -91,12 +90,11 @@ function SendInvite({ onClose }) {
       setLoading(false);
       setTimeout(() => {
         setOrgError('');
-      }, 5000); // Clear organization error message after 2 seconds
+      }, 5000); 
       return;
     }
   
     try {
-      // Retrieve session ID and email from local storage
       const sessionId = localStorage.getItem('sessionId');
       const email = localStorage.getItem('email');
   
@@ -110,7 +108,7 @@ function SendInvite({ onClose }) {
         body: JSON.stringify(formData)
       });
       if (response.ok) {
-        const data = await response.json();
+        // const data = await response.json();
         setSuccessMessage('Invitation sent successfully');
         setFormData(initialFormData); 
         setTimeout(() => {

@@ -23,7 +23,6 @@ function Login() {
   const [serverError, setServerError] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [snackColor,setSnackColor]=useState('success');
   const [snackbarVariant, setSnackbarVariant] = useState('success');
 
   const navigate = useNavigate();
@@ -41,7 +40,6 @@ function Login() {
       setLoading(false);
       setSnackbarMessage('Email is required');
       setSnackbarOpen(true);
-      // setSnackColor('red');
       setSnackbarVariant('error');
       
       return;
@@ -124,7 +122,6 @@ setLoading(false);
     <div className="form d-flex justify-content-center align-items-center ">
       <Container className="con mt-5 p-4 shadow  ">
         <h6 className="text-center mb-2 mt-1 display-6 ">Sign in</h6>
-        {/* <p>Navigate your Business with Ease!!!</p> */}
         
         {serverError && (
           <div className="text-center mt-2">
@@ -139,7 +136,7 @@ setLoading(false);
             label="Email"
             value={email}
             onChange={(e) => {
-              setEmail(e.target.value); // Corrected typo
+              setEmail(e.target.value); 
               setEmailError('');
               setServerError('');
             }}
@@ -197,9 +194,7 @@ setLoading(false);
         variant={snackbarVariant}
         onClose={handleCloseSnackbar}
         open={snackbarOpen}
-        // color={snackColor}
-
-
+       
       />
     </div>
     {loading && <LoadingSpinner />} 

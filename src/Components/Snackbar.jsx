@@ -3,7 +3,6 @@ import Snackbar from '@mui/material/Snackbar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import Stack from '@mui/material/Stack';
 import '../styles/snackbar.css';
 
 
@@ -19,7 +18,7 @@ export default function CustomSnackbar({ message, variant, onClose, open }) {
 
   let bgColor = ''; 
   if (variant === 'success') {
-    bgColor = '#82c971'; // Green color for success variant
+    bgColor = '#82c971'; 
   } else if (variant === 'error') { 
      bgColor = '#D16E6E'; 
   }

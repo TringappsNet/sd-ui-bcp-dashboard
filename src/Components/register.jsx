@@ -15,7 +15,6 @@ import { MuiPhone } from './InternationalPhone';
 function Register() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [phone, setPhone] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -23,7 +22,6 @@ function Register() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [firstNameError, setFirstNameError] = useState('');
   const [lastNameError, setLastNameError] = useState('');
-  const [phoneNumberError, setPhoneNumberError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [loading, setLoading] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -54,7 +52,6 @@ function Register() {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
   
-    // Validation logic for each field
     if (!firstName) {
       setFirstNameError('First name is required');
       setLoading(false);
@@ -66,7 +63,6 @@ function Register() {
       return;
     }
     if (!phoneNumber) {
-      setPhoneNumberError('Mobile number is required');
       setLoading(false);
       return;
     }
@@ -118,9 +114,7 @@ function Register() {
             if (data.errors.lastName) {
               setLastNameError(data.errors.lastName);
             }
-            if (data.errors.phoneNo) {
-              setPhoneNumberError(data.errors.phoneNo);
-            }
+           
             if (data.errors.password) {
               setSnackbarMessage(data.errors.password);
               setSnackbarOpen(true);
@@ -187,35 +181,12 @@ function Register() {
               </Form.Group>
             </Col>
           </Row>
-          {/* <Form.Group controlId="formPhoneNumber" className="mb-4">
-            <TextField
-              className="label"
-              type="tel"
-              label="Mobile number"
-              value={phoneNumber}
-              onChange={(e) => {
-                const enteredValue = e.target.value.replace(/\D/g, '');
-                setPhoneNumber(enteredValue);
-                setPhoneNumberError('');
-              }}
-              fullWidth
-              size="small"
-              error={!!phoneNumberError}
-              helperText={phoneNumberError}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">+91</InputAdornment>
-                ),
-                inputMode: 'numeric',
-              }}
-            />
-          </Form.Group> */}
+ 
            <Form.Group controlId="formPhoneNumber" className="mb-4">
             <MuiPhone
               value={phoneNumber}
               onChange={(phone) => {
                 setPhoneNumber(phone);
-                setPhoneNumberError('');
               }}
               fullWidth
               size="small"

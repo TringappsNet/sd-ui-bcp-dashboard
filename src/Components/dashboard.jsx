@@ -1,10 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { Button, Form, FormControl, Container } from "react-bootstrap";
 import { useDropzone } from "react-dropzone";
 import { useNavigate } from "react-router-dom";
 import * as XLSX from "xlsx";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes, faUpload } from "@fortawesome/free-solid-svg-icons";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/dashboard.css";
 import CustomSnackbar from "./Snackbar";
@@ -14,88 +11,47 @@ import ConfirmationModal from "./ConfirmationModal";
 import NavbarComponent from "./Navbar";
 import ExcelGrid from "./ExcelGrid";
 import {columnMap} from "../Objects/Objects";
-import AuditGrid from './Audit';
+// import AuditGrid from './Audit';
+import UploadSection from "./UploadSection";
 
 function Dashboard() {
 
 
     const [username, setUsername] = useState("");
-    const[role, setRole] = useState("");
+    // const[role, setRole] = useState("");
+    const [retriveData, setRetriveData] = useState([]);
     const [data, setData] = useState([]);
+    // const [organization, setOrganization] = useState("");
+    // const [email, setEmail] = useState("");
+
     const [searchQuery, setSearchQuery] = useState("");
+
+    const [selectedRowIds, setSelectedRowIds] = useState([]); 
     const [editedRowId, setEditedRowId] = useState(null); 
     const [editedRowData, setEditedRowData] = useState({}); 
-    const [loading, setLoading] = useState(false); 
-    const [organization, setOrganization] = useState("");
-    const [email, setEmail] = useState("");
-    const [showPreview, setShowPreview] = useState(false);
-    const [uploadSuccess, setUploadSuccess] = useState(false);
-    const [selectedRowIds, setSelectedRowIds] = useState([]); 
-    const [snackbarOpen, setSnackbarOpen] = useState(false);
-    const [retriveData, setRetriveData] = useState([]);
-    const [snackbarMessage, setSnackbarMessage] = useState("");
+   
     const [isMobile, setIsMobile] = useState(false);
     const [uploadedFileName, setUploadedFileName] = useState("");
     const [showConfirmation, setShowConfirmation] = useState(false);
-    // const [remainingTime, setRemainingTime] = useState(500);
-    // const [logoutModalOpen, setLogoutModalOpen] = useState(false);
-    const [snackbarVariant, setSnackbarVariant] = useState('success');
     const [showModal, setShowModal] = useState(false);
     const [roleID, setRoleID] = useState('');
-    const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [rowToDelete, setRowToDelete] = useState(0);
     const [showUpdateModal, setShowUpdateModal] = useState(false);
-    const [selectionModel, setSelectionModel] = useState([]);
- 
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+    const [snackbarMessage, setSnackbarMessage] = useState("");
+    const [snackbarVariant, setSnackbarVariant] = useState('success');
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+    const [uploadSuccess, setUploadSuccess] = useState(false);
+    const [loading, setLoading] = useState(false); 
+    // const [showPreview, setShowPreview] = useState(false);
 
     const navigate = useNavigate();
    
     
-    useEffect(() => {
-      const isLoggedIn = localStorage.getItem("isLoggedIn");
-      if (!isLoggedIn) {
-        navigate("/login");
-      } else {
-        const storedUsername = localStorage.getItem("UserName");
-        const storedOrganization = localStorage.getItem("Organization");
-        const storedEmail = localStorage.getItem("email");
-        const storedRoleID = localStorage.getItem('Role_ID');
-        const storedRole = localStorage.getItem('role')
-        setUsername(storedUsername);
-        setOrganization(storedOrganization);
-        setRoleID(storedRoleID);
-        setEmail(storedEmail);
-        setRole(storedRole)
-    
-        fetchData();
-        setShowPreview(true);
-      }
-    }, [navigate]);
 
 
-    // useEffect(() => {
-    //   const timer = setInterval(() => {
-    //     setRemainingTime((prevTime) => {
-    //       if (prevTime <= 0) {
-    //         clearInterval(timer);
-    //         handleLogout();
-    //         return 0;
-    //       }
-    //       return prevTime - 1;
-    //     });
-    //   }, 10000000);
-  
-    //   return () => clearInterval(timer);
-    // }, []);
-  
-
-    // useEffect(() => {
-    //   if (remainingTime === 0) {
-    //     handleLogout(); 
-    //     navigate("/login");
-    //   }
-    // }, [remainingTime]);
-  
 
     useEffect(() => {
       const handleResize = () => {
@@ -110,6 +66,7 @@ function Dashboard() {
       };
     }, []);
 
+
     useEffect(() => {
       if (uploadSuccess) {
         setSnackbarOpen(true);
@@ -119,8 +76,7 @@ function Dashboard() {
     }, [uploadSuccess]);
 
 
-
-    const fetchData = async () => {
+    const fetchDataMemoized = useCallback(async () => {
       try {
         setLoading(true); 
         const storedUsername = localStorage.getItem("UserName");
@@ -129,15 +85,12 @@ function Dashboard() {
         if (response.ok) {
           const excelData = await response.json();
           
-          // Modify the "MonthYear" column data by adding one minute to each date
           const modifiedData = excelData.map((row) => ({
             ...row,
             MonthYear: addOneMinuteToDate(row.MonthYear)
           }));
           
-          // Set the modified data in the state
           setRetriveData(modifiedData); 
-          // console.log("retrived data",modifiedData);
         } else {
           console.error("Failed to fetch data:", response.statusText);
         }
@@ -146,13 +99,25 @@ function Dashboard() {
       } finally {
         setLoading(false);
       }
-    };
-    
-    // Function to add one minute to a given date string
+    }, []);
+  
+    useEffect(() => {
+      const isLoggedIn = localStorage.getItem("isLoggedIn");
+      if (!isLoggedIn) {
+        navigate("/login");
+      } else {
+        const storedUsername = localStorage.getItem("UserName");
+        const storedRoleID = localStorage.getItem('Role_ID');
+        setUsername(storedUsername);
+        setRoleID(storedRoleID);
+        fetchDataMemoized();
+      }
+    }, [fetchDataMemoized, navigate]);
+
     const addOneMinuteToDate = (dateString) => {
       const date = new Date(dateString);
       date.setMinutes(date.getMinutes() + 1000);
-      return date.toISOString(); // Format the modified date as an ISO string or in your desired format
+      return date.toISOString(); 
     };
     
     
@@ -173,15 +138,12 @@ function Dashboard() {
       setLoading(true); 
     
       acceptedFiles.forEach(async (file) => {
-        // Check if the file extension is supported
         const fileExtension = file.name.split('.').pop().toLowerCase();
         if (fileExtension !== 'xlsx' && fileExtension !== 'xls') {
-          // Display error message for unsupported file format
           setLoading(false); 
           setSnackbarOpen(true);
           setSnackbarMessage('File type not supported');
           setSnackbarVariant("error");
-          // alert('Unsupported file format. Please upload only .xlsx or .xls files.');
           return;
         }
     
@@ -227,7 +189,7 @@ function Dashboard() {
             setData((prevData) => [...prevData, ...updatedData]);
             setUploadedFileName(file.name);
     
-            const Role_ID = localStorage.getItem('Role_ID');
+            // const Role_ID = localStorage.getItem('Role_ID');
             const Org_ID = localStorage.getItem('Org_ID');
             const userId = localStorage.getItem('user_ID');
             try {
@@ -272,44 +234,47 @@ function Dashboard() {
 const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
     
+// LOGOUT CODE
+
+const handleLogout = () => {
+  setShowConfirmation(true);
+};
+
+const handleConfirmLogout = () => {
+  localStorage.removeItem("sessionId");
+  localStorage.removeItem("isLoggedIn");
+  localStorage.removeItem("UserName");
+  localStorage.removeItem("email");
+  localStorage.removeItem("Organization");
+  localStorage.removeItem("createdAt");
+  localStorage.removeItem("Org_ID");
+  localStorage.removeItem("role");
+  localStorage.removeItem("user_ID");
+
+  navigate("/login");
+};
 
 
+
+const handleInputChange = (e, key) => {
+  const { value } = e.target;
+  setEditedRowData((prevData) => ({
+    ...prevData,
+    [String(key)]: String(value || ""), 
+  }));
+};
+
+//SEARCH CODE
 
     const handleSearchChange = (e) => {
       setSearchQuery(e.target.value);
     };
 
 
-    const handleCancel = () => {
-      setEditedRowId(null);
-    };
 
-    const handleInputChange = (e, key) => {
-      const { value } = e.target;
-      setEditedRowData((prevData) => ({
-        ...prevData,
-        [String(key)]: String(value || ""), 
-      }));
-    };
 
-    const handleLogout = () => {
-      setShowConfirmation(true);
-    };
-    
-    const handleConfirmLogout = () => {
-      localStorage.removeItem("sessionId");
-      localStorage.removeItem("isLoggedIn");
-      localStorage.removeItem("UserName");
-      localStorage.removeItem("email");
-      localStorage.removeItem("Organization");
-      localStorage.removeItem("createdAt");
-      localStorage.removeItem("Org_ID");
-      localStorage.removeItem("role");
-      localStorage.removeItem("user_ID");
+   
 
-      navigate("/login");
-    };
-    
 
     const handleCloseConfirmation = () => {
       setShowConfirmation(false);
@@ -334,16 +299,23 @@ const formatDateCell = (value, key) => {
 
 const filteredData = retriveData.filter((row) => {
   return Object.keys(row || {}).some((key) => {
-    // Check if the key is 'MonthYear' and the value includes the search query
     if (key === 'MonthYear') {
       const monthYearValue = formatMonthYear(row[key]);
       return monthYearValue.toLowerCase().includes(searchQuery.toLowerCase());
     }
-    // For other columns, check if the value includes the search query
     return row[key] && row[key].toString().toLowerCase().includes(searchQuery.toLowerCase());
   });
 });
 
+
+//CANCEL
+
+const handleCancel = () => {
+  setEditedRowId(null);
+};
+
+
+//SUBMIT
 
 const handleSubmit = async () => {
   setUploadedFileName("");
@@ -359,7 +331,6 @@ const handleSubmit = async () => {
   try {
     const sessionId = localStorage.getItem('sessionId');
     const email = localStorage.getItem('email');
-    // const organization = localStorage.getItem('Organisation');
     const Role_ID = localStorage.getItem('Role_ID');
     const Org_ID = localStorage.getItem('Org_ID');
     const userId = localStorage.getItem('user_ID');
@@ -388,7 +359,7 @@ const handleSubmit = async () => {
 
     if (response.ok) {
       setData([]);
-      fetchData();
+      fetchDataMemoized();
       const jsonResponse = await response.json();
 
       setUploadSuccess(true); 
@@ -414,6 +385,7 @@ const handleSubmit = async () => {
 };
 
 
+//CHECKBOX
 
 
     const handleCheckboxChange = (rowId) => {
@@ -431,9 +403,9 @@ const handleSubmit = async () => {
       }
     };
 
+
     const handleUpdateValidation = async () => {
       setLoading(true);
-      const sessionId = localStorage.getItem('sessionId');
       const email = localStorage.getItem('email');
       const Org_ID = localStorage.getItem('Org_ID');
       const userId = localStorage.getItem('user_ID');
@@ -498,6 +470,9 @@ const handleSubmit = async () => {
       setShowUpdateModal(false);
     };  
 
+
+    //SAVE
+
     const handleSave = async () => {
       setLoading(true);
       try {
@@ -535,7 +510,7 @@ const handleSubmit = async () => {
         });
 
         if (response.ok) {
-          fetchData();
+          fetchDataMemoized();
           setSnackbarOpen(true);
           setSnackbarMessage("Row updated successfully");
           setSnackbarVariant("success"); 
@@ -563,33 +538,27 @@ const handleSubmit = async () => {
     const handleCloseDelete = () => {
       setShowDeleteModal(false);
     }
+
+
     const handleEdit = (rowId) => {
-      // console.log("edited  row id " ,rowId);
       setEditedRowId(rowId);
       setEditedRowData(filteredData[rowId]);
     };
 
     const handleDelete = (index,columnId) => {
       setRowToDelete(columnId);
-
-      // console.log("index andcolumnID",index,columnId)
-
       setShowDeleteModal(true);
-      // console.log("row current delete data",rowToDelete);
     };
   
     const handleConfirmDelete = async () => {
       setShowDeleteModal(false);
       const rowId = rowToDelete;    
-      // console.log("confirm delte",rowId);  
       try {
         const sessionId = localStorage.getItem('sessionId');
         const email = localStorage.getItem('email');
         const userId = localStorage.getItem('user_ID');
         const Org_ID = localStorage.getItem('Org_ID');
-        const identifierToDelete = String(filteredData[rowId]?.ID);
 
-//  console.log("identifier delete",identifierToDelete);
 
  const stringRow=String(rowId);
         const response = await fetch(`${PortURL}/delete`, {
@@ -610,10 +579,9 @@ const handleSubmit = async () => {
         
           if (response.ok) {
 
-           fetchData();   
+            fetchDataMemoized();   
            const updatedData=retriveData ;        
-          // const updatedData = filteredData.filter((row, index) => index !== rowId);
-          // console.log("updated Data after deleting ",updatedData);
+        
           setRetriveData(updatedData); 
           setSnackbarOpen(true);
           setSnackbarMessage("Row deleted successfully");
@@ -643,286 +611,172 @@ const handleSubmit = async () => {
       setSnackbarMessage("");
     };
 
-    const columns = [
-      { field: 'ID', headerName: 'ID', width: 90 },
-      { field: 'MonthYear', headerName: 'MonthYear', width: 200 },
-      { field: 'CompanyName', headerName: 'Company Name', width: 200 },
-      { field: 'RevenueActual', headerName: 'Revenue Actual', width: 150 },
-      { field: 'RevenueBudget', headerName: 'Revenue Budget', width: 150 },
-      { field: 'GrossProfitActual', headerName: 'Gross Profit Actual', width: 180 },
-      { field: 'GrossProfitBudget', headerName: 'Gross Profit Budget', width: 180 },
-      { field: 'SGAActual', headerName: 'SGA Actual', width: 120 },
-      { field: 'SGABudget', headerName: 'SGA Budget', width: 120 },
-      { field: 'EBITDAActual', headerName: 'EBITDA Actual', width: 150 },
-      { field: 'EBITDABudget', headerName: 'EBITDA Budget', width: 150 },
-      { field: 'CapExActual', headerName: 'CapEx Actual', width: 150 },
-      { field: 'CapExBudget', headerName: 'CapEx Budget', width: 150 },
-      { field: 'FixedAssetsNetActual', headerName: 'Fixed Assets Net Actual', width: 200 },
-      { field: 'FixedAssetsNetBudget', headerName: 'Fixed Assets Net Budget', width: 200 },
-      { field: 'CashActual', headerName: 'Cash Actual', width: 150 },
-      { field: 'CashBudget', headerName: 'Cash Budget', width: 150 },
-      { field: 'TotalDebtActual', headerName: 'Total Debt Actual', width: 180 },
-      { field: 'TotalDebtBudget', headerName: 'Total Debt Budget', width: 180 },
-      { field: 'AccountsReceivableActual', headerName: 'Accounts Receivable Actual', width: 220 },
-      { field: 'AccountsReceivableBudget', headerName: 'Accounts Receivable Budget', width: 220 },
-      { field: 'AccountsPayableActual', headerName: 'Accounts Payable Actual', width: 220 },
-      { field: 'AccountsPayableBudget', headerName: 'Accounts Payable Budget', width: 220 },
-      { field: 'InventoryActual', headerName: 'Inventory Actual', width: 150 },
-      { field: 'InventoryBudget', headerName: 'Inventory Budget', width: 150 },
-      { field: 'EmployeesActual', headerName: 'Employees Actual', width: 150 },
-      { field: 'EmployeesBudget', headerName: 'Employees Budget', width: 150 },
-      { field: 'Quarter', headerName: 'Quarter', width: 120 },
-    ];
+    // const columns = [
+    //   { field: 'ID', headerName: 'ID', width: 90 },
+    //   { field: 'MonthYear', headerName: 'MonthYear', width: 200 },
+    //   { field: 'CompanyName', headerName: 'Company Name', width: 200 },
+    //   { field: 'RevenueActual', headerName: 'Revenue Actual', width: 150 },
+    //   { field: 'RevenueBudget', headerName: 'Revenue Budget', width: 150 },
+    //   { field: 'GrossProfitActual', headerName: 'Gross Profit Actual', width: 180 },
+    //   { field: 'GrossProfitBudget', headerName: 'Gross Profit Budget', width: 180 },
+    //   { field: 'SGAActual', headerName: 'SGA Actual', width: 120 },
+    //   { field: 'SGABudget', headerName: 'SGA Budget', width: 120 },
+    //   { field: 'EBITDAActual', headerName: 'EBITDA Actual', width: 150 },
+    //   { field: 'EBITDABudget', headerName: 'EBITDA Budget', width: 150 },
+    //   { field: 'CapExActual', headerName: 'CapEx Actual', width: 150 },
+    //   { field: 'CapExBudget', headerName: 'CapEx Budget', width: 150 },
+    //   { field: 'FixedAssetsNetActual', headerName: 'Fixed Assets Net Actual', width: 200 },
+    //   { field: 'FixedAssetsNetBudget', headerName: 'Fixed Assets Net Budget', width: 200 },
+    //   { field: 'CashActual', headerName: 'Cash Actual', width: 150 },
+    //   { field: 'CashBudget', headerName: 'Cash Budget', width: 150 },
+    //   { field: 'TotalDebtActual', headerName: 'Total Debt Actual', width: 180 },
+    //   { field: 'TotalDebtBudget', headerName: 'Total Debt Budget', width: 180 },
+    //   { field: 'AccountsReceivableActual', headerName: 'Accounts Receivable Actual', width: 220 },
+    //   { field: 'AccountsReceivableBudget', headerName: 'Accounts Receivable Budget', width: 220 },
+    //   { field: 'AccountsPayableActual', headerName: 'Accounts Payable Actual', width: 220 },
+    //   { field: 'AccountsPayableBudget', headerName: 'Accounts Payable Budget', width: 220 },
+    //   { field: 'InventoryActual', headerName: 'Inventory Actual', width: 150 },
+    //   { field: 'InventoryBudget', headerName: 'Inventory Budget', width: 150 },
+    //   { field: 'EmployeesActual', headerName: 'Employees Actual', width: 150 },
+    //   { field: 'EmployeesBudget', headerName: 'Employees Budget', width: 150 },
+    //   { field: 'Quarter', headerName: 'Quarter', width: 120 },
+    // ];
     
     return (
       <div className="dashboard-container">
 
-        <CustomSnackbar
-        message={snackbarMessage}
-        variant={snackbarVariant}
-        onClose={handleCloseSnackbar}
-        open={snackbarOpen}
-      />
-      
-      <NavbarComponent
-          username={username}
-          handleLogout={handleLogout}
-          isMobile={isMobile}
-        />
-          
-          {/* Logout Confirmation popup */}
-          <ConfirmationModal
-          show={showConfirmation}
-          onHide={handleCloseConfirmation}
-          onConfirm={handleConfirmLogout}
-          title="Confirm Action"
-          cancelText="Close"
-          confirmText="Logout"
-          cancelVariant="secondary"
-          confirmVariant="danger"
-          message="Are you sure you want to log out?"
-        />
-
-
-  
-
-    {/* <Container fluid className="container-fluid mt-4">
-    <Form className="border shadow p-3 d-flex flex-column flex-lg-row">
-          <div className="search-wrapper col-lg-6 mb-3 mb-lg-0">
-            <FormControl
-              className="search-input"
-              type="text"
-              placeholder="Search"
-              style={{ flex: "1" }}
-              value={searchQuery}
-              onChange={handleSearchChange}
+              <CustomSnackbar
+              message={snackbarMessage}
+              variant={snackbarVariant}
+              onClose={handleCloseSnackbar}
+              open={snackbarOpen}
             />
-          </div>
-          <div className="spacer"></div>
-
-          <div className="filename mr-3 col-lg-2 mb-3 ">
-          {roleID !== '3' && uploadedFileName ? (
-            <div className="d-flex align-items-center">
-              <p className="mb-0">{`File: ${uploadedFileName}`}</p>
-              <FontAwesomeIcon
-                icon={faTimes}
-                className="ml-2 cancel-icon"
-                onClick={() => setUploadedFileName("")} 
+            
+            <NavbarComponent
+                username={username}
+                handleLogout={handleLogout}
+                isMobile={isMobile}
               />
-            </div>
-          ) : (
-            roleID !== '3' && <p className="mb-0">No file uploaded</p>
-          )}
-        </div>
 
-    <div className="spacer"></div>
+          
+              {/* Logout Confirmation popup */}
 
-
-    <div className="custom-file-upload d-flex align-items-center">
-      
-      <div {...getRootProps()} className="Upload-Form">
-        <input {...getInputProps()} accept=".xlsx, .xls" />
-        {isDragActive ? (
-          <p>Drop the files here ...</p>
-        ) : (
-          <Button className="btn btn-secondary btn-sm Upload"  >
-             <FontAwesomeIcon className="clearicon" icon={faUpload} />
-             <span className="UploadText">Upload</span>
-           </Button>
-        )}
-      </div>
-
-           <Dropdown className='dropdown-Form'>
-          <Dropdown.Toggle variant="secondary" id="dropdown-basic dropdown">
-            <FontAwesomeIcon icon={faAngleDown} />
-          </Dropdown.Toggle>
-
-          <Dropdown.Menu className='menu-drop'>
-            <Dropdown.Item onClick={() => handleFinancialSelect('Financial')}>Financial </Dropdown.Item>
-            <Dropdown.Item onClick={() => handlePortfolioSelect('Portfolio ')}>Portfolio </Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
-
-        {roleID !== '3' && (
-        <Button className="btn  btn-secondary submit" onClick={handleSubmit}>
-          Submit
-        </Button>
-        )}
-
-
-
-      </div>
-    </Form>
+              <ConfirmationModal
+              show={showConfirmation}
+              onHide={handleCloseConfirmation}
+              onConfirm={handleConfirmLogout}
+              title="Confirm Action"
+              cancelText="Close"
+              confirmText="Logout"
+              cancelVariant="secondary"
+              confirmVariant="danger"
+              message="Are you sure you want to log out?"
+            />
 
 
 
 
-    
-    </Container> */}
+              <UploadSection
+                roleID={roleID}
+                uploadedFileName={uploadedFileName}
+                setUploadedFileName={setUploadedFileName}
+                searchQuery={searchQuery}
+                handleSearchChange={handleSearchChange}
+                handleSubmit={handleSubmit}
+                getRootProps={getRootProps}
+                getInputProps={getInputProps}
+                isDragActive={isDragActive}
+                />
 
 
 
-<Container fluid className="container-fluid mt-4">
 
-<Form className="border shadow p-3 d-flex flex-column flex-lg-row">
-  <div className="search-wrapper col-lg-6 mb-3 mb-lg-0">
-    <FormControl
-      className="search-input"
-      type="text"
-      placeholder="Search"
-      style={{ flex: "1" }}
-      value={searchQuery}
-      onChange={handleSearchChange}
-    />
-  </div>
-  <div className="spacer"></div>
+              {/* <div style={{ height: 400, width: '100%' }}>
+                <AuditGrid
+                  rows={retriveData}
+                  columns={columns}
+                  selectionModel={selectionModel}
+                  onSelectionModelChange={setSelectionModel}
+                />
+              </div> */}
 
-  <div className="filename mr-3 col-lg-2 mb-3 ">
-  {roleID !== '3' && uploadedFileName ? (
-      <div className="d-flex align-items-center">
-        <p className="mb-0 overflow-hidden">{`File: ${uploadedFileName}`}</p>
-        <FontAwesomeIcon
-          icon={faTimes} // Cancel icon
-          className="ml-2 cancel-icon"
-          onClick={() => setUploadedFileName("")} // onClick handler to clear uploadedFileName
-        />
-      </div>
-    ) : (
-      roleID !== '3' && <p className="mb-0"></p>
-    )}
-  </div>
-  <div className="spacer"></div>
-  {roleID !== '3' && (
-  <div className="custom-file-upload d-flex">
-    <div {...getRootProps()} className="Upload ">
-      <input {...getInputProps()} accept=".xlsx, .xls" />
-      {isDragActive ? (
-        <p>Drop the files here ...</p>
-      ) : (
-        <Button className="btn btn-secondary btn-sm  Upload">
-          <FontAwesomeIcon  className="clearicon" icon={faUpload} />
-          <span className="UploadText">Upload</span>
-        </Button>
-      )}
-    </div>
-    <div className="spacer"></div>
-    {roleID !== '3' && (
-    <Button className="btn  btn-secondary submit" onClick={handleSubmit}>
-      Submit
-    </Button>
-    )}
-  </div>
-)}
-</Form>
-</Container>
-
-    {/* <div style={{ height: 400, width: '100%' }}>
-      <AuditGrid
-        rows={retriveData}
-        columns={columns}
-        selectionModel={selectionModel}
-        onSelectionModelChange={setSelectionModel}
-      />
-    </div> */}
-
-<div>
-  {filteredData.length === 0 ? (
-    <div className="no-results">
-      {/* <img src="/images.png" alt="No results found" className="background-image" /> */}
-      <p>No results found</p>
-    </div>
-  ) : (
-    <ExcelGrid
-      filteredData={filteredData}
-      selectedRowIds={selectedRowIds}
-      editedRowId={editedRowId}
-      editedRowData={editedRowData}
-      handleCheckboxChange={handleCheckboxChange}
-      handleEdit={handleEdit}
-      handleCancel={handleCancel}
-      handleInputChange={handleInputChange}
-      handleSave={handleUpdateValidation}
-      handleDelete={handleDelete}
-      formatDateCell={formatDateCell}
-      roleID={roleID}
-      setEditedRowData={setEditedRowData}
-      rowToDelete={rowToDelete}
-      setRowToDelete={setRowToDelete}
-      
-    />
-  )}
-</div>
+              <div>
+                {filteredData.length === 0 ? (
+                  <div className="no-results">
+                    <p>No results found</p>
+                  </div>
+                ) : (
+                  <ExcelGrid
+                    filteredData={filteredData}
+                    selectedRowIds={selectedRowIds}
+                    editedRowId={editedRowId}
+                    editedRowData={editedRowData}
+                    handleCheckboxChange={handleCheckboxChange}
+                    handleEdit={handleEdit}
+                    handleCancel={handleCancel}
+                    handleInputChange={handleInputChange}
+                    handleSave={handleUpdateValidation}
+                    handleDelete={handleDelete}
+                    formatDateCell={formatDateCell}
+                    roleID={roleID}
+                    setEditedRowData={setEditedRowData}
+                    rowToDelete={rowToDelete}
+                    setRowToDelete={setRowToDelete}
+                    
+                  />
+                )}
+              </div>
 
 
-{/* Override Confirmation popup */}
-    <>
-    <ConfirmationModal
-          show={showModal}
-          onHide={handleCloseModal}
-          onConfirm={handleConfirm}
-          title="Confirm Override"
-          cancelText="No"
-          confirmText="Yes"
-          cancelVariant="secondary"
-          confirmVariant="danger"
-          message="Are you sure you want to override?"
-        />
-    </>
+                  {/* Override Confirmation popup */}
+                      <>
+                      <ConfirmationModal
+                            show={showModal}
+                            onHide={handleCloseModal}
+                            onConfirm={handleConfirm}
+                            title="Confirm Override"
+                            cancelText="No"
+                            confirmText="Yes"
+                            cancelVariant="secondary"
+                            confirmVariant="danger"
+                            message="Are you sure you want to override?"
+                          />
+                      </>
 
-    {/* Delete Confirmation popup */}
-    <>
-    <ConfirmationModal
-          show={showDeleteModal}
-          onHide={handleCloseDelete}
-          onConfirm={handleConfirmDelete}
-          title="Confirm Delete"
-          cancelText="No"
-          confirmText="Delete"
-          cancelVariant="secondary"
-          confirmVariant="danger"
-          message={`Are you sure you want to delete the row ${formatMonthYear(filteredData.find(row => row.ID === rowToDelete)?.MonthYear)}?`}
-          />
-    </>
+                      {/* Delete Confirmation popup */}
+                      <>
+                      <ConfirmationModal
+                            show={showDeleteModal}
+                            onHide={handleCloseDelete}
+                            onConfirm={handleConfirmDelete}
+                            title="Confirm Delete"
+                            cancelText="No"
+                            confirmText="Delete"
+                            cancelVariant="secondary"
+                            confirmVariant="danger"
+                            message={`Are you sure you want to delete the row ${formatMonthYear(filteredData.find(row => row.ID === rowToDelete)?.MonthYear)}?`}
+                            />
+                      </>
 
-     {/* override Update popup */}
-     <>
-    <ConfirmationModal
-          show={showUpdateModal}
-          onHide={handleCloseUpdate}
-          onConfirm={handleSave}
-          title="Confirm Update"
-          cancelText="No"
-          confirmText="Update"
-          cancelVariant="secondary"
-          confirmVariant="danger"
-          message={`Are you sure you want to update?`}
-        />
-    </>
+                      {/* override Update popup */}
+                      <>
+                      <ConfirmationModal
+                            show={showUpdateModal}
+                            onHide={handleCloseUpdate}
+                            onConfirm={handleSave}
+                            title="Confirm Update"
+                            cancelText="No"
+                            confirmText="Update"
+                            cancelVariant="secondary"
+                            confirmVariant="danger"
+                            message={`Are you sure you want to update?`}
+                          />
+                      </>
 
 
-    {loading && <LoadingSpinner />} 
+                      {loading && <LoadingSpinner />} 
 
-    
+                      
   </div>
 );
 }

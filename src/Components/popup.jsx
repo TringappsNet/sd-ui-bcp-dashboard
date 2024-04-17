@@ -12,7 +12,6 @@ const PopUpContainer = () => {
   const [showOrganizationPopup, setShowOrganizationPopup] = useState(false);
   const [showUserPopup, setShowUserPopup] = useState(false);
 
-  // Fetch roleID from localStorage when component mounts
   useEffect(() => {
     const storedRoleID = localStorage.getItem('Role_ID');
     setRoleID(storedRoleID);
@@ -62,15 +61,13 @@ const PopUpContainer = () => {
   };
 
   if (!roleID) {
-    return <div>Loading...</div>; // Add loading indicator if roleID is not available yet
+    return <div>Loading...</div>; 
   }
 
   return (
     <div className='text'>
   <div className="dropdown-item-hover border-text" onClick={handleResetPopupToggle}>Reset Password</div>
-  {/* <div className="dropdown-item-hover" onClick={handleInvitePopupToggle}>Send Invite</div> */}
 
-  {/* Conditionally render based on roleID */}
   {roleID === '1' && (
     <>
     <div className="dropdown-item-hover" onClick={handleInvitePopupToggle}>Send Invite</div>
@@ -79,7 +76,6 @@ const PopUpContainer = () => {
     </>
   )}
 
-  {/* Render popups based on roleID */}
   {(showResetPopup || showInvitePopup || (showOrganizationPopup && roleID === '1') || (showUserPopup && roleID === '1')) && (
     <div className="popup-container backdrop">
       <div className="popup-inner" onClick={(e) => e.stopPropagation()}>

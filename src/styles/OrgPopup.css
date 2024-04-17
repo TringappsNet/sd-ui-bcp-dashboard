@@ -1,6 +1,3 @@
-/* Add the following CSS to your existing stylesheet */
-
-
 .Usercount{
   display: flex;
   justify-content: space-evenly;
@@ -9,13 +6,12 @@
 
 .orgname{
   width: 40px;
- 
+
 }
 .slash{
   width: 100px;
   color: gray;
   padding-left: 30px;
-
 
 }
 
@@ -31,13 +27,12 @@
 }
 
 .action-header {
-  width: 40%; /* Adjust the width of the Action column */
+  width: 40%; 
 }
 
 .grid tr th {
   width: none;
 }
-
 
 .table {
   width: 100%;
@@ -47,9 +42,8 @@
   height: 500px;
 }
 
-/* Apply responsive styles for smaller screens */
 @media (max-width: 768px) {
-  /* Enable horizontal scrolling for smaller screens */
+
   .table {
     overflow-x: auto;
 
@@ -75,17 +69,16 @@
 .action-buttons {
   position: sticky;
   top: 0;
-  background-color: white; /* Ensure visibility over the table */
-  z-index: 2; /* Ensure it's above the table */
+  background-color: white; 
+  z-index: 2; 
 }
 
 @media (max-width: 768px) {
-  /* Adjust the width of the table */
+
   .table {
     width: 100%;
   }
-  
-  /* Enable horizontal scrolling for smaller screens */
+
   .table-container {
   }
 }
@@ -98,15 +91,13 @@
   padding-left: 16px;
 }
 
-
 .action-buttons {
   position: sticky;
   top: 0;
-  background-color: white; /* Ensure visibility over the table */
-  z-index: 2; /* Ensure it's above the table */
+  background-color: white; 
+  z-index: 2; 
   background: none;
 }
-
 
 .element {
   width: 1000px;
@@ -117,11 +108,10 @@ table{
 
 }
 
-
 .company_name{
   display: flex;
   justify-content:space-evenly;
-  
+
 }
 .orgname{
   width: 50px;
@@ -131,17 +121,17 @@ table{
   margin-left: -5px;
   border: 1px solid black;
   width: 562px;
-  /* padding: 0px; */
+
   height: 37px;
   margin-bottom: 3px;
-  /* border-radius: 4px; */
+
   padding-left: 30px;
   margin: -5px;
   margin-top: -7px;
   border-color: #e3dfdf;
   position: absolute;
   right: 39.5%;
-  
+
 }
 
 .addCompany{
@@ -149,10 +139,10 @@ table{
     margin-left: 30px;
     border: none;
     width: 562px;
-    /* padding: 0px; */
+
     height: 37px;
     margin-bottom: 3px;
-    /* border-radius: 4px; */
+
     padding-left: 30px;
     margin: -5px;
     margin-top: -7px;
@@ -193,7 +183,7 @@ td{
 
 .table-container th {
   border: none;
-  /* padding: 8px; */
+
 }
 
 .editSave {
@@ -201,10 +191,9 @@ td{
   justify-content: space-around;
   height: 32px;
   padding-top: 0px;
-  /* padding-left: 16px; */
+
   height: 30px;
 }
-
 
 .action-headers{
   padding-left: 200px;
@@ -217,7 +206,6 @@ td{
 }
 .close-org{
   position: absolute;
- 
 
 }
 

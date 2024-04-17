@@ -1,4 +1,4 @@
-  import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
   import { Table } from 'react-bootstrap';
   import { Container, Row, Col } from 'react-bootstrap';
   import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -24,10 +24,9 @@ import { Key } from 'react-bootstrap-icons';
     handleDelete, 
     editedRow,
     rowToDelete,
-
-    // formatDateCell,
-    roleID // Pass Role_ID as a prop
+    roleID 
   }) => {
+    
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
   
 
@@ -41,9 +40,8 @@ import { Key } from 'react-bootstrap-icons';
       }
     }, [sortConfig, editedRowId,rowToDelete]);
     
-    // 
+    
     const requestSort = (key) => {
-      // Check if the key is one of the allowed columns for sorting
       if (Key) {
         let direction = 'ascending';
         if (sortConfig.key === key && sortConfig.direction === 'ascending') {
@@ -73,54 +71,29 @@ import { Key } from 'react-bootstrap-icons';
     };
 
   const formatMonthYear = (dateString) => {
-    // Parse the date string into a Date object
     const date = new Date(dateString);
-    // Add one minute to the date
     date.setMinutes(date.getMinutes() );
-    // Extract month and year components
     const month = date.toLocaleString('default', { month: 'short' });
     const year = date.getFullYear().toString().substr(-2);
-    // Format the month and year into the desired format
     return `${month.toLocaleString()}-${year}`;
   };
 
 
 
 
-  const formatDateCell = (value, key) => {
-  if (key === "MonthYear") {
-  return formatMonthYear(value);
-  }
-  return value;
-  };
 
 
   const formatNumber = (number) => {
-    if (!number) return ''; // Handle empty or null values
-
-    // Convert the number to a string
+    if (!number) return ''; 
     let formattedNumber = number.toString();
-
-    // Split the number into integer and decimal parts
     const parts = formattedNumber.split('.');
-    
-    // Format the integer part with commas
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-
-    // Join the integer and decimal parts with a period
     formattedNumber = parts.join('.');
 
     return formattedNumber;
   };
 
-  const formatDateForInput = (dateString) => {
-    if (!dateString) return ''; // Handle empty or null values
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    let month = (date.getMonth() + 1).toString().padStart(2, '0');
-    let day = date.getDate().toString().padStart(2, '0');
-    return `${year}-${month}-${day}`;
-};
+
   const reversedColumnMap = reverseColumnMap(columnMap);
 
     return (
@@ -132,7 +105,7 @@ import { Key } from 'react-bootstrap-icons';
                 <thead className="sticky-header">
                   <tr>
                   {Object.keys(filteredData[0] || {}).map((key) => (
-                      key !== 'ID' && // Exclude the 'id' column
+                      key !== 'ID' && 
                       <th key={key} onClick={() => requestSort(key)}>
                         {reversedColumnMap[key] || key}
                         {sortConfig.key === key && (
@@ -145,32 +118,31 @@ import { Key } from 'react-bootstrap-icons';
                 </thead>
                 <tbody>
                 {sortedData().map((row, index) => (
-    <tr key={index}>
-      {Object.keys(row).map((key) => (
-        key !== 'ID' && (
-          <td key={key}>
-            {editedRowId === index ? (
-              (key === 'CompanyName') ? (
-                <span>{editedRowData[key]}</span>
-              ) : (
-                key === 'MonthYear' ? (
-                  <span>{formatMonthYear(row[key])}</span> // Render as plain text
-                ) : (
-                  <input
-                    type="text"
-                    className='GridInput'
-                    value={editedRowData[key]}
-                    onChange={(e) => handleInputChange(e, key)}
-                  />
-                )
-              )
-            ) : (
-              <span>{key === 'MonthYear' ? formatMonthYear(row[key]) : formatNumber(row[key])}</span>
-            )}
-          </td>
-
-                                                      )
-                          ))}
+                              <tr key={index}>
+                                {Object.keys(row).map((key) => (
+                                  key !== 'ID' && (
+                                    <td key={key}>
+                                      {editedRowId === index ? (
+                                        (key === 'CompanyName') ? (
+                                          <span>{editedRowData[key]}</span>
+                                        ) : (
+                                          key === 'MonthYear' ? (
+                                            <span>{formatMonthYear(row[key])}</span> 
+                                          ) : (
+                                            <input
+                                              type="text"
+                                              className='GridInput'
+                                              value={editedRowData[key]}
+                                              onChange={(e) => handleInputChange(e, key)}
+                                            />
+                                          )
+                                        )
+                                      ) : (
+                                        <span>{key === 'MonthYear' ? formatMonthYear(row[key]) : formatNumber(row[key])}</span>
+                                      )}
+                                    </td>
+                                      )
+                           ))}
                       <td className="action-cell">
                       {roleID == 1 || roleID == 2 ? (
                         <>
@@ -226,16 +198,16 @@ import { Key } from 'react-bootstrap-icons';
                         ) : (
                           <div className="action-buttons">
                             <button
-                              className="btn btn-sm Edit disabled" // Add disabled class
+                              className="btn btn-sm Edit disabled" 
                               onClick={() => handleEdit(index)}
                             >
-                              <FontAwesomeIcon icon={faEdit} className="blur-icon" /> {/* Apply blur to the icon */}
+                              <FontAwesomeIcon icon={faEdit} className="blur-icon" />
                             </button>
                             <button
-                              className="btn btn-sm Delete disabled" // Add disabled class
+                              className="btn btn-sm Delete disabled" 
                               onClick={() => handleDelete(index)}
                             >
-                              <FontAwesomeIcon icon={faTrash} className="blur-icon" /> {/* Apply blur to the icon */}
+                              <FontAwesomeIcon icon={faTrash} className="blur-icon" /> 
                             </button>
                           </div>
                         )}
