@@ -16,54 +16,10 @@ import {
   GridRowEditStopReasons,
 } from '@mui/x-data-grid';
 import {
-  randomCreatedDate,
-  randomTraderName,
-  randomId,
-  randomArrayItem,
+  randomId
 } from '@mui/x-data-grid-generator';
 
-const roles = ['Market', 'Finance', 'Development'];
-const randomRole = () => {
-  return randomArrayItem(roles);
-};
 
-const initialRows = [
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: 25,
-    joinDate: randomCreatedDate(),
-    role: randomRole(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: 36,
-    joinDate: randomCreatedDate(),
-    role: randomRole(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: 19,
-    joinDate: randomCreatedDate(),
-    role: randomRole(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: 28,
-    joinDate: randomCreatedDate(),
-    role: randomRole(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: 23,
-    joinDate: randomCreatedDate(),
-    role: randomRole(),
-  },
-];
 
 function EditToolbar(props) {
   const { setRows, setRowModesModel } = props;
@@ -86,9 +42,10 @@ function EditToolbar(props) {
   );
 }
 
-export default function FullFeaturedCrudGrid() {
+export default function AuditGrid({ initialRows, columnNames, onEdit, onSave, onDelete, onCancel }) {
   const [rows, setRows] = React.useState(initialRows);
   const [rowModesModel, setRowModesModel] = React.useState({});
+  const getRowId = (row) => row.ID;
 
   const handleRowEditStop = (params, event) => {
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
@@ -97,18 +54,23 @@ export default function FullFeaturedCrudGrid() {
   };
 
   const handleEditClick = (id) => () => {
+    onEdit(id);
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
   };
 
   const handleSaveClick = (id) => () => {
+    onSave(id);
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
   };
 
   const handleDeleteClick = (id) => () => {
+    onDelete(id);
     setRows(rows.filter((row) => row.id !== id));
   };
 
+  
   const handleCancelClick = (id) => () => {
+    onCancel(id);
     setRowModesModel({
       ...rowModesModel,
       [id]: { mode: GridRowModes.View, ignoreModifications: true },
@@ -119,6 +81,7 @@ export default function FullFeaturedCrudGrid() {
       setRows(rows.filter((row) => row.id !== id));
     }
   };
+
 
   const processRowUpdate = (newRow) => {
     const updatedRow = { ...newRow, isNew: false };
@@ -131,31 +94,7 @@ export default function FullFeaturedCrudGrid() {
   };
     
     const columns = [
-      { field: 'name', headerName: 'Name', width: 180, editable: true },
-      {
-        field: 'age',
-        headerName: 'Age',
-        type: 'number',
-        width: 80,
-        align: 'left',
-        headerAlign: 'left',
-        editable: true,
-      },
-      {
-        field: 'joinDate',
-        headerName: 'Join date',
-        type: 'date',
-        width: 180,
-        editable: true,
-      },
-      {
-        field: 'role',
-        headerName: 'Department',
-        width: 220,
-        editable: true,
-        type: 'singleSelect',
-        valueOptions: ['Market', 'Finance', 'Development'],
-      },      {
+     ...columnNames,      {
         field: 'actions',
         type: 'actions',
         headerName: 'Actions',
@@ -223,9 +162,10 @@ export default function FullFeaturedCrudGrid() {
       }}
     >
       <DataGrid
-        rows={rows}
+        rows={initialRows}
         columns={columns}
         editMode="row"
+        getRowId={getRowId}
         rowModesModel={rowModesModel}
         onRowModesModelChange={handleRowModesModelChange}
         onRowEditStop={handleRowEditStop}
