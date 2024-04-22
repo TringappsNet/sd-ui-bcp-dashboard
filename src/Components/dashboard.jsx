@@ -347,6 +347,7 @@ const filteredData = retriveData.filter((row) => {
 
 const handleSubmit = async () => {
   setUploadedFileName("");
+  setData([]);
   if (data.length === 0) {
     setSnackbarOpen(true);
     setSnackbarMessage("File is empty");
@@ -836,14 +837,28 @@ const handleSubmit = async () => {
 </Form>
 </Container>
 
-    {/* <div style={{ height: 400, width: '100%' }}>
+{/* 
+<div style={{ height: 400, width: '100%' }}>
       <AuditGrid
-        rows={retriveData}
-        columns={columns}
-        selectionModel={selectionModel}
-        onSelectionModelChange={setSelectionModel}
+        initialRows={retriveData} 
+        columnNames={columns} 
+        onEdit={handleEdit}
+        onSave={handleUpdateValidation}
+        onDelete={handleDelete}
+        onCancel={handleCancel}
       />
-    </div> */}
+    </div>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br> */}
+
 
 <div>
   {filteredData.length === 0 ? (
