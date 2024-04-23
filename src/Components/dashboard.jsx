@@ -319,6 +319,7 @@ const handleCancel = () => {
 
 const handleSubmit = async () => {
   setUploadedFileName("");
+  setData([]);
   if (data.length === 0) {
     setSnackbarOpen(true);
     setSnackbarMessage("File is empty");
@@ -675,6 +676,158 @@ const handleSubmit = async () => {
 
 
 
+
+<Form className="border shadow p-3 d-flex flex-column flex-lg-row">
+  <div className="search-wrapper col-lg-6 mb-3 mb-lg-0">
+    <FormControl
+      className="search-input"
+      type="text"
+      placeholder="Search"
+      style={{ flex: "1" }}
+      value={searchQuery}
+      onChange={handleSearchChange}
+    />
+  </div>
+  <div className="spacer"></div>
+
+  <div className="filename mr-3 col-lg-2 mb-3 ">
+  {roleID !== '3' && uploadedFileName ? (
+      <div className="d-flex align-items-center">
+        <p className="mb-0 overflow-hidden">{`File: ${uploadedFileName}`}</p>
+        <FontAwesomeIcon
+          icon={faTimes} // Cancel icon
+          className="ml-2 cancel-icon"
+          onClick={() => setUploadedFileName("")} // onClick handler to clear uploadedFileName
+        />
+      </div>
+    ) : (
+      roleID !== '3' && <p className="mb-0"></p>
+    )}
+  </div>
+  <div className="spacer"></div>
+  {roleID !== '3' && (
+  <div className="custom-file-upload d-flex">
+    <div {...getRootProps()} className="Upload ">
+      <input {...getInputProps()} accept=".xlsx, .xls" />
+      {isDragActive ? (
+        <p>Drop the files here ...</p>
+      ) : (
+        <Button className="btn btn-secondary btn-sm  Upload">
+          <FontAwesomeIcon  className="clearicon" icon={faUpload} />
+          <span className="UploadText">Upload</span>
+        </Button>
+      )}
+    </div>
+    <div className="spacer"></div>
+    {roleID !== '3' && (
+    <Button className="btn  btn-secondary submit" onClick={handleSubmit}>
+      Submit
+    </Button>
+    )}
+  </div>
+)}
+</Form>
+</Container>
+
+{/* 
+<div style={{ height: 400, width: '100%' }}>
+      <AuditGrid
+        initialRows={retriveData} 
+        columnNames={columns} 
+        onEdit={handleEdit}
+        onSave={handleUpdateValidation}
+        onDelete={handleDelete}
+        onCancel={handleCancel}
+      />
+    </div>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br> */}
+
+
+<div>
+  {filteredData.length === 0 ? (
+    <div className="no-results">
+      {/* <img src="/images.png" alt="No results found" className="background-image" /> */}
+      <p>No results found</p>
+    </div>
+  ) : (
+    <ExcelGrid
+      filteredData={filteredData}
+      selectedRowIds={selectedRowIds}
+      editedRowId={editedRowId}
+      editedRowData={editedRowData}
+      handleCheckboxChange={handleCheckboxChange}
+      handleEdit={handleEdit}
+      handleCancel={handleCancel}
+      handleInputChange={handleInputChange}
+      handleSave={handleUpdateValidation}
+      handleDelete={handleDelete}
+      formatDateCell={formatDateCell}
+      roleID={roleID}
+      setEditedRowData={setEditedRowData}
+      rowToDelete={rowToDelete}
+      setRowToDelete={setRowToDelete}
+      
+    />
+  )}
+</div>
+
+
+{/* Override Confirmation popup */}
+    <>
+    <ConfirmationModal
+          show={showModal}
+          onHide={handleCloseModal}
+          onConfirm={handleConfirm}
+          title="Confirm Override"
+          cancelText="No"
+          confirmText="Yes"
+          cancelVariant="secondary"
+          confirmVariant="danger"
+          message="Are you sure you want to override?"
+        />
+    </>
+
+    {/* Delete Confirmation popup */}
+    <>
+    <ConfirmationModal
+          show={showDeleteModal}
+          onHide={handleCloseDelete}
+          onConfirm={handleConfirmDelete}
+          title="Confirm Delete"
+          cancelText="No"
+          confirmText="Delete"
+          cancelVariant="secondary"
+          confirmVariant="danger"
+          message={`Are you sure you want to delete the row ${formatMonthYear(filteredData.find(row => row.ID === rowToDelete)?.MonthYear)}?`}
+          />
+    </>
+
+     {/* override Update popup */}
+     <>
+    <ConfirmationModal
+          show={showUpdateModal}
+          onHide={handleCloseUpdate}
+          onConfirm={handleSave}
+          title="Confirm Update"
+          cancelText="No"
+          confirmText="Update"
+          cancelVariant="secondary"
+          confirmVariant="danger"
+          message={`Are you sure you want to update?`}
+        />
+    </>
+
+
+    {loading && <LoadingSpinner />} 
 
               <UploadSection
                 roleID={roleID}

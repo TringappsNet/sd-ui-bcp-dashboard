@@ -216,3 +216,9 @@ td{
     left: 14.5%;
   }
 }
+
+.table {
+  min-width: 100%;
+  /* width: max-content; */
+  border-collapse: collapse;
+}

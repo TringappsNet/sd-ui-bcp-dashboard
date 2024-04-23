@@ -101,27 +101,28 @@ function ResetNewPassword({ onClose }) {
           {error && <div className="text-danger mb-3">{error}</div>}
           {success && <div className="text-success mb-3">Password reset successfully!</div>}
           <Form.Group controlId="formBasicOldPassword" className="mb-4">
-            <TextField
-              className={`label ${hasError('old password') ? 'error' : ''}`} 
-              type={showOldPassword ? 'text' : 'password'}
-              label="Old password"
-              value={oldPassword}
-              onChange={(e) => setOldPassword(e.target.value)}
-              fullWidth
-              variant="outlined"
-              size="small"
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    {showOldPassword ? (
-                      <VisibilityIcon onClick={toggleOldPasswordVisibility} />
-                    ) : (
-                      <VisibilityOffIcon onClick={toggleOldPasswordVisibility} />
-                    )}
-                  </InputAdornment>
-                ),
-              }}
-            />
+          <TextField
+            className={`label ${hasError('old password') ? 'error' : ''}`} 
+            type={showOldPassword ? 'text' : 'password'}
+            label="Old password"
+            value={oldPassword}
+            onChange={(e) => setOldPassword(e.target.value)}
+            fullWidth
+            variant="outlined"
+            size="small"
+            InputProps={{
+              endAdornment: oldPassword && ( 
+                <InputAdornment position="end">
+                  {showOldPassword ? (
+                    <VisibilityIcon onClick={toggleOldPasswordVisibility} />
+                  ) : (
+                    <VisibilityOffIcon onClick={toggleOldPasswordVisibility} />
+                  )}
+                </InputAdornment>
+              ),
+            }}
+          />
+
           </Form.Group>
           <Form.Group controlId="formBasicNewPassword" className="mb-4">
             <TextField
@@ -134,7 +135,7 @@ function ResetNewPassword({ onClose }) {
               variant="outlined"
               size="small"
               InputProps={{
-                endAdornment: (
+                endAdornment: newPassword && ( 
                   <InputAdornment position="end">
                     {showPassword ? (
                       <VisibilityIcon onClick={togglePasswordVisibility} />
@@ -157,7 +158,7 @@ function ResetNewPassword({ onClose }) {
               variant="outlined"
               size="small"
               InputProps={{
-                endAdornment: (
+                endAdornment: confirmNewPassword && ( 
                   <InputAdornment position="end">
                     {showConfirmPassword ? (
                       <VisibilityIcon onClick={toggleConfirmPasswordVisibility} />
