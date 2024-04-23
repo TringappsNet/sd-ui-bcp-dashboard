@@ -124,6 +124,7 @@ function ResetPassword() {
               variant="outlined"
               size="small"
               InputProps={{
+                type: 'text',
                 endAdornment: (
                   <InputAdornment position="end">
                     {showPassword ? (
@@ -150,6 +151,7 @@ function ResetPassword() {
               size="small"
 
               InputProps={{
+                type: 'text',
                 endAdornment: (
                   <InputAdornment position="end">
                     {showConfirmPassword ? (

@@ -112,6 +112,7 @@ function ResetNewPassword({ onClose }) {
               variant="outlined"
               size="small"
               InputProps={{
+                type: 'text',
                 endAdornment: (
                   <InputAdornment position="end">
                     {showOldPassword ? (
@@ -135,6 +136,7 @@ function ResetNewPassword({ onClose }) {
               variant="outlined"
               size="small"
               InputProps={{
+                type: 'text',
                 endAdornment: (
                   <InputAdornment position="end">
                     {showPassword ? (
@@ -158,6 +160,7 @@ function ResetNewPassword({ onClose }) {
               variant="outlined"
               size="small"
               InputProps={{
+                type: 'text',
                 endAdornment: (
                   <InputAdornment position="end">
                     {showConfirmPassword ? (
