@@ -93,7 +93,7 @@ function Login() {
   } else {
     const data = await response.json();
     setLoading(false);
-    setSnackbarMessage(data.error || 'An error occurred while logging in.');
+    setSnackbarMessage(data.error || 'Try login later!');
     setSnackbarOpen(true);
     setSnackbarVariant('error');
 
@@ -101,7 +101,7 @@ function Login() {
 } catch (error) {
   console.error('Error logging in:', error);
   setLoading(false);
-  setSnackbarMessage('An error occurred while logging in.');
+  setSnackbarMessage('Try login later!');
   setSnackbarOpen(true);
   setSnackbarVariant('error');
 
