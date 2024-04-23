@@ -164,6 +164,7 @@ setLoading(false);
             size="small"
             error={!!passwordError}
             InputProps={{
+              type: 'text',
               endAdornment: (
                 <InputAdornment position="end">
                   {showPassword ? (
