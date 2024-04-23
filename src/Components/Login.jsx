@@ -164,8 +164,7 @@ setLoading(false);
             size="small"
             error={!!passwordError}
             InputProps={{
-              type: 'text',
-              endAdornment: (
+              endAdornment: password && ( 
                 <InputAdornment position="end">
                   {showPassword ? (
                     <VisibilityIcon onClick={togglePasswordVisibility} />

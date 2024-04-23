@@ -124,8 +124,7 @@ function ResetPassword() {
               variant="outlined"
               size="small"
               InputProps={{
-                type: 'text',
-                endAdornment: (
+                endAdornment: newPassword && ( 
                   <InputAdornment position="end">
                     {showPassword ? (
                       <VisibilityIcon onClick={togglePasswordVisibility} />
@@ -151,8 +150,7 @@ function ResetPassword() {
               size="small"
 
               InputProps={{
-                type: 'text',
-                endAdornment: (
+                endAdornment: confirmPassword && ( 
                   <InputAdornment position="end">
                     {showConfirmPassword ? (
                       <VisibilityIcon onClick={toggleConfirmPasswordVisibility} />
