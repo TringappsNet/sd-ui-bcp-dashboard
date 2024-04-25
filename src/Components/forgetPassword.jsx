@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Form, Button } from 'react-bootstrap';
-import { Link, Route,useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/forgetPassword.css';
 import { TextField } from '@mui/material';
@@ -25,7 +25,6 @@ function ForgotPassword({onClose}) {
       if (response.status === 200) {
         setSnackbarMessage(response.data.message);
         setSnackbarVariant('success');
-
        
 
       } else if (response.status === 404) {
@@ -79,16 +78,14 @@ function ForgotPassword({onClose}) {
           </Form>
         </Container>
       </div>
+
       <CustomSnackbar
         message={snackbarMessage}
         variant={snackbarVariant}
         onClose={handleCloseSnackbar}
         open={snackbarOpen}
-  
-        // color={snackColor}
-
-
       />
+
       {loading && <LoadingSpinner />} 
     </div>
   );

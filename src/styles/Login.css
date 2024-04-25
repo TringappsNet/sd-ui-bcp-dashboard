@@ -22,17 +22,16 @@ body{
   font-family: 'Roboto', sans-serif;
   border-radius: 15px;
   background-color: rgb(255, 255, 255);
-  margin-top: 50px; /* Adjust this value to move the container downwards */
+  margin-top: 50px; 
 }
 
 @media (max-width: 576px) {
   .con {
     width: 90%;
     margin: auto;
-    margin-top: 50px; /* Adjust this value for smaller screens */
+    margin-top: 50px; 
   }
 }
-
 
 .form-control {
   border: 2px solid #333; 
@@ -53,7 +52,6 @@ body{
   text-decoration: underline;
 }
 
-
 .display-6 {
   font-size: 1.75rem;
   font-weight: 400;
@@ -71,7 +69,6 @@ body{
   color: #299689;
   font-family: 'Roboto', sans-serif;
 }
-
 
 .login{
    background-color: #299689;
@@ -97,12 +94,8 @@ p{
 .text-right{
   font-weight: 500;
 
-  
 }
 
 .MuiSvgIcon-root:hover {
   cursor: pointer;
 }
-
-
-

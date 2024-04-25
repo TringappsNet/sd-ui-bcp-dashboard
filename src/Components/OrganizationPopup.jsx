@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Table } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faSave, faTimesCircle, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'; // Import the trash icon
+import { faEdit, faSave, faTimesCircle, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'; 
 import { PortURL } from "./Config";
-import '../styles/ExcelGrid.css'; // Assuming you have a CSS file for styling
-import '../styles/OrgPopup.css'; // Assuming you have a CSS file for styling
+import '../styles/ExcelGrid.css';
+import '../styles/OrgPopup.css';
 
 
 const OrgPop = ({ handleClose }) => {
@@ -25,7 +25,6 @@ const OrgPop = ({ handleClose }) => {
       if (response.ok) {
         const data = await response.json();
         setExcelData(data);
-        console.log("ORgDate",data);
       } else {
         console.error('Failed to fetch Excel data:', response.statusText);
       }
@@ -89,7 +88,6 @@ const OrgPop = ({ handleClose }) => {
       });
 
       if (response.ok) {
-        console.log('New Portfolio Company created successfully');
         setErrorMessage(false);
         setSuccessMessage('New Portfolio Company created successfully');
         setTimeout(() => setSuccessMessage(''), 3000);
@@ -169,79 +167,75 @@ const OrgPop = ({ handleClose }) => {
             </thead>
               <tbody>
               {addMode && (
-  <tr>
-    <td>
-      <input
-        type="text"
-        className='addCompany'
-        placeholder="New Portfolio"
-        value={editedOrgName}
-        onChange={handleInputChange}
-      />
-    </td>
-    <td>
-      <div className='editSave action-buttons'>
-        <div onClick={handleSaveNewOrg}>
-          <FontAwesomeIcon icon={faSave} />
-        </div>
-        <div onClick={() => setAddMode(false)}>
-          <FontAwesomeIcon icon={faTimesCircle} />
-        </div>
-      </div>
-    </td>
-  </tr>
-)}
-{excelData.map((row, index) => (
-  <tr key={index}>
-    <td>
-      {editedRowIndex === index && row.org_name ? (
-        <input
-          type="text"
-          className='OrgIn'
-          value={editedOrgName}
-          onChange={handleInputChange}
-        />
-      ) : (
-        <span className='Usercount'>
-          <div className='orgname'>{row.org_name}</div>
-          <div className='slash'>|</div>
-            <div className='count'>{row.user_count}  users</div>
-       
-        </span>
-      )}
-    </td>
-    <td>
-      {editedRowIndex === index && !addMode ? (
-        <div className='editSave '>
-          <div onClick={handleSave}>
-            <FontAwesomeIcon icon={faSave} />
-          </div>
-          <div onClick={() => setEditedRowIndex(null)}>
-            <FontAwesomeIcon icon={faTimesCircle} />
-          </div>
-        </div>
-      ) : (
-        <div className='d-flex editSave '>
-          <div className="btn-sm Edit" onClick={() => handleEdit(index)}>
-            <FontAwesomeIcon icon={faEdit} />
-          </div>
-          <div className="btn-sm Delete" onClick={() => handleDeleteRow(index)}> 
-            <FontAwesomeIcon icon={faTrash} />
-          </div>
-        </div>
-      )}
-    </td>
-  </tr>
-))}
+                  <tr>
+                     <td>
+                      <input
+                      type="text"
+                      className='addCompany'
+                      placeholder="New Portfolio"
+                      value={editedOrgName}
+                      onChange={handleInputChange}
+                    />
+                  </td>
+                  <td>
+                    <div className='editSave action-buttons'>
+                      <div onClick={handleSaveNewOrg}>
+                        <FontAwesomeIcon icon={faSave} />
+                      </div>
+                      <div onClick={() => setAddMode(false)}>
+                        <FontAwesomeIcon icon={faTimesCircle} />
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              )}
+              {excelData.map((row, index) => (
+                <tr key={index}>
+                  <td>
+                    {editedRowIndex === index && row.org_name ? (
+                      <input
+                        type="text"
+                        className='OrgIn'
+                        value={editedOrgName}
+                        onChange={handleInputChange}
+                      />
+                    ) : (
+                      <span className='Usercount'>
+                        <div className='orgname'>{row.org_name}</div>
+                        <div className='slash'>|</div>
+                          <div className='count'>{row.user_count}  users</div>
+                    
+                      </span>
+                    )}
+                  </td>
+                  <td>
+                    {editedRowIndex === index && !addMode ? (
+                      <div className='editSave '>
+                        <div onClick={handleSave}>
+                          <FontAwesomeIcon icon={faSave} />
+                        </div>
+                        <div onClick={() => setEditedRowIndex(null)}>
+                          <FontAwesomeIcon icon={faTimesCircle} />
+                        </div>
+                      </div>
+                    ) : (
+                      <div className='d-flex editSave '>
+                        <div className="btn-sm Edit" onClick={() => handleEdit(index)}>
+                          <FontAwesomeIcon icon={faEdit} />
+                        </div>
+                        <div className="btn-sm Delete" onClick={() => handleDeleteRow(index)}> 
+                          <FontAwesomeIcon icon={faTrash} />
+                        </div>
+                      </div>
+                    )}
+                  </td>
+                </tr>
+              ))}
               
               </tbody>
             </Table>
           </div>
-          {/* <div>
-            <button className="btn btn-sm Add" onClick={handleAddRow}>
-              <FontAwesomeIcon icon={faPlus} /> Add Organization
-            </button>
-          </div> */}
+     
         </Col>
       </Row>
     </Container>

@@ -57,7 +57,6 @@ export const MuiPhone = ({ value, onChange, ...restProps }) => {
               }}
               sx={{
                 width: 'max-content',
-                // Remove default outline (display only on focus)
                 fieldset: {
                   display: 'none',
                 },
@@ -66,7 +65,6 @@ export const MuiPhone = ({ value, onChange, ...restProps }) => {
                     display: 'block',
                   },
                 },
-                // Update default spacing
                 '.MuiSelect-select': {
                   padding: '8px',
                   paddingRight: '24px !important',

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Container, Form, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/resetPassword.css';
@@ -7,7 +7,6 @@ import { PortURL } from './Config';
 import LoadingSpinner from './LoadingSpinner'; 
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import CustomSnackbar from './Snackbar'; 
 
 function ResetNewPassword({ onClose }) {
   const [oldPassword, setOldPassword] = useState('');
@@ -46,7 +45,7 @@ function ResetNewPassword({ onClose }) {
   
       setTimeout(() => {
         setError(null);
-      }, 5000); // Set timeout to clear the error message after 2 seconds
+      }, 5000); 
   
       return;
     }
@@ -127,7 +126,7 @@ function ResetNewPassword({ onClose }) {
           </Form.Group>
           <Form.Group controlId="formBasicNewPassword" className="mb-4">
             <TextField
-              className={`label ${hasError('new password') ? 'error' : ''}`} // Apply error class if error occurred
+              className={`label ${hasError('new password') ? 'error' : ''}`} 
               type={showPassword ? 'text' : 'password'}
               label="New password"
               value={newPassword}
@@ -150,7 +149,7 @@ function ResetNewPassword({ onClose }) {
           </Form.Group>
           <Form.Group controlId="formBasicConfirmNewPassword" className="mb-4">
             <TextField
-              className={`label ${hasError('confirm new password') ? 'error' : ''}`} // Apply error class if error occurred
+              className={`label ${hasError('confirm new password') ? 'error' : ''}`} 
               type={showConfirmPassword ? 'text' : 'password'}
               label="Confirm new password"
               value={confirmNewPassword}

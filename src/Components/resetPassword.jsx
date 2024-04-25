@@ -13,7 +13,7 @@ import '../styles/resetPassword.css';
 function ResetPassword() {
   const [newPassword, setNewPassword] = useState('');
   const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(false);
+  // const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const [emailId, setEmailId] = useState('');
   const [sessionId, setSessionId] = useState('');
@@ -74,7 +74,7 @@ function ResetPassword() {
       });
   
       if (response.ok) {
-        setSuccess(true);
+        // setSuccess(true);
         setError(null);
         setSnackbarMessage('Password reset successfully!');
         setSnackbarVariant('success');
@@ -91,7 +91,7 @@ function ResetPassword() {
             setSnackbarOpen(true);
           } else {
             setError(data.message);
-            setSuccess(false);
+            // setSuccess(false);
           }
         }
     } catch (error) {
