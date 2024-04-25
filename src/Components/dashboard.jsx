@@ -14,21 +14,24 @@ import ConfirmationModal from "./ConfirmationModal";
 import NavbarComponent from "./Navbar";
 import ExcelGrid from "./ExcelGrid";
 import {columnMap} from "../Objects/Objects";
-import AuditGrid from './Audit';
+// import AuditGrid from './Audit';
 
 function Dashboard() {
 
 
     const [username, setUsername] = useState("");
-    const[role, setRole] = useState("");
+    // eslint-disable-next-line no-unused-vars
+    const [_role, setRole] = useState("");
     const [data, setData] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [editedRowId, setEditedRowId] = useState(null); 
     const [editedRowData, setEditedRowData] = useState({}); 
     const [loading, setLoading] = useState(false); 
-    const [organization, setOrganization] = useState("");
-    const [email, setEmail] = useState("");
-    const [showPreview, setShowPreview] = useState(false);
+    // eslint-disable-next-line no-unused-vars
+    const [_organization, setOrganization] = useState("");
+    // eslint-disable-next-line no-unused-vars
+    const [, setEmail] = useState("");
+    // const [showPreview, setShowPreview] = useState(false);
     const [uploadSuccess, setUploadSuccess] = useState(false);
     const [selectedRowIds, setSelectedRowIds] = useState([]); 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -45,7 +48,7 @@ function Dashboard() {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [rowToDelete, setRowToDelete] = useState(0);
     const [showUpdateModal, setShowUpdateModal] = useState(false);
-    const [selectionModel, setSelectionModel] = useState([]);
+    // const [selectionModel, setSelectionModel] = useState([]);
  
 
     const navigate = useNavigate();
@@ -68,8 +71,9 @@ function Dashboard() {
         setRole(storedRole)
     
         fetchData();
-        setShowPreview(true);
+        // setShowPreview(true);
       }
+      // eslint-disable-next-line
     }, [navigate]);
 
 
@@ -227,7 +231,7 @@ function Dashboard() {
             setData((prevData) => [...prevData, ...updatedData]);
             setUploadedFileName(file.name);
     
-            const Role_ID = localStorage.getItem('Role_ID');
+            // const Role_ID = localStorage.getItem('Role_ID');
             const Org_ID = localStorage.getItem('Org_ID');
             const userId = localStorage.getItem('user_ID');
             try {
@@ -434,7 +438,7 @@ const handleSubmit = async () => {
 
     const handleUpdateValidation = async () => {
       setLoading(true);
-      const sessionId = localStorage.getItem('sessionId');
+      // const sessionId = localStorage.getItem('sessionId');
       const email = localStorage.getItem('email');
       const Org_ID = localStorage.getItem('Org_ID');
       const userId = localStorage.getItem('user_ID');
@@ -588,7 +592,7 @@ const handleSubmit = async () => {
         const email = localStorage.getItem('email');
         const userId = localStorage.getItem('user_ID');
         const Org_ID = localStorage.getItem('Org_ID');
-        const identifierToDelete = String(filteredData[rowId]?.ID);
+        // const identifierToDelete = String(filteredData[rowId]?.ID);
 
 //  console.log("identifier delete",identifierToDelete);
 
@@ -644,36 +648,36 @@ const handleSubmit = async () => {
       setSnackbarMessage("");
     };
 
-    const columns = [
-      { field: 'ID', headerName: 'ID', width: 90 },
-      { field: 'MonthYear', headerName: 'MonthYear', width: 200 },
-      { field: 'CompanyName', headerName: 'Company Name', width: 200 },
-      { field: 'RevenueActual', headerName: 'Revenue Actual', width: 150 },
-      { field: 'RevenueBudget', headerName: 'Revenue Budget', width: 150 },
-      { field: 'GrossProfitActual', headerName: 'Gross Profit Actual', width: 180 },
-      { field: 'GrossProfitBudget', headerName: 'Gross Profit Budget', width: 180 },
-      { field: 'SGAActual', headerName: 'SGA Actual', width: 120 },
-      { field: 'SGABudget', headerName: 'SGA Budget', width: 120 },
-      { field: 'EBITDAActual', headerName: 'EBITDA Actual', width: 150 },
-      { field: 'EBITDABudget', headerName: 'EBITDA Budget', width: 150 },
-      { field: 'CapExActual', headerName: 'CapEx Actual', width: 150 },
-      { field: 'CapExBudget', headerName: 'CapEx Budget', width: 150 },
-      { field: 'FixedAssetsNetActual', headerName: 'Fixed Assets Net Actual', width: 200 },
-      { field: 'FixedAssetsNetBudget', headerName: 'Fixed Assets Net Budget', width: 200 },
-      { field: 'CashActual', headerName: 'Cash Actual', width: 150 },
-      { field: 'CashBudget', headerName: 'Cash Budget', width: 150 },
-      { field: 'TotalDebtActual', headerName: 'Total Debt Actual', width: 180 },
-      { field: 'TotalDebtBudget', headerName: 'Total Debt Budget', width: 180 },
-      { field: 'AccountsReceivableActual', headerName: 'Accounts Receivable Actual', width: 220 },
-      { field: 'AccountsReceivableBudget', headerName: 'Accounts Receivable Budget', width: 220 },
-      { field: 'AccountsPayableActual', headerName: 'Accounts Payable Actual', width: 220 },
-      { field: 'AccountsPayableBudget', headerName: 'Accounts Payable Budget', width: 220 },
-      { field: 'InventoryActual', headerName: 'Inventory Actual', width: 150 },
-      { field: 'InventoryBudget', headerName: 'Inventory Budget', width: 150 },
-      { field: 'EmployeesActual', headerName: 'Employees Actual', width: 150 },
-      { field: 'EmployeesBudget', headerName: 'Employees Budget', width: 150 },
-      { field: 'Quarter', headerName: 'Quarter', width: 120 },
-    ];
+    // const columns = [
+    //   { field: 'ID', headerName: 'ID', width: 90 },
+    //   { field: 'MonthYear', headerName: 'MonthYear', width: 200 },
+    //   { field: 'CompanyName', headerName: 'Company Name', width: 200 },
+    //   { field: 'RevenueActual', headerName: 'Revenue Actual', width: 150 },
+    //   { field: 'RevenueBudget', headerName: 'Revenue Budget', width: 150 },
+    //   { field: 'GrossProfitActual', headerName: 'Gross Profit Actual', width: 180 },
+    //   { field: 'GrossProfitBudget', headerName: 'Gross Profit Budget', width: 180 },
+    //   { field: 'SGAActual', headerName: 'SGA Actual', width: 120 },
+    //   { field: 'SGABudget', headerName: 'SGA Budget', width: 120 },
+    //   { field: 'EBITDAActual', headerName: 'EBITDA Actual', width: 150 },
+    //   { field: 'EBITDABudget', headerName: 'EBITDA Budget', width: 150 },
+    //   { field: 'CapExActual', headerName: 'CapEx Actual', width: 150 },
+    //   { field: 'CapExBudget', headerName: 'CapEx Budget', width: 150 },
+    //   { field: 'FixedAssetsNetActual', headerName: 'Fixed Assets Net Actual', width: 200 },
+    //   { field: 'FixedAssetsNetBudget', headerName: 'Fixed Assets Net Budget', width: 200 },
+    //   { field: 'CashActual', headerName: 'Cash Actual', width: 150 },
+    //   { field: 'CashBudget', headerName: 'Cash Budget', width: 150 },
+    //   { field: 'TotalDebtActual', headerName: 'Total Debt Actual', width: 180 },
+    //   { field: 'TotalDebtBudget', headerName: 'Total Debt Budget', width: 180 },
+    //   { field: 'AccountsReceivableActual', headerName: 'Accounts Receivable Actual', width: 220 },
+    //   { field: 'AccountsReceivableBudget', headerName: 'Accounts Receivable Budget', width: 220 },
+    //   { field: 'AccountsPayableActual', headerName: 'Accounts Payable Actual', width: 220 },
+    //   { field: 'AccountsPayableBudget', headerName: 'Accounts Payable Budget', width: 220 },
+    //   { field: 'InventoryActual', headerName: 'Inventory Actual', width: 150 },
+    //   { field: 'InventoryBudget', headerName: 'Inventory Budget', width: 150 },
+    //   { field: 'EmployeesActual', headerName: 'Employees Actual', width: 150 },
+    //   { field: 'EmployeesBudget', headerName: 'Employees Budget', width: 150 },
+    //   { field: 'Quarter', headerName: 'Quarter', width: 120 },
+    // ];
     
     return (
       <div className="dashboard-container">

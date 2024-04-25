@@ -110,7 +110,7 @@ function SendInvite({ onClose }) {
         body: JSON.stringify(formData)
       });
       if (response.ok) {
-        const data = await response.json();
+        // const data = await response.json();
         setSuccessMessage('Invitation sent successfully');
         setFormData(initialFormData); 
         setTimeout(() => {
