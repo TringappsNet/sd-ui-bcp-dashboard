@@ -541,6 +541,7 @@ const handleSubmit = async () => {
 
         if (response.ok) {
           fetchData();
+          setLoading(false);
           setSnackbarOpen(true);
           setSnackbarMessage("Row updated successfully");
           setSnackbarVariant("success"); 
@@ -584,6 +585,7 @@ const handleSubmit = async () => {
     };
   
     const handleConfirmDelete = async () => {
+      setLoading(true);
       setShowDeleteModal(false);
       const rowId = rowToDelete;    
       // console.log("confirm delte",rowId);  
@@ -620,6 +622,7 @@ const handleSubmit = async () => {
           // const updatedData = filteredData.filter((row, index) => index !== rowId);
           // console.log("updated Data after deleting ",updatedData);
           setRetriveData(updatedData); 
+          setLoading(false);
           setSnackbarOpen(true);
           setSnackbarMessage("Row deleted successfully");
           setSnackbarVariant('success');
@@ -641,6 +644,7 @@ const handleSubmit = async () => {
         setShowDeleteModal(false);
 
       }
+      setLoading(false);
     };
     
     const handleCloseSnackbar = () => {
