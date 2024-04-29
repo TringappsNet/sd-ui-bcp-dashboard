@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
   import React, { useState,useEffect } from 'react';
   import { Table } from 'react-bootstrap';
   import { Container, Row, Col } from 'react-bootstrap';
@@ -39,6 +40,7 @@ import { Key } from 'react-bootstrap-icons';
           setEditedRowData(editedRow);
         }
       }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [sortConfig, editedRowId,rowToDelete]);
     
     // 
@@ -87,12 +89,12 @@ import { Key } from 'react-bootstrap-icons';
 
 
 
-  const formatDateCell = (value, key) => {
-  if (key === "MonthYear") {
-  return formatMonthYear(value);
-  }
-  return value;
-  };
+  // const formatDateCell = (value, key) => {
+  // if (key === "MonthYear") {
+  // return formatMonthYear(value);
+  // }
+  // return value;
+  // };
 
 
   const formatNumber = (number) => {
@@ -113,14 +115,14 @@ import { Key } from 'react-bootstrap-icons';
     return formattedNumber;
   };
 
-  const formatDateForInput = (dateString) => {
-    if (!dateString) return ''; // Handle empty or null values
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    let month = (date.getMonth() + 1).toString().padStart(2, '0');
-    let day = date.getDate().toString().padStart(2, '0');
-    return `${year}-${month}-${day}`;
-};
+//   const formatDateForInput = (dateString) => {
+//     if (!dateString) return ''; // Handle empty or null values
+//     const date = new Date(dateString);
+//     const year = date.getFullYear();
+//     let month = (date.getMonth() + 1).toString().padStart(2, '0');
+//     let day = date.getDate().toString().padStart(2, '0');
+//     return `${year}-${month}-${day}`;
+// };
   const reversedColumnMap = reverseColumnMap(columnMap);
 
     return (
@@ -159,7 +161,7 @@ import { Key } from 'react-bootstrap-icons';
                   <input
                     type="text"
                     className='GridInput'
-                    value={editedRowData[key]}
+                    value={editedRowData[key] || ''}
                     onChange={(e) => handleInputChange(e, key)}
                   />
                 )

@@ -71,27 +71,18 @@ function SendInvite({ onClose }) {
     if (!formData.email.trim()) {
       setEmailError('Email is required');
       setLoading(false);
-      setTimeout(() => {
-        setEmailError('');
-      }, 5000); // Clear email error message after 2 seconds
       return;
     }
   
     if (!formData.role.trim()) {
       setRoleError('Role is required');
       setLoading(false);
-      setTimeout(() => {
-        setRoleError('');
-      }, 5000); // Clear role error message after 2 seconds
       return;
     }
   
     if (!formData.organization.trim()) {
       setOrgError('Organization is required');
       setLoading(false);
-      setTimeout(() => {
-        setOrgError('');
-      }, 5000); // Clear organization error message after 2 seconds
       return;
     }
   
@@ -109,8 +100,8 @@ function SendInvite({ onClose }) {
         },
         body: JSON.stringify(formData)
       });
+  
       if (response.ok) {
-        const data = await response.json();
         setSuccessMessage('Invitation sent successfully');
         setFormData(initialFormData); 
         setTimeout(() => {
@@ -118,11 +109,14 @@ function SendInvite({ onClose }) {
         }, 3000);
       } else {
         const errorData = await response.json(); 
-        setSuccessMessage(''); 
-        setError(errorData.message); 
-        setTimeout(() => {
-          setError('');
-        }, 3000); 
+        if (errorData.message === 'user already exists') {
+          setSuccessMessage('User already exists'); // Display user-friendly message
+        } else {
+          setError(errorData.message); // Display other errors
+          setTimeout(() => {
+            setError('');
+          }, 3000); 
+        }
       }      
   
     } catch (error) {
@@ -131,7 +125,7 @@ function SendInvite({ onClose }) {
   
     setLoading(false);
   };
-
+  
   
   return (
     <div className="form d-flex justify-content-center align-items-center">

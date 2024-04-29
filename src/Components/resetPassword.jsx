@@ -13,6 +13,7 @@ import '../styles/resetPassword.css';
 function ResetPassword() {
   const [newPassword, setNewPassword] = useState('');
   const [error, setError] = useState(null);
+  // eslint-disable-next-line no-unused-vars
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const [emailId, setEmailId] = useState('');

@@ -7,7 +7,7 @@ import SendInvite from './Components/sendInvite';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './Components/Login';
 import React, { useEffect } from 'react';
-import { Helmet } from 'react-helmet';
+// import { Helmet } from 'react-helmet';
 import UserPop from './Components/UserPop';
 import OrgPop from './Components/OrganizationPopup';
 import DataGrid from './Components/Audit';
@@ -19,10 +19,10 @@ function App() {
   return (
     
     <Router>
-       <Helmet>
+       {/* <Helmet>
       <title>BCP</title> 
       <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    </Helmet>
+    </Helmet> */}
     <Routes>
       <Route index element={<Login/>} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
