@@ -23,7 +23,7 @@ function Login() {
   const [serverError, setServerError] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [snackColor,setSnackColor]=useState('success');
+  //const [snackColor,setSnackColor]=useState('success');
   const [snackbarVariant, setSnackbarVariant] = useState('success');
 
   const navigate = useNavigate();

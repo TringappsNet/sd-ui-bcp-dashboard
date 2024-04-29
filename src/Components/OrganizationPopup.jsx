@@ -110,31 +110,39 @@ const OrgPop = ({ handleClose }) => {
       const orgIDToDelete = excelData[index].org_ID;
       const response = await fetch(`${PortURL}/delete-Org`, {
         method: 'DELETE',
-        body: JSON.stringify({ org_ID :orgIDToDelete}),
-
+        body: JSON.stringify({ org_ID: orgIDToDelete }),
         headers: {
           'Content-Type': 'application/json'
         }
       });
-
+  
       if (response.ok) {
         setErrorMessage(false);
         setSuccessMessage(true);
         setSuccessMessage('Portfolio Company Deleted Successfully')
         setTimeout(() => setSuccessMessage(''), 3000);
         fetchData();
-      } else {
+      } else if (response.status === 409) {
+
         setSuccessMessage(false);
         setErrorMessage(true);
-        setErrorMessage('Deletion Unsuccessful: Portfolio Company assigned to user!');
+        setErrorMessage('Deletion Unsuccessful: Something went wrong!');
         setTimeout(() => setErrorMessage(''), 3000);
-        console.error('Failed to delete Portfolio Company:', response.statusText);
+        // console.error('Failed to delete Portfolio Company:', response.statusText);
+      } else {
+        // Handle other error statuses
+        setSuccessMessage(false);
+        setErrorMessage(true);
+        setErrorMessage('Deletion Unsuccessful: Something went wrong!');
+        setTimeout(() => setErrorMessage(''), 3000);
+        // console.error('Failed to delete Portfolio Company:', response.statusText);
       }
     } catch (error) {
+      // Handle network errors or other exceptions
       setSuccessMessage(false);
       setErrorMessage(true);
-      setErrorMessage('Deletion Unsuccessful: Portfolio Company assigned to user!');
-      console.error('Error deleting Portfolio Company:', error);
+      setErrorMessage('Deletion Unsuccessful: Something went wrong!');
+      // console.error('Error deleting Portfolio Company:', error);
     }
   };
 

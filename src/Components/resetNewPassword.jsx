@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Container, Form, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/resetPassword.css';
@@ -7,7 +7,7 @@ import { PortURL } from './Config';
 import LoadingSpinner from './LoadingSpinner'; 
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import CustomSnackbar from './Snackbar'; 
+//import CustomSnackbar from './Snackbar'; 
 
 function ResetNewPassword({ onClose }) {
   const [oldPassword, setOldPassword] = useState('');
