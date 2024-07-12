@@ -16,9 +16,9 @@
   left: 0;
 }
 
-.sticky-header th.action-cell {
-  /* right: 0; */
-}
+/* .sticky-header th.action-cell {
+  right: 0;
+} */
 
   .mt-2 {
     margin-top: 0.5rem !important;
@@ -123,6 +123,111 @@
     padding: 20px;
     border-radius: 6px;
   }
+
+/* .audit-grid-container {
+  max-height: 500px;
+  overflow-y: auto;
+  background-color: #ffffff;
+}
+
+.close-button {
+  color: #000;
+  font-size: 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: 97%;
+}
+
+.sticky-header {
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 10;
+} */
+
+.audit-grid-container {
+  background-color: #ffffff;
+  border-radius: 5px;
+  padding: 0;
+  position: relative;
+  max-height: 120%;
+  overflow: hidden;
+}
+
+.audit-grid-container table th,
+.audit-grid-container table td {
+  text-align: center;
+  vertical-align: middle; /* To vertically center the content */
+}
+
+.audit-grid-container .extra-space {
+  /* padding-right: 20px;
+  padding-left: 20px; */
+  padding: 10px 20px 10px 20px;
+}
+
+
+.header-container {
+  background-color: #f8f9fa;
+  padding: 10px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.close-audit {
+  color: #000;
+  font-size: 20px;
+  background: none;
+  border: none;
+  /* cursor: pointer; */
+  margin-left: 97%;
+}
+
+.table-audit {
+  overflow-y: auto;
+  height: 450px;
+  margin-left: 18px;
+  margin-right: 20px; 
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.sticky-header th {
+  background: #f8f9fa;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.GridInput {
+  width: 100%;
+  padding: 5px;
+  box-sizing: border-box;
+}
+
+.search-bar-audit{
+  margin-bottom: 10px;
+  margin-top: 10px;
+  height: 30px;
+}
+
+.year-filter-audit{
+  margin-right: 10px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  height: 30px;
+}
+
+.dropdown-icon-audit {
+  position: absolute;
+  right: 30px;
+  top: 16%;
+  transform: translateY(-50%);
+  font-size: 15px;
+  color: #666;
+}
 /* 
   .table-responsive {
     border-radius: 1px;
@@ -310,13 +415,19 @@
   thead{
     margin-left: 20px;
   }
+
+  .text-result{
+    margin-left: 252%;
+    width: 200px;
+  }
   
-  .no-results {
+  .no-results-audit{
     justify-content: center;
     text-align: center; 
     margin-top: 150px;
-    font-size: 22px; 
-    color: #333;
+    font-size: 20px; 
+    color: #afadad;
+    width: 200px;
     /* background-image: url('/public/folder.png');
     background-size: cover; 
     background-position: center; */

@@ -60,7 +60,7 @@
 }
 
 .popup-inner {
-  width: 90%; /* Adjust the width for smaller screens */
+  width: 95%; 
   max-width: none; /* Remove max-width for smaller screens */
 }
 
