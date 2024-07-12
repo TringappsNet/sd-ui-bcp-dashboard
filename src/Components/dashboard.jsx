@@ -212,11 +212,12 @@ function Dashboard() {
               });
               return obj;
             });
-    
+
             const updatedData = newJsonData.map((row) => {
               if (row["MonthYear"]) {
                 const dateString = row["MonthYear"].toString();
                 const date = new Date(dateString);
+                date.setSeconds(date.getSeconds() + 10);
                 const year = date.getFullYear();
                 const month = (date.getMonth() + 1).toString().padStart(2, "0");
                 const day = date.getDate().toString().padStart(2, "0");
