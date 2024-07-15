@@ -3,6 +3,7 @@ import { Table, Form } from 'react-bootstrap';
 import { Container, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faCaretDown } from '@fortawesome/free-solid-svg-icons';
+import { PortURL } from './Config';
 import '../styles/dashboard.css';
 import '../styles/ExcelGrid.css';
 
@@ -21,11 +22,11 @@ const AuditGrid = ({ handleClose }) => {
 
   useEffect(() => {
     applyFilters();
-  });
+  },);
 
   const fetchAuditData = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/Audit/get');
+      const response = await fetch(`${PortURL}/Audit/get`);
       const data = await response.json();
     //   console.log('Fetched audit data:', data);
       setAuditData(data.flat());
