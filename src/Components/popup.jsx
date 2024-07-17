@@ -100,6 +100,8 @@ const PopUpContainer = () => {
   return (
     <div className='text'>
       <div className="dropdown-item-hover border-text" onClick={handleResetPopupToggle}>Reset Password</div>
+      
+      
 
       {/* Conditionally render based on roleID */}
       {roleID === '1' && (
@@ -108,10 +110,9 @@ const PopUpContainer = () => {
           <div className="dropdown-item-hover" onClick={handleOrganizationPopupToggle}>Portfolio Company</div>
           <div className="dropdown-item-hover" onClick={handleUserPopupToggle}>Users</div>
           <div className="dropdown-item-hover" onClick={handleAuditPopupToggle}>Audit History</div>
-          <div className="dropdown-item-hover" onClick={handleGuidePopupToggle}>BCP Guide</div>
         </>
       )}
-
+    <div className="dropdown-item-hover" onClick={handleGuidePopupToggle}>BCP Guide</div>
       {/* Render popups based on roleID */}
       {(showResetPopup || showInvitePopup || showOrganizationPopup || showUserPopup || showAuditGrid || showGuide) && (
         <div className="popup-container backdrop">
@@ -121,7 +122,7 @@ const PopUpContainer = () => {
             {(showOrganizationPopup && roleID === '1') && <OrganizationPopup className="Organisation" handleClose={handleClosePopups} />}
             {(showUserPopup && roleID === '1') && <UserPop handleClose={handleClosePopups} />}
             {(showAuditGrid && roleID === '1') && <AuditGrid handleClose={handleClosePopups} />}
-            {(showGuide && roleID === '1') && <Guide handleClose={handleClosePopups} />}
+            {showGuide && <Guide onClose={handleClosePopups} />}
           </div>
         </div>
       )}
