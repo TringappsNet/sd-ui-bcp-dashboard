@@ -11,7 +11,7 @@
 
 .close-guide {
     position: absolute;
-    top: 10px;
+    top: 22px;
     right: 25px;
     cursor: pointer;
     font-size: 15px;
@@ -37,7 +37,7 @@ h3 {
 .header-buttons {
     position: absolute;
     top: 20px;
-    right: 55px;
+    right: 75px;
     display: flex;
     align-items: center;
     z-index: 30; 

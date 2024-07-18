@@ -37,7 +37,8 @@ const Guide = ({ onClose }) => {
                 <div className="guide-content">
                    {roleId === '1' &&
                     <div className="guide-section-1">
-                      
+                        <h4>ADMIN</h4>
+                        <br />
                         <h5>1. Getting Started</h5>
                         <br />
                         <h6>This application enables you to upload and submit the Excel files for efficient management of data.</h6>
@@ -66,30 +67,29 @@ const Guide = ({ onClose }) => {
                         <li><h6>When you upload a file containing values that match existing data, 
                             you will be prompted with an option to either override the existing data or cancel the operation.</h6></li>
                        <img src="/images/override.png" alt="How to Use" className="img-fluid" />    
-                       <li><h6> After uploading the Excel file, you can update using the edit icon if any changes are needed.</h6></li>
+                       <li><h6> After uploading the Excel data, you can update using the edit icon if any changes are needed.</h6></li>
                         <img src="/images/Update.png" alt="How to Use" className="img-fluid" />
-                        <li><h6> After uploading the Excel file, you can delete using the delete icon if any changes are needed.</h6></li>
+                        <li><h6> After uploading the Excel data, you can delete the data using the delete icon.</h6></li>
                         <img src="/images/delete.png" alt="How to Use" className="img-fluid" />
                         </ul>
                         
                         <h5>4. Admin Features</h5>
                         <br />
                         <ul>
-                        <li><h6> The panel offers a password reset feature for admins, superusers, and
-                        restricted users, allowing them to change passwords using their existing credentials. </h6></li>
+                        <li><h6> This panel offers a feature to change the passwords using their existing credentials. </h6></li>
                         <img src="/images/reset_pass.png" alt="Admin Featuers" className="img-fluid" /> 
-                        <li><h6> You can leverage the "Send Invite" function to invite new users, specifying roles 
-                        and company affiliation during the invitation process. </h6>  </li>
+                        <li><h6> You can leverage the "Send Invite" function to invite new users, specifying the roles 
+                        and  the company affiliation during the invitation process. </h6>  </li>
                         <img src="/images/send_invite.png" alt="Admin Featuers" className="img-fluid" />   
-                        <li><h6> The panel provides a comprehensive portfolio management section. Here, you can view a list of existing 
-                        companies, add new ones, edit company details, and even delete companies as needed.</h6></li>
+                        <li><h6> This panel provides a comprehensive portfolio management section. Here, you can view the list of existing 
+                        companies, add the new ones, edit the company details and delete the companies.</h6></li>
                         <img src="/images/portfolio.png" alt="Admin Featuers" className="img-fluid" /> 
                         <li><h6> This management section offers you an overview of all users. you can edit  the user roles,
                         deactivate accounts, and access a complete list of registered users. </h6> </li>
                         <img src="/images/user_edit.png" alt="Admin Featuers" className="img-fluid" /> 
                         <img src="/images/user_delete.png" alt="Admin Featuers" className="img-fluid" /> 
-                        <li><h6> The audit log tracks all user actions. This provides a detailed record of changes 
-                        made to user roles, companies, and potentially other admin features. </h6></li>
+                        <li><h6> Audit History tracks and displays a comprehensive log of user activities related to file management, including file uploads and updates. 
+                            This feature provides a transparent record of actions performed by users, showing who uploaded files and made modifications to them over time. </h6></li>
                         <img src="/images/Audit.png" alt="Admin Featuers" className="img-fluid" /> 
                         <li><h6> A secure logout option allows admins to safely exit the application. </h6></li>
                         <img src="/images/logout.png" alt="Admin Featuers" className="img-fluid" /> 
@@ -97,19 +97,18 @@ const Guide = ({ onClose }) => {
                     
                     </div>}
 
-                    {roleId === '1' &&
-                    <h4>SUPERUSER</h4>}
                      
                     {(roleId === '2' || roleId === '1') && 
                     <div className="guide-section-2" ref={superuserRef}>
-                      
+                          {roleId === '1' &&
+                    <h4>SUPERUSER</h4>}
+                        <br />
                         <h5>1. Getting Started</h5>
                         <br />
                         <h6>This application enables you to upload and submit the Excel files for efficient management of data.</h6>
                         <img src="/images/dashboard.png" alt="Getting Started" className="img-fluid" />
                         <h5>2. Features Overview</h5>
                         <br />
-                        <li><strong>Superuser:</strong> Limited features</li>
                             <ul>
                                 <li>Reset Password</li>
                                 <li>Logout</li>
@@ -131,12 +130,12 @@ const Guide = ({ onClose }) => {
                         </ul>   
 
                     </div> }
-                    {roleId === '1' &&
-                    <h4>RESTRICTED USER</h4>}
                  
                     {(roleId === '3' || roleId === '1') &&                 
                     <div className="guide-section-3" ref={restrictedRef}>
-                        
+                         {roleId === '1' &&
+                    <h4>RESTRICTED USER</h4>}
+                        <br />
                         <h5>1. Getting Started</h5>
                         <br />
                         <ul>
@@ -144,7 +143,6 @@ const Guide = ({ onClose }) => {
                             <img src="/images/restricted.png" alt="Features Overview" className="img-fluid" />
                             <h5>2. Features Overview</h5>
                             <br />
-                            <li><strong>Restricted User:</strong> Minimal features</li>
                             <ul>
                                 <li>Reset Password</li>
                                 <li>Logout</li>
