@@ -4,10 +4,12 @@ import SendInvite from './sendInvite';
 import OrganizationPopup from './OrganizationPopup';
 import UserPop from './UserPop';
 import AuditGrid from './AuditGrid';
+import Guide from './Guide';
 import '../styles/popup.css';
 
 const PopUpContainer = () => {
   const [roleID, setRoleID] = useState(null);
+  const [showGuide, setShowGuide] = useState(false);
   const [showAuditGrid, setShowAuditGrid] = useState(false);
   const [showResetPopup, setShowResetPopup] = useState(false);
   const [showInvitePopup, setShowInvitePopup] = useState(false);
@@ -26,6 +28,7 @@ const PopUpContainer = () => {
     setShowOrganizationPopup(false);
     setShowUserPopup(false);
     setShowAuditGrid(false);
+    setShowAuditGrid(false);
   };
 
   const handleInvitePopupToggle = () => {
@@ -33,6 +36,7 @@ const PopUpContainer = () => {
     setShowResetPopup(false);
     setShowOrganizationPopup(false);
     setShowUserPopup(false);
+    setShowAuditGrid(false);
     setShowAuditGrid(false);
   };
 
@@ -42,6 +46,7 @@ const PopUpContainer = () => {
     setShowResetPopup(false);
     setShowInvitePopup(false);
     setShowAuditGrid(false);
+    setShowAuditGrid(false);
   };
 
   const handleUserPopupToggle = () => {
@@ -49,6 +54,7 @@ const PopUpContainer = () => {
     setShowOrganizationPopup(false);
     setShowResetPopup(false);
     setShowInvitePopup(false);
+    setShowAuditGrid(false);
     setShowAuditGrid(false);
   };
 
@@ -58,7 +64,17 @@ const PopUpContainer = () => {
     setShowOrganizationPopup(false);
     setShowResetPopup(false);
     setShowInvitePopup(false);
+    setShowGuide(false);
   };
+
+  const handleGuidePopupToggle = () => {
+    setShowGuide(!showGuide);
+    setShowUserPopup(false);
+    setShowOrganizationPopup(false);
+    setShowResetPopup(false);
+    setShowInvitePopup(false);
+    setShowAuditGrid(false);
+};
 
   const handleClosePopups = () => {
     setShowResetPopup(false);
@@ -66,6 +82,7 @@ const PopUpContainer = () => {
     setShowOrganizationPopup(false);
     setShowUserPopup(false);
     setShowAuditGrid(false);
+    setShowGuide(false);
   };
 
   const handleResetSuccess = () => {
@@ -83,6 +100,8 @@ const PopUpContainer = () => {
   return (
     <div className='text'>
       <div className="dropdown-item-hover border-text" onClick={handleResetPopupToggle}>Reset Password</div>
+      
+      
 
       {/* Conditionally render based on roleID */}
       {roleID === '1' && (
@@ -93,9 +112,9 @@ const PopUpContainer = () => {
           <div className="dropdown-item-hover" onClick={handleAuditPopupToggle}>Audit History</div>
         </>
       )}
-
+    <div className="dropdown-item-hover" onClick={handleGuidePopupToggle}>BCP Guide</div>
       {/* Render popups based on roleID */}
-      {(showResetPopup || showInvitePopup || showOrganizationPopup || showUserPopup || showAuditGrid) && (
+      {(showResetPopup || showInvitePopup || showOrganizationPopup || showUserPopup || showAuditGrid || showGuide) && (
         <div className="popup-container backdrop">
           <div className="popup-inner" onClick={(e) => e.stopPropagation()}>
             {showResetPopup && <ResetNewPassword onClose={handleResetSuccess} />}
@@ -103,6 +122,7 @@ const PopUpContainer = () => {
             {(showOrganizationPopup && roleID === '1') && <OrganizationPopup className="Organisation" handleClose={handleClosePopups} />}
             {(showUserPopup && roleID === '1') && <UserPop handleClose={handleClosePopups} />}
             {(showAuditGrid && roleID === '1') && <AuditGrid handleClose={handleClosePopups} />}
+            {showGuide && <Guide onClose={handleClosePopups} />}
           </div>
         </div>
       )}
