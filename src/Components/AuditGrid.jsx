@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Table, Form } from 'react-bootstrap';
 import { Container, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import { PortURL } from './Config';
+import LoadingSpinner from './LoadingSpinner';
 import '../styles/dashboard.css';
 import '../styles/ExcelGrid.css';
 
@@ -15,10 +16,16 @@ const AuditGrid = ({ handleClose }) => {
   const [editedRowData, setEditedRowData] = useState({});
   const [searchTerm, setSearchTerm] = useState('');
   const [filterYear, setFilterYear] = useState('');
+  const [loading, setLoading] = useState(true); // Add loading state
+
+  const isFetched = useRef(false);
 
   useEffect(() => {
-    fetchAuditData();
-  }, []);
+    if (!isFetched.current) {
+      fetchAuditData();
+      isFetched.current = true;
+    }
+  }, []); 
 
   useEffect(() => {
     applyFilters();
@@ -26,37 +33,40 @@ const AuditGrid = ({ handleClose }) => {
 
   const fetchAuditData = async () => {
     try {
+      setLoading(true);
       const response = await fetch(`${PortURL}/Audit/get`);
       const data = await response.json();
-    //   console.log('Fetched audit data:', data);
+      console.log('Fetched audit data:', data);
       setAuditData(data.flat());
+      setFilteredData(data.flat()); 
     } catch (error) {
       console.error('Error fetching audit data:', error);
+    } finally {
+      setLoading(false);
     }
   };
+  const applyFilters = () => {
+    let filtered = [...auditData];
 
- const applyFilters = () => {
-  let filtered = [...auditData];
+    if (searchTerm.trim() !== '') {
+      filtered = filtered.filter((item) =>
+        Object.values(item).some((value) =>
+          value &&
+          (value.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
+            formatMonthYear(value).toLowerCase().includes(searchTerm.toLowerCase()))
+        )
+      );
+    }
 
-  if (searchTerm.trim() !== '') {
-    filtered = filtered.filter((item) =>
-      Object.values(item).some((value) =>
-        value &&
-        (value.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
-          formatMonthYear(value).toLowerCase().includes(searchTerm.toLowerCase()))
-      )
-    );
-  }
-
-  if (filterYear!== '') {
-    filtered = filtered.filter((item) => {
-      const modificationTime = new Date(item.ModificationTime);
-      const year = modificationTime.getFullYear();
-      return year === parseInt(filterYear);
-    });
-  }
-  setFilteredData(filtered);
-};
+    if (filterYear !== '') {
+      filtered = filtered.filter((item) => {
+        const modificationTime = new Date(item.ModificationTime);
+        const year = modificationTime.getFullYear();
+        return year === parseInt(filterYear);
+      });
+    }
+    setFilteredData(filtered);
+  };
 
   const requestSort = (key) => {
     let direction = 'ascending';
@@ -263,10 +273,14 @@ const AuditGrid = ({ handleClose }) => {
       </Container>  
       <Row className="table-audit">
         <Col>
-          <Table striped bordered hover>
-            {renderTableHeaders()}
-            {renderTableBody()}
-          </Table>
+          {loading ? ( 
+            <LoadingSpinner />
+          ) : (
+            <Table striped bordered hover>
+              {renderTableHeaders()}
+              {renderTableBody()}
+            </Table>
+          )}
         </Col>
       </Row>
     </Container>
