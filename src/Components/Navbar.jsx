@@ -11,7 +11,7 @@ const NavbarComponent = ({ username, handleLogout, isMobile }) => {
   const role = localStorage.getItem('role');
 
   return (
-    <Navbar bg="light" expand="lg" className="w-100">
+    <Navbar bg="light" expand="lg" className="navigation w-100">
       <Link to="/dashboard" className="brand-wrapper">
         <div className="customNavbarBrand"></div>
       </Link>
@@ -19,7 +19,7 @@ const NavbarComponent = ({ username, handleLogout, isMobile }) => {
       <Navbar.Collapse id="">
         <Nav className="ml-auto">
           {isMobile ? (
-            <Dropdown className=''>
+            <Dropdown className='text-light'>
               <Dropdown.Toggle
                 id="dropdown-basic"
                 as="div"
@@ -35,7 +35,7 @@ const NavbarComponent = ({ username, handleLogout, isMobile }) => {
                     </div>
                   )}
                 </div>
-                <FontAwesomeIcon className="username" icon={faUser} />
+                <FontAwesomeIcon className="username text-light" icon={faUser} />
               </Dropdown.Toggle>
 
               <Dropdown.Menu className='Menu'>

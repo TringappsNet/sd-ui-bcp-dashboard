@@ -55,6 +55,7 @@
 
   .brand-wrapper>a {
     color: rgb(7, 106, 7);
+
   }
 
   .dropdown-basic {
@@ -412,7 +413,9 @@
     color: black;
   }
 
- 
+ .dashboard-container{
+  background-color: #f6f8fc !important;
+ }
 
 
   
@@ -423,6 +426,8 @@
     background-size: 50% auto; 
     background-repeat: no-repeat; 
     margin-left: 20px;
+    -webkit-filter: grayscale(100%) brightness(9);
+    filter: grayscale(100%) brightness(9);
     /* padding-bottom: 20px; */
     
   }

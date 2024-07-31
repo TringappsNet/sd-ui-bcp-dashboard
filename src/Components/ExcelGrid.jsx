@@ -126,7 +126,7 @@ import { Key } from 'react-bootstrap-icons';
   const reversedColumnMap = reverseColumnMap(columnMap);
 
     return (
-      <Container fluid className="mt-2">
+      <Container fluid className="mt-2 grid-container">
         <Row className="row Render-Row">
           <Col className="col Render-Col">
             <div className="table-responsive render">
@@ -138,7 +138,7 @@ import { Key } from 'react-bootstrap-icons';
                       <th key={key} onClick={() => requestSort(key)}>
                         {reversedColumnMap[key] || key}
                         {sortConfig.key === key && (
-                          <span>{sortConfig.direction === 'ascending' ? ' ▲' : ' ▼'}</span>
+                          <span style={{cursor: 'pointer'}}>{sortConfig.direction === 'ascending' ? ' ▲' : ' ▼'}</span>
                         )}
                       </th>
                     ))}

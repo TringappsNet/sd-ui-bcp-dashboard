@@ -685,7 +685,7 @@ const handleSubmit = async () => {
     // ];
     
     return (
-      <div className="dashboard-container">
+      <div className="dashboard-container ">
 
         <CustomSnackbar
         message={snackbarMessage}
