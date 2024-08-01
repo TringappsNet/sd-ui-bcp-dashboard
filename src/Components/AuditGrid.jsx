@@ -142,17 +142,34 @@ const AuditGrid = ({ handleClose }) => {
   };
 
   const formatNumber = (number) => {
-    if (!number) return '';
-    let formattedNumber = number.toString();
-    const parts = formattedNumber.split('.');
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    if (parts[1] !== undefined && parts[1] !== null) {
-      // Limit the decimal part to 2 digits
-      parts[1]=parts[1].toString();
-      parts[1] = parts[1].substring(0, 2);
+    try{
+      if (!number) return ''; // Handle empty or null values
+
+      // Convert the number to a string
+      let formattedNumber = number.toString();
+
+      // Split the number into integer and decimal parts
+      const parts = formattedNumber.split('.');
+      
+      // Format the integer part with commas
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      // Handle the decimal part
+
+      if (parts[1] !== undefined && parts[1] !== null) {
+        // Limit the decimal part to 2 digits
+        parts[1]=parts[1].toString();
+        parts[1] = parts[1].substring(0, 2);
+      }
+      // Join the integer and decimal parts with a period
+      formattedNumber = parts.join('.');
+
+      return formattedNumber;
     }
-    formattedNumber = parts.join('.');
-    return formattedNumber;
+    catch(error){
+      if (!number) return '';
+      return number.toString();
+      console.error('Error formatting number:', error);
+    }
   };
 
   const auditColumnMap = {
