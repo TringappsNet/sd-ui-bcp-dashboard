@@ -112,6 +112,7 @@ import { Key } from 'react-bootstrap-icons';
 
     if (parts[1] !== undefined && parts[1] !== null) {
       // Limit the decimal part to 2 digits
+      parts[1]=parts[1].toString();
       parts[1] = parts[1].substring(0, 2);
     }
     // Join the integer and decimal parts with a period
