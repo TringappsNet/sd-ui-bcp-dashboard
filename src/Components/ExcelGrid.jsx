@@ -108,7 +108,12 @@ import { Key } from 'react-bootstrap-icons';
     
     // Format the integer part with commas
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    // Handle the decimal part
 
+    if (parts[1] !== undefined && parts[1] !== null) {
+      // Limit the decimal part to 2 digits
+      parts[1] = parts[1].substring(0, 2);
+    }
     // Join the integer and decimal parts with a period
     formattedNumber = parts.join('.');
 
