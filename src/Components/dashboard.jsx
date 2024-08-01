@@ -260,12 +260,14 @@ function Dashboard() {
                   setLoading(false); 
                 }
               } else {
+                setLoading(false); 
                 console.error('Error:', response.statusText);
               }
             } catch (error) {
               console.error('Error calling validate API:', error);
             }
           } catch (error) {
+            setLoading(false); 
             console.error("Error reading file:", error);
           }
         };
@@ -892,7 +894,6 @@ const handleSubmit = async () => {
       setEditedRowData={setEditedRowData}
       rowToDelete={rowToDelete}
       setRowToDelete={setRowToDelete}
-      
     />
   )}
 </div>
