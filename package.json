@@ -29,6 +29,7 @@
     "react-international-phone": "^4.2.6",
     "react-router-dom": "^6.22.3",
     "react-scripts": "5.0.1",
+    "react-window": "^1.8.10",
     "read-excel-file": "^5.7.1",
     "web-vitals": "^2.1.4",
     "xlsx": "^0.18.5"

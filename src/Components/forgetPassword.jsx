@@ -49,11 +49,14 @@ function ForgotPassword({onClose}) {
 
   return (
     <div>
-      <div>
-        <Header />
-      </div>
+      <div className='background'></div>
+     <div className='curve'></div>
+     <div className=" me-auto d-flex flex-row">
+      <div className='px-2 '></div>
+      <div className='bcp-logo'></div>
+     </div>
       <div className="form d-flex justify-content-center align-items-center vh-100 ">
-        <Container className="shadow p-3 bg-body vh-70 ">
+        <div className="shadow p-3 bg-body vh-70 forgot-container">
           <h6 className="text-center mb-4 mt-2 forget">Forget Password</h6>
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="formBasicEmail">
@@ -77,7 +80,7 @@ function ForgotPassword({onClose}) {
               <Link to="/login" className='link'>Back to Login</Link>
             </div>
           </Form>
-        </Container>
+        </div>
       </div>
       <CustomSnackbar
         message={snackbarMessage}

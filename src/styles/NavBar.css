@@ -64,3 +64,9 @@ display: flex;
   
 }
  
+.toggler{
+  color: white !important;
+}
+/* .navbar-dark .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;..");
+} */

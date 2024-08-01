@@ -11,11 +11,11 @@ const NavbarComponent = ({ username, handleLogout, isMobile }) => {
   const role = localStorage.getItem('role');
 
   return (
-    <Navbar bg="light" expand="lg" className="navigation w-100">
+    <Navbar bg="light" expand="lg" className="navigation w-100 navbar-dark">
       <Link to="/dashboard" className="brand-wrapper">
         <div className="customNavbarBrand"></div>
       </Link>
-      <Navbar.Toggle aria-controls="" />
+      <Navbar.Toggle aria-controls="" className=''/>
       <Navbar.Collapse id="">
         <Nav className="ml-auto">
           {isMobile ? (

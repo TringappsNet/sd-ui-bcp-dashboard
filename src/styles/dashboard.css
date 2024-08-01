@@ -415,6 +415,7 @@
 
  .dashboard-container{
   background-color: #f6f8fc !important;
+  /* height: 100% !important; */
  }
 
 
@@ -595,8 +596,12 @@ thead{
   height:20%;
 }
 
-
-
+.btn-secondary{
+  background-color: #345479 !important;
+}
+.btn-secondary:hover{
+  background-color: #243446 !important;
+}
 .no-data-message{
 display: flex;
   justify-content: center;
@@ -616,6 +621,7 @@ button, input, optgroup, select, textarea {
 
 
 .Upload{
+  
   margin-left: 10px;
 }
 

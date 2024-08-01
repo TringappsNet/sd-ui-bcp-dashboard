@@ -1,6 +1,8 @@
 /* Add the following CSS to your existing stylesheet */
 
-
+.org-pop{
+  padding:0 ;
+}
 .Usercount{
   display: flex;
   justify-content: space-evenly;
@@ -204,20 +206,28 @@ td{
   /* padding-left: 16px; */
   height: 30px;
 }
-
+.org-header-container{
+  position: relative;
+  width: 100%;
+  background-color: #1b2632 !important;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+}
 
 .action-headers{
   padding-left: 200px;
 }
 
 .closeIcon{
-  position: relative;
+  /* position: relative; */
+  
   padding-top: 10px;
   padding-right: 10px;
 }
 .close-org{
   position: absolute;
- 
+  padding: 20px 20px;
+  color: white !important;
 
 }
 

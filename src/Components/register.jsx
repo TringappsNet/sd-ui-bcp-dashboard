@@ -146,7 +146,12 @@ function Register() {
   
   return (
     <div>
-      <Header/>
+      <div className='background'></div>
+     <div className='curve'></div>
+     <div className=" me-auto d-flex flex-row">
+      <div className='px-2 '></div>
+      <div className='bcp-logo'></div>
+     </div>
       <Container className="mt-5 shadow p-3 mb-5 bg-body container vh-70">
         <Form onSubmit={handleSubmit}>
           <h6 className="text-center mb-5 mt-2 display-6 ">Sign up</h6>  
