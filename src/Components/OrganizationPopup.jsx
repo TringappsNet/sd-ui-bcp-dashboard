@@ -148,23 +148,35 @@ const OrgPop = ({ handleClose }) => {
 
   return (
     <Container fluid className=" mt-10">
-        <Row className="row Render-Row1">
-      <Col className="col col1 Render-Col">
-        <div className='closeIcon'>
-          <span className="close-org" onClick={handleClose}>✖</span>
+      
+      <Row className="row Render-Row1">
+        
+      <Col className="col col1 Render-Col org-pop">
+      <div className="org-header-container d-flex flex-row justify-content-center align-items-center  p-3">
+        <div className='OrgHead text-light'>
+          <h4>Portfolio Companies</h4>
+            
+        </div>
+        <div className='closeIcon ms-auto text-light'>
+          <div className="close-org text-light" onClick={handleClose}>✖</div>
         </div>
         <br></br>
-        <div className='OrgHead'>
-          <h4>Portfolio Companies</h4>
-          <button className="btn btn-sm Add" onClick={handleAddRow}>
-            <FontAwesomeIcon icon={faPlus} /> Add New
-          </button>
+        
+      
+      </div>
+        <div className='d-flex flex-row'>
+          <div className='ms-auto '>
+            <button className="btn btn-sm Add me-auto pt-3" onClick={handleAddRow}>
+                  <FontAwesomeIcon icon={faPlus} /> Add New
+            </button>
+          </div>
+          <div></div>
         </div>
         <div className="message-container">
           {successMessage && <div className="success-message">{successMessage}</div>}
           {errorMessage && <div className="error-message">{errorMessage}</div>}
         </div>
-        <div className="Org-pop-container table-container">
+        <div className="Org-pop-container table-container p-3">
          
 
           <Table striped bordered hover >

@@ -129,16 +129,19 @@ function SendInvite({ onClose }) {
   
   return (
     <div className="form d-flex justify-content-center align-items-center">
-      <Container className="mt-6 p-4 shadow bg-body">
-      <span className="close-SendInvite" onClick={onClose}>✖</span>
-        <h6 className="text-center mb-4 mt-1 ">Send Invite</h6>
+      <div className="mt-6  shadow bg-body reset-container">
+        <div className="send-header-container d-flex flex-row justify-content-center align-items-center  p-3">
+          <div className="  text-light"><h6>SEND INVITE</h6></div>
+          <div className="close-icon text-light " onClick={onClose}>✖</div>
+          
+        </div>
         {successMessage && (
         <div className="text-success mb-3">{successMessage}</div>
         )}
         {!successMessage && (
         <div className="text-danger mb-3">{error}</div>
         )}
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit} className='p-3'>
           <Form.Group controlId="formBasicEmail" className="mb-3">
             <TextField
               className="label"
@@ -190,7 +193,7 @@ function SendInvite({ onClose }) {
           </Form.Group>
           <Button type="submit" className="btn btn-success rounded-pill w-100 submit">Submit</Button>
         </Form>
-      </Container>
+      </div>
       {loading && <LoadingSpinner />}
     </div>
   );

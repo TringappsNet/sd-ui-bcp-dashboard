@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Login.css';
 import { PortURL } from './Config';
-import Header from './Header';
+// import Header from './Header';
 import CustomSnackbar from './Snackbar';
 import { TextField, InputAdornment } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -119,10 +119,16 @@ setLoading(false);
   };
 
   return (
-   <div>
-     <Header />
+   <div className='loginContainer'>
+     {/* <Header /> */}
+     <div className='background'></div>
+     <div className='curve'></div>
+     <div className=" me-auto d-flex flex-row">
+      <div className='px-2 '></div>
+      <div className='bcp-logo'></div>
+     </div>
     <div className="form d-flex justify-content-center align-items-center ">
-      <Container className="con mt-5 p-4 shadow  ">
+      <div className=" shadow con ">
         <h6 className="text-center mb-2 mt-1 display-6 ">Sign in</h6>
         {/* <p>Navigate your Business with Ease!!!</p> */}
         
@@ -132,27 +138,29 @@ setLoading(false);
           </div>
         )}
         <Form onSubmit={handleSubmit}>
-          <Form.Group controlId="formBasicEmail" className="mb-3 mt-5">
+          <Form.Group controlId="formBasicEmail" className="mb-3 mt-3 text-secondary">
+          <label className='py-2'>Email</label>
           <TextField
             className={`label form-control ${emailError ? 'error' : ''}`}
             type="text"
-            label="Email"
+            placeholder="Email"
             value={email}
             onChange={(e) => {
               setEmail(e.target.value); // Corrected typo
               setEmailError('');
               setServerError('');
-            }}
+            }}  
             fullWidth
             variant="outlined"
             size="small"
           />
           </Form.Group>
-          <Form.Group controlId="formBasicPassword" className="mb-2 mt-2 ">
+          <Form.Group controlId="formBasicPassword" className="mb-2 mt-2 pb-2 text-secondary">
+            <label className='py-2'>Password</label>
           <TextField
             className={`label form-control ${passwordError ? 'error' : ''}`}
             type={showPassword ? 'text' : 'password'}
-            label="Password"
+            placeholder="Password"
             value={password}
             onChange={(e) => {
               setPassword(e.target.value);
@@ -184,14 +192,14 @@ setLoading(false);
             </Col>
           </Row>
        
-          <div className="btn-container mt-5 mb-5">
-            <Button type="submit" className="btn rounded-pill login btn-success ">
+          <div className="btn-container mt-4 mb-4 ">
+            <Button type="submit" className="btn rounded login btn-success ">
               Sign in
             </Button>
           </div>
         </Form>
         
-      </Container>
+      </div>
       <CustomSnackbar
         message={snackbarMessage}
         variant={snackbarVariant}

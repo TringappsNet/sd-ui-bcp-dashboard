@@ -7,6 +7,9 @@ import { PortURL } from './Config';
 import LoadingSpinner from './LoadingSpinner';
 import '../styles/dashboard.css';
 import '../styles/ExcelGrid.css';
+import '../styles/auditGrid.css';
+
+
 
 const AuditGrid = ({ handleClose }) => {
   const [auditData, setAuditData] = useState([]);
@@ -17,6 +20,9 @@ const AuditGrid = ({ handleClose }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterYear, setFilterYear] = useState('');
   const [loading, setLoading] = useState(true); // Add loading state
+  const [visibleRows, setVisibleRows] = useState([]);
+  const rowsPerBatch = 1000; // Number of rows to load per batch
+  const [currentBatch, setCurrentBatch] = useState(1);
 
   const isFetched = useRef(false);
 
@@ -29,7 +35,21 @@ const AuditGrid = ({ handleClose }) => {
 
   useEffect(() => {
     applyFilters();
-  },);
+  }, [searchTerm, filterYear, auditData]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const container = document.querySelector('.custom-scroll');
+      if (container.scrollTop + container.clientHeight >= container.scrollHeight - 100) {
+        loadMoreRows();
+      }
+    };
+
+    const container = document.querySelector('.custom-scroll');
+    container.addEventListener('scroll', handleScroll);
+
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, [visibleRows, auditData]);
 
   const fetchAuditData = async () => {
     try {
@@ -38,13 +58,15 @@ const AuditGrid = ({ handleClose }) => {
       const data = await response.json();
       console.log('Fetched audit data:', data);
       setAuditData(data.flat());
-      setFilteredData(data.flat()); 
+      setFilteredData(data.flat());
+      setVisibleRows(data.flat().slice(0, rowsPerBatch));
     } catch (error) {
       console.error('Error fetching audit data:', error);
     } finally {
       setLoading(false);
     }
   };
+
   const applyFilters = () => {
     let filtered = [...auditData];
 
@@ -66,6 +88,14 @@ const AuditGrid = ({ handleClose }) => {
       });
     }
     setFilteredData(filtered);
+    setVisibleRows(filtered.slice(0, rowsPerBatch * currentBatch));
+  };
+
+  const loadMoreRows = () => {
+    const newBatch = currentBatch + 1;
+    const newVisibleRows = filteredData.slice(0, rowsPerBatch * newBatch);
+    setVisibleRows(newVisibleRows);
+    setCurrentBatch(newBatch);
   };
 
   const requestSort = (key) => {
@@ -78,7 +108,7 @@ const AuditGrid = ({ handleClose }) => {
 
   const sortedData = () => {
     if (sortConfig.key !== null) {
-      const sorted = [...filteredData].sort((a, b) => {
+      const sorted = [...visibleRows].sort((a, b) => {
         if (a[sortConfig.key] < b[sortConfig.key]) {
           return sortConfig.direction === 'ascending' ? -1 : 1;
         }
@@ -89,7 +119,7 @@ const AuditGrid = ({ handleClose }) => {
       });
       return sorted;
     }
-    return filteredData;
+    return visibleRows;
   };
 
   const formatMonthYear = (dateString) => {
@@ -168,12 +198,12 @@ const AuditGrid = ({ handleClose }) => {
 
   const renderTableBody = () => (
     <tbody>
-    {sortedData().length === 0 ? (
+    {visibleRows.length === 0 ? (
     <div className="no-results-audit">
     <p className='text-result'>No results found</p>
     </div>     
     ) : (
-      sortedData().map((row, index) => (
+      visibleRows.map((row, index) => (
         <tr key={index}>
           {Object.keys(auditColumnMap).map((key) => (
             key !== 'ID' && (
@@ -237,12 +267,12 @@ const AuditGrid = ({ handleClose }) => {
 
   return (
     <Container fluid className="audit-grid-container">
-      <Row className="header-container justify-content-between align-items-center">
+      <Row className="audit-header-container justify-content-between align-items-center ml-2">
         <Col>
-          <h4>Audit Data</h4>
+          <h4 className='text-light'>Audit Data</h4>
         </Col>
         <Col className="text-right">
-          <div className="close-audit" onClick={handleClose}>
+          <div className="close-audit text-light" onClick={handleClose}>
             <FontAwesomeIcon icon={faTimes} />
           </div>
         </Col>
@@ -272,7 +302,7 @@ const AuditGrid = ({ handleClose }) => {
       </Row>  
       </Container>  
       <Row className="table-audit">
-        <Col>
+        <Col className="custom-scroll">
           {loading ? ( 
             <LoadingSpinner />
           ) : (

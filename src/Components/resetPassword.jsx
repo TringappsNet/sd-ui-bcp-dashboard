@@ -109,7 +109,13 @@ function ResetPassword() {
 
   return (
     <div className="form d-flex justify-content-center align-items-center">
-      <Container className=" mt-6 p-4 shadow bg-body ">
+      <div className='background'></div>
+     <div className='curve'></div>
+     <div className=" me-auto d-flex flex-row">
+      <div className='px-2 '></div>
+      <div className='bcp-logo'></div>
+     </div>
+      <div className=" mt-6 p-4 shadow bg-body resetpass-container">
         <h6 className="text-center mb-4 mt-1 ">Reset Password</h6>
         <Form onSubmit={handleSubmit}>
           {error && <div className="text-danger mb-3">{error}</div>}
@@ -168,7 +174,7 @@ function ResetPassword() {
             <Button type="submit" className="btn btn-success rounded-pill w-100 submit">Reset Password</Button>
           </div>
         </Form>
-      </Container>
+      </div>
       <CustomSnackbar
         message={snackbarMessage}
         variant={snackbarVariant}

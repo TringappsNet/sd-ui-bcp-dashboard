@@ -95,10 +95,15 @@ function ResetNewPassword({ onClose }) {
 
   return (
     <div className="form d-flex justify-content-center align-items-center">
-      <Container className="mt-6 p-4 shadow bg-body rounded">
-      <span className="close-icon" onClick={onClose}>✖</span>
-        <h6 className="text-center mb-3 mt-3 fw-bold">RESET PASSWORD</h6>
-        <Form onSubmit={handleSubmit}>
+      
+      <div className="mt-6 shadow bg-body  reset-container ">
+        <div className="header-container d-flex flex-row justify-content-center align-items-center  p-3">
+          <div className="  text-light"><h6>RESET PASSWORD</h6></div>
+          <div className="close-icon text-light " onClick={onClose}>✖</div>
+          
+        </div>
+      
+        <Form onSubmit={handleSubmit} className='p-4'> 
           {error && <div className="text-danger mb-3">{error}</div>}
           {success && <div className="text-success mb-3">Password reset successfully!</div>}
           <Form.Group controlId="formBasicOldPassword" className="mb-4">
@@ -172,12 +177,12 @@ function ResetNewPassword({ onClose }) {
             />
           </Form.Group>
           <div className="btn-container">
-            <Button type="submit" className="btn btn-success rounded-pill submit">
+            <Button type="submit" className="btn btn-success rounded submit">
               Reset Password
             </Button>
           </div>
         </Form>
-      </Container>
+      </div>
       {loading && <LoadingSpinner />} 
     </div>
   );

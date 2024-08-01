@@ -8,7 +8,15 @@
     position: relative;
     padding: 20px;
 }
+.guide-button{
+    background-color: #345479 !important;
 
+}
+.guide-button:hover{
+    background-color: #243446 !important;
+  }
+
+  
 .close-guide {
     position: absolute;
     top: 22px;

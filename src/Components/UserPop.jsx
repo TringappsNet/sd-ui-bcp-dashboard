@@ -197,7 +197,20 @@ const UserPop = ({ handleClose }) => {
            <div className='close-user'>
         <span className="close-Users" onClick={handleClose}>✖</span>
         </div>
-      <Col className="col col1 Render-Col">
+        
+      <Col className="col col1 Render-Col p-0">
+        <div className="org-header-container d-flex flex-row justify-content-center align-items-center  p-3">
+          <div className='OrgHead text-light'>
+            <h4>Users</h4>
+              
+          </div>
+          <div className='closeIcon ms-auto text-light'>
+            <div className="close-org text-light" onClick={handleClose}>✖</div>
+          </div>
+          <br></br>
+        
+      
+        </div>
         {editSuccess && (
           <div className="success-message">Edit successful!</div>
         )}
@@ -206,16 +219,23 @@ const UserPop = ({ handleClose }) => {
         )}
        
         <br></br>
-        <div className='User'>
+        
+        {/* <div className='User'>
           <h4>USERS</h4>
-          <input type="text" placeholder="Search..." className='Usersearch' value={searchQuery} onChange={handleSearch} />
+        </div> */}
+        
+        <div className='d-flex flex-row'>
+          <div className='ms-auto px-4'>
+            <input type="text" placeholder="Search..." className='Usersearch' value={searchQuery} onChange={handleSearch} />
+
+          </div>
+          <div></div>
         </div>
-      
-        <div className="table-container" style={{  height: '500px' }}>
+        <div className="table-container px-3 " style={{  height: '450px' }}>
           {filteredData.length === 0 ? (
             <div className="no-data-message" >No data available</div>
           ) : (
-            <table striped="true" bordered="true" className='grid'>
+            <table striped="true" bordered="true" className='grid '>
               <thead className="sticky-header">
                 <tr>
                 {Object.keys(excelData[0] || {}).map((key, index) => (
@@ -224,7 +244,7 @@ const UserPop = ({ handleClose }) => {
                   <th className="action-cell">Action</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className='overflow-auto'>
                 {filteredData.map((row, index) => (
                   <tr key={index} className={row.isActive === 0 ? 'deactivated-row' : ''}>
                     {Object.keys(row).map((key, i) => (
