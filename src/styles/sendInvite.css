@@ -6,7 +6,8 @@
 .send-header-container{
   position: relative;
   width: 100%;
-  background-color: #1b2632 !important;
+  background: linear-gradient(80deg, #142740, #5f6d82, #142740) !important;
+  /* background-color: #1b2632 !important; */
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 }

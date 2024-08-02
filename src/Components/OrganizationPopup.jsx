@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Table } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faSave, faTimesCircle, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'; // Import the trash icon
+import { faEdit, faSave, faTimesCircle, faPlus, faTrash, faTimes } from '@fortawesome/free-solid-svg-icons'; // Import the trash icon
 import { PortURL } from "./Config";
 import '../styles/ExcelGrid.css'; // Assuming you have a CSS file for styling
 import '../styles/OrgPopup.css'; // Assuming you have a CSS file for styling
@@ -157,8 +157,10 @@ const OrgPop = ({ handleClose }) => {
           <h4>Portfolio Companies</h4>
             
         </div>
-        <div className='closeIcon ms-auto text-light'>
-          <div className="close-org text-light" onClick={handleClose}>✖</div>
+        <div className='ms-auto text-light'>
+        <div className="close-org text-light" onClick={handleClose}>
+            <FontAwesomeIcon icon={faTimes} />
+        </div>
         </div>
         <br></br>
         
@@ -166,9 +168,9 @@ const OrgPop = ({ handleClose }) => {
       </div>
         <div className='d-flex flex-row'>
           <div className='ms-auto '>
-            <button className="btn btn-sm Add me-auto pt-3" onClick={handleAddRow}>
+            <div className=" Add me-auto pt-3 add-new" onClick={handleAddRow}>
                   <FontAwesomeIcon icon={faPlus} /> Add New
-            </button>
+            </div>
           </div>
           <div></div>
         </div>
