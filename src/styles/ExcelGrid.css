@@ -171,8 +171,7 @@
 
 .audit-header-container {
   width: 100%;
-  background: linear-gradient(80deg, #142740, #5f6d82, #142740) !important;
-  /* background-color: #1b2632 !important; */
+  background: linear-gradient(to right, #21887c, #4ca69c, #2d8d82) !important;
   padding: 10px 20px;
   position: sticky;
   top: 0;
@@ -200,7 +199,7 @@
 }
 
 .sticky-header th {
-  background: #1b2632 !important;
+  background: #2a433e!important;
   position: sticky;
   top: 0;
   z-index: 10;

@@ -90,6 +90,10 @@ function Login() {
         localStorage.setItem('Org_ID', data1.Org_ID);
         localStorage.setItem('user_ID', data1.userId);
         localStorage.setItem('role', data1.role);
+        localStorage.setItem('firstName', data1.firstName);
+        localStorage.setItem('lastName', data1.lastName);
+        console.log('Stored firstName:', localStorage.getItem('firstName'));
+        console.log('Stored lastName:', localStorage.getItem('lastName'));
         setLoading(false);
         navigate('/dashboard');
   } else {
@@ -146,7 +150,7 @@ setLoading(false);
             placeholder="Email"
             value={email}
             onChange={(e) => {
-              setEmail(e.target.value); // Corrected typo
+              setEmail(e.target.value);
               setEmailError('');
               setServerError('');
             }}  

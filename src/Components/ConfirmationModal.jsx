@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
 
-const ConfirmationModal = ({ show, onHide, onConfirm, title, cancelText, confirmText, cancelVariant, confirmVariant, message }) => {
+const ConfirmationModal = ({ show, onHide, onConfirm, title, cancelText, confirmText, cancelVariant, confirmVariant, message, showCancelButton = true }) => {
   return (
     <Modal show={show} onHide={onHide} centered>
       <Modal.Header closeButton>
@@ -9,9 +9,13 @@ const ConfirmationModal = ({ show, onHide, onConfirm, title, cancelText, confirm
       </Modal.Header>
       <Modal.Body>{message}</Modal.Body>
       <Modal.Footer>
-        <Button variant={cancelVariant} onClick={onHide}>
-          {cancelText}
-        </Button>
+        {showCancelButton ? (
+          <Button variant={cancelVariant} onClick={onHide}>
+            {cancelText}
+          </Button>
+        ) : (
+          <div />
+        )}
         <Button variant={confirmVariant} onClick={onConfirm}>
           {confirmText}
         </Button>

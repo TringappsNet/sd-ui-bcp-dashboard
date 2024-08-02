@@ -48,6 +48,8 @@ function Dashboard() {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [rowToDelete, setRowToDelete] = useState(0);
     const [showUpdateModal, setShowUpdateModal] = useState(false);
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
     // const [selectionModel, setSelectionModel] = useState([]);
  
 
@@ -64,11 +66,17 @@ function Dashboard() {
         const storedEmail = localStorage.getItem("email");
         const storedRoleID = localStorage.getItem('Role_ID');
         const storedRole = localStorage.getItem('role')
+        const storedFirstName = localStorage.getItem('firstName');
+        const storedLastName = localStorage.getItem('lastName');  
+    
         setUsername(storedUsername);
         setOrganization(storedOrganization);
         setRoleID(storedRoleID);
         setEmail(storedEmail);
-        setRole(storedRole)
+        setRole(storedRole);
+        setFirstName(storedFirstName);
+        setLastName(storedLastName); 
+    
     
         fetchData();
         // setShowPreview(true);
@@ -702,19 +710,16 @@ const handleSubmit = async () => {
           isMobile={isMobile}
         />
           
-          {/* Logout Confirmation popup */}
           <ConfirmationModal
-          show={showConfirmation}
-          onHide={handleCloseConfirmation}
-          onConfirm={handleConfirmLogout}
-          title="Confirm Action"
-          cancelText="Close"
-          confirmText="Logout"
-          cancelVariant="secondary"
-          confirmVariant="danger"
-          message="Are you sure you want to log out?"
-        />
-
+              show={showConfirmation}
+              onHide={handleCloseConfirmation}
+              onConfirm={handleConfirmLogout}
+              title="Confirm Action"
+              confirmText="Logout"
+              confirmVariant="danger"
+              message="Are you sure you want to log out?"
+              showCancelButton={false}
+          />
 
   
 

@@ -597,10 +597,10 @@ thead{
 }
 
 .btn-secondary{
-  background-color: #345479 !important;
+  background-color: #299689 !important;
 }
 .btn-secondary:hover{
-  background-color: #243446 !important;
+  background-color: #299689 !important;
 }
 .no-data-message{
 display: flex;
