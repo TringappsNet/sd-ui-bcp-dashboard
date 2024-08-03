@@ -199,6 +199,7 @@ function Dashboard() {
             const jsonData = XLSX.utils.sheet_to_json(sheet, {
               header: 1,
               dateNF: "yyyy-mm-dd hh:mm:ss",
+              defval: null,
             });
             const trimmedData = jsonData.filter((row) =>
               row.some((cell) => cell !== null && cell !== "")
@@ -212,6 +213,7 @@ function Dashboard() {
               });
               return obj;
             });
+            // console.log("jsonData",trimmedData);
 
             const updatedData = newJsonData.map((row) => {
               if (row["MonthYear"]) {

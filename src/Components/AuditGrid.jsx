@@ -157,8 +157,12 @@ const AuditGrid = ({ handleClose }) => {
 
       if (parts[1] !== undefined && parts[1] !== null) {
         // Limit the decimal part to 2 digits
+        parts[1] += '00';
         parts[1]=parts[1].toString();
         parts[1] = parts[1].substring(0, 2);
+      }
+      else{
+        parts[1] = '00';
       }
       // Join the integer and decimal parts with a period
       formattedNumber = parts.join('.');
@@ -263,6 +267,8 @@ const AuditGrid = ({ handleClose }) => {
             ? formatMonthYear(row[key]) 
             : key === 'ModificationTime'
             ? formatDateTime(row[key])
+            : key === 'ModifiedBy' || key === 'CompanyName'
+            ? row[key]
             : formatNumber(row[key])
           }
         </span>
