@@ -110,11 +110,15 @@ import { Key } from 'react-bootstrap-icons';
       // Format the integer part with commas
       parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
       // Handle the decimal part
-
+      
       if (parts[1] !== undefined && parts[1] !== null) {
         // Limit the decimal part to 2 digits
+        parts[1] += '00';
         parts[1]=parts[1].toString();
         parts[1] = parts[1].substring(0, 2);
+      }
+      else{
+        parts[1] = '00';
       }
       // Join the integer and decimal parts with a period
       formattedNumber = parts.join('.');
@@ -123,8 +127,8 @@ import { Key } from 'react-bootstrap-icons';
     }
     catch(error){
       if (!number) return '';
-      return number.toString();
       console.error('Error formatting number:', error);
+      return number.toString();
     }
     
   };
@@ -181,7 +185,7 @@ import { Key } from 'react-bootstrap-icons';
                 )
               )
             ) : (
-              <span>{key === 'MonthYear' ? formatMonthYear(row[key]) : formatNumber(row[key])}</span>
+              <span>{key === 'MonthYear' ? formatMonthYear(row[key]) : key === 'CompanyName'? row[key] :formatNumber(row[key])}</span>
             )}
           </td>
 
