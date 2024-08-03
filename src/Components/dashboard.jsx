@@ -64,11 +64,13 @@ function Dashboard() {
         const storedEmail = localStorage.getItem("email");
         const storedRoleID = localStorage.getItem('Role_ID');
         const storedRole = localStorage.getItem('role')
+    
         setUsername(storedUsername);
         setOrganization(storedOrganization);
         setRoleID(storedRoleID);
         setEmail(storedEmail);
-        setRole(storedRole)
+        setRole(storedRole);
+    
     
         fetchData();
         // setShowPreview(true);
@@ -704,19 +706,16 @@ const handleSubmit = async () => {
           isMobile={isMobile}
         />
           
-          {/* Logout Confirmation popup */}
           <ConfirmationModal
-          show={showConfirmation}
-          onHide={handleCloseConfirmation}
-          onConfirm={handleConfirmLogout}
-          title="Confirm Action"
-          cancelText="Close"
-          confirmText="Logout"
-          cancelVariant="secondary"
-          confirmVariant="danger"
-          message="Are you sure you want to log out?"
-        />
-
+              show={showConfirmation}
+              onHide={handleCloseConfirmation}
+              onConfirm={handleConfirmLogout}
+              title="Confirm Action"
+              confirmText="Logout"
+              confirmVariant="danger"
+              message="Are you sure you want to log out?"
+              showCancelButton={false}
+          />
 
   
 

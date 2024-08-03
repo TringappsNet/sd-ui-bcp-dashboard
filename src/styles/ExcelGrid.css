@@ -108,11 +108,9 @@
     justify-content: center;
   }
 
-  .grid-container{
-    /* border-radius: 10px !important; */
-  }
-
-
+  /* .grid-container{
+    border-radius: 10px !important;
+  } */
 
   .Render-Row {
     margin: 10px;
@@ -173,7 +171,7 @@
 
 .audit-header-container {
   width: 100%;
-  background-color: #1b2632 !important;
+  background: linear-gradient(to right, #21887c, #4ca69c, #2d8d82) !important;
   padding: 10px 20px;
   position: sticky;
   top: 0;
@@ -183,7 +181,7 @@
   border-top-right-radius: 0px;}
 
 .close-audit {
-  color: #000;
+  color: #f0f0f0;
   font-size: 20px;
   background: none;
   border: none;
@@ -201,7 +199,7 @@
 }
 
 .sticky-header th {
-  background: #1b2632 !important;
+  background: #2a433e!important;
   position: sticky;
   top: 0;
   z-index: 10;

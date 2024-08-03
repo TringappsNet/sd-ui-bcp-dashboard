@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Button, Form } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 import { TextField, Select, MenuItem, FormControl, InputLabel, FormHelperText } from '@mui/material';
 import '../styles/sendInvite.css';
 import { PortURL } from './Config';
@@ -191,7 +191,7 @@ function SendInvite({ onClose }) {
               <FormHelperText>{orgError}</FormHelperText>
             </FormControl>
           </Form.Group>
-          <Button type="submit" className="btn btn-success rounded-pill w-100 submit">Submit</Button>
+          <Button type="submit" className="btn btn-success rounded-pill w-100 submit invite-btn">Submit</Button>
         </Form>
       </div>
       {loading && <LoadingSpinner />}

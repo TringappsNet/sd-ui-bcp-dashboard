@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Container, Form, Button } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/forgetPassword.css';
 import { TextField } from '@mui/material';
-import Header from './Header';
+// import Header from './Header';
 import axios from 'axios';
 import { PortURL } from './Config';
 import CustomSnackbar from './Snackbar'; 

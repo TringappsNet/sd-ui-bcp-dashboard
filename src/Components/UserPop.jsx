@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faSave, faBan, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faSave, faBan, faTimesCircle, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { PortURL } from "./Config";
 import '../styles/UserPop.css';
 import ConfirmationModal from  './ConfirmationModal';
@@ -205,7 +205,9 @@ const UserPop = ({ handleClose }) => {
               
           </div>
           <div className='closeIcon ms-auto text-light'>
-            <div className="close-org text-light" onClick={handleClose}>✖</div>
+          <div className="close-users text-light" onClick={handleClose}>
+            <FontAwesomeIcon icon={faTimes} />
+          </div>          
           </div>
           <br></br>
         

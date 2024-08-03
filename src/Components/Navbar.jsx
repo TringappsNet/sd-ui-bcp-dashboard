@@ -7,8 +7,11 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
 import PopUpContainer from "./popup";
 import "../styles/NavBar.css";
 
-const NavbarComponent = ({ username, handleLogout, isMobile }) => {
+const NavbarComponent = ({ handleLogout, isMobile }) => {
+  const firstName = localStorage.getItem('firstName')
+  const lastName = localStorage.getItem('lastName');
   const role = localStorage.getItem('role');
+  const fullName = `${firstName} ${lastName}`.trim();
 
   return (
     <Navbar bg="light" expand="lg" className="navigation w-100 navbar-dark">
@@ -27,7 +30,7 @@ const NavbarComponent = ({ username, handleLogout, isMobile }) => {
               >
                 <div className='access-container'>
                   <div className="username-container">
-                    {username}
+                    {fullName}
                   </div>
                   {role !== 'Restricted-User' && (
                     <div className="role-container">
@@ -47,8 +50,9 @@ const NavbarComponent = ({ username, handleLogout, isMobile }) => {
             <React.Fragment>
               <div className="smallscreen">
                 <div className="ml-auto user">
-                  <FontAwesomeIcon className='icon' icon={faUser} />{username} 
+                  <FontAwesomeIcon className='icon' icon={faUser} />{fullName} 
                 </div>
+                
                 {role !== 'Restricted-User' && (
                   <div className="ml-auto role">
                     ({role})
