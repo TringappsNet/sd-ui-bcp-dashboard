@@ -48,8 +48,6 @@ function Dashboard() {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [rowToDelete, setRowToDelete] = useState(0);
     const [showUpdateModal, setShowUpdateModal] = useState(false);
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
     // const [selectionModel, setSelectionModel] = useState([]);
  
 
@@ -66,16 +64,12 @@ function Dashboard() {
         const storedEmail = localStorage.getItem("email");
         const storedRoleID = localStorage.getItem('Role_ID');
         const storedRole = localStorage.getItem('role')
-        const storedFirstName = localStorage.getItem('firstName');
-        const storedLastName = localStorage.getItem('lastName');  
     
         setUsername(storedUsername);
         setOrganization(storedOrganization);
         setRoleID(storedRoleID);
         setEmail(storedEmail);
         setRole(storedRole);
-        setFirstName(storedFirstName);
-        setLastName(storedLastName); 
     
     
         fetchData();
