@@ -92,8 +92,6 @@ function Login() {
         localStorage.setItem('role', data1.role);
         localStorage.setItem('firstName', data1.firstName);
         localStorage.setItem('lastName', data1.lastName);
-        console.log('Stored firstName:', localStorage.getItem('firstName'));
-        console.log('Stored lastName:', localStorage.getItem('lastName'));
         setLoading(false);
         navigate('/dashboard');
   } else {
