@@ -5,6 +5,8 @@ import { faEdit, faSave, faBan, faTimesCircle, faTimes } from '@fortawesome/free
 import { PortURL } from "./Config";
 import '../styles/UserPop.css';
 import ConfirmationModal from  './ConfirmationModal';
+import LoadingSpinner from './LoadingSpinner';
+
 
 const UserPop = ({ handleClose }) => {
   const [excelData, setExcelData] = useState([]);
@@ -17,6 +19,7 @@ const UserPop = ({ handleClose }) => {
   const [deactivateSuccess, setDeactivateSuccess] = useState(false);
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [rowToDeactivate, setRowToDeactivate] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -27,6 +30,7 @@ const UserPop = ({ handleClose }) => {
  
   
   const fetchData = async () => {
+    setLoading(true);
     try {
       const response = await fetch(`${PortURL}/users`);
       if (response.ok) {
@@ -37,6 +41,8 @@ const UserPop = ({ handleClose }) => {
       }
     } catch (error) {
       console.error('Error fetching Excel data:', error);
+    }finally {
+      setLoading(false); 
     }
   };
 
@@ -234,9 +240,11 @@ const UserPop = ({ handleClose }) => {
           <div></div>
         </div>
         <div className="table-container px-3 " style={{  height: '450px' }}>
-          {filteredData.length === 0 ? (
-            <div className="no-data-message" >No data available</div>
-          ) : (
+        {loading ? (
+              <LoadingSpinner />
+            ) : filteredData.length === 0 ? (
+              <div className="no-data-message">No data available</div>
+            ) : (
             <table striped="true" bordered="true" className='grid '>
               <thead className="sticky-header">
                 <tr>

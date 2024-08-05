@@ -5,6 +5,8 @@ import { faEdit, faSave, faTimesCircle, faPlus, faTrash, faTimes } from '@fortaw
 import { PortURL } from "./Config";
 import '../styles/ExcelGrid.css'; // Assuming you have a CSS file for styling
 import '../styles/OrgPopup.css'; // Assuming you have a CSS file for styling
+import LoadingSpinner from './LoadingSpinner';
+
 
 
 const OrgPop = ({ handleClose }) => {
@@ -14,12 +16,14 @@ const OrgPop = ({ handleClose }) => {
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [addMode, setAddMode] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchData();
   }, []);
 
   const fetchData = async () => {
+    setLoading(true);
     try {
       const response = await fetch(`${PortURL}/Get-Org`);
       if (response.ok) {
@@ -31,6 +35,8 @@ const OrgPop = ({ handleClose }) => {
       }
     } catch (error) {
       console.error('Error fetching Excel data:', error);
+    }finally {
+      setLoading(false);
     }
   };
 
@@ -166,6 +172,7 @@ const OrgPop = ({ handleClose }) => {
         
       
       </div>
+
         <div className='d-flex flex-row'>
           <div className='ms-auto '>
             <div className=" Add me-auto pt-3 add-new" onClick={handleAddRow}>
@@ -179,7 +186,10 @@ const OrgPop = ({ handleClose }) => {
           {errorMessage && <div className="error-message">{errorMessage}</div>}
         </div>
         <div className="Org-pop-container table-container p-3">
-         
+        {loading ? (
+            <LoadingSpinner />
+          ) : (
+       <>
 
           <Table striped bordered hover >
             <thead className="sticky-header">
@@ -258,12 +268,15 @@ const OrgPop = ({ handleClose }) => {
               
               </tbody>
             </Table>
+            </>
+        )}
           </div>
           {/* <div>
             <button className="btn btn-sm Add" onClick={handleAddRow}>
               <FontAwesomeIcon icon={faPlus} /> Add Organization
             </button>
           </div> */}
+
         </Col>
       </Row>
     </Container>
