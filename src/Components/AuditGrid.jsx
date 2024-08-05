@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Table, Form } from 'react-bootstrap';
 import { Container, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -33,23 +33,9 @@ const AuditGrid = ({ handleClose }) => {
     }
   }, []); 
 
-  useEffect(() => {
-    applyFilters();
-  }, [searchTerm, filterYear, auditData]);
+  
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const container = document.querySelector('.custom-scroll');
-      if (container.scrollTop + container.clientHeight >= container.scrollHeight - 100) {
-        loadMoreRows();
-      }
-    };
-
-    const container = document.querySelector('.custom-scroll');
-    container.addEventListener('scroll', handleScroll);
-
-    return () => container.removeEventListener('scroll', handleScroll);
-  }, [visibleRows, auditData]);
+  
 
   const fetchAuditData = async () => {
     try {
@@ -67,7 +53,7 @@ const AuditGrid = ({ handleClose }) => {
     }
   };
 
-  const applyFilters = () => {
+  const applyFilters = useCallback(() => {
     let filtered = [...auditData];
 
     if (searchTerm.trim() !== '') {
@@ -89,15 +75,30 @@ const AuditGrid = ({ handleClose }) => {
     }
     setFilteredData(filtered);
     setVisibleRows(filtered.slice(0, rowsPerBatch * currentBatch));
-  };
+  },[auditData,filterYear,searchTerm,currentBatch]);
 
-  const loadMoreRows = () => {
+  useEffect(() => {
+    applyFilters();
+  }, [applyFilters]);
+  const loadMoreRows = useCallback(() => {
     const newBatch = currentBatch + 1;
     const newVisibleRows = filteredData.slice(0, rowsPerBatch * newBatch);
     setVisibleRows(newVisibleRows);
     setCurrentBatch(newBatch);
-  };
+  },[filteredData,currentBatch]);
+  useEffect(() => {
+    const handleScroll = () => {
+      const container = document.querySelector('.custom-scroll');
+      if (container.scrollTop + container.clientHeight >= container.scrollHeight - 100) {
+        loadMoreRows();
+      }
+    };
 
+    const container = document.querySelector('.custom-scroll');
+    container.addEventListener('scroll', handleScroll);
+
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, [visibleRows, auditData,loadMoreRows]);
   const requestSort = (key) => {
     let direction = 'ascending';
     if (sortConfig.key === key && sortConfig.direction === 'ascending') {
@@ -106,21 +107,21 @@ const AuditGrid = ({ handleClose }) => {
     setSortConfig({ key, direction });
   };
 
-  const sortedData = () => {
-    if (sortConfig.key !== null) {
-      const sorted = [...visibleRows].sort((a, b) => {
-        if (a[sortConfig.key] < b[sortConfig.key]) {
-          return sortConfig.direction === 'ascending' ? -1 : 1;
-        }
-        if (a[sortConfig.key] > b[sortConfig.key]) {
-          return sortConfig.direction === 'ascending' ? 1 : -1;
-        }
-        return 0;
-      });
-      return sorted;
-    }
-    return visibleRows;
-  };
+  // const sortedData = () => {
+  //   if (sortConfig.key !== null) {
+  //     const sorted = [...visibleRows].sort((a, b) => {
+  //       if (a[sortConfig.key] < b[sortConfig.key]) {
+  //         return sortConfig.direction === 'ascending' ? -1 : 1;
+  //       }
+  //       if (a[sortConfig.key] > b[sortConfig.key]) {
+  //         return sortConfig.direction === 'ascending' ? 1 : -1;
+  //       }
+  //       return 0;
+  //     });
+  //     return sorted;
+  //   }
+  //   return visibleRows;
+  // };
 
   const formatMonthYear = (dateString) => {
     const date = new Date(dateString);
@@ -171,8 +172,8 @@ const AuditGrid = ({ handleClose }) => {
     }
     catch(error){
       if (!number) return '';
-      return number.toString();
       console.error('Error formatting number:', error);
+      return number.toString();
     }
   };
 
