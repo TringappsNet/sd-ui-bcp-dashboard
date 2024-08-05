@@ -141,12 +141,12 @@ function Dashboard() {
             MonthYear: addOneMinuteToDate(row.MonthYear)
           }));
           // Step 1: Create a map to store the original order of companies
-          let companyOrder = [...new Set(data.map(item => item.companyname))];
+          let companyOrder = [...new Set(modifiedData.map(item => item.CompanyName))];
 
           // Step 2: Group by company and sort within each group
           let groupedAndSorted = companyOrder.map(company => {
-            let companyData = data.filter(item => item.companyname === company);
-            return companyData.sort((a, b) => new Date(a.monthyear) - new Date(b.monthyear));
+            let companyData = modifiedData.filter(item => item.CompanyName === company);
+            return companyData.sort((a, b) => new Date(a.MonthYear) - new Date(b.MonthYear));
           });
 
           // Step 3: Flatten the grouped and sorted data
