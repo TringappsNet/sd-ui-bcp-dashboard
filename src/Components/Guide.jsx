@@ -118,6 +118,10 @@ const Guide = ({ onClose }) => {
                         <ul> <li><h6>When you upload a file containing values that match existing data, 
                         you will be prompted with an option to either override the existing data or cancel the operation.</h6></li>
                         <img src="/images/Superuser_override.png" alt="How to Use" className="img-fluid" /></ul>
+                        <li><h6> After uploading the Excel data, you can update using the edit icon if any changes are needed.</h6></li>
+                        <img src="/images/superuser_update.png" alt="How to Use" className="img-fluid" />
+                        <li><h6> After uploading the Excel data, you can delete the data using the delete icon.</h6></li>
+                        <img src="/images/superuser_delete.png" alt="How to Use" className="img-fluid" />
                        
                         <h5>3. How to Use</h5>
                         <br />

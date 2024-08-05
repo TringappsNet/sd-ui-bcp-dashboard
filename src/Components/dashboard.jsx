@@ -937,8 +937,8 @@ const handleSubmit = async () => {
           title="Confirm Override"
           cancelText="No"
           confirmText="Yes"
-          cancelVariant="secondary"
-          confirmVariant="danger"
+          cancelVariant="danger"
+          confirmVariant="secondary"
           message="Are you sure you want to override?"
         />
     </>
@@ -952,8 +952,8 @@ const handleSubmit = async () => {
           title="Confirm Delete"
           cancelText="No"
           confirmText="Delete"
-          cancelVariant="secondary"
-          confirmVariant="danger"
+          cancelVariant="danger"
+          confirmVariant="secondary"
           message={`Are you sure you want to delete the row ${formatMonthYear(filteredData.find(row => row.ID === rowToDelete)?.MonthYear)}?`}
           />
     </>
@@ -967,8 +967,8 @@ const handleSubmit = async () => {
           title="Confirm Update"
           cancelText="No"
           confirmText="Update"
-          cancelVariant="secondary"
-          confirmVariant="danger"
+          cancelVariant="danger"
+          confirmVariant="secondary"
           message={`Are you sure you want to update?`}
         />
     </>
