@@ -136,7 +136,7 @@ function SendInvite({ onClose }) {
           
         </div>
         {successMessage && (
-        <div className="text-success mb-3">{successMessage}</div>
+        <div className="text-success invite-error">{successMessage}</div>
         )}
         {!successMessage && (
         <div className="text-danger invite-error">{error}</div>
