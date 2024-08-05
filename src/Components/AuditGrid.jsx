@@ -21,7 +21,7 @@ const AuditGrid = ({ handleClose }) => {
   const [filterYear, setFilterYear] = useState('');
   const [loading, setLoading] = useState(true); // Add loading state
   const [visibleRows, setVisibleRows] = useState([]);
-  const rowsPerBatch = 1000; // Number of rows to load per batch
+  const rowsPerBatch = 10000; // Number of rows to load per batch
   const [currentBatch, setCurrentBatch] = useState(1);
 
   const isFetched = useRef(false);
@@ -57,6 +57,7 @@ const AuditGrid = ({ handleClose }) => {
       const response = await fetch(`${PortURL}/Audit/get`);
       const data = await response.json();
       console.log('Fetched audit data:', data);
+      data.reverse();
       setAuditData(data.flat());
       setFilteredData(data.flat());
       setVisibleRows(data.flat().slice(0, rowsPerBatch));
@@ -106,21 +107,21 @@ const AuditGrid = ({ handleClose }) => {
     setSortConfig({ key, direction });
   };
 
-  const sortedData = () => {
-    if (sortConfig.key !== null) {
-      const sorted = [...visibleRows].sort((a, b) => {
-        if (a[sortConfig.key] < b[sortConfig.key]) {
-          return sortConfig.direction === 'ascending' ? -1 : 1;
-        }
-        if (a[sortConfig.key] > b[sortConfig.key]) {
-          return sortConfig.direction === 'ascending' ? 1 : -1;
-        }
-        return 0;
-      });
-      return sorted;
-    }
-    return visibleRows;
-  };
+  // const sortedData = () => {
+  //   if (sortConfig.key !== null) {
+  //     const sorted = [...visibleRows].sort((a, b) => {
+  //       if (a[sortConfig.key] < b[sortConfig.key]) {
+  //         return sortConfig.direction === 'ascending' ? -1 : 1;
+  //       }
+  //       if (a[sortConfig.key] > b[sortConfig.key]) {
+  //         return sortConfig.direction === 'ascending' ? 1 : -1;
+  //       }
+  //       return 0;
+  //     });
+  //     return sorted;
+  //   }
+  //   return visibleRows;
+  // };
 
   const formatMonthYear = (dateString) => {
     const date = new Date(dateString);
@@ -171,8 +172,9 @@ const AuditGrid = ({ handleClose }) => {
     }
     catch(error){
       if (!number) return '';
-      return number.toString();
       console.error('Error formatting number:', error);
+      return number.toString();
+      
     }
   };
 
