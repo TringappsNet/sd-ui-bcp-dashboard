@@ -207,9 +207,36 @@ function Dashboard() {
             const trimmedData = jsonData.filter((row) =>
               row.some((cell) => cell !== null && cell !== "")
             );
-            const header = trimmedData.shift();
+            // console.log(trimmedData);
+            const cleanedData = trimmedData.map((row, rowIndex) => {
+              if (rowIndex === 0) {
+                return row;
+              }
+              return row.map((cell, columnIndex) => {
+                
+                // Keep the 0th and 1st columns unchanged
+                if (columnIndex === 0 || columnIndex === 1) {
+                  return cell;
+                }
+                
+                // For other columns, check if the cell contains only numbers and dots
+                if (cell !== null && typeof cell === 'string') {
+                  const numericValue = parseFloat(cell);
+                  if (!isNaN(numericValue) && /^[0-9.]+$/.test(cell)) {
+                    return numericValue;
+                  } else {
+                    return null;
+                  }
+                }
+                
+                return cell;
+              });
+            });
+            
+            // console.log(cleanedData);
+            const header = cleanedData.shift();
             const mappedHeader = header.map((col) => columnMap[col] || col);
-            const newJsonData = trimmedData.map((row) => {
+            const newJsonData = cleanedData.map((row) => {
               const obj = {};
               mappedHeader.forEach((key, index) => {
                 obj[key] = row[index];
