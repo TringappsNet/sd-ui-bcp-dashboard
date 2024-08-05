@@ -2,7 +2,8 @@
 .sticky-header th {
     position: sticky;
     top: 0;
-    background-color: #ffffff;
+    background: linear-gradient(to right, #274b44, #31433f, #295047) !important;
+    /* background-color: #ffffff; */
     z-index: 1; 
   }
   .sticky-header th.selection-cell,
@@ -171,7 +172,7 @@
 
 .audit-header-container {
   width: 100%;
-  background: linear-gradient(to right, #21887c, #4ca69c, #2d8d82) !important;
+  background: linear-gradient(to right, #406a61, #3b746e, #2d766d) !important;
   padding: 10px 20px;
   position: sticky;
   top: 0;
@@ -199,7 +200,7 @@
 }
 
 .sticky-header th {
-  background: #2a433e!important;
+  /* background: linear-gradient(to right, #274b44, #3e554f, #295047) !important; */
   position: sticky;
   top: 0;
   z-index: 10;

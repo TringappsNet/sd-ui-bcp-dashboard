@@ -203,6 +203,7 @@ function Dashboard() {
               dateNF: "yyyy-mm-dd hh:mm:ss",
               defval: null,
             });
+            console.log(jsonData);
             const trimmedData = jsonData.filter((row) =>
               row.some((cell) => cell !== null && cell !== "")
             );

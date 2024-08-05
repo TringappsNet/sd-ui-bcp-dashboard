@@ -98,8 +98,8 @@ function ResetNewPassword({ onClose }) {
       
       <div className="mt-6 shadow bg-body  reset-container ">
         <div className="header-container d-flex flex-row justify-content-center align-items-center  p-3">
-          <div className="  text-light"><h6>RESET PASSWORD</h6></div>
-          <div className="close-icon text-light " onClick={onClose}>✖</div>
+          <div className="reset-text"><h6>RESET PASSWORD</h6></div>
+          <div className="close-icon reset-text " onClick={onClose}>✖</div>
           
         </div>
       

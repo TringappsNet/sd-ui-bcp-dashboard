@@ -6,9 +6,16 @@
 .send-header-container{
   position: relative;
   width: 100%;
-  background: linear-gradient(to right, #21887c, #4ca69c, #2d8d82) !important;
+  border-bottom: 1px solid #ede5e5;
+  background-color: #fdfdfd;
+  /* background: linear-gradient(to right, #406a61, #3b746e, #2d766d) !important; */
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
+}
+
+.invite-text {
+  --bs-text-opacity: 1;
+  color: rgb(0 0 0) !important;
 }
 
 .invite-btn{
@@ -17,6 +24,10 @@
   background: linear-gradient(to right, #368374, #56856f, #3e8376) !important;
 }
 
+.invite-error{
+  padding: 10px;
+  margin-left: 10px;
+}
 
 #role-select:focus,
 #organization-select:focus {
