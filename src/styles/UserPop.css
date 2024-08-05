@@ -58,7 +58,7 @@
       height: 35px;
       border: 1px solid black;
       width: 95%;
-
+      padding-left: 12px;
     }
 
     .Usersearch::placeholder{

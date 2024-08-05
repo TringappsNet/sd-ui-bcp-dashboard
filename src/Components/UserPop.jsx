@@ -195,8 +195,8 @@ const UserPop = ({ handleClose }) => {
           title="Confirm Deactivate"
           cancelText="No"
           confirmText="Yes"
-          cancelVariant="secondary"
-          confirmVariant="danger"
+          cancelVariant="danger"
+          confirmVariant="secondary"
           message={`Are you sure you want to Deactivate the User?`}
         />
     </>

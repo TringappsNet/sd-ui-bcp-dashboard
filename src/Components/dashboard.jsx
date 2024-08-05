@@ -140,9 +140,19 @@ function Dashboard() {
             ...row,
             MonthYear: addOneMinuteToDate(row.MonthYear)
           }));
-          
+          // Step 1: Create a map to store the original order of companies
+          let companyOrder = [...new Set(modifiedData.map(item => item.CompanyName))];
+
+          // Step 2: Group by company and sort within each group
+          let groupedAndSorted = companyOrder.map(company => {
+            let companyData = modifiedData.filter(item => item.CompanyName === company);
+            return companyData.sort((a, b) => new Date(a.MonthYear) - new Date(b.MonthYear));
+          });
+
+          // Step 3: Flatten the grouped and sorted data
+          let sortedData = groupedAndSorted.flat();
           // Set the modified data in the state
-          setRetriveData(modifiedData); 
+          setRetriveData(sortedData); 
           // console.log("retrived data",modifiedData);
         } else {
           console.error("Failed to fetch data:", response.statusText);
