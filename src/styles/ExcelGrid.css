@@ -2,7 +2,7 @@
 .sticky-header th {
     position: sticky;
     top: 0;
-    background: linear-gradient(to right, #274b44, #31433f, #295047) !important;
+    background-color: #274b44 !important;
     /* background-color: #ffffff; */
     z-index: 1; 
   }
