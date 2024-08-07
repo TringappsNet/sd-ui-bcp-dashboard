@@ -7,6 +7,9 @@ import { PortURL } from './Config';
 import LoadingSpinner from './LoadingSpinner'; 
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {  faTimes } from '@fortawesome/free-solid-svg-icons';
+
 //import CustomSnackbar from './Snackbar'; 
 
 function ResetNewPassword({ onClose }) {
@@ -99,7 +102,9 @@ function ResetNewPassword({ onClose }) {
       <div className="mt-6 shadow bg-body  reset-container ">
         <div className="header-container d-flex flex-row justify-content-center align-items-center  p-3">
           <div className="reset-text"><h6>RESET PASSWORD</h6></div>
-          <div className="close-icon reset-text " onClick={onClose}>✖</div>
+          <div className="close-icon reset-text " onClick={onClose}>
+          <FontAwesomeIcon icon={faTimes} />
+          </div>
           
         </div>
       
