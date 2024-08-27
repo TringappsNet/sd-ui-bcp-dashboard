@@ -16,7 +16,7 @@
 .slash{
   width: 100px;
   color: gray;
-  padding-left: 30px;
+  padding-left: 170px;
 
 
 }
@@ -47,6 +47,8 @@
 
 .table-container {
   height: 500px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 /* Apply responsive styles for smaller screens */
@@ -199,6 +201,7 @@ td{
 
 .table-container th {
   border: none;
+  margin-bottom: 8px;
   /* padding: 8px; */
 }
 

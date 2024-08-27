@@ -185,7 +185,7 @@ const OrgPop = ({ handleClose }) => {
           {successMessage && <div className="success-message">{successMessage}</div>}
           {errorMessage && <div className="error-message">{errorMessage}</div>}
         </div>
-        <div className="Org-pop-container table-container p-3">
+        <div className="Org-pop-container table-container pt-0 p-3">
         {loading ? (
             <LoadingSpinner />
           ) : (
