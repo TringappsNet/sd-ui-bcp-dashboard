@@ -198,7 +198,7 @@ const UserPop = ({ handleClose }) => {
             show={showConfirmationModal}
             onHide={() => setShowConfirmationModal(false)}
             onConfirm={confirmDeactivation}
-            title="Confirm Deactivate"
+            title="Confirm Delete"
             cancelText="No"
             confirmText="Yes"
             cancelVariant="danger"
