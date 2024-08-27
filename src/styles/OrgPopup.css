@@ -16,7 +16,7 @@
 .slash{
   width: 100px;
   color: gray;
-  padding-left: 30px;
+  padding-left: 170px;
 
 
 }
@@ -46,7 +46,7 @@
 }
 
 .table-container {
-  height: 500px;
+  height: 450px !important;
 }
 
 /* Apply responsive styles for smaller screens */
@@ -214,8 +214,8 @@ td{
   position: relative;
   width: 100%;
   background: linear-gradient(to right, #406a61, #3b746e, #2d766d) !important;
-  border-top-left-radius: 0px;
-  border-top-right-radius: 0px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
   height: 10%;
 }
 
