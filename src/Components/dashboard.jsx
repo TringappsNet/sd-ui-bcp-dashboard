@@ -184,7 +184,7 @@ function Dashboard() {
     async (acceptedFiles) => {
       setData([]);
       setLoading(true);
-
+  
       acceptedFiles.forEach(async (file) => {
         // Check if the file extension is supported
         const fileExtension = file.name.split(".").pop().toLowerCase();
@@ -194,10 +194,9 @@ function Dashboard() {
           setSnackbarOpen(true);
           setSnackbarMessage("File type not supported");
           setSnackbarVariant("error");
-          // alert('Unsupported file format. Please upload only .xlsx or .xls files.');
           return;
         }
-
+  
         const reader = new FileReader();
         reader.onload = async (e) => {
           const data = e.target.result;
@@ -217,34 +216,43 @@ function Dashboard() {
             const trimmedData = jsonData.filter((row) =>
               row.some((cell) => cell !== null && cell !== "")
             );
-            // console.log(trimmedData);
+  
+            let containsInvalidCharacters = false;
+  
             const cleanedData = trimmedData.map((row, rowIndex) => {
               if (rowIndex === 0) {
                 return row;
               }
               return row.map((cell, columnIndex) => {
-                // Keep the 0th and 1st columns unchanged
                 if (columnIndex === 0 || columnIndex === 1) {
                   return cell;
                 }
-
-                // For other columns, check if the cell contains only numbers and dots
+  
                 if (cell !== null && typeof cell === "string") {
                   const numericValue = parseFloat(cell);
                   if (!isNaN(numericValue) && /^[0-9.]+$/.test(cell)) {
                     return numericValue;
                   } else {
+                    containsInvalidCharacters = true;
                     return null;
                   }
                 }
-
+  
                 return cell;
               });
             });
-
-            // console.log(cleanedData);
+  
+            if (containsInvalidCharacters) {
+              setLoading(false);
+              setSnackbarOpen(true);
+              setSnackbarMessage("Excel contains text or special characters. Only numerical data is accepted.");
+              setSnackbarVariant("error");
+              return;
+            }
+  
             const header = cleanedData.shift();
-            const mappedHeader = header.map((col) => columnMap[col] || col);
+            const filteredHeader = header.filter((col) => col !== null);
+            const mappedHeader = filteredHeader.map((col) => columnMap[col] || col);
             const newJsonData = cleanedData.map((row) => {
               const obj = {};
               mappedHeader.forEach((key, index) => {
@@ -252,8 +260,7 @@ function Dashboard() {
               });
               return obj;
             });
-            // console.log("jsonData",trimmedData);
-
+  
             const updatedData = newJsonData.map((row) => {
               if (row["MonthYear"]) {
                 const dateString = row["MonthYear"].toString();
@@ -272,8 +279,7 @@ function Dashboard() {
             });
             setData((prevData) => [...prevData, ...updatedData]);
             setUploadedFileName(file.name);
-
-            // const Role_ID = localStorage.getItem('Role_ID');
+  
             const Org_ID = localStorage.getItem("Org_ID");
             const userId = localStorage.getItem("user_ID");
             try {
@@ -309,7 +315,6 @@ function Dashboard() {
                 setSnackbarVariant("error");
                 console.error("Error:", response.statusText);
               }
-              
             } catch (error) {
               console.error("Error calling validate API:", error);
             }
