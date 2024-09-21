@@ -421,11 +421,14 @@
 
   
   .brand-wrapper {
-    width: 70px;
-    height: 40px; 
+    width: 90px;
+    height: 50px; 
     background-image: url('../../public/images/JMI-logo2.png'); 
     background-size: 100% auto; 
     background-repeat: no-repeat; 
+    background-position: center;
+
+    
     /* margin-left: 20px; */
     /* -webkit-filter: grayscale(100%) brightness(9);
     filter: grayscale(100%) brightness(9); */

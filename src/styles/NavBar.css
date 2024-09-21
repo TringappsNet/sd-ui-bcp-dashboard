@@ -60,6 +60,8 @@ display: flex;
 
 .navigation{
   background: linear-gradient(to right, #692e3d, #800020, #692e3d) !important;  
+  padding: 0px !important
+
 }
  
 .toggler{

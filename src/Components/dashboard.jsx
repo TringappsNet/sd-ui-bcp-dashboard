@@ -730,7 +730,7 @@ function Dashboard() {
   // ];
 
   return (
-    <div className="dashboard-container ">
+    <div className="dashboard-container">
       <CustomSnackbar
         message={snackbarMessage}
         variant={snackbarVariant}
