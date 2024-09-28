@@ -216,9 +216,7 @@ function Dashboard() {
             const trimmedData = jsonData.filter((row) =>
               row.some((cell) => cell !== null && cell !== "")
             );
-  
-            let containsInvalidCharacters = false;
-  
+    
             const cleanedData = trimmedData.map((row, rowIndex) => {
               if (rowIndex === 0) {
                 return row;
@@ -233,7 +231,6 @@ function Dashboard() {
                   if (!isNaN(numericValue) && /^[0-9.]+$/.test(cell)) {
                     return numericValue;
                   } else {
-                    containsInvalidCharacters = true;
                     return null;
                   }
                 }
@@ -241,15 +238,6 @@ function Dashboard() {
                 return cell;
               });
             });
-  
-            if (containsInvalidCharacters) {
-              setLoading(false);
-              setSnackbarOpen(true);
-              setSnackbarMessage("Excel contains text or special characters. Only numerical data is accepted.");
-              setSnackbarVariant("error");
-              return;
-            }
-  
             const header = cleanedData.shift();
             const filteredHeader = header.filter((col) => col !== null);
             const mappedHeader = filteredHeader.map((col) => columnMap[col] || col);
