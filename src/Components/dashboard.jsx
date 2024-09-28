@@ -215,10 +215,7 @@ function Dashboard() {
             console.log(jsonData);
             const trimmedData = jsonData.filter((row) =>
               row.some((cell) => cell !== null && cell !== "")
-            );
-  
-            let containsInvalidCharacters = false;
-  
+            );  
             const cleanedData = trimmedData.map((row, rowIndex) => {
               if (rowIndex === 0) {
                 return row;
@@ -226,29 +223,10 @@ function Dashboard() {
               return row.map((cell, columnIndex) => {
                 if (columnIndex === 0 || columnIndex === 1) {
                   return cell;
-                }
-  
-                if (cell !== null && typeof cell === "string") {
-                  const numericValue = parseFloat(cell);
-                  if (!isNaN(numericValue) && /^[0-9.]+$/.test(cell)) {
-                    return numericValue;
-                  } else {
-                    containsInvalidCharacters = true;
-                    return null;
-                  }
-                }
-  
-                return cell;
+                }  
+                 return cell;
               });
             });
-  
-            if (containsInvalidCharacters) {
-              setLoading(false);
-              setSnackbarOpen(true);
-              setSnackbarMessage("Excel contains text or special characters. Only numerical data is accepted.");
-              setSnackbarVariant("error");
-              return;
-            }
   
             const header = cleanedData.shift();
             const filteredHeader = header.filter((col) => col !== null);
