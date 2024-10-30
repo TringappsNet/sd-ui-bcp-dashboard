@@ -89,18 +89,18 @@ const MetricsGrid = ({ handleClose }) => {
     if (!entry || !entry.metrics) return [];
 
     const types = [
-      "Actual",
-      "Budget",
-      "Prior",
-      "VarianceActual",
-      "VarianceBudget",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
     ];
     const typeLabels = {
-      Actual: "Actual",
-      Budget: "Budget",
-      Prior: "Prior Month",
-      VarianceActual: "Variance - Actual vs Prior Month",
-      VarianceBudget: "Variance - Actual vs Budget",
+      1: "Actual",
+      2: "Budget",
+      3: "Prior",
+      4: "Variance - Actual vs Prior",
+      5: "Variance - Actual vs Budget",
     };
 
     return types.map((type) => {
@@ -158,9 +158,11 @@ const MetricsGrid = ({ handleClose }) => {
       if (!Array.isArray(data)) {
         throw new Error("Invalid data format received from API");
       }
+      console.log("data:", data);
 
       // Process and flatten the data
       const processedData = data.flatMap((entry) => processMetricsEntry(entry));
+      console.log("Processed data:", processedData);
       // Step 1: Create a map to store the original order of companies
       let companyOrder = [
         ...new Set(processedData.map((item) => item.companyName)),
